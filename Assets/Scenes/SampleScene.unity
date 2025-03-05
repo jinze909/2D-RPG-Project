@@ -228,6 +228,8 @@ GameObject:
   - component: {fileID: 990178523}
   - component: {fileID: 990178521}
   - component: {fileID: 990178524}
+  - component: {fileID: 990178525}
+  - component: {fileID: 990178526}
   m_Layer: 0
   m_Name: PlayerViola
   m_TagString: Untagged
@@ -373,6 +375,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a156062d6792d34989faf0c35fa6630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: 65a0a45e411458a419a864e06d4bf145, type: 2}
+--- !u!114 &990178525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990178518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b699b0dac938dcc408f376277bdce173, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &990178526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990178518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 405c207e5f9092d4cb82ba71730f90b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 65a0a45e411458a419a864e06d4bf145, type: 2}

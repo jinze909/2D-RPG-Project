@@ -7,19 +7,19 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Config")]
     [SerializeField] private float speed;
-    private readonly int moveX = Animator.StringToHash("MoveX");
-    private readonly int moveY = Animator.StringToHash("MoveY");
-    private readonly int moving = Animator.StringToHash("Moving");
+
+    private PlayerAnimations playerAnimations;
     private PlayerActions actions;
+    private Player player;
     private Rigidbody2D rb2D;
-    private Animator animator;
     private Vector2 moveDirection;
 
     private void Awake()
     {
+        player = GetComponent<Player>();
         actions = new PlayerActions();
-        animator = GetComponent<Animator>();
         rb2D = GetComponent<Rigidbody2D>();
+        playerAnimations = GetComponent<PlayerAnimations>();
     }
 
     // Update is called once per frame
@@ -33,22 +33,23 @@ public class PlayerMovement : MonoBehaviour
         Move();
     }
 
-    private void Move()
+    private void ReadMovement()
     {
         Vector2 targetPosition = rb2D.position + moveDirection * (speed * Time.fixedDeltaTime);
         rb2D.MovePosition(targetPosition);
-        if (moveDirection == Vector2.zero){
-            animator.SetBool(moving, false);
+        if (moveDirection == Vector2.zero)
+        {
+            playerAnimations.SetMoveBoolTransition(false);
             return;
         }
         //有方向输入
-        animator.SetBool(moving, true);
-        animator.SetFloat(moveX, moveDirection.x);
-        animator.SetFloat(moveY, moveDirection.y);
+        playerAnimations.SetMoveBoolTransition(true);
+        playerAnimations.SetMoveAnimation(moveDirection);
     }
 
-    private void ReadMovement()
+    private void Move()
     {
+        if (player.Stats.Health <= 0) return;
         moveDirection = actions.Movement.Move.ReadValue<Vector2>().normalized;
     }
 
