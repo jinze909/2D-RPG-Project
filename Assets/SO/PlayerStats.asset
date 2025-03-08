@@ -15,3 +15,5 @@ MonoBehaviour:
   level: 1
   Health: 5
   MaxHealth: 10
+  Mana: 0
+  MaxMana: 20
