@@ -8,9 +8,7 @@ SHA-256: `31b02d356245c6ac0015644a4508e49f7386cf2318a4e9944f42d0d4938c020a`.
 
 188 source files plus archive metadata; actual LFS resources and Unity .meta files included. Library/Temp/Logs and credentials excluded. Archive CRC and SHA-256 verified. The packaged source worktree was clean.
 
-42 actual-source C# offline behavior checks and asset/scene/skill integrity passed. 27 automation and 6 distribution boundary tests passed locally. These checks do not constitute native Unity import, physics, rendering, PlayMode or a platform build.
-
-Paid scheduled AI development is paused at the user's request. See master/docs/AUTOMATION.md. Hosted CI proof is recorded separately after observing its real result.
+42 actual-source C# offline behavior checks and asset/scene/skill integrity passed. Six distribution boundary tests passed locally. These checks do not constitute native Unity import, physics, rendering, PlayMode or a platform build.
 
 ## Iteration 2 — Combat Clearing candidate
 
@@ -29,6 +27,18 @@ Native editor import/physics/rendering/PlayMode/audio/playthrough remain unverif
 New map/enemies are provisional code-native blockout, not a finished full RPG.
 
 [Current source CI run](https://github.com/jinze909/2D-RPG-Project/actions/runs/37852926710);
-see iteration-002-delivery.json for observed receipt. Paid AI automation stays paused.
+see iteration-002-delivery.json for observed receipt.
 
 Current source hosted CI completed successfully: actual project checks, boundary tests, ZIP packaging and upload all passed. Native Unity acceptance remains pending.
+
+## Current candidate project
+
+Source: [de0614399bb878ae182f90f81074359824e5057b](https://github.com/jinze909/2D-RPG-Project/commit/de0614399bb878ae182f90f81074359824e5057b).
+[Download current complete project ZIP](2D-RPG-Project-iteration-002-de06143.zip).
+SHA-256: `a57c2c807b17b2ad171a88311507197f5b27892ef6db9ce238ef41fa747d718c`.
+
+211 source files plus archive metadata; clean source checkout, real LFS resources,
+all Unity project directories and metadata included. CRC and SHA-256 verified.
+116 retained offline game/resource/scene/distribution checks passed.
+Ordinary source validation and ZIP CI retained. Native Unity acceptance remains pending.
+Draft PR #1 remains unmerged; master contains only documentation/infrastructure cleanup.

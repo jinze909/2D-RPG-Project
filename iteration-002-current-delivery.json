@@ -1,0 +1,15 @@
+{
+  "project": "2D-RPG-Project",
+  "unity": "2022.3.53f1",
+  "commit": "de0614399bb878ae182f90f81074359824e5057b",
+  "working_tree_has_local_changes": false,
+  "native_unity_validation": false,
+  "file_count": 211,
+  "archive": "2D-RPG-Project-iteration-002-de06143.zip",
+  "bytes": 409148,
+  "sha256": "a57c2c807b17b2ad171a88311507197f5b27892ef6db9ce238ef41fa747d718c",
+  "crc_verified": true,
+  "offline_tests_passed": 116,
+  "pull_request": "https://github.com/jinze909/2D-RPG-Project/pull/1",
+  "merged_to_master": false
+}
