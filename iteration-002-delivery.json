@@ -1,0 +1,21 @@
+{
+  "project": "2D-RPG-Project",
+  "unity": "2022.3.53f1",
+  "commit": "090507d5648ad6e18a0bc92bb7c0ec53c02d8457",
+  "working_tree_has_local_changes": false,
+  "native_unity_validation": false,
+  "file_count": 218,
+  "archive": "2D-RPG-Project-iteration-002-090507d.zip",
+  "bytes": 441790,
+  "sha256": "a8f2594016a3ac6aee8954ba1081311c15c999fd34953baa07a529d89a1149aa",
+  "crc_verified": true,
+  "pull_request": "https://github.com/jinze909/2D-RPG-Project/pull/1",
+  "merged_to_master": false,
+  "offline_tests_passed": 143,
+  "unity_api_source_count": 14,
+  "ci_run_url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37852926710",
+  "ci_status": "success",
+  "ci_artifact_url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37852926710/artifacts/11582696982",
+  "ci_artifact_digest": "8ad3b578ca98fc262429b29babd254174e3ca6be8aa33a290365977d3a10012b",
+  "ci_artifact_digest_kind": "Actions artifact container; not the project ZIP SHA256"
+}
