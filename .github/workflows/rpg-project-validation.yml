@@ -39,8 +39,24 @@ jobs:
       - name: Verify scheduling, patch publication and project packaging boundaries
         id: boundaries
         run: |
-          python3 -m unittest discover -s tests/automation -p 'test_*.py' -v
-          python3 -m unittest discover -s tests -p 'test_distribution.py' -v
+          set -euo pipefail
+          report_failure() {
+            python3 - "$1" <<'PY'
+          import sys
+          from pathlib import Path
+          detail = Path(sys.argv[1]).read_text()[-6000:]
+          detail = detail.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+          print('::error title=RPG boundary test failure::' + detail)
+          PY
+          }
+          if ! python3 -m unittest discover -s tests/automation -p 'test_*.py' -v 2>&1 | tee "$RUNNER_TEMP/rpg-validation/automation-tests.txt"; then
+            report_failure "$RUNNER_TEMP/rpg-validation/automation-tests.txt"
+            exit 1
+          fi
+          if ! python3 -m unittest discover -s tests -p 'test_distribution.py' -v 2>&1 | tee "$RUNNER_TEMP/rpg-validation/distribution-tests.txt"; then
+            report_failure "$RUNNER_TEMP/rpg-validation/distribution-tests.txt"
+            exit 1
+          fi
       - name: Package the complete project without Unity caches
         if: steps.validate.outcome == 'success' && steps.boundaries.outcome == 'success'
         run: |

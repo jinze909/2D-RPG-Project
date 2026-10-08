@@ -8,7 +8,7 @@ test_secret_file_inside_required_tree_is_refused (test_distribution.Distribution
 test_symlink_cannot_read_files_outside_project (test_distribution.DistributionChecks.test_symlink_cannot_read_files_outside_project) ... ok
 
 ----------------------------------------------------------------------
-Ran 6 tests in 0.080s
+Ran 6 tests in 0.053s
 
 OK
 {
@@ -18,7 +18,7 @@ OK
   "working_tree_has_local_changes": null,
   "native_unity_validation": false,
   "file_count": 89,
-  "zip": "/tmp/rpg-distribution-check-zgasuhly/project.zip",
-  "bytes": 111080,
-  "sha256": "0087f0099b4d2f70bb5f5b46643b694e3f5faafe4ad5d5a8888e09e310004b5b"
+  "zip": "/tmp/rpg-distribution-check-5nwhfwiz/project.zip",
+  "bytes": 111071,
+  "sha256": "eb43aa4d59760ed0578bad073e50a8786476e85b40be47c72a44716d1de2a490"
 }

@@ -20,12 +20,13 @@ test_claim_records_start_before_agent_and_preserves_prior_result (test_automatio
 test_dry_run_does_not_mutate_persistent_state (test_automation.GateTests.test_dry_run_does_not_mutate_persistent_state) ... ok
 test_force_cannot_bypass_corrupt_state (test_automation.GateTests.test_force_cannot_bypass_corrupt_state) ... ok
 test_key_presence_is_only_boolean_and_no_key_blocks_claim (test_automation.GateTests.test_key_presence_is_only_boolean_and_no_key_blocks_claim) ... ok
+test_covered_resource_fix_can_publish_with_actual_git (test_automation.PublishingTests.test_covered_resource_fix_can_publish_with_actual_git) ... ok
 test_failed_validation_is_preserved_without_changing_master (test_automation.PublishingTests.test_failed_validation_is_preserved_without_changing_master) ... ok
 test_unverified_visual_candidate_goes_to_branch (test_automation.PublishingTests.test_unverified_visual_candidate_goes_to_branch) ... ok
 test_user_push_is_preserved_and_candidate_goes_to_branch (test_automation.PublishingTests.test_user_push_is_preserved_and_candidate_goes_to_branch) ... ok
 test_valid_low_risk_candidate_pushes_without_force (test_automation.PublishingTests.test_valid_low_risk_candidate_pushes_without_force) ... ok
 
 ----------------------------------------------------------------------
-Ran 26 tests in 0.876s
+Ran 27 tests in 0.860s
 
 OK

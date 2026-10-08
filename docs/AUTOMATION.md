@@ -2,6 +2,8 @@
 
 工作流配置本身不等于自动开发已经启用。启用的证明是 GitHub Actions 中的实际运行、Codex 开发步骤成功、独立验证、提交及 Artifact 上传。本仓库不会声称 Codex Cloud 会在会话结束后自行重启：当前会话没有可调用的 Codex Cloud 定时任务接口，持续执行由 GitHub Actions 提供。
 
+**当前用户选择暂不提供 API Key，付费 AI 自动开发保持暂停。** 不需要为本轮人工开发、测试和 ZIP 交付提供 Key。只有未来明确配置仓库变量 `RPG_AUTONOMOUS_ENABLED=true` 才允许开始自动 API 开发；即使仓库原来存在同名 Key，默认也不会调用。小时事件在暂停状态输出 `api_development_paused`，不领取持久化运行时间，不启动 Codex。手动 dry run 可以只读取门卫状态，不生成代码或产生模型调用费用。
+
 ## 实际工作流
 
 - `.github/workflows/rpg-continuous-improvement.yml`：**RPG Continuous Improvement**，每小时 UTC 第 17 分钟唤醒，通过 `rpg-automation-state` 分支持久化上次领取时间。距离上次开始至少 18,000 秒才领取下一轮。手动运行支持 `force` 和 `dry_run`。
@@ -13,13 +15,13 @@ GitHub 定时事件只从仓库的默认分支运行。默认分支必须为包�
 
 ## 一次性必要设置
 
-1. 在仓库 **Settings → Secrets and variables → Actions → New repository secret** 创建 `OPENAI_API_KEY`。只保存到 GitHub Secret；不要写入源码、提示词、文件或日志。
+1. 以下设置仅用于未来决定启用付费 AI 开发时。届时在仓库 **Settings → Secrets and variables → Actions → New repository secret** 创建 `OPENAI_API_KEY`。只保存到 GitHub Secret；不要写入源码、提示词、文件或日志。
 2. 该 Key 对应的 OpenAI API 项目需要可用额度。GitHub Actions 的 `openai/codex-action` 调用独立 API，不能免费复用 ChatGPT/Codex Cloud 订阅。建议在 API 项目设置预算和告警；实际收费按所选模型的 API 价格计算。
 3. 在 **Settings → Actions → General** 开启 Actions，并允许需要的官方 Actions。发布和状态分支需要 `GITHUB_TOKEN` 的 `contents: write` 权限。组织策略或分支保护仍可阻止直接写入；不要关闭保护来掩盖失败。
 4. 可选仓库变量 `RPG_CODEX_MODEL` 更换已获授权的 Codex API 模型；默认 `gpt-5.3-codex`。没有模型权限时会保留失败记录，不会声称开发成功。
-5. 在 Actions 页运行 **RPG Project Validation and ZIP**，确认编译/回归检查及工程 ZIP 真正成功。再手动运行 **RPG Continuous Improvement**：先 `dry_run=true` 检查门卫；准备好 API 额度后用 `dry_run=false, force=true` 验证完整开发链。之后按小时门卫调度。
+5. 在 Actions 页运行 **RPG Project Validation and ZIP**，确认编译/回归检查及工程 ZIP 真正成功。准备好 API 额度且决定启用时，创建仓库变量 `RPG_AUTONOMOUS_ENABLED`，值为 `true`。再手动运行 **RPG Continuous Improvement**：先 `dry_run=true` 检查门卫，再用 `dry_run=false, force=true` 验证完整开发链。之后按小时门卫调度。暂停时将此变量改为 `false` 或删除；`force` 不会绕过暂停开关。
 
-没有 `OPENAI_API_KEY` 时，门卫会明确输出 `missing_api_key`，跳过开发。这可以证明工作流能被触发，不能证明无人值守 AI 开发已启用。dry run 不花 API 额度、不领取下一轮时间，也不执行代码生成。
+没有显式开启变量时，门卫输出 `api_development_paused`，跳过开发；开启变量后没有 `OPENAI_API_KEY`，门卫输出 `missing_api_key`。这些都可以证明工作流能被触发，不能证明无人值守 AI 开发已启用。dry run 不花 API 额度、不领取下一轮时间，也不执行代码生成。
 
 ## 每轮执行和保护
 

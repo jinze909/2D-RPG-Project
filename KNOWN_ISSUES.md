@@ -24,11 +24,14 @@
   default branch is master, confirmed via remote symbolic HEAD.
 - codex-action needs a repository OPENAI_API_KEY Secret with independently billed
   API credit/model access. ChatGPT subscription credentials cannot replace it.
-  GitHub secret presence is currently unknown because cloud API access is blocked.
+  The user declined an API Key. RPG_AUTONOMOUS_ENABLED is opt-in and defaults to
+  paused; no paid AI round is scheduled. GitHub secret presence remains unknown.
 - Current cloud GitHub REST requests return Forbidden. api.github.com is saved in
   the network draft; draft persistence has not applied the running network policy.
-- Live scheduled execution, model development and Artifact upload are not yet
-  verified. Never equate configuration/local unit tests with activation.
+- Real push CI started: run 37739823460 passed project validation, failed boundary
+  tests and skipped ZIP. Corrected hosted validation/Artifact delivery still need
+  evidence. The paid model-development loop remains deliberately paused.
+  Never equate configuration/local unit tests with activation.
 - Standard Actions runners do not have the cloud's editor license, MCP connection
   or ChatGPT image-generation tools. Native/visual high-risk changes stay isolated.
 - Cron is best effort, can be delayed, and may be disabled for prolonged inactivity.

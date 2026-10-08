@@ -1,8 +1,10 @@
 # Next iteration
 
-1. Confirm the actual scheduled gate, Codex development, independent validation,
-   normal push and ZIP Artifact from GitHub Actions. Resolve only proven missing
-   credentials/permissions; record the actual run URL, result and next_due.
+1. Confirm corrected hosted CI and ZIP delivery. Paid Codex development is paused
+   by the user's current choice; do not request keys again or call models. Only if
+   the user later enables independent API access and RPG_AUTONOMOUS_ENABLED=true,
+   verify the scheduled gate, development, fresh validation and normal publication
+   with an actual run URL and next_due. Preserve isolated failed/unverified work.
 2. Verify the game in licensed international Unity 2022.3.53f1. Check death during
    movement, disable/enable, four directions and varying display frame rates.
 3. Close one valuable player-loop gap: collision and traversable exploration space,

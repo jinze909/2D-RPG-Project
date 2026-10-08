@@ -20,8 +20,8 @@ This record describes real edits to this repository's player prototype.
   generation/validation/publish jobs, safe branch fallback and ZIP Artifact delivery.
 
 Observed validation: 12 movement and 30 resource behavior tests passed; all 9
-production C# files compiled against boundary doubles. Five PNGs decoded, all five
-LFS SHA-256 OIDs matched, 37 Unity GUIDs were unique, 142 project references resolved,
+production C# files compiled against boundary doubles. Five PNGs decoded, all six
+LFS SHA-256 OIDs matched (five game PNGs and a vendored skill reference), 37 Unity GUIDs were unique, 142 project references resolved,
 and the enabled scene matched its .meta. Earlier movement checks failed against
 the old source; resource checks changed from 18 pass/12 fail to 30 pass/0 fail.
 
@@ -34,8 +34,19 @@ Automation helpers have local tests, including real temporary Git push/conflict
 scenarios and mocked HTTP gate checks. These are not live scheduled-run evidence.
 GitHub API access from this cloud environment currently returns proxy Forbidden;
 the required domain has been added to the environment draft. Repository API-secret
-status and live Actions execution have not yet been confirmed. Publication receipts
-and exact commit/download links are appended after actual push/delivery.
+status remains unknown. User explicitly declined to provide an API Key, so paid
+autonomous development is paused by default and requires a separate explicit
+RPG_AUTONOMOUS_ENABLED=true opt-in before any future model call.
 
-Next: verify real Actions runs, configure required independent API credentials if
-missing, then close collision/input/respawn gaps with appropriate native evidence.
+Published game/skills commit: d2783214e752ddf35c5cf22f6332a5a3fa8ed0eb.
+Published workflow commit: 1e00d30ad2df4371ee96fa8f81b048ace9b8aaef.
+Actual first GitHub Actions run: https://github.com/jinze909/2D-RPG-Project/actions/runs/37739823460.
+The hosted project validation passed, but automation/distribution boundary tests
+failed and ZIP creation was correctly skipped. Follow-up isolates GitHub step
+output transports in fixtures, removes fixture dependence on LFS local-transfer
+smudging, and retains failure logs/annotations. Local checks pass; the corrected
+hosted run must be observed before reporting successful CI or ZIP publication.
+
+Next: verify corrected CI and source ZIP delivery, then close collision/input/respawn
+gaps with appropriate native evidence. No paid scheduled development or next AI
+run is enabled while the user chooses not to configure independent API access.

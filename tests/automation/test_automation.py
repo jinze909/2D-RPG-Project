@@ -21,14 +21,29 @@ automation = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(automation)
 
 
-def command(root, *args):
+def command(root, *args, env=None):
     result = subprocess.run(["git", *args], cwd=root, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE, check=True)
+                            stderr=subprocess.PIPE, check=True, env=env)
     return result.stdout.decode().strip()
 
 
-class ClockAndPathTests(unittest.TestCase):
+class IsolatedActionTestCase(unittest.TestCase):
     def setUp(self):
+        # Helpers legitimately append GITHUB_OUTPUT in production. Tests must
+        # never append to the hosting workflow's real step-output transport.
+        temporary = tempfile.TemporaryDirectory(prefix="rpg-test-action-output-")
+        self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name)
+        patcher = mock.patch.dict(os.environ, {"GITHUB_OUTPUT": str(root / "output"),
+                                              "GITHUB_ENV": str(root / "env"),
+                                              "GITHUB_STEP_SUMMARY": str(root / "summary")})
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+
+class ClockAndPathTests(IsolatedActionTestCase):
+    def setUp(self):
+        IsolatedActionTestCase.setUp(self)
         self.now = dt.datetime(2026, 10, 8, 12, 0, 0, tzinfo=dt.timezone.utc)
 
     def test_hourly_gate_does_not_reset_at_midnight(self):
@@ -113,8 +128,9 @@ class FakeGitHub:
         self.writes.append((branch, state, sha))
 
 
-class GateTests(unittest.TestCase):
+class GateTests(IsolatedActionTestCase):
     def setUp(self):
+        IsolatedActionTestCase.setUp(self)
         FakeGitHub.state = None
         FakeGitHub.state_sha = None
         FakeGitHub.requests = []
@@ -173,7 +189,7 @@ class GateTests(unittest.TestCase):
         self.assertFalse(FakeGitHub.writes)
 
 
-class APIBoundaryTests(unittest.TestCase):
+class APIBoundaryTests(IsolatedActionTestCase):
     def test_state_update_uses_compare_and_swap_file_sha(self):
         with mock.patch.dict(os.environ, {}, clear=True):
             client = automation.GitHub("owner/project", token="dummy-noncredential")
@@ -201,8 +217,9 @@ class APIBoundaryTests(unittest.TestCase):
                 automation.GitHub("owner/project", token="dummy-noncredential")
 
 
-class BundleTests(unittest.TestCase):
+class BundleTests(IsolatedActionTestCase):
     def setUp(self):
+        IsolatedActionTestCase.setUp(self)
         self.temporary = tempfile.TemporaryDirectory(prefix="rpg-automation-test-")
         self.base = Path(self.temporary.name)
         self.root = self.base / "source"
@@ -229,7 +246,11 @@ class BundleTests(unittest.TestCase):
 
     def clone(self, name="candidate"):
         target = self.base / name
-        command(self.base, "clone", "--no-local", str(self.root), str(target))
+        # Do not require a real LFS server (or a particular version's local-file
+        # transfer adapter) for a temporary test repository. apply_bundle must
+        # materialize and hash-check the candidate's actual object itself.
+        env = dict(os.environ, GIT_LFS_SKIP_SMUDGE="1")
+        command(self.base, "clone", "--no-local", str(self.root), str(target), env=env)
         return target
 
     def test_round_trip_captures_untracked_files_without_changing_source_index(self):
@@ -334,7 +355,7 @@ class BundleTests(unittest.TestCase):
             automation.load_bundle(self.bundle)
 
 
-class PublishingTests(unittest.TestCase):
+class PublishingTests(IsolatedActionTestCase):
     # Reuse fixture construction without redundantly rerunning bundle checks.
     setUp = BundleTests.setUp
     tearDown = BundleTests.tearDown

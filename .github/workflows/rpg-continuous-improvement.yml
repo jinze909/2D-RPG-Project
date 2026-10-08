@@ -48,6 +48,7 @@ jobs:
           persist-credentials: false
       - name: Check only API-key presence
         id: key
+        if: vars.RPG_AUTONOMOUS_ENABLED == 'true' || inputs.dry_run == true
         env:
           KEY_PRESENT: ${{ secrets.OPENAI_API_KEY != '' }}
         run: |
@@ -59,7 +60,22 @@ jobs:
           OPENAI_API_KEY_PRESENT: ${{ steps.key.outputs.present }}
           FORCE_RUN: ${{ inputs.force || false }}
           DRY_RUN: ${{ inputs.dry_run || false }}
+          AUTONOMOUS_ENABLED: ${{ vars.RPG_AUTONOMOUS_ENABLED == 'true' }}
         run: |
+          if [ "$AUTONOMOUS_ENABLED" != true ] && [ "$DRY_RUN" != true ]; then
+            {
+              echo 'due=false'
+              echo 'reason=api_development_paused'
+              echo "base_sha=$(git rev-parse HEAD)"
+              echo 'next_due='
+              echo 'dry_run=false'
+              echo 'last_candidate_branch='
+              echo 'last_candidate_sha='
+              echo 'last_published_to_master='
+            } >> "$GITHUB_OUTPUT"
+            echo 'API development is paused. No API call, scheduling claim or paid generation was started.'
+            exit 0
+          fi
           args=(gate --repository "$GITHUB_REPOSITORY" --branch master --state-branch rpg-automation-state)
           if [ "$FORCE_RUN" = true ]; then args+=(--force); fi
           if [ "$DRY_RUN" = true ]; then args+=(--dry-run); fi
@@ -76,12 +92,13 @@ jobs:
             echo "Ready: $DUE; reason: $REASON; dry run: $DRY_RUN"
             echo "Next eligible start (UTC): $NEXT_DUE"
             echo 'An hourly cron is a wakeup only. Missing OPENAI_API_KEY means no autonomous AI development was enabled.'
+            echo 'Autonomous API development also requires explicit RPG_AUTONOMOUS_ENABLED=true; it is paused by default.'
             echo 'Scheduled starts can be delayed by GitHub; this is not a guaranteed exact-time service.'
           } >> "$GITHUB_STEP_SUMMARY"
 
   generate:
     needs: gate
-    if: needs.gate.outputs.due == 'true' && needs.gate.outputs.dry_run != 'true' && inputs.dry_run != true
+    if: vars.RPG_AUTONOMOUS_ENABLED == 'true' && needs.gate.outputs.due == 'true' && needs.gate.outputs.dry_run != 'true' && inputs.dry_run != true
     runs-on: ubuntu-24.04
     timeout-minutes: 55
     permissions:
