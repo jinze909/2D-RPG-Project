@@ -57,3 +57,6 @@ SHA-256: `18394e7efad8a69899d99bce090012954836881e9ee13386dee8ad4473f67e6e`.
 
 [Exact-source offline pixel preview](iteration-003-offline-pixel-preview.png); not a Unity screenshot.
 See [final source/CI/download receipt](iteration-003-delivery.json) for observed delivery evidence.
+
+Final exact-source [CI run 37858940651](https://github.com/jinze909/2D-RPG-Project/actions/runs/37858940651) is green; all validation, packaging and upload steps succeeded.
+The published immutable ZIP was downloaded over HTTPS: bytes, SHA-256, CRC, metadata and all 228 source files matched. See the receipt for direct immutable ZIP/checksum URLs and Artifact retention.

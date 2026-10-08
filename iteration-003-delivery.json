@@ -26,8 +26,38 @@
   "archive_crc_verified": true,
   "all_source_file_bytes_matched": true,
   "lfs_pointers_in_archive": false,
-  "download_verification": "pending",
+  "download_verification": "passed: HTTPS bytes, SHA-256, CRC, source metadata and all 228 source files matched",
   "native_gameplay_verified": false,
   "preview": "iteration-003-offline-pixel-preview.png",
-  "preview_kind": "exact production managed C# raster data; not native Unity screenshot"
+  "preview_kind": "exact production managed C# raster data; not native Unity screenshot",
+  "delivery_commit": "e8e230be613b912d9b1a30b99d374b3688fa2ad3",
+  "download_url": "https://raw.githubusercontent.com/jinze909/2D-RPG-Project/e8e230be613b912d9b1a30b99d374b3688fa2ad3/2D-RPG-Project-iteration-003-1bedd32.zip",
+  "checksum_url": "https://raw.githubusercontent.com/jinze909/2D-RPG-Project/e8e230be613b912d9b1a30b99d374b3688fa2ad3/2D-RPG-Project-iteration-003-1bedd32.zip.sha256",
+  "archive_entries": 229,
+  "hosted_ci": {
+    "run_id": 37858940651,
+    "url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37858940651",
+    "head_sha": "1bedd3296a31398db62dc27d07c466c125bd896e",
+    "status": "completed",
+    "conclusion": "success",
+    "job_id": 113589790841,
+    "all_steps_success": true,
+    "artifact_id": 11585561210,
+    "artifact_url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37858940651/artifacts/11585561210",
+    "artifact_bytes": 398918,
+    "artifact_expired_at_check": false,
+    "artifact_expires_at": "2026-11-07T23:21:58Z",
+    "native_unity_run": false
+  },
+  "pr1_merge_readiness": {
+    "head": "de0614399bb878ae182f90f81074359824e5057b",
+    "base": "2e8c154f219256454ad981d6ebf11fdea5865d7d",
+    "open": true,
+    "draft": true,
+    "merged": false,
+    "git_mergeable": true,
+    "offline_ci": "green",
+    "native_acceptance": "pending",
+    "recommendation": "reviewable; await licensed native acceptance, merge decision remains with user"
+  }
 }
