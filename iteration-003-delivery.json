@@ -1,0 +1,33 @@
+{
+  "project": "2D-RPG-Project",
+  "unity": "2022.3.53f1",
+  "commit": "1bedd3296a31398db62dc27d07c466c125bd896e",
+  "working_tree_has_local_changes": false,
+  "native_unity_validation": false,
+  "file_count": 228,
+  "zip": "2D-RPG-Project-iteration-003-1bedd32.zip",
+  "bytes": 440865,
+  "sha256": "18394e7efad8a69899d99bce090012954836881e9ee13386dee8ad4473f67e6e",
+  "implementation_commit": "4ca71ef52d4918256ddf8e824a23911c0c37de4d",
+  "source_commit_url": "https://github.com/jinze909/2D-RPG-Project/commit/1bedd3296a31398db62dc27d07c466c125bd896e",
+  "pr_url": "https://github.com/jinze909/2D-RPG-Project/pull/2",
+  "pr_base": "rpg/iteration-002-clearing",
+  "pr_draft": true,
+  "master_updated": false,
+  "pr1_merged": false,
+  "project_checks": 134,
+  "distribution_checks": 6,
+  "source_api_compile": {
+    "production_files": 16,
+    "actual_engine_ugui_references": 86,
+    "input_system": "substituted boundary",
+    "native_import": false
+  },
+  "archive_crc_verified": true,
+  "all_source_file_bytes_matched": true,
+  "lfs_pointers_in_archive": false,
+  "download_verification": "pending",
+  "native_gameplay_verified": false,
+  "preview": "iteration-003-offline-pixel-preview.png",
+  "preview_kind": "exact production managed C# raster data; not native Unity screenshot"
+}

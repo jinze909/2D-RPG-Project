@@ -42,3 +42,18 @@ all Unity project directories and metadata included. CRC and SHA-256 verified.
 116 retained offline game/resource/scene/distribution checks passed.
 Ordinary source validation and ZIP CI retained. Native Unity acceptance remains pending.
 Draft PR #1 remains unmerged; master contains only documentation/infrastructure cleanup.
+
+## Iteration 3 — Clearing pixel art and combat feedback
+
+Source: [1bedd3296a31398db62dc27d07c466c125bd896e](https://github.com/jinze909/2D-RPG-Project/commit/1bedd3296a31398db62dc27d07c466c125bd896e).
+[Stacked draft PR #2](https://github.com/jinze909/2D-RPG-Project/pull/2), not merged; PR #1 and master are unchanged.
+
+[Download the complete source ZIP](2D-RPG-Project-iteration-003-1bedd32.zip).
+SHA-256: `18394e7efad8a69899d99bce090012954836881e9ee13386dee8ad4473f67e6e`.
+
+228 source files plus ARCHIVE-INFO; clean source checkout, both scenes, original real LFS images, all meta, scripts, packages, settings, licensed skills and records included. CRC and all source bytes checked; caches/credentials/LFS pointers excluded.
+
+140 local offline checks and 16-source real Unity API-reference compilation passed (Input System substituted). Native import, physics, rendering, HUD/font layout, EditMode/PlayMode, audio and playthrough remain unverified.
+
+[Exact-source offline pixel preview](iteration-003-offline-pixel-preview.png); not a Unity screenshot.
+See [final source/CI/download receipt](iteration-003-delivery.json) for observed delivery evidence.
