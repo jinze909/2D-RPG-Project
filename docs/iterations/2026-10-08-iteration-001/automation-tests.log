@@ -27,6 +27,6 @@ test_user_push_is_preserved_and_candidate_goes_to_branch (test_automation.Publis
 test_valid_low_risk_candidate_pushes_without_force (test_automation.PublishingTests.test_valid_low_risk_candidate_pushes_without_force) ... ok
 
 ----------------------------------------------------------------------
-Ran 27 tests in 0.860s
+Ran 27 tests in 1.075s
 
 OK

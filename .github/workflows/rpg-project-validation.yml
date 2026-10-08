@@ -44,7 +44,7 @@ jobs:
             python3 - "$1" <<'PY'
           import sys
           from pathlib import Path
-          detail = Path(sys.argv[1]).read_text()[-6000:]
+          detail = Path(sys.argv[1]).read_text()[-2500:]
           detail = detail.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
           print('::error title=RPG boundary test failure::' + detail)
           PY

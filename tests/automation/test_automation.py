@@ -334,6 +334,18 @@ class BundleTests(IsolatedActionTestCase):
         probe = subprocess.run(["git", "lfs", "version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if probe.returncode:
             self.skipTest("Git LFS unavailable")
+        # Match actions/checkout's mandatory global LFS filter, even on machines
+        # where Git LFS is otherwise configured only for the source repository.
+        configuration = self.base / "mandatory-lfs.gitconfig"
+        configuration.write_text('[filter "lfs"]\n'
+                                 '\tclean = git-lfs clean -- %f\n'
+                                 '\tsmudge = git-lfs smudge -- %f\n'
+                                 '\tprocess = git-lfs filter-process\n'
+                                 '\trequired = true\n')
+        patcher = mock.patch.dict(os.environ, {"GIT_CONFIG_GLOBAL": str(configuration),
+                                              "GIT_CONFIG_SYSTEM": "/dev/null"})
+        patcher.start()
+        self.addCleanup(patcher.stop)
         command(self.root, "lfs", "install", "--local")
         (self.root / ".gitattributes").write_text("*.png filter=lfs diff=lfs merge=lfs -text\n")
         image = self.root / "Assets/Sprite.png"
@@ -346,10 +358,20 @@ class BundleTests(IsolatedActionTestCase):
         self.assertEqual(len(manifest["lfs_objects"]), 1)
         item = manifest["lfs_objects"][0]
         target = self.clone()
+        # A legitimate native Git LFS local adapter can create shared cache
+        # inodes. Exercise that condition explicitly, without copying an
+        # untrusted bundle file by hard link or weakening its input checks.
+        oid = item["oid"]
+        source_object = self.root / ".git/lfs/objects" / oid[:2] / oid[2:4] / oid
+        target_object = target / ".git/lfs/objects" / oid[:2] / oid[2:4] / oid
+        target_object.parent.mkdir(parents=True)
+        os.link(source_object, target_object)
+        self.assertGreater(target_object.stat().st_nlink, 1)
         automation.apply_bundle(target, self.bundle, self.sha)
         self.assertEqual((target / "Assets/Sprite.png").read_bytes(), image.read_bytes())
         pointer = command(target, "show", ":Assets/Sprite.png")
         self.assertIn("oid sha256:" + hashlib.sha256(image.read_bytes()).hexdigest(), pointer)
+        self.assertEqual(hashlib.sha256(target_object.read_bytes()).hexdigest(), oid)
         (self.bundle / "lfs" / item["oid"]).write_bytes(b"corruption")
         with self.assertRaises(automation.AutomationError):
             automation.load_bundle(self.bundle)

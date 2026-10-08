@@ -50,3 +50,19 @@ hosted run must be observed before reporting successful CI or ZIP publication.
 Next: verify corrected CI and source ZIP delivery, then close collision/input/respawn
 gaps with appropriate native evidence. No paid scheduled development or next AI
 run is enabled while the user chooses not to configure independent API access.
+
+Hosted CI follow-up 37740874645 again passed actual-source validation and 26/27
+automation checks, with only the LFS patch-transfer test failing. The failure was
+reproduced using a mandatory global LFS filter: Git LFS creates legitimate local
+cache hardlinks, which strict untrusted-bundle checks incorrectly also rejected
+for the native cache. The fix preinstalls hash-verified bundled objects, prevents
+network smudging during patch application and accepts only hash-verified cache
+hardlinks for read-only reuse. Untrusted bundle files still reject all hardlinks.
+The regression now includes mandatory filters and a cache hardlink, and all 27
+checks pass locally. Real hosted revalidation is required before green claims.
+
+First recoverable source ZIP for a81a6ce3617abdabc44706415d7059882c9928ec was
+published on rpg-deliveries and downloaded over HTTPS: 377919 bytes, SHA-256
+31b02d356245c6ac0015644a4508e49f7386cf2318a4e9944f42d0d4938c020a.
+It contains 188 source files plus metadata and has a clean source worktree. A
+final delivery will follow the validated workflow correction.

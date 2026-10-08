@@ -92,14 +92,14 @@ def safe_path(value: object) -> str:
     return value
 
 
-def ensure_regular(path: Path, *, limit: int | None = None) -> bytes:
+def ensure_regular(path: Path, *, limit: int | None = None, allow_hardlinks: bool = False) -> bytes:
     if any(parent.is_symlink() for parent in path.parents):
         raise AutomationError("Bundle parent directories cannot be symbolic links")
     try:
         info = path.lstat()
     except OSError as exc:
         raise AutomationError("Required bundle file is missing") from exc
-    if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1:
+    if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1 and not allow_hardlinks:
         raise AutomationError("Bundle files must be ordinary files without hard links")
     if limit is not None and info.st_size > limit:
         raise AutomationError("Bundle file exceeds the size limit")
@@ -534,10 +534,26 @@ def apply_bundle(root: Path, directory: Path, expected_base: str) -> dict:
         raise AutomationError("Refusing to apply over uncommitted work")
     for entry in manifest["files"]:
         ensure_project_file(root, entry["path"], missing_ok=True)
+    git_dir = Path(git(root, "rev-parse", "--absolute-git-dir").decode().strip())
+    for item in manifest.get("lfs_objects", []):
+        source = directory / "lfs" / item["oid"]
+        target = git_dir / "lfs" / "objects" / item["oid"][:2] / item["oid"][2:4] / item["oid"]
+        target.parent.mkdir(parents=True, exist_ok=True)
+        # Git LFS's legitimate local transfer adapter may share cache objects by
+        # hard link. Read/hash-check those existing immutable objects; never
+        # overwrite them. Untrusted bundle files remain strictly single-linked.
+        if target.exists() and sha256(ensure_regular(target, limit=MAX_FILE_BYTES, allow_hardlinks=True)) != item["oid"]:
+            raise AutomationError("Existing LFS object failed its integrity check")
+        if not target.exists():
+            shutil.copyfile(source, target)
     if patch:
         patch_file = str((directory / "candidate.patch").resolve())
-        git(root, "apply", "--check", "--index", "--binary", "--", patch_file)
-        git(root, "apply", "--index", "--binary", "--whitespace=nowarn", "--", patch_file)
+        # Mandatory global LFS filters are configured on GitHub runners. Apply
+        # pointer bytes without smudging/downloading; then materialize the exact
+        # already verified bundled assets below. This requires no LFS server.
+        apply_env = dict(os.environ, GIT_LFS_SKIP_SMUDGE="1")
+        git(root, "apply", "--check", "--index", "--binary", "--", patch_file, env=apply_env)
+        git(root, "apply", "--index", "--binary", "--whitespace=nowarn", "--", patch_file, env=apply_env)
         if diff_entries(root) != sorted(manifest["files"], key=lambda item: item["path"]):
             raise AutomationError("Applied candidate differs from the file manifest")
         object_by_path = {item["path"]: item for item in manifest.get("lfs_objects", [])}
@@ -549,15 +565,8 @@ def apply_bundle(root: Path, directory: Path, expected_base: str) -> dict:
                 item = object_by_path.get(entry["path"])
                 if item is None or pointer != (item["oid"], item["size"]):
                     raise AutomationError("Changed LFS pointer lacks its exact asset")
-        git_dir = Path(git(root, "rev-parse", "--absolute-git-dir").decode().strip())
         for item in manifest.get("lfs_objects", []):
             source = directory / "lfs" / item["oid"]
-            target = git_dir / "lfs" / "objects" / item["oid"][:2] / item["oid"][2:4] / item["oid"]
-            target.parent.mkdir(parents=True, exist_ok=True)
-            if target.exists() and sha256(ensure_regular(target, limit=MAX_FILE_BYTES)) != item["oid"]:
-                raise AutomationError("Existing LFS object failed its integrity check")
-            if not target.exists():
-                shutil.copyfile(source, target)
             shutil.copyfile(source, ensure_project_file(root, item["path"]))
     return manifest
 
