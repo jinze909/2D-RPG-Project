@@ -1,10 +1,10 @@
-# RPG autonomous development instructions
+# RPG development instructions
 
-The user authorizes autonomous game development, commits, normal pushes to master,
+The user authorizes game development, commits, normal pushes to master,
 and source-project deliveries. Preserve accepted designs, existing user work,
 working systems, save compatibility, and the original blonde hero identity.
 Use international Unity **2022.3.53f1** and pixel art; do not use China Unity or
-China package services. Do not upgrade the editor automatically.
+China package services. Preserve the specified editor version.
 
 ## Current architecture and iteration 2 contract
 
@@ -23,13 +23,11 @@ China package services. Do not upgrade the editor automatically.
   Player attacks use independent world effects and retain the existing walk cycle.
 - Read `docs/game/COMBAT_CLEARING.md` for controls and native acceptance steps.
   Run `tools/validate_project.py` (movement/resources/input/animation/combat/scene
-  checks), automation and distribution suites. When installed, also use
+  checks) and the distribution suite. When installed, also use
   `tools/compile_unity_api.py`: real engine/uGUI signatures, with Input System
   explicitly reported as a substitute if its compiled assembly is absent.
 - Native-unverified iteration 2 stays on `rpg/iteration-002-clearing` / draft PR.
   Fetch and inspect that work before starting another loop; do not recreate it.
-  Gemini Spark triggering is external and unverified. Do not enable paid API
-  automation or invent an active five-hour Codex schedule.
 
 ## Start every iteration
 
@@ -66,7 +64,7 @@ China package services. Do not upgrade the editor automatically.
   Live operation requires an actual compatible connected editor and server.
 - imagegen: use available built-in image tools when a real bitmap task calls for
   them. GitHub Actions does not inherit ChatGPT image tools. Do not invent calls,
-  silently use paid services, or redesign the existing hero merely to use a skill.
+  invent unavailable capabilities, or redesign the existing hero merely to use a skill.
 
 Record exact skill usage, affected files, evidence and unavailable capabilities in
 SKILLS_USAGE.md. All eight skills must be rediscovered for each fresh task; only
@@ -91,7 +89,7 @@ Use meaningful tests when changing behavior. Existing actual-source checks are:
 python3 tools/run_player_checks.py --project-root .
 python3 tools/run_resource_checks.py --project-root .
 python3 tools/validate_project.py --root . --output /tmp/rpg-project-report.json
-python3 -m unittest discover -s tests/automation -p 'test_*.py'
+python3 -m unittest discover -s tests -p 'test_distribution.py'
 ```
 
 The offline C# runners use system Mono, or discover a retained Unity installation.
@@ -100,25 +98,18 @@ native physics, the real Input System, Animator rendering or Game View. Native
 import, tests and gameplay remain required when the environment supports them.
 Never reduce checks, fabricate counts or treat a zero-test run as success.
 
-## Delivery and unattended automation
+## Delivery and CI
 
 Maintain all four root records with changes, real results, baseline/commit evidence,
 remaining issues and a next priority. Update KNOWN_ISSUES rather than repeat a
 completed fix merely to produce a commit. Complete and save tested work within the
 available time; isolate incomplete or high-risk changes with their evidence.
 
-The trusted GitHub workflow gates hourly wakeups with persisted 18,000-second
-elapsed time and a shared concurrency group. Read docs/AUTOMATION.md. A workflow
-file or mock gate test does not prove a live scheduled development cycle.
-ChatGPT subscriptions do not supply the Actions OpenAI API key or API credits.
-
-In Actions, the model has no publication credential. Workflows, trusted tools,
-tests, skills, AGENTS and .git remain immutable to its user. Only project files
-and iteration records are writable. Do not bypass these controls; propose needed
-trusted-tool changes in a record for a separately reviewed update. A fresh runner
-tests candidate sources with baseline fixtures; a separate publisher verifies the
-same patch hash and remote baseline before a normal master push. Failed or native
-unverifiable high-risk changes go to rpg/iteration-* branches.
+The ordinary GitHub Actions workflow `rpg-project-validation.yml` checks pushed
+code or a manual run, then packages the validated project and uploads its ZIP and
+reports. Check the actual run and Artifact before claiming hosted success. Standard
+runners do not establish licensed native import, playback or visual acceptance.
+Keep failed or native-unverified high-risk changes on `rpg/iteration-*` branches.
 
 Package with the trusted tools/package_unity_project.py. Include real LFS objects,
 Assets, Packages, ProjectSettings and .meta; exclude caches and credentials.

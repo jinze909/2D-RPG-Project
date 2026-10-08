@@ -36,8 +36,8 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/rpg-validation"
           python3 tools/validate_project.py --root "$GITHUB_WORKSPACE" --output "$RUNNER_TEMP/rpg-validation/project-report.json"
-      - name: Verify scheduling, patch publication and project packaging boundaries
-        id: boundaries
+      - name: Verify project packaging boundaries
+        id: distribution
         run: |
           set -euo pipefail
           report_failure() {
@@ -46,19 +46,15 @@ jobs:
           from pathlib import Path
           detail = Path(sys.argv[1]).read_text()[-2500:]
           detail = detail.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
-          print('::error title=RPG boundary test failure::' + detail)
+          print('::error title=RPG distribution test failure::' + detail)
           PY
           }
-          if ! python3 -m unittest discover -s tests/automation -p 'test_*.py' -v 2>&1 | tee "$RUNNER_TEMP/rpg-validation/automation-tests.txt"; then
-            report_failure "$RUNNER_TEMP/rpg-validation/automation-tests.txt"
-            exit 1
-          fi
           if ! python3 -m unittest discover -s tests -p 'test_distribution.py' -v 2>&1 | tee "$RUNNER_TEMP/rpg-validation/distribution-tests.txt"; then
             report_failure "$RUNNER_TEMP/rpg-validation/distribution-tests.txt"
             exit 1
           fi
       - name: Package the complete project without Unity caches
-        if: steps.validate.outcome == 'success' && steps.boundaries.outcome == 'success'
+        if: steps.validate.outcome == 'success' && steps.distribution.outcome == 'success'
         run: |
           python3 tools/package_unity_project.py --root "$GITHUB_WORKSPACE" --output "$RUNNER_TEMP/rpg-validation/2D-RPG-Project-${GITHUB_SHA}.zip"
       - name: Upload project ZIP and verification report
@@ -75,13 +71,13 @@ jobs:
         env:
           ARTIFACT_URL: ${{ steps.artifact.outputs.artifact-url }}
           VALIDATION_OUTCOME: ${{ steps.validate.outcome }}
-          BOUNDARY_OUTCOME: ${{ steps.boundaries.outcome }}
+          DISTRIBUTION_OUTCOME: ${{ steps.distribution.outcome }}
         run: |
           {
             echo '## Project verification and delivery'
             echo "Commit: $GITHUB_SHA"
             echo "Offline project validation: $VALIDATION_OUTCOME"
-            echo "Automation and distribution boundary tests: $BOUNDARY_OUTCOME"
+            echo "Project packaging checks: $DISTRIBUTION_OUTCOME"
             echo 'Native Unity Editor import, EditMode/PlayMode and playback: not run on this runner.'
             if [ -n "$ARTIFACT_URL" ]; then
               echo "[Download the uploaded artifact]($ARTIFACT_URL)"

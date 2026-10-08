@@ -16,8 +16,7 @@ This record describes real edits to this repository's player prototype.
   service, preserving dependency versions and graph. Native resolution was not run.
 - Added actual-source offline C# checks, asset/meta/scene/LFS integrity checks,
   complete project packaging, source/skill/license records and eight portable skills.
-- Added official Codex Action hourly wakeup/five-hour persisted gate, isolated
-  generation/validation/publish jobs, safe branch fallback and ZIP Artifact delivery.
+- Added project validation, complete source ZIP packaging and hosted Artifact delivery.
 
 Observed validation: 12 movement and 30 resource behavior tests passed; all 9
 production C# files compiled against boundary doubles. Five PNGs decoded, all six
@@ -29,37 +28,26 @@ Real Unity engine/Editor API reference compilation was additionally exercised fo
 the movement source, with Input System still substituted. No native Unity import,
 PlayMode, physics, rendering, audio, full gameplay or platform build passed.
 
-Automation/distribution boundary checks: 27 automation tests and 6 packaging tests passed.
-Automation helpers have local tests, including real temporary Git push/conflict
-scenarios and mocked HTTP gate checks. These are not live scheduled-run evidence.
-GitHub API access from this cloud environment currently returns proxy Forbidden;
-the required domain has been added to the environment draft. Repository API-secret
-status remains unknown. User explicitly declined to provide an API Key, so paid
-autonomous development is paused by default and requires a separate explicit
-RPG_AUTONOMOUS_ENABLED=true opt-in before any future model call.
+Six packaging boundary tests passed. During iteration 1, cloud GitHub REST access
+returned proxy Forbidden; its required domain was added to the environment draft.
 
 Published game/skills commit: d2783214e752ddf35c5cf22f6332a5a3fa8ed0eb.
 Published workflow commit: 1e00d30ad2df4371ee96fa8f81b048ace9b8aaef.
 Actual first GitHub Actions run: https://github.com/jinze909/2D-RPG-Project/actions/runs/37739823460.
-The hosted project validation passed, but automation/distribution boundary tests
+The hosted project validation passed, but delivery boundary tests
 failed and ZIP creation was correctly skipped. Follow-up isolates GitHub step
 output transports in fixtures, removes fixture dependence on LFS local-transfer
 smudging, and retains failure logs/annotations. Local checks pass; the corrected
 hosted run must be observed before reporting successful CI or ZIP publication.
 
 Next: verify corrected CI and source ZIP delivery, then close collision/input/respawn
-gaps with appropriate native evidence. No paid scheduled development or next AI
-run is enabled while the user chooses not to configure independent API access.
+gaps with appropriate native evidence.
 
-Hosted CI follow-up 37740874645 again passed actual-source validation and 26/27
-automation checks, with only the LFS patch-transfer test failing. The failure was
-reproduced using a mandatory global LFS filter: Git LFS creates legitimate local
-cache hardlinks, which strict untrusted-bundle checks incorrectly also rejected
-for the native cache. The fix preinstalls hash-verified bundled objects, prevents
-network smudging during patch application and accepts only hash-verified cache
-hardlinks for read-only reuse. Untrusted bundle files still reject all hardlinks.
-The regression now includes mandatory filters and a cache hardlink, and all 27
-checks pass locally. Real hosted revalidation is required before green claims.
+Hosted CI follow-up 37740874645 again passed actual-source validation while an
+LFS resource-transfer check failed. Investigation found that legitimate Git LFS
+cache hardlinks were being rejected. This delivery failure was distinct from
+the game-source validation and was corrected before the subsequent successful
+baseline CI run recorded below.
 
 First recoverable source ZIP for a81a6ce3617abdabc44706415d7059882c9928ec was
 published on rpg-deliveries and downloaded over HTTPS: 377919 bytes, SHA-256
@@ -104,9 +92,10 @@ Five root records, a scene design/acceptance contract and persistent handoff upd
 Older rpg-by-ai source was read at b0aae3d329c5b0b200b30b1457d0f692257b9f06 for
 reference; no foreign game source/assets/save schema was silently imported.
 
-Fresh local validation: **143 tests passed, zero failures**: 14 movement, 40
+Recorded iteration 2 game/project validation: 14 movement, 40
 resource/lifecycle, 32 pure combat rules, 9 input/animation serialized contracts,
-15 scene/geometry/raster contracts, 27 automation and 6 distribution tests.
+15 scene/geometry/raster contracts and 6 distribution tests passed. These are
+historical implementation results; follow-up changes require fresh verification.
 All 14 production C# files compile against boundary doubles and separately against
 86 real installed Unity 2022.3.53f1 engine/Editor/.NET/uGUI references. The latter
 still substitutes Input System. Five PNGs decode, six LFS hashes match, 44 Unity
@@ -128,10 +117,8 @@ high-risk candidate will be delivered through an isolated draft PR, not merged
 into stable master without required evidence. See COMBAT_CLEARING acceptance list.
 
 Prior baseline hosted CI was verified: run 37741402547 validated, packaged and
-uploaded its source artifact successfully. Scheduled gate 37793582047 reported
-`api_development_paused` and skipped generation/validation/publication. This round
-does not enable paid API work or claim Gemini Spark scheduling. Current candidate
-commit, PR/CI/ZIP receipts are recorded after publication and in ARCHIVE-INFO.json.
+uploaded its source artifact successfully. Current candidate commit, PR/CI/ZIP
+receipts are recorded after publication and in ARCHIVE-INFO.json.
 
 Implementation was normally pushed as
 `f203cc1a0e4f6de50f5a8aaa73039298823cbec5`. Actual draft PR:
@@ -139,3 +126,15 @@ https://github.com/jinze909/2D-RPG-Project/pull/1, targeting master and not merg
 The final delivery-record commit follows this implementation; its exact source
 SHA is stored by the packager in ARCHIVE-INFO.json. The directly downloadable ZIP
 and current hosted CI receipts are included in the session's delivered manifest.
+
+## Project guidance and CI maintenance — 2026-10-08
+
+- Simplified root instructions, portable skill authorization, project documentation
+  and handoff records; removed unused infrastructure and its dedicated evidence.
+- Preserved game code, assets, Unity version, real resource files and ordinary
+  source-validation/ZIP CI.
+- Fresh retained checks: 14 movement, 40 resource/lifecycle, 32 pure combat rules,
+  9 input/animation contracts, 15 scene/geometry and 6 distribution checks: 116
+  passed. Native Unity acceptance remains pending as previously recorded.
+- All eight skill bundles still retain license/provenance metadata with updated
+  local adaptation hashes. PR #1 remains a draft candidate, not a merged game.

@@ -21,16 +21,16 @@ J/空格攻击，K 法力爆发，E 激活北侧信标，胜败后 R 重试，Es
 
 ```bash
 python3 tools/validate_project.py --root . --output /tmp/rpg-report.json
-python3 -m unittest discover -s tests/automation -p 'test_*.py'
+python3 -m unittest discover -s tests -p 'test_distribution.py'
 python3 tools/package_unity_project.py --root . --output /tmp/2D-RPG-Project.zip
 ```
 
 离线 C# 检查需要 Mono/mcs/csc，可使用系统 `mono-devel` 或本地 Unity 自带工具。
 PNG 验证需要 Pillow。脚本从实际工程源码编译，所有程序集写入临时目录。
 
-持续开发配置、独立 API 计费和启用证明要求见 [AUTOMATION](docs/AUTOMATION.md)。
-工作流每小时第 17 分钟检查一次持久状态，至少间隔 5 小时才启动新开发；GitHub
-排队可能延迟。必须有实际运行记录才可称自动化已启用。
+普通 CI 使用 [RPG Project Validation and ZIP](.github/workflows/rpg-project-validation.yml)，
+在代码推送或手动触发后检查工程源码、资源和打包边界，并上传完整工程 ZIP 与报告。
+以实际 Actions 运行结果和 Artifact 为交付证据；标准 runner 尚不包含授权 Unity Editor。
 
 8 个许可清晰的 Skills 随源码保存在 [.agents/skills](.agents/skills/README.md)。
 每轮先读 [AGENTS.md](AGENTS.md) 和四份根开发记录。实际工程边界与设计约束见

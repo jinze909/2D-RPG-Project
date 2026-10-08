@@ -21,24 +21,18 @@
 - International registry URLs are corrected with identical locked versions, but
   native package resolution/artifact downloads and editor import remain unverified.
 
-## Automation prerequisites and limits
+## CI, access and validation limits
 
 - GitHub Actions must allow the workflows and required write permissions. The
   default branch is master, confirmed via remote symbolic HEAD.
-- codex-action needs a repository OPENAI_API_KEY Secret with independently billed
-  API credit/model access. ChatGPT subscription credentials cannot replace it.
-  The user declined an API Key. RPG_AUTONOMOUS_ENABLED is opt-in and defaults to
-  paused; no paid AI round is scheduled. GitHub secret presence remains unknown.
 - Terminal GitHub REST requests still return proxy Forbidden. Connected GitHub
   APIs and public HTML work; use them for PR/status instead of bypassing the proxy.
 - Prior baseline abc74f5 hosted validation was confirmed successful at run
-  37741402547 with one source Artifact. A successful scheduled gate run had its
-  generate/validate/publish jobs skipped; paid AI development is still paused.
+  37741402547 with one source Artifact.
   The new candidate needs its own CI evidence and native acceptance before merge.
 - Standard Actions runners do not have the cloud's editor license, MCP connection
   or ChatGPT image-generation tools. Native/visual high-risk changes stay isolated.
-- Cron is best effort, can be delayed, and may be disabled for prolonged inactivity.
-  Missing keys, quota failures and protected branches must be reported accurately.
+- Protected branches and unavailable GitHub access must be reported accurately.
 
 ## Fixed in iteration 1
 

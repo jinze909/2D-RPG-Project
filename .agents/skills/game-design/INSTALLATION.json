@@ -20,12 +20,13 @@
     "destination": ".agents/skills/game-design",
     "notes": [
       "Replaced historical host notes with repository-relative continuous-development guidance; no host-specific registration is required.",
-      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites."
+      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites.",
+      "Updated the local project authorization wording at the user's request; upstream content and licenses remain intact."
     ],
     "files_sha256": {
       "LICENSE": "af98370a7edc0f00ec46979d049517833c9a7fa2ba74e3cf8cc42f7db557299d",
       "LICENSE-CONTENT": "deae07ece522fbca65ab33f0c18ca9630b1077a8f3f233c0af445235b3fb6fcf",
-      "SKILL.md": "95204d879b564bb7becf474dbfa20cd5cc31231e4c092f035b27244dad497037",
+      "SKILL.md": "38a4b391795575903e060caafd586cfe8257e4ca4ff8691cc160f9fee0d1f501",
       "LICENSE-CC-BY-4.0.txt": "8ae9438818c26e4873b91d8c6ad620526c011e27e125677f13031eda903f007c",
       "ATTRIBUTION.md": "1a7c84a8042d74b41f967e30051e0d61a903edee0bc741ebed53fe630dbd3680"
     }

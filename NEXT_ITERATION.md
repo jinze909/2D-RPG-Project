@@ -16,10 +16,6 @@
 5. Verify candidate CI/ZIP provenance and maintain eight skills and all five root
    records. Every new task rediscovers tools, reference code and unmerged results.
 
-Paid API development remains paused; do not request keys again, call external
-models or enable `RPG_AUTONOMOUS_ENABLED`. Gemini Spark's five-hour triggering is
-external and unverified here. Continue upon a real new task, avoiding duplicates.
-
-Earlier movement/numeric guards and workflow LFS fixes remain regression covered.
+Earlier movement/numeric guards remain regression covered.
 Pursue new confirmed problems and complete playable loops, preserving user history
 and newer accepted work. This list does not override more serious new issues.

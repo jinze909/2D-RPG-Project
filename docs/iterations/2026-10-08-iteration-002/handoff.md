@@ -29,8 +29,7 @@ This source is not the recovered full Starfall game. Older rpg-by-ai reference
 at b0aae3d329c5b0b200b30b1457d0f692257b9f06 informed foot clearance/contact/UI
 ideas; its assets, scale, OnGUI and save architecture were not transplanted.
 Preserve the blonde Viola sprite, Point/no compression/PPU30, licenses and GUIDs.
-Native-unverified scene/media changes stay isolated. No paid API automation or
-Gemini Spark schedule was enabled; a successful prior scheduled gate skipped AI jobs.
+Native-unverified scene/media changes stay isolated.
 
 ## Critical Files
 
@@ -50,7 +49,7 @@ Gemini Spark schedule was enabled; a successful prior scheduled gate skipped AI 
 Player/Health/Mana/Stats/Movement/Animations, serialized input and generated wrapper,
 Dead.anim, new clearing scene/five gameplay scripts and meta, build entry, validation
 fixtures/runners and five root records. Original SampleScene/hero bitmap/import
-files, Unity version, dependency versions and paid automation settings are preserved.
+files, Unity version and dependency versions are preserved.
 
 ## Decisions Made
 

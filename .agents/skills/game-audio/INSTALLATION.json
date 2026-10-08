@@ -20,12 +20,13 @@
     "destination": ".agents/skills/game-audio",
     "notes": [
       "Replaced historical host notes with repository-relative continuous-development guidance; no host-specific registration is required.",
-      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites."
+      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites.",
+      "Updated the local project authorization wording at the user's request; upstream content and licenses remain intact."
     ],
     "files_sha256": {
       "LICENSE": "af98370a7edc0f00ec46979d049517833c9a7fa2ba74e3cf8cc42f7db557299d",
       "LICENSE-CONTENT": "deae07ece522fbca65ab33f0c18ca9630b1077a8f3f233c0af445235b3fb6fcf",
-      "SKILL.md": "c9529db695ce551e224b08ee220407ed65482895469130e0659a3e6b39d79342",
+      "SKILL.md": "0188dd204cf49acc00bf097ffca7cd1f7b2f7b034edb3d4b6e1befe5a6070aa1",
       "LICENSE-CC-BY-4.0.txt": "8ae9438818c26e4873b91d8c6ad620526c011e27e125677f13031eda903f007c",
       "ATTRIBUTION.md": "40fab853d721211256c5f224f1caaf0997bab343a15ac5b05b658204e462c83e"
     }

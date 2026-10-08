@@ -3,13 +3,13 @@ name: "imagegen"
 description: "Generate or edit raster images when the task benefits from AI-created bitmap visuals such as photos, illustrations, textures, sprites, mockups, or transparent-background cutouts. Use when Codex should create a brand-new image, transform an existing image, or derive visual variants from references, and the output should be a bitmap asset rather than repo-native code or vector. Do not use when the task is better handled by editing existing SVG/vector/code-native assets, extending an established icon or logo system, or building the visual directly in HTML/CSS/canvas."
 ---
 
-## Repository adaptation for continuous RPG development
+## Repository adaptation for RPG development
 
 Modified on 2026-10-08 by the project development agent for portable Codex Cloud and GitHub Actions use. Earlier host notes were replaced; upstream workflow and license notices are retained. The current user instruction and repository AGENTS.md take precedence over examples.
 
 - Work from the current Git checkout root; resolve all project paths relative to that root. Target international Unity 2022.3.53f1. Preserve existing user work, GUIDs, accepted character identity, and mature features. Do not upgrade to Unity 6 merely because an example names it.
 - Read DEVELOPMENT_PROGRESS.md, KNOWN_ISSUES.md, NEXT_ITERATION.md, SKILLS_USAGE.md and relevant current design/handoff records when present. Historical reports describe their own checkpoint, not proof that their code or art exists in this checkout. Inspect actual scenes and entry points before choosing Animator or OnGUI integration.
-- The user has authorized continuous scoped development, commits, ordinary pushes to master, packaging and scheduled iteration. Apply that authority without repeating design approval requests. Preserve dirty work; isolate changes that cannot receive the required validation. Never force push.
+- The user has authorized scoped game development, commits, ordinary pushes to master and packaging. Apply that authority without repeating design approval requests. Preserve dirty work; isolate changes that cannot receive the required validation. Never force push.
 - Inspect credential names/presence only. Never dump environment values or credential files, and never write secrets, Unity license contents or tokens into prompts, logs, assets or handoffs.
 - Use the real runtime tool list. A downloaded skill is guidance, not an installed MCP connection, external service, model, Unity license, or image generation entitlement. GitHub Actions must detect its own capabilities anew.
 - Preserve command exit status and fresh evidence. Distinguish static checks, offline C# harnesses, native Unity compilation, EditMode, PlayMode, graphics/animation inspection and gameplay/audio acceptance. Do not call an unrun or zero-test suite passed.
@@ -17,7 +17,7 @@ Modified on 2026-10-08 by the project development agent for portable Codex Cloud
 
 # Image Generation Skill
 
-Portable capability check: prefer a callable built-in image_gen tool and inspect local edit targets with view_image before editing. Do not assume those tools exist in a codex-action runner. If absent, record asset generation as unavailable and continue code or asset validation work. The bundled image API CLI is an explicit opt-in fallback with separate API billing; the ChatGPT subscription does not automatically fund it. Read references/unity-character-frames.md and references/pixel-animation-production.md before planning new character frames. Respect current tool schemas over older built-in save-path or edit-path examples below.
+Portable capability check: prefer a callable built-in image_gen tool and inspect local edit targets with view_image before editing. Do not assume those tools exist in a CI runner. If absent, record asset generation as unavailable and continue code or asset validation work. The bundled image API CLI is an explicit opt-in fallback with separate API billing; the ChatGPT subscription does not automatically fund it. Read references/unity-character-frames.md and references/pixel-animation-production.md before planning new character frames. Respect current tool schemas over older built-in save-path or edit-path examples below.
 
 Generates or edits images for the current project (for example website assets, game assets, UI mockups, product mockups, wireframes, logo design, photorealistic images, or infographics).
 

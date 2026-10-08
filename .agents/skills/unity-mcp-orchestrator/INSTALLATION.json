@@ -27,11 +27,12 @@
     "destination": ".agents/skills/unity-mcp-orchestrator",
     "notes": [
       "Replaced historical host notes with repository-relative continuous-development guidance; no host-specific registration is required.",
-      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites."
+      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites.",
+      "Updated the local project authorization wording at the user's request; upstream content and licenses remain intact."
     ],
     "files_sha256": {
       "LICENSE": "6efe650c965012ac418238dcd6b9116e4130a5220717ef0dfb539dd159c4245c",
-      "SKILL.md": "5aaf9bd4fb98b1eccda6c49313b87317ccc243b3176a7232cf11c22e18264d48",
+      "SKILL.md": "ef6d5a67a02036445afac90898127864c72c2884b0cbcffcb5a470268a3230fd",
       "references/probuilder-guide.md": "2a6337a6ee9a8b5bc3aa129d0c6a967ee256f3edb54116e1c002b13a5fc1c215",
       "references/resources-reference.md": "5f39dbe1bf53bde80f5c1729a0f5ad2c956eca640084241d92aed61f0d28ddce",
       "references/tools-reference.md": "1fa6bf8c2b758b953dce45559a7bed197ac0a5392132a62c4acd2839de9675e3",
