@@ -31,7 +31,9 @@
   APIs and public HTML work; use them for PR/status instead of bypassing the proxy.
 - Cleanup baselines were freshly verified green at runs 37855895204 (master
   2e8c154) and 37855964779 (PR #1 candidate de06143), including ZIP uploads.
-  New changes need exact-head CI evidence; native acceptance remains outstanding.
+  Iteration-3 implementation 4ca71ef is green at run 37858757979 including upload;
+  final source/CI/ZIP receipts are linked from iteration-3 publication.md.
+  Native acceptance remains outstanding.
 - PR #1 must remain unmerged in this round by explicit user instruction. The
   polish branch depends on its candidate and uses an independent stacked draft PR.
 - Standard Actions runners do not have the cloud's editor license, MCP connection

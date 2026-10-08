@@ -20,7 +20,8 @@ The combat clearing is implemented on an unmerged candidate. This round verified
 both cleanup baselines and completed coherent code-native pixel art, threat/hit/
 kill feedback and edge HUD fixes. All fresh local checks pass; real API compilation
 uses actual Unity/uGUI references with substituted Input System. Native acceptance
-remains blocked by licensing. Publication receipts follow actual push/CI/ZIP work.
+remains blocked by licensing. Implementation 4ca71ef was pushed to draft PR #2;
+exact CI 37858757979 is green. Publication.md links the final delivery receipt.
 
 ## Architecture Overview
 
@@ -120,5 +121,7 @@ Git/raw downloads work. Respect configured network policy; do not bypass it.
 - docs/game/DESIGN_BASELINE.md
 - docs/skills-source-manifest.json
 - https://github.com/jinze909/2D-RPG-Project/pull/1
+- https://github.com/jinze909/2D-RPG-Project/pull/2
+- docs/iterations/2026-10-08-iteration-003/publication.md
 - https://github.com/jinze909/2D-RPG-Project/actions/runs/37855895204
 - https://github.com/jinze909/2D-RPG-Project/actions/runs/37855964779

@@ -191,3 +191,10 @@ render/layout/font acceptance, sound audition, playthrough or platform build was
 executed. Original gait/foot drift and new art/audio quality require that review.
 Publication receipts, exact final SHA, hosted CI and verified ZIP follow in the
 iteration directory / delivery manifest after actual publication.
+
+Implementation normally pushed as `4ca71ef52d4918256ddf8e824a23911c0c37de4d`.
+Actual stacked draft PR #2: https://github.com/jinze909/2D-RPG-Project/pull/2.
+Exact implementation CI run 37858757979 completed successfully, with all
+validation/packaging/upload steps and Artifact 11584913917 verified. See
+docs/iterations/2026-10-08-iteration-003/publication.md for PR #1 readiness and
+the final source/CI/ZIP receipt location. Neither draft has been merged to master.
