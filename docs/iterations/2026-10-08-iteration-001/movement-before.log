@@ -1,0 +1,27 @@
+Compiling 9 actual project C# files with boundary doubles
+Compilation passed; native Unity import/physics/rendering remain unverified
+FAIL fixed tick owns displacement: expected one MovePosition request in FixedUpdate, got 0
+FAIL render-only frames cannot move physics: render-only frames queued 4 moves
+FAIL death cancels cached input before next move: death retained displacement, velocity, or Moving=true
+FAIL disable clears physics velocity and locomotion: disable left velocity, walk animation, or input active
+FAIL reenable cannot reuse stale input: reenable produced an unrequested step
+FAIL input resources released on destroy: generated PlayerActions.Dispose was never called
+FAIL quarter-stick input retains quarter speed: quarter-stick requested 0, expected 0.02
+FAIL diagonal input never exceeds cardinal speed: diagonal request was 0, expected 0.08
+FAIL one second uses fixed ticks at 25/50/100/144 render FPS: 25 FPS issued 26 moves totaling 2
+FAIL latest render input snapshot is used by following physics tick: physics used stale direction
+FAIL release stops next physics tick and preserves facing: release moved or reset facing
+FAIL missing stats fail closed without moving or throwing: Object reference not set to an instance of an object
+RESULT 0 passed, 12 failed; real project C# with Unity boundary doubles, not native Unity.
+Unity boundary assertion: This will cause a leak and performance issues, PlayerActions.Movement.Disable() has not been called.
+Unity boundary assertion: This will cause a leak and performance issues, PlayerActions.Movement.Disable() has not been called.
+Unity boundary assertion: This will cause a leak and performance issues, PlayerActions.Movement.Disable() has not been called.
+Unity boundary assertion: This will cause a leak and performance issues, PlayerActions.Movement.Disable() has not been called.
+Unity boundary assertion: This will cause a leak and performance issues, PlayerActions.Movement.Disable() has not been called.
+Unity boundary assertion: This will cause a leak and performance issues, PlayerActions.Movement.Disable() has not been called.
+Unity boundary assertion: This will cause a leak and performance issues, PlayerActions.Movement.Disable() has not been called.
+Unity boundary assertion: This will cause a leak and performance issues, PlayerActions.Movement.Disable() has not been called.
+Unity boundary assertion: This will cause a leak and performance issues, PlayerActions.Movement.Disable() has not been called.
+Unity boundary assertion: This will cause a leak and performance issues, PlayerActions.Movement.Disable() has not been called.
+
+Runner exit code: 1

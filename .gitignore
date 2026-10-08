@@ -85,6 +85,13 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Local Python checks, handoff working copies, and generated deliveries
+__pycache__/
+*.py[cod]
+.claude/
+.artifacts/
+output/
+
 # Windows thumbnail cache files
 Thumbs.db
 Thumbs.db:encryptable

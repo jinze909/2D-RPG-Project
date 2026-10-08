@@ -1,0 +1,64 @@
+{
+  "name": "imagegen",
+  "repo": "https://github.com/openai/skills.git",
+  "commit": "49f948faa9258a0c61caceaf225e179651397431",
+  "path": "skills/.system/imagegen",
+  "kind": "builtin-image-generation",
+  "source_sha256": {
+    "SKILL.md": "826d05b806d51fa81cd650f1c0854b0a1f7fbccd1b152c588ded1797a2e7218f",
+    "LICENSE.txt": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9",
+    "scripts/image_gen.py": "eaffd8fe4cde5722d748cc35729a03438d6b8fda5e84edd46ea1ce521d41f58b",
+    "references/sample-prompts.md": "82b0e14db9eace50fca0a4e728b535ded0f3661893538e6b15b18a9a82b71d5b",
+    "references/prompting.md": "e547ff9fe8e0de8e844c70a550e0b66e0f72323307e5acd0e562678f10eb0db2",
+    "references/image-api.md": "005d8db53d05223dda473f255b3576b95dff239d6dfbf544a454110e98aa87b5",
+    "references/codex-network.md": "dd6e85cb3da3589cab0f65be15b2c8f9d19633d9490f0a4b0fef5fd243d0464c",
+    "references/cli.md": "4d471758fb136146a51848fb9cdea0c7e03dac834a426307b0b66290e850ce46",
+    "assets/imagegen.png": "95952f644064eb9e890f98d8db07216347186526e4c41ad66d3420629eb86e20",
+    "assets/imagegen-small.svg": "cff5f34f57ff60b3ee92eaedd17b15e96dd4b9e776df3e78936c9e00d42be294",
+    "agents/openai.yaml": "fafccbf7ded0d78be24c7dc1c0a2e0ac1bbf27bfd13a1fed969da643d973826a"
+  },
+  "local_changes": [
+    "Added host/project notes; for debugging, changed credential diagnostics to presence-only; imagegen has a separate local character-frame recipe.",
+    "2026-10-07: User confirmed pixel art; added sourced identity/alignment/loop production recipe and linked it from the frame recipe.",
+    "2026-10-07: Imported Starfall design reference; warned about missing checkpoint and OnGUI production integration instead of old Animator."
+  ],
+  "installed_sha256": {
+    "LICENSE.txt": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9",
+    "SKILL.md": "87ddc45e95e4d745c399cdc8bbd7919cca70f11b9a8f75b745413514617588f6",
+    "assets/imagegen-small.svg": "cff5f34f57ff60b3ee92eaedd17b15e96dd4b9e776df3e78936c9e00d42be294",
+    "assets/imagegen.png": "95952f644064eb9e890f98d8db07216347186526e4c41ad66d3420629eb86e20",
+    "scripts/image_gen.py": "eaffd8fe4cde5722d748cc35729a03438d6b8fda5e84edd46ea1ce521d41f58b",
+    "agents/openai.yaml": "fafccbf7ded0d78be24c7dc1c0a2e0ac1bbf27bfd13a1fed969da643d973826a",
+    "references/unity-character-frames.md": "28b02f659717654b6ac8d4721f28a7d3e9419e763d8f8962479cf220e3416553",
+    "references/codex-network.md": "dd6e85cb3da3589cab0f65be15b2c8f9d19633d9490f0a4b0fef5fd243d0464c",
+    "references/image-api.md": "005d8db53d05223dda473f255b3576b95dff239d6dfbf544a454110e98aa87b5",
+    "references/cli.md": "4d471758fb136146a51848fb9cdea0c7e03dac834a426307b0b66290e850ce46",
+    "references/prompting.md": "e547ff9fe8e0de8e844c70a550e0b66e0f72323307e5acd0e562678f10eb0db2",
+    "references/sample-prompts.md": "82b0e14db9eace50fca0a4e728b535ded0f3661893538e6b15b18a9a82b71d5b",
+    "references/pixel-animation-production.md": "a4d5a338e692d2cdfa1594ccbd3dbbdcb3ae4d190df2667b95512d45b93671c7"
+  },
+  "repository_adaptation": {
+    "date": "2026-10-08",
+    "destination": ".agents/skills/imagegen",
+    "notes": [
+      "Replaced historical host notes with repository-relative continuous-development guidance; no host-specific registration is required.",
+      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites."
+    ],
+    "files_sha256": {
+      "LICENSE.txt": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9",
+      "SKILL.md": "74af022624847d3dbde31f395a78da47e317f6b433d229e9dd3d35f84a67f174",
+      "agents/openai.yaml": "fafccbf7ded0d78be24c7dc1c0a2e0ac1bbf27bfd13a1fed969da643d973826a",
+      "assets/imagegen-small.svg": "cff5f34f57ff60b3ee92eaedd17b15e96dd4b9e776df3e78936c9e00d42be294",
+      "assets/imagegen.png": "95952f644064eb9e890f98d8db07216347186526e4c41ad66d3420629eb86e20",
+      "references/cli.md": "4d471758fb136146a51848fb9cdea0c7e03dac834a426307b0b66290e850ce46",
+      "references/codex-network.md": "dd6e85cb3da3589cab0f65be15b2c8f9d19633d9490f0a4b0fef5fd243d0464c",
+      "references/image-api.md": "005d8db53d05223dda473f255b3576b95dff239d6dfbf544a454110e98aa87b5",
+      "references/pixel-animation-production.md": "2831d90ba71aaa4c820a6cb95fde74d1bb80e0e4bf3306036a0a37c745fbb2e8",
+      "references/prompting.md": "e547ff9fe8e0de8e844c70a550e0b66e0f72323307e5acd0e562678f10eb0db2",
+      "references/sample-prompts.md": "82b0e14db9eace50fca0a4e728b535ded0f3661893538e6b15b18a9a82b71d5b",
+      "references/unity-character-frames.md": "0ce3ca0655947cbd4b7f9fafc402e6404e6beedc1a331c523b86a45327cb97a4",
+      "scripts/image_gen.py": "eaffd8fe4cde5722d748cc35729a03438d6b8fda5e84edd46ea1ce521d41f58b",
+      "ATTRIBUTION.md": "2081427422a4e67bce12fd8f216088612844e09ecbf48b2c79e0454eab1b206f"
+    }
+  }
+}

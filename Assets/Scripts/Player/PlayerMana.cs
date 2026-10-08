@@ -9,14 +9,14 @@ public class PlayerMana : MonoBehaviour
 
     public void UseMana(float amount)
     {
+        if (amount <= 0f || float.IsNaN(amount) || float.IsInfinity(amount))
+        {
+            return;
+        }
+
         if (stats.Mana >= amount)
         {
-            stats.Mana = Mathf.Max(stats.Mana -= amount,0f);
-            
-            if (stats.Mana <= 0f)
-            {
-                stats.Mana = 0f;
-            }
+            stats.Mana = Mathf.Max(stats.Mana - amount, 0f);
         }
     }
 }

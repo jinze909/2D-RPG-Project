@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "created_utc_date": "2026-10-08",
+  "root": ".agents/skills",
+  "runtime_discovery": "Read repository AGENTS.md, enumerate .agents/skills/*/SKILL.md, read full applicable instructions and references, then verify actual tools and licenses. Do not assume downloaded guidance activates a service.",
+  "cloud_only_skill": {
+    "name": "cloud-environment-onboarding:setup",
+    "source": "skill://plugin_connector_1p_ed5feb9070a08191b08c81c47947bc16/setup",
+    "status": "Read in Codex Cloud; not vendored because redistribution license is not provided and GitHub Actions has no environment-draft tools."
+  },
+  "skills": [
+    {
+      "name": "session-handoff",
+      "path": ".agents/skills/session-handoff/SKILL.md",
+      "source_repository": "https://github.com/softaworks/agent-toolkit",
+      "source_commit": "3027f20f3181758385a1bb8c022d4041dfb4de84",
+      "source_path": "skills/session-handoff",
+      "license": "MIT",
+      "files_sha256": {
+        "LICENSE": "4b4447da5344f8b2d3a8a19ba8366d1ac7a24d9ab4690bd04576dc772ddf8321",
+        "README.md": "4206f6812752cef0990e1b5d2324fafc89bccd6ca10340fdec5a21d83ba03e87",
+        "SKILL.md": "23d4a459d9f0e476beb356dd22d617555a11851470d38480f5726ab8f1a57d17",
+        "references/handoff-template.md": "35492711db3a903cf431fe221b82b2d79e3e18aa9d9900dfc3685ee202e3e0e9",
+        "references/resume-checklist.md": "4e76cbd8edf2e87ad94a6003dd6efdc793ec43673f15559503ad1c278756c63a",
+        "scripts/check_staleness.py": "4e27b05406918a5a2696adcef831867eebf37a851df3575a1c905a8a0f6c1db9",
+        "scripts/create_handoff.py": "566794a9bfbafc60a9f26fc95e061bfc6158fabfd1f31e4ad2025a1a37992217",
+        "scripts/list_handoffs.py": "69485ec8a25ba7795e590e96b84534d986086a769932342efb34e86a25de33f8",
+        "scripts/validate_handoff.py": "e63fed866fafb7a8055c51a19e5c576bce73bc0ec474c09c9be6962f596ba677",
+        "ATTRIBUTION.md": "026d7e5af25568dcd55e177c4b38d785ce546fed2cd950aebdfafc338d93b510",
+        "INSTALLATION.json": "bae7747869b22edd3c6fecc5d4f055f48898cc487627b094495d8a90a733d116"
+      }
+    },
+    {
+      "name": "unity-mcp-orchestrator",
+      "path": ".agents/skills/unity-mcp-orchestrator/SKILL.md",
+      "source_repository": "https://github.com/CoplayDev/unity-mcp.git",
+      "source_commit": "aa5fc638d623f56178d50329d9ad8c541a57fe66",
+      "source_path": "unity-mcp-skill",
+      "license": "MIT",
+      "files_sha256": {
+        "LICENSE": "6efe650c965012ac418238dcd6b9116e4130a5220717ef0dfb539dd159c4245c",
+        "SKILL.md": "5aaf9bd4fb98b1eccda6c49313b87317ccc243b3176a7232cf11c22e18264d48",
+        "references/probuilder-guide.md": "2a6337a6ee9a8b5bc3aa129d0c6a967ee256f3edb54116e1c002b13a5fc1c215",
+        "references/resources-reference.md": "5f39dbe1bf53bde80f5c1729a0f5ad2c956eca640084241d92aed61f0d28ddce",
+        "references/tools-reference.md": "1fa6bf8c2b758b953dce45559a7bed197ac0a5392132a62c4acd2839de9675e3",
+        "references/workflows.md": "b19818a5bbca2412fb7e78b5089b9f64c4a8bd4cee46d91058d8fb17020577a2",
+        "ATTRIBUTION.md": "8415f10dfa6e97e53bc9c90f40e13590945d60dd887b144ba3f721e25a88b3e2",
+        "INSTALLATION.json": "dd086766ea1c1d3f08a6a1f5c645f3faf1b9ec533d852abf90794083461e2a08"
+      }
+    },
+    {
+      "name": "game-design",
+      "path": ".agents/skills/game-design/SKILL.md",
+      "source_repository": "https://github.com/sickn33/antigravity-awesome-skills.git",
+      "source_commit": "5f6da1ead6f78c626d2935e20d86c5ebe36d6629",
+      "source_path": "skills/game-development/game-design",
+      "license": "CC-BY-4.0 (documentation); MIT (code)",
+      "files_sha256": {
+        "LICENSE": "af98370a7edc0f00ec46979d049517833c9a7fa2ba74e3cf8cc42f7db557299d",
+        "LICENSE-CONTENT": "deae07ece522fbca65ab33f0c18ca9630b1077a8f3f233c0af445235b3fb6fcf",
+        "SKILL.md": "95204d879b564bb7becf474dbfa20cd5cc31231e4c092f035b27244dad497037",
+        "LICENSE-CC-BY-4.0.txt": "8ae9438818c26e4873b91d8c6ad620526c011e27e125677f13031eda903f007c",
+        "ATTRIBUTION.md": "1a7c84a8042d74b41f967e30051e0d61a903edee0bc741ebed53fe630dbd3680",
+        "INSTALLATION.json": "5ba56330f3156f188dc4b20f9b2c458415b165e541892f6adf773b29daec925b"
+      }
+    },
+    {
+      "name": "game-art",
+      "path": ".agents/skills/game-art/SKILL.md",
+      "source_repository": "https://github.com/sickn33/antigravity-awesome-skills.git",
+      "source_commit": "5f6da1ead6f78c626d2935e20d86c5ebe36d6629",
+      "source_path": "skills/game-development/game-art",
+      "license": "CC-BY-4.0 (documentation); MIT (code)",
+      "files_sha256": {
+        "LICENSE": "af98370a7edc0f00ec46979d049517833c9a7fa2ba74e3cf8cc42f7db557299d",
+        "LICENSE-CONTENT": "deae07ece522fbca65ab33f0c18ca9630b1077a8f3f233c0af445235b3fb6fcf",
+        "SKILL.md": "9d1b4681e607e511002ff5d6e3c192366497acae256d287c5f31cf9df6c05bdf",
+        "LICENSE-CC-BY-4.0.txt": "8ae9438818c26e4873b91d8c6ad620526c011e27e125677f13031eda903f007c",
+        "ATTRIBUTION.md": "6596ac99ece8bef1ccd507e6d00c7b0b92596d509ced4a2c96f355bd41fd6749",
+        "INSTALLATION.json": "5ac9c020a88c13a6ebb852adcfd46a5031c3ab67856dabdfbe7bbe53380b7b43"
+      }
+    },
+    {
+      "name": "game-audio",
+      "path": ".agents/skills/game-audio/SKILL.md",
+      "source_repository": "https://github.com/sickn33/antigravity-awesome-skills.git",
+      "source_commit": "5f6da1ead6f78c626d2935e20d86c5ebe36d6629",
+      "source_path": "skills/game-development/game-audio",
+      "license": "CC-BY-4.0 (documentation); MIT (code)",
+      "files_sha256": {
+        "LICENSE": "af98370a7edc0f00ec46979d049517833c9a7fa2ba74e3cf8cc42f7db557299d",
+        "LICENSE-CONTENT": "deae07ece522fbca65ab33f0c18ca9630b1077a8f3f233c0af445235b3fb6fcf",
+        "SKILL.md": "c9529db695ce551e224b08ee220407ed65482895469130e0659a3e6b39d79342",
+        "LICENSE-CC-BY-4.0.txt": "8ae9438818c26e4873b91d8c6ad620526c011e27e125677f13031eda903f007c",
+        "ATTRIBUTION.md": "40fab853d721211256c5f224f1caaf0997bab343a15ac5b05b658204e462c83e",
+        "INSTALLATION.json": "a6ea6cf772dad9620fe764757d76a4eac63bfdb970344e215960abd17bfe68a1"
+      }
+    },
+    {
+      "name": "systematic-debugging",
+      "path": ".agents/skills/systematic-debugging/SKILL.md",
+      "source_repository": "https://github.com/obra/superpowers.git",
+      "source_commit": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "source_path": "skills/systematic-debugging",
+      "license": "MIT",
+      "files_sha256": {
+        "LICENSE": "a37e0e9697144819e1d965176ac4ae5bc3fa02d11e7812036bbcadf6dafe2400",
+        "SKILL.md": "fe8668dee23403a7686671737fde752720a5bc062f090d884f596651c3066d02",
+        "condition-based-waiting-example.ts": "40ae5ebe497fdf310200e43fe986552546d0a22837c0d39e855db1cfd33eb88e",
+        "condition-based-waiting.md": "e89fec8400d6cd50f43407cec9fab50976ba4d55d0ec2eb51c0bd68036b54c26",
+        "defense-in-depth.md": "1e175fb86fc357e58c6aebf5441e481e1b7868b4380c0456b63a17eefbd18ba7",
+        "find-polluter.sh": "dd7b8f13c4cc2a24b33ff87b18da9248f3e1c80a085c3316224f69ff0fa5c43c",
+        "root-cause-tracing.md": "75b933b6a8c40bdb2031b10f21654395b56ec6ab6bc7b018c18d3fe57aeb7fb8",
+        "ATTRIBUTION.md": "fc8290ef2522580daa6196f2660d7633ac1af62f47351eaa2c1d84c61dbd6e0b",
+        "INSTALLATION.json": "442c29c1011a876c65f2eec88fb1a843b650fce237a6bbb604d0e49f0c99cd3f"
+      }
+    },
+    {
+      "name": "verification-before-completion",
+      "path": ".agents/skills/verification-before-completion/SKILL.md",
+      "source_repository": "https://github.com/obra/superpowers.git",
+      "source_commit": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "source_path": "skills/verification-before-completion",
+      "license": "MIT",
+      "files_sha256": {
+        "LICENSE": "a37e0e9697144819e1d965176ac4ae5bc3fa02d11e7812036bbcadf6dafe2400",
+        "SKILL.md": "0a12c2f6ec54ddfcf46ae6755da8342bc3d14a1444cadbbc66799c0c234c80e0",
+        "ATTRIBUTION.md": "6327bf0e97afbb4be3628417fdc1bb7a5987410fb02371a4d00da5067c50603f",
+        "INSTALLATION.json": "0fc8b3b2b1dc69764c339045b8ce30661d200e7af645f3405ea2b5af981f8ddc"
+      }
+    },
+    {
+      "name": "imagegen",
+      "path": ".agents/skills/imagegen/SKILL.md",
+      "source_repository": "https://github.com/openai/skills.git",
+      "source_commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "source_path": "skills/.system/imagegen",
+      "license": "Apache-2.0",
+      "files_sha256": {
+        "LICENSE.txt": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9",
+        "SKILL.md": "74af022624847d3dbde31f395a78da47e317f6b433d229e9dd3d35f84a67f174",
+        "agents/openai.yaml": "fafccbf7ded0d78be24c7dc1c0a2e0ac1bbf27bfd13a1fed969da643d973826a",
+        "assets/imagegen-small.svg": "cff5f34f57ff60b3ee92eaedd17b15e96dd4b9e776df3e78936c9e00d42be294",
+        "assets/imagegen.png": "95952f644064eb9e890f98d8db07216347186526e4c41ad66d3420629eb86e20",
+        "references/cli.md": "4d471758fb136146a51848fb9cdea0c7e03dac834a426307b0b66290e850ce46",
+        "references/codex-network.md": "dd6e85cb3da3589cab0f65be15b2c8f9d19633d9490f0a4b0fef5fd243d0464c",
+        "references/image-api.md": "005d8db53d05223dda473f255b3576b95dff239d6dfbf544a454110e98aa87b5",
+        "references/pixel-animation-production.md": "2831d90ba71aaa4c820a6cb95fde74d1bb80e0e4bf3306036a0a37c745fbb2e8",
+        "references/prompting.md": "e547ff9fe8e0de8e844c70a550e0b66e0f72323307e5acd0e562678f10eb0db2",
+        "references/sample-prompts.md": "82b0e14db9eace50fca0a4e728b535ded0f3661893538e6b15b18a9a82b71d5b",
+        "references/unity-character-frames.md": "0ce3ca0655947cbd4b7f9fafc402e6404e6beedc1a331c523b86a45327cb97a4",
+        "scripts/image_gen.py": "eaffd8fe4cde5722d748cc35729a03438d6b8fda5e84edd46ea1ce521d41f58b",
+        "ATTRIBUTION.md": "2081427422a4e67bce12fd8f216088612844e09ecbf48b2c79e0454eab1b206f",
+        "INSTALLATION.json": "f56f725dabdd6bf746e4c772c82092d2c694196723b03289d3df9ba9b9029f2f"
+      }
+    }
+  ]
+}

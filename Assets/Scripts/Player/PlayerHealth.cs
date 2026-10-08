@@ -23,8 +23,13 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     }
     public void TakeDamage(float amount)
     {
-        stats.Health -= amount;
-        if(stats.Health <= 0f)
+        if (amount <= 0f || float.IsNaN(amount) || float.IsInfinity(amount) || stats.Health <= 0f)
+        {
+            return;
+        }
+
+        stats.Health = Mathf.Max(stats.Health - amount, 0f);
+        if (stats.Health == 0f)
         {
             PlayerDead();
         }

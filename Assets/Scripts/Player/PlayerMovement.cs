@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.InputSystem.DefaultInputActions;
 
+[RequireComponent(typeof(Player), typeof(PlayerAnimations), typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Config")]
@@ -22,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
         playerAnimations = GetComponent<PlayerAnimations>();
     }
 
-    // Update is called once per frame
     private void Update()
     {
         ReadMovement();
@@ -35,22 +32,54 @@ public class PlayerMovement : MonoBehaviour
 
     private void ReadMovement()
     {
-        Vector2 targetPosition = rb2D.position + moveDirection * (speed * Time.fixedDeltaTime);
-        rb2D.MovePosition(targetPosition);
+        if (!CanMove())
+        {
+            StopMovement();
+            return;
+        }
+
+        // Preserve action magnitude while limiting diagonal keyboard input.
+        moveDirection = Vector2.ClampMagnitude(actions.Movement.Move.ReadValue<Vector2>(), 1f);
         if (moveDirection == Vector2.zero)
         {
             playerAnimations.SetMoveBoolTransition(false);
             return;
         }
-        //有方向输入
+
         playerAnimations.SetMoveBoolTransition(true);
-        playerAnimations.SetMoveAnimation(moveDirection);
+        playerAnimations.SetMoveAnimation(moveDirection.normalized);
     }
 
     private void Move()
     {
-        if (player.Stats.Health <= 0) return;
-        moveDirection = actions.Movement.Move.ReadValue<Vector2>().normalized;
+        // Health can change after Update; never apply a cached move after death.
+        if (!CanMove())
+        {
+            StopMovement();
+            return;
+        }
+
+        if (moveDirection == Vector2.zero)
+        {
+            rb2D.velocity = Vector2.zero;
+            return;
+        }
+
+        Vector2 targetPosition = rb2D.position + moveDirection * (speed * Time.fixedDeltaTime);
+        rb2D.MovePosition(targetPosition);
+    }
+
+    private bool CanMove()
+    {
+        return player.Stats != null && player.Stats.Health > 0f;
+    }
+
+    private void StopMovement()
+    {
+        moveDirection = Vector2.zero;
+        rb2D.velocity = Vector2.zero;
+        // Keep MoveX/MoveY so stopping never changes the last facing direction.
+        playerAnimations.SetMoveBoolTransition(false);
     }
 
     private void OnEnable()
@@ -61,5 +90,11 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         actions.Disable();
+        StopMovement();
+    }
+
+    private void OnDestroy()
+    {
+        actions.Dispose();
     }
 }

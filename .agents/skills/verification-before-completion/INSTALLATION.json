@@ -1,0 +1,30 @@
+{
+  "name": "verification-before-completion",
+  "repo": "https://github.com/obra/superpowers.git",
+  "commit": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+  "path": "skills/verification-before-completion",
+  "kind": "guidance",
+  "source_sha256": {
+    "SKILL.md": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3"
+  },
+  "local_changes": [
+    "Added host/project notes; for debugging, changed credential diagnostics to presence-only; imagegen has a separate local character-frame recipe."
+  ],
+  "installed_sha256": {
+    "LICENSE": "a37e0e9697144819e1d965176ac4ae5bc3fa02d11e7812036bbcadf6dafe2400",
+    "SKILL.md": "0364a070471ea90e3a6c780ee9de7940bb28a35ac2a6e9b9ba68a5e349732812"
+  },
+  "repository_adaptation": {
+    "date": "2026-10-08",
+    "destination": ".agents/skills/verification-before-completion",
+    "notes": [
+      "Replaced historical host notes with repository-relative continuous-development guidance; no host-specific registration is required.",
+      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites."
+    ],
+    "files_sha256": {
+      "LICENSE": "a37e0e9697144819e1d965176ac4ae5bc3fa02d11e7812036bbcadf6dafe2400",
+      "SKILL.md": "0a12c2f6ec54ddfcf46ae6755da8342bc3d14a1444cadbbc66799c0c234c80e0",
+      "ATTRIBUTION.md": "6327bf0e97afbb4be3628417fdc1bb7a5987410fb02371a4d00da5067c50603f"
+    }
+  }
+}

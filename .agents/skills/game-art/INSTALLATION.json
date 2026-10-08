@@ -1,0 +1,33 @@
+{
+  "name": "game-art",
+  "repo": "https://github.com/sickn33/antigravity-awesome-skills.git",
+  "commit": "5f6da1ead6f78c626d2935e20d86c5ebe36d6629",
+  "path": "skills/game-development/game-art",
+  "kind": "guidance",
+  "source_sha256": {
+    "SKILL.md": "7eca1007b37b806c4b071bce1aa7e269efd0a58fe3b744fde3a8673780d285ab"
+  },
+  "local_changes": [
+    "Added host/project notes; for debugging, changed credential diagnostics to presence-only; imagegen has a separate local character-frame recipe."
+  ],
+  "installed_sha256": {
+    "LICENSE": "af98370a7edc0f00ec46979d049517833c9a7fa2ba74e3cf8cc42f7db557299d",
+    "LICENSE-CONTENT": "deae07ece522fbca65ab33f0c18ca9630b1077a8f3f233c0af445235b3fb6fcf",
+    "SKILL.md": "4a11a015b8246c4f3b7e1ddbca2ae136b205ab4ac9eb5e4a2366f9faa957c657"
+  },
+  "repository_adaptation": {
+    "date": "2026-10-08",
+    "destination": ".agents/skills/game-art",
+    "notes": [
+      "Replaced historical host notes with repository-relative continuous-development guidance; no host-specific registration is required.",
+      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites."
+    ],
+    "files_sha256": {
+      "LICENSE": "af98370a7edc0f00ec46979d049517833c9a7fa2ba74e3cf8cc42f7db557299d",
+      "LICENSE-CONTENT": "deae07ece522fbca65ab33f0c18ca9630b1077a8f3f233c0af445235b3fb6fcf",
+      "SKILL.md": "9d1b4681e607e511002ff5d6e3c192366497acae256d287c5f31cf9df6c05bdf",
+      "LICENSE-CC-BY-4.0.txt": "8ae9438818c26e4873b91d8c6ad620526c011e27e125677f13031eda903f007c",
+      "ATTRIBUTION.md": "6596ac99ece8bef1ccd507e6d00c7b0b92596d509ced4a2c96f355bd41fd6749"
+    }
+  }
+}

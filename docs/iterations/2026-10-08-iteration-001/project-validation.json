@@ -1,0 +1,58 @@
+{
+  "status": "passed",
+  "passed": true,
+  "base_sha": "26d29dbbf41e39d811f1d876ae45ddf22d11e50d",
+  "native_unity_run": false,
+  "checks": [
+    {
+      "name": "editor_version",
+      "status": "passed",
+      "editor": "2022.3.53f1"
+    },
+    {
+      "name": "asset_and_guid_integrity",
+      "status": "passed",
+      "pngs_decoded": 5,
+      "unique_meta_guids": 37,
+      "project_guid_references": 142
+    },
+    {
+      "name": "build_scenes_and_json",
+      "status": "passed",
+      "enabled_build_scenes": 1
+    },
+    {
+      "name": "lfs_sha256",
+      "status": "passed",
+      "lfs_objects_verified": 5
+    },
+    {
+      "name": "portable_skills_integrity",
+      "status": "passed",
+      "skill_bundles": 8,
+      "skill_files_verified": 65
+    },
+    {
+      "name": "player_movement_behavior",
+      "status": "passed",
+      "passed_tests": 12,
+      "failed_tests": 0,
+      "validation_kind": "real C# with Unity boundary doubles; not native Unity"
+    },
+    {
+      "name": "player_resource_behavior",
+      "status": "passed",
+      "passed_tests": 30,
+      "failed_tests": 0,
+      "validation_kind": "real C# with Unity boundary doubles; not native Unity"
+    }
+  ],
+  "not_run": [
+    "Unity import/compile",
+    "native physics",
+    "Animator rendering",
+    "EditMode/PlayMode",
+    "audio/playability",
+    "platform build"
+  ]
+}

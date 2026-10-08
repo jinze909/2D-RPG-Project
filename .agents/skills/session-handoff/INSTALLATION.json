@@ -1,0 +1,26 @@
+{
+  "source": "https://github.com/softaworks/agent-toolkit",
+  "commit": "3027f20f3181758385a1bb8c022d4041dfb4de84",
+  "source_path": "skills/session-handoff",
+  "scope": "Codex cloud environment; does not access other ChatGPT conversations",
+  "repository_adaptation": {
+    "date": "2026-10-08",
+    "destination": ".agents/skills/session-handoff",
+    "notes": [
+      "Replaced historical host notes with repository-relative continuous-development guidance; no host-specific registration is required.",
+      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites."
+    ],
+    "files_sha256": {
+      "LICENSE": "4b4447da5344f8b2d3a8a19ba8366d1ac7a24d9ab4690bd04576dc772ddf8321",
+      "README.md": "4206f6812752cef0990e1b5d2324fafc89bccd6ca10340fdec5a21d83ba03e87",
+      "SKILL.md": "23d4a459d9f0e476beb356dd22d617555a11851470d38480f5726ab8f1a57d17",
+      "references/handoff-template.md": "35492711db3a903cf431fe221b82b2d79e3e18aa9d9900dfc3685ee202e3e0e9",
+      "references/resume-checklist.md": "4e76cbd8edf2e87ad94a6003dd6efdc793ec43673f15559503ad1c278756c63a",
+      "scripts/check_staleness.py": "4e27b05406918a5a2696adcef831867eebf37a851df3575a1c905a8a0f6c1db9",
+      "scripts/create_handoff.py": "566794a9bfbafc60a9f26fc95e061bfc6158fabfd1f31e4ad2025a1a37992217",
+      "scripts/list_handoffs.py": "69485ec8a25ba7795e590e96b84534d986086a769932342efb34e86a25de33f8",
+      "scripts/validate_handoff.py": "e63fed866fafb7a8055c51a19e5c576bce73bc0ec474c09c9be6962f596ba677",
+      "ATTRIBUTION.md": "026d7e5af25568dcd55e177c4b38d785ce546fed2cd950aebdfafc338d93b510"
+    }
+  }
+}
