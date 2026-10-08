@@ -1,0 +1,304 @@
+name: RPG Continuous Improvement
+
+on:
+  schedule:
+    # Hourly wakeup plus persistent 18,000-second gate; not the irregular */5 cron.
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Run before the five-hour interval has elapsed
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        description: Inspect the gate without spending API credits or claiming a run
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rpg-continuous-improvement-master
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      actions: read
+    outputs:
+      due: ${{ steps.gate.outputs.due }}
+      reason: ${{ steps.gate.outputs.reason }}
+      base_sha: ${{ steps.gate.outputs.base_sha }}
+      next_due: ${{ steps.gate.outputs.next_due }}
+      dry_run: ${{ steps.gate.outputs.dry_run }}
+      last_candidate_branch: ${{ steps.gate.outputs.last_candidate_branch }}
+      last_candidate_sha: ${{ steps.gate.outputs.last_candidate_sha }}
+      last_published_to_master: ${{ steps.gate.outputs.last_published_to_master }}
+    steps:
+      - name: Read trusted scheduling code from master
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: master
+          persist-credentials: false
+      - name: Check only API-key presence
+        id: key
+        env:
+          KEY_PRESENT: ${{ secrets.OPENAI_API_KEY != '' }}
+        run: |
+          echo "present=$KEY_PRESENT" >> "$GITHUB_OUTPUT"
+      - name: Check interval and atomically claim the run
+        id: gate
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          OPENAI_API_KEY_PRESENT: ${{ steps.key.outputs.present }}
+          FORCE_RUN: ${{ inputs.force || false }}
+          DRY_RUN: ${{ inputs.dry_run || false }}
+        run: |
+          args=(gate --repository "$GITHUB_REPOSITORY" --branch master --state-branch rpg-automation-state)
+          if [ "$FORCE_RUN" = true ]; then args+=(--force); fi
+          if [ "$DRY_RUN" = true ]; then args+=(--dry-run); fi
+          python3 tools/automation/main.py "${args[@]}"
+      - name: Report actual scheduling state
+        env:
+          DUE: ${{ steps.gate.outputs.due }}
+          REASON: ${{ steps.gate.outputs.reason }}
+          NEXT_DUE: ${{ steps.gate.outputs.next_due }}
+          DRY_RUN: ${{ inputs.dry_run || false }}
+        run: |
+          {
+            echo '## Five-hour development gate'
+            echo "Ready: $DUE; reason: $REASON; dry run: $DRY_RUN"
+            echo "Next eligible start (UTC): $NEXT_DUE"
+            echo 'An hourly cron is a wakeup only. Missing OPENAI_API_KEY means no autonomous AI development was enabled.'
+            echo 'Scheduled starts can be delayed by GitHub; this is not a guaranteed exact-time service.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  generate:
+    needs: gate
+    if: needs.gate.outputs.due == 'true' && needs.gate.outputs.dry_run != 'true' && inputs.dry_run != true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    permissions:
+      contents: read
+    steps:
+      - name: Check out the claimed baseline and real LFS objects
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ needs.gate.outputs.base_sha }}
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: false
+      - name: Prepare trusted export code and development dependencies
+        run: |
+          mkdir -p "$RUNNER_TEMP/rpg-trusted/tools"
+          cp -a tools/automation "$RUNNER_TEMP/rpg-trusted/tools/automation"
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y mono-devel acl
+          python3 -m pip install --disable-pip-version-check Pillow==12.3.0
+      - name: Give the model a distinct unprivileged development account
+        run: |
+          sudo adduser --system --home /home/rpg-codex --shell /bin/bash --group rpg-codex
+          # Targeted traversal ACLs grant no runner, sudo or Docker group membership.
+          ancestor="$(dirname "$GITHUB_WORKSPACE")"
+          while [ "$ancestor" != / ]; do
+            sudo setfacl -m u:rpg-codex:rx "$ancestor"
+            ancestor="$(dirname "$ancestor")"
+          done
+          sudo chmod go-w "$RUNNER_TEMP"
+          sudo chmod 700 "$RUNNER_TEMP/rpg-trusted"
+          mkdir -p docs/game docs/iterations .claude/handoffs
+          for record in DEVELOPMENT_PROGRESS.md KNOWN_ISSUES.md NEXT_ITERATION.md SKILLS_USAGE.md; do
+            test -f "$record" || touch "$record"
+          done
+          sudo chown -R runner:rpg-codex "$GITHUB_WORKSPACE"
+          sudo chmod -R g+rX "$GITHUB_WORKSPACE"
+          # Keep parent entries, .git, workflows, skills and trusted tests/tools immutable.
+          sudo chmod -R g-w "$GITHUB_WORKSPACE"
+          for tree in Assets Packages ProjectSettings docs/game docs/iterations .claude/handoffs; do
+            sudo chmod -R g+rwX "$tree"
+            sudo find "$tree" -type d -exec chmod g+s {} +
+          done
+          sudo chmod g+w DEVELOPMENT_PROGRESS.md KNOWN_ISSUES.md NEXT_ITERATION.md SKILLS_USAGE.md
+      - name: Develop one complete valuable improvement with the installed RPG skills
+        id: codex
+        continue-on-error: true
+        env:
+          RPG_PREVIOUS_CANDIDATE_BRANCH: ${{ needs.gate.outputs.last_candidate_branch }}
+          RPG_PREVIOUS_CANDIDATE_SHA: ${{ needs.gate.outputs.last_candidate_sha }}
+          RPG_PREVIOUS_PUBLISHED_TO_MASTER: ${{ needs.gate.outputs.last_published_to_master }}
+        uses: openai/codex-action@bdf19a4a223ec2549a3e2274a0cf61556bc07675
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          codex-version: '0.161.0'
+          permission-profile: ':workspace'
+          codex-args: '["--search", "--ephemeral"]'
+          safety-strategy: unprivileged-user
+          codex-user: rpg-codex
+          allow-users: ''
+          allow-bots: true
+          working-directory: ${{ github.workspace }}
+          prompt-file: .github/prompts/rpg-iteration.md
+          model: ${{ vars.RPG_CODEX_MODEL || 'gpt-5.3-codex' }}
+          effort: high
+      - name: Export changed project files using the immutable baseline helper
+        env:
+          BASE_SHA: ${{ needs.gate.outputs.base_sha }}
+          GENERATION_OUTCOME: ${{ steps.codex.outcome }}
+          FINAL_MESSAGE: ${{ steps.codex.outputs['final-message'] }}
+        run: |
+          python3 "$RUNNER_TEMP/rpg-trusted/tools/automation/main.py" export --root "$GITHUB_WORKSPACE" --base-sha "$BASE_SHA" --output-dir "$RUNNER_TEMP/rpg-candidate"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'rpg-candidate'
+          (root / 'generation-status.json').write_text(json.dumps({'outcome': os.environ['GENERATION_OUTCOME']}) + '\n')
+          (root / 'final-message.txt').write_text(os.environ.get('FINAL_MESSAGE', ''))
+          PY
+      - name: Preserve the candidate for a fresh validation runner
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: rpg-candidate-${{ github.run_id }}
+          path: ${{ runner.temp }}/rpg-candidate/
+          if-no-files-found: error
+          retention-days: 30
+
+  validate:
+    needs: [gate, generate]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - name: Check out the same trusted baseline on a fresh runner
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ needs.gate.outputs.base_sha }}
+          lfs: true
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.12'
+      - name: Preserve baseline verification code before applying generated files
+        run: |
+          mkdir -p "$RUNNER_TEMP/rpg-trusted" "$RUNNER_TEMP/rpg-validation"
+          chmod 700 "$RUNNER_TEMP/rpg-trusted" "$RUNNER_TEMP/rpg-validation"
+          cp -a tools "$RUNNER_TEMP/rpg-trusted/tools"
+          if [ -d tests ]; then cp -a tests "$RUNNER_TEMP/rpg-trusted/tests"; fi
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y mono-devel acl
+          python3 -m pip install --disable-pip-version-check Pillow==12.3.0
+          sudo adduser --system --home /home/rpg-verify --shell /bin/bash --group rpg-verify
+          ancestor="$(dirname "$GITHUB_WORKSPACE")"
+          while [ "$ancestor" != / ]; do
+            sudo setfacl -m u:rpg-verify:rx "$ancestor"
+            ancestor="$(dirname "$ancestor")"
+          done
+          sudo setfacl -Rm u:rpg-verify:rX "$GITHUB_WORKSPACE"
+          cat > "$RUNNER_TEMP/rpg-trusted/mono-verify" <<'SH'
+          #!/bin/bash
+          set -euo pipefail
+          exec /usr/bin/sudo -H -u rpg-verify /usr/bin/env -i PATH=/usr/bin:/bin /usr/bin/timeout --signal=TERM 90 /usr/bin/mono "$@"
+          SH
+          chmod 700 "$RUNNER_TEMP/rpg-trusted/mono-verify"
+      - name: Download candidate bytes
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: rpg-candidate-${{ github.run_id }}
+          path: ${{ runner.temp }}/rpg-candidate
+      - name: Verify the patch hash, paths and baseline, then apply
+        env:
+          BASE_SHA: ${{ needs.gate.outputs.base_sha }}
+        run: |
+          python3 "$RUNNER_TEMP/rpg-trusted/tools/automation/main.py" apply --root "$GITHUB_WORKSPACE" --bundle-dir "$RUNNER_TEMP/rpg-candidate" --expected-base "$BASE_SHA"
+      - name: Run trusted regression checks against the changed actual C# sources
+        id: checks
+        continue-on-error: true
+        env:
+          RPG_MONO: ${{ runner.temp }}/rpg-trusted/mono-verify
+        run: |
+          python3 "$RUNNER_TEMP/rpg-trusted/tools/validate_project.py" --root "$GITHUB_WORKSPACE" --output "$RUNNER_TEMP/rpg-validation/project-report.json"
+      - name: Seal validation to the exact candidate hash
+        run: |
+          args=(seal-validation --bundle-dir "$RUNNER_TEMP/rpg-candidate" --project-report "$RUNNER_TEMP/rpg-validation/project-report.json" --output "$RUNNER_TEMP/rpg-validation/validation.json")
+          if ! python3 -c 'import json,os; from pathlib import Path; p=Path(os.environ["RUNNER_TEMP"])/"rpg-candidate/generation-status.json"; raise SystemExit(0 if json.loads(p.read_text())["outcome"] == "success" else 1)'; then
+            args+=(--generation-failed)
+          fi
+          python3 "$RUNNER_TEMP/rpg-trusted/tools/automation/main.py" "${args[@]}"
+      - name: Retain exact validation evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: rpg-validation-${{ github.run_id }}
+          path: ${{ runner.temp }}/rpg-validation/
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    needs: [gate, generate, validate]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - name: Start from a clean baseline, without persisted credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ needs.gate.outputs.base_sha }}
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: false
+      - name: Copy the trusted publisher and packager
+        run: |
+          mkdir -p "$RUNNER_TEMP/rpg-trusted"
+          cp -a tools "$RUNNER_TEMP/rpg-trusted/tools"
+      - name: Download candidate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: rpg-candidate-${{ github.run_id }}
+          path: ${{ runner.temp }}/rpg-candidate
+      - name: Download independent verification evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: rpg-validation-${{ github.run_id }}
+          path: ${{ runner.temp }}/rpg-validation
+      - name: Publish the verified patch, or preserve it on an isolated branch
+        id: publish
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 "$RUNNER_TEMP/rpg-trusted/tools/automation/main.py" publish --root "$GITHUB_WORKSPACE" --bundle-dir "$RUNNER_TEMP/rpg-candidate" --validation-file "$RUNNER_TEMP/rpg-validation/validation.json" --repository "$GITHUB_REPOSITORY" --state-branch rpg-automation-state --branch master --preserve-failed
+      - name: Package project bytes without executing generated scripts
+        run: |
+          mkdir -p "$RUNNER_TEMP/rpg-delivery"
+          python3 "$RUNNER_TEMP/rpg-trusted/tools/package_unity_project.py" --root "$GITHUB_WORKSPACE" --output "$RUNNER_TEMP/rpg-delivery/2D-RPG-Project-${GITHUB_RUN_ID}.zip"
+          cp "$RUNNER_TEMP/rpg-validation/project-report.json" "$RUNNER_TEMP/rpg-delivery/"
+          cp "$RUNNER_TEMP/rpg-validation/validation.json" "$RUNNER_TEMP/rpg-delivery/"
+      - name: Upload complete project and test evidence
+        id: artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: rpg-unity-project-${{ github.run_id }}
+          path: ${{ runner.temp }}/rpg-delivery/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Link the actual commit and downloadable project
+        env:
+          COMMIT_SHA: ${{ steps.publish.outputs.commit_sha }}
+          RESULT_BRANCH: ${{ steps.publish.outputs.branch }}
+          TO_MASTER: ${{ steps.publish.outputs.published_to_master }}
+          ARTIFACT_URL: ${{ steps.artifact.outputs.artifact-url }}
+        run: |
+          {
+            echo '## RPG iteration delivery'
+            echo "[Commit](https://github.com/$GITHUB_REPOSITORY/commit/$COMMIT_SHA)"
+            echo "Branch: $RESULT_BRANCH; automatically published to master: $TO_MASTER"
+            echo "[Download complete Unity project and verification evidence]($ARTIFACT_URL)"
+            echo 'Native Unity playback was not run. Failed or high-risk candidates are isolated, even when an inspection ZIP is available.'
+          } >> "$GITHUB_STEP_SUMMARY"
