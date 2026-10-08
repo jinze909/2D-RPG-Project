@@ -1,14 +1,21 @@
 # 2D RPG Project
 
 Unity **2022.3.53f1 国际版**的像素 RPG。当前 `master` 是可移动玩家原型，入口为
-`Assets/Scenes/SampleScene.unity`；完整 Starfall Frontier 的地图、职业、战斗和 HUD
-尚未迁入这个仓库。项目将按实际完成的闭环持续扩展，保留原有金发主角。
+`Assets/Scenes/SampleScene.unity`。本轮隔离候选增加了
+`Assets/Scenes/CombatClearing.unity`：战斗、三个敌人、任务封锁与解锁、紧凑 HUD、
+胜败重试的完整小关卡。它不是完整 Starfall Frontier，尚未通过原生试玩或合入 master。
+项目按实际完成的闭环持续扩展，保留原有金发主角。
 
 在 Unity Hub 安装指定版本，克隆后运行 `git lfs pull` 取得真实人物图片，再用
-Unity 打开工程及 SampleScene。使用 WASD/方向键移动，P 是原有伤害调试键。
-现有摇杆绑定为数字方向复合输入，尚不能承诺硬件摇杆半速移动。
+Unity 打开工程及 CombatClearing。WASD/方向键、模拟左摇杆或 D-Pad 移动；
+J/空格攻击，K 法力爆发，E 激活北侧信标，胜败后 R 重试，Esc 暂停，M 静音。
+手柄已改为直接向量绑定，但尚未执行真实设备测试。P 仅保留在 SampleScene 的
+伤害调试中；新关卡关闭该输入。玩法合同与原生验收见
+[Combat Clearing](docs/game/COMBAT_CLEARING.md)。
 
 首轮已修复固定物理更新、死亡/停用后的移动状态、输入资源释放、非法伤害和蓝耗。
+第二轮补齐独立运行时属性、重试生命周期与复活触发，并替换了原先循环转向的
+临时死亡表现；未新增或替换主角图片。
 注册源已改为 `packages.unity.com`，未升级任何锁定包版本。云端缺少有效 Unity
 许可证，尚未完成原生导入、真实碰撞、Animator 视觉或游戏试玩；离线检查不代替它们。
 

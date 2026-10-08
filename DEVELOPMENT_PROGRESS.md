@@ -66,3 +66,69 @@ published on rpg-deliveries and downloaded over HTTPS: 377919 bytes, SHA-256
 31b02d356245c6ac0015644a4508e49f7386cf2318a4e9944f42d0d4938c020a.
 It contains 188 source files plus metadata and has a clean source worktree. A
 final delivery will follow the validated workflow correction.
+
+## Iteration 2 — 2026-10-08 (America/Los_Angeles)
+
+Starting baseline: `abc74f5bef86edf06835a785a9e7205725e80e75`.
+`git fetch origin master` refreshed the stale tracking ref and exact remote master
+matched this HEAD; there were no unmerged iteration branches. Local work remained
+isolated on `rpg/iteration-002-clearing`. All six real LFS objects were restored
+after initializing the repository's local LFS filter; no pointers are deliverable.
+
+Actual development:
+
+- Actor-owned PlayerStats clones, full valid resource initialization, coherent
+  health/mana ownership, retry/revive, invalid configuration guards and cleanup.
+  Pause/retry discard cached motion. Prototype P damage is disabled in gameplay.
+- WASD preserved; arrows, analog left stick and D-pad added with generated-wrapper
+  JSON coherence. Hardware/package-native input tests remain pending.
+- Replaced the old looping four-direction death spin with one existing front pose.
+  Opposing death/revive requests are canceled; no new hero motion art was invented.
+- Implemented CombatClearing with a collidable closed perimeter, three chasing /
+  telegraphing sentinels, light strikes, mana burst, contact-window deduplication,
+  cooldowns, immunity, mana regeneration, unique rewards, a fully sealed north
+  objective region, gate unlock, beacon completion, defeat and full retry.
+- Compact adaptive Canvas HUD, actionable status/goal/cooldown/mana feedback,
+  stationary world warning/strike footprints, cached foot-Y actor depth and four
+  original quiet synthesized cues with variation/mute. Blockout art and cue mix
+  remain provisional; hero images/imports, original SampleScene and PPU30 preserved.
+- Corrected defects found during implementation: wrongly typed scene bootstrap,
+  enemy initiation outside its damage footprint, dead-player input admission,
+  narrow HUD overlap, torso-aligned physics/contact, north camera head clipping
+  and pause-disable cleanup. New loops were reviewed against actual code/assets.
+
+Main files: new `Assets/Scenes/CombatClearing.unity`, five `Gameplay/Clearing*.cs`
+with meta; Player/Health/Mana/Stats/Movement/Animations; input asset/wrapper;
+Dead.anim; build entry; actual-source/contract/API runners and regression fixtures.
+Five root records, a scene design/acceptance contract and persistent handoff updated.
+Older rpg-by-ai source was read at b0aae3d329c5b0b200b30b1457d0f692257b9f06 for
+reference; no foreign game source/assets/save schema was silently imported.
+
+Fresh local validation: **143 tests passed, zero failures**: 14 movement, 40
+resource/lifecycle, 32 pure combat rules, 9 input/animation serialized contracts,
+15 scene/geometry/raster contracts, 27 automation and 6 distribution tests.
+All 14 production C# files compile against boundary doubles and separately against
+86 real installed Unity 2022.3.53f1 engine/Editor/.NET/uGUI references. The latter
+still substitutes Input System. Five PNGs decode, six LFS hashes match, 44 Unity
+GUIDs are unique, 145 project references resolve, two enabled scenes resolve and
+all 65 files in eight licensed skill bundles match recorded hashes.
+
+Regression evidence: prior lifecycle source failed four new checks; original
+input/death data failed four contracts. Scene tests failed on the wrong bootstrap
+component before its fix. Memory mutations detect removed partition, excessive
+enemy attack range, missing late input order, torso foot anchor and cropped camera.
+The handoff's identical completed working copy validated 100/100, eight referenced
+files present and no secrets; persistent version is under this iteration directory.
+
+Native limit: a fresh empty-project license probe failed with `No valid Unity
+Editor license found`. No native import/compile, EditMode/PlayMode, collision
+simulation, rendering, audio audition, playthrough or platform build passed.
+API compilation/offline doubles/floodfill do not establish those results. This
+high-risk candidate will be delivered through an isolated draft PR, not merged
+into stable master without required evidence. See COMBAT_CLEARING acceptance list.
+
+Prior baseline hosted CI was verified: run 37741402547 validated, packaged and
+uploaded its source artifact successfully. Scheduled gate 37793582047 reported
+`api_development_paused` and skipped generation/validation/publication. This round
+does not enable paid API work or claim Gemini Spark scheduling. Current candidate
+commit, PR/CI/ZIP receipts are recorded after publication and in ARCHIVE-INFO.json.

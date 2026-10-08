@@ -1,0 +1,15 @@
+{
+  "check": "Unity API reference compilation",
+  "unity": "2022.3.53f1",
+  "source_count": 14,
+  "engine_reference_count": 86,
+  "input_system": "reviewed boundary double",
+  "ugui": "real installed package assembly",
+  "unity_engine": "real installed reference assemblies",
+  "unity_editor": "real installed reference assembly",
+  "exit_code": 0,
+  "compiler_output": "",
+  "native_import": false,
+  "native_tests": false,
+  "gameplay_executed": false
+}

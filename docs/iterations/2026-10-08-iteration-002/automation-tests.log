@@ -1,0 +1,32 @@
+test_cas_rejection_stops_without_retry_or_printing_response (test_automation.APIBoundaryTests.test_cas_rejection_stops_without_retry_or_printing_response) ... ok
+test_state_update_uses_compare_and_swap_file_sha (test_automation.APIBoundaryTests.test_state_update_uses_compare_and_swap_file_sha) ... ok
+test_unexpected_api_host_rejected_before_token_transport (test_automation.APIBoundaryTests.test_unexpected_api_host_rejected_before_token_transport) ... ok
+test_failed_generation_cannot_be_sealed_as_passed (test_automation.BundleTests.test_failed_generation_cannot_be_sealed_as_passed) ... ok
+test_lfs_patch_transfers_exact_asset_and_rejects_tampering (test_automation.BundleTests.test_lfs_patch_transfers_exact_asset_and_rejects_tampering) ... ok
+test_risk_is_recomputed_instead_of_trusting_manifest (test_automation.BundleTests.test_risk_is_recomputed_instead_of_trusting_manifest) ... ok
+test_round_trip_captures_untracked_files_without_changing_source_index (test_automation.BundleTests.test_round_trip_captures_untracked_files_without_changing_source_index) ... ok
+test_symbolic_link_cannot_be_exported (test_automation.BundleTests.test_symbolic_link_cannot_be_exported) ... ok
+test_tampered_patch_and_wrong_manifest_paths_are_rejected (test_automation.BundleTests.test_tampered_patch_and_wrong_manifest_paths_are_rejected) ... ok
+test_uncommitted_user_work_is_never_overwritten (test_automation.BundleTests.test_uncommitted_user_work_is_never_overwritten) ... ok
+test_validation_report_cannot_seal_a_different_baseline (test_automation.BundleTests.test_validation_report_cannot_seal_a_different_baseline) ... ok
+test_failed_iteration_still_waits_five_hours (test_automation.ClockAndPathTests.test_failed_iteration_still_waits_five_hours) ... ok
+test_future_and_corrupt_state_fail_closed (test_automation.ClockAndPathTests.test_future_and_corrupt_state_fail_closed) ... ok
+test_hourly_gate_does_not_reset_at_midnight (test_automation.ClockAndPathTests.test_hourly_gate_does_not_reset_at_midnight) ... ok
+test_missing_state_is_initially_due (test_automation.ClockAndPathTests.test_missing_state_is_initially_due) ... ok
+test_native_test_bypasses_and_new_modules_are_high_risk (test_automation.ClockAndPathTests.test_native_test_bypasses_and_new_modules_are_high_risk) ... ok
+test_risks_are_conservative (test_automation.ClockAndPathTests.test_risks_are_conservative) ... ok
+test_unsafe_paths_are_rejected_without_reading_contents (test_automation.ClockAndPathTests.test_unsafe_paths_are_rejected_without_reading_contents) ... ok
+test_claim_records_start_before_agent_and_preserves_prior_result (test_automation.GateTests.test_claim_records_start_before_agent_and_preserves_prior_result) ... ok
+test_dry_run_does_not_mutate_persistent_state (test_automation.GateTests.test_dry_run_does_not_mutate_persistent_state) ... ok
+test_force_cannot_bypass_corrupt_state (test_automation.GateTests.test_force_cannot_bypass_corrupt_state) ... ok
+test_key_presence_is_only_boolean_and_no_key_blocks_claim (test_automation.GateTests.test_key_presence_is_only_boolean_and_no_key_blocks_claim) ... ok
+test_covered_resource_fix_can_publish_with_actual_git (test_automation.PublishingTests.test_covered_resource_fix_can_publish_with_actual_git) ... ok
+test_failed_validation_is_preserved_without_changing_master (test_automation.PublishingTests.test_failed_validation_is_preserved_without_changing_master) ... ok
+test_unverified_visual_candidate_goes_to_branch (test_automation.PublishingTests.test_unverified_visual_candidate_goes_to_branch) ... ok
+test_user_push_is_preserved_and_candidate_goes_to_branch (test_automation.PublishingTests.test_user_push_is_preserved_and_candidate_goes_to_branch) ... ok
+test_valid_low_risk_candidate_pushes_without_force (test_automation.PublishingTests.test_valid_low_risk_candidate_pushes_without_force) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 1.505s
+
+OK

@@ -112,7 +112,7 @@ def validate(root: Path) -> dict:
             raise ValueError('The eight reviewed RPG skills must remain available')
         return {'skill_bundles': 8, 'skill_files_verified': count}
 
-    def behavior(script):
+    def behavior(script, kind='real C# with Unity boundary doubles; not native Unity'):
         # Always execute the validator's own trusted baseline runner/fixtures.
         process = subprocess.run([sys.executable, str(TRUSTED_ROOT / 'tools' / script),
                                   '--project-root', str(root)], text=True, capture_output=True)
@@ -123,7 +123,18 @@ def validate(root: Path) -> dict:
         if process.returncode or failed or not passed:
             raise ValueError(f'{script}: exit={process.returncode}, passed={passed}, failed={failed}')
         return {'passed_tests': passed, 'failed_tests': failed,
-                'validation_kind': 'real C# with Unity boundary doubles; not native Unity'}
+                'validation_kind': kind}
+
+    def contracts(script):
+        process = subprocess.run([sys.executable, str(TRUSTED_ROOT / 'tools' / script),
+                                  '--project-root', str(root)], text=True, capture_output=True)
+        output = process.stdout + process.stderr
+        print(output, end='', flush=True)
+        count = re.search(r'Ran (\d+) tests?', output)
+        if process.returncode or not count or int(count[1]) == 0:
+            raise ValueError(f'{script}: exit={process.returncode}, no verified positive test count')
+        return {'passed_tests': int(count[1]), 'failed_tests': 0,
+                'validation_kind': 'serialized data / geometry checks; not native Unity'}
 
     check('editor_version', version)
     check('asset_and_guid_integrity', assets)
@@ -132,6 +143,9 @@ def validate(root: Path) -> dict:
     check('portable_skills_integrity', skills)
     check('player_movement_behavior', lambda: behavior('run_player_checks.py'))
     check('player_resource_behavior', lambda: behavior('run_resource_checks.py'))
+    check('input_and_animation_contracts', lambda: contracts('run_input_animation_checks.py'))
+    check('clearing_combat_rules', lambda: behavior('run_gameplay_checks.py', 'actual pure C# rules; no Unity engine'))
+    check('clearing_scene_contracts', lambda: contracts('run_scene_checks.py'))
     try:
         base_sha = subprocess.check_output(['git', '-C', str(root), 'rev-parse', 'HEAD'], text=True).strip()
     except subprocess.CalledProcessError:

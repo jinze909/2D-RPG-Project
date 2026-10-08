@@ -68,7 +68,7 @@ def main() -> int:
         os.chmod(directory, 0o755)
         output = Path(directory) / "checks.exe"
         command = [*compiler, "-nologo", "-nowarn:0649,0067", "-out:" + str(output),
-                   str(tests / "UnityBoundaryStubs.cs"), str(tests / "MovementBehaviorChecks.cs"),
+                   *map(str, sorted(tests.glob("*BoundaryStubs.cs"))), str(tests / "MovementBehaviorChecks.cs"),
                    *map(str, sources)]
         print(f"Compiling {len(sources)} actual project C# files with boundary doubles", flush=True)
         compiled = subprocess.run(command, check=False)

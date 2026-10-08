@@ -6,6 +6,31 @@ working systems, save compatibility, and the original blonde hero identity.
 Use international Unity **2022.3.53f1** and pixel art; do not use China Unity or
 China package services. Do not upgrade the editor automatically.
 
+## Current architecture and iteration 2 contract
+
+- `SampleScene` retains the original player prototype. `CombatClearing` is the
+  new, isolated candidate build entry: three sentinels, combat, a sealed beacon
+  region, completion/retry and compact Canvas HUD. Its native acceptance is pending.
+- `Player` clones the authoring `PlayerStats` in Awake. Health and mana resolve
+  that same actor-owned snapshot. New session/retry fills valid maxima; the template
+  is never a save file. No persistent save, inventory or class system exists yet.
+- `Gameplay/ClearingRules` is engine-independent timing/admission/reward logic;
+  `ClearingRuntime` owns scene positions, contacts, input and the resource bridge.
+  `ClearingVisuals`, `ClearingHud` and `ClearingAudio` own presentation. Runtime
+  geometry and synthesized cues are provisional blockout content, not final art.
+- Preserve attack tokens, stationary warning footprints, once-only rewards,
+  HP-death synchronization, pause cleanup and full gate-to-boundary coverage.
+  Player attacks use independent world effects and retain the existing walk cycle.
+- Read `docs/game/COMBAT_CLEARING.md` for controls and native acceptance steps.
+  Run `tools/validate_project.py` (movement/resources/input/animation/combat/scene
+  checks), automation and distribution suites. When installed, also use
+  `tools/compile_unity_api.py`: real engine/uGUI signatures, with Input System
+  explicitly reported as a substitute if its compiled assembly is absent.
+- Native-unverified iteration 2 stays on `rpg/iteration-002-clearing` / draft PR.
+  Fetch and inspect that work before starting another loop; do not recreate it.
+  Gemini Spark triggering is external and unverified. Do not enable paid API
+  automation or invent an active five-hour Codex schedule.
+
 ## Start every iteration
 
 1. Read this file, README.md, DEVELOPMENT_PROGRESS.md, KNOWN_ISSUES.md,

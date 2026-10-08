@@ -9,24 +9,22 @@ namespace UnityEngine
 {
     public class HeaderAttribute : Attribute { public HeaderAttribute(string text) {} }
     public class SerializeField : Attribute {}
-    public class RequireComponent : Attribute { public RequireComponent(Type first, Type second, Type third) {} }
+    public class RequireComponent : Attribute { public RequireComponent(Type type) {} public RequireComponent(Type first, Type second, Type third) {} }
     public class CreateAssetMenuAttribute : Attribute { public string fileName, menuName; }
-    public class Object
+    public partial class Object
     {
         public bool Destroyed;
+        public static T Instantiate<T>(T original) where T : Object { return (T)original.MemberwiseClone(); }
         public static void Destroy(Object target) { target.Destroyed = true; }
     }
     public class ScriptableObject : Object {}
-    public class MonoBehaviour : Object
-    {
-        public Dictionary<Type, object> Components = new Dictionary<Type, object>();
-        public T GetComponent<T>() { return (T)Components[typeof(T)]; }
-    }
-    public struct Vector2
+    public class MonoBehaviour : Behaviour {}
+    public partial struct Vector2
     {
         public float x, y;
         public Vector2(float x, float y) { this.x = x; this.y = y; }
         public static Vector2 zero { get { return new Vector2(0, 0); } }
+        public static Vector2 down { get { return new Vector2(0, -1); } }
         public float sqrMagnitude { get { return x * x + y * y; } }
         public float magnitude { get { return (float)Math.Sqrt(sqrMagnitude); } }
         public Vector2 normalized { get { return magnitude > 0 ? this * (1f / magnitude) : zero; } }
@@ -44,9 +42,9 @@ namespace UnityEngine
         public override bool Equals(object value) { return value is Vector2 && this == (Vector2)value; }
         public override int GetHashCode() { return x.GetHashCode() ^ y.GetHashCode(); }
     }
-    public static class Time { public static float fixedDeltaTime = .02f; }
-    public static class Mathf { public static float Max(float a, float b) { return Math.Max(a, b); } }
-    public class Rigidbody2D
+    public static partial class Time { public static float fixedDeltaTime = .02f; }
+    public static partial class Mathf { public static float Max(float a, float b) { return Math.Max(a, b); } }
+    public partial class Rigidbody2D : Component
     {
         public Vector2 position, velocity;
         public int MoveRequests;
@@ -60,18 +58,19 @@ namespace UnityEngine
             position = target;
         }
     }
-    public class Animator
+    public partial class Animator : Behaviour
     {
         public Dictionary<int, bool> Bools = new Dictionary<int, bool>();
         public Dictionary<int, float> Floats = new Dictionary<int, float>();
         public static int StringToHash(string name) { return name.GetHashCode(); }
         public void SetTrigger(int key) {}
+        public void ResetTrigger(int key) {}
         public void SetBool(int key, bool value) { Bools[key] = value; }
         public void SetFloat(int key, float value) { Floats[key] = value; }
     }
-    public static class Input { public static bool GetKeyDown(KeyCode key) { return false; } }
-    public enum KeyCode { P }
-    public static class Debug
+    public static partial class Input { public static bool GetKeyDown(KeyCode key) { return false; } }
+    public enum KeyCode { P, J, K, E, R, M, Space, Escape }
+    public static partial class Debug
     {
         public static void Assert(bool condition, string message)
         {

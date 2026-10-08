@@ -1,0 +1,209 @@
+Compiling 14 actual project C# files with boundary doubles
+Compilation passed; native Unity import/physics/rendering remain unverified
+PASS fixed tick owns displacement
+PASS render-only frames cannot move physics
+PASS death cancels cached input before next move
+PASS disable clears physics velocity and locomotion
+PASS reenable cannot reuse stale input
+PASS input resources released on destroy
+PASS partial action value retains proportional speed
+PASS diagonal input never exceeds cardinal speed
+PASS one second uses fixed ticks at 25/50/100/144 render FPS
+PASS latest render input snapshot is used by following physics tick
+PASS release stops next physics tick and preserves facing
+PASS missing stats fail closed without moving or throwing
+PASS paused controls discard cached motion before resume
+PASS new run discards cached direction and physics velocity
+RESULT 14 passed, 0 failed; real project C# with Unity boundary doubles, not native Unity.
+Compiling 6 actual production C# files with resource boundary doubles
+Offline C# compilation passed; native Unity/Animator tests remain unverified
+PASS new player session owns full independent runtime stats
+PASS two players cannot share current resources
+PASS health and mana components consume the owner's runtime snapshot
+PASS destroying player releases its runtime clone
+PASS retry restores resources and cancels a pending defeat
+PASS defeat cancels a pending revive
+PASS invalid resource maxima reset to a bounded empty state
+PASS mana spend reports accepted and rejected transactions
+PASS missing stats reject resource operations safely
+PASS normal damage reduces health without death
+PASS exact lethal damage triggers death once
+PASS overkill clamps health to zero
+PASS subsequent hits cannot damage dead player or replay death
+PASS already dead player receives no new death trigger
+PASS revived player can die again after explicit stats reset
+PASS largest finite damage is accepted and bounded
+PASS P debug damage input remains functional
+PASS gameplay can disable the prototype debug damage key
+PASS invalid damage rejected: zero
+PASS invalid mana cost rejected: zero
+PASS invalid damage rejected: negative zero
+PASS invalid mana cost rejected: negative zero
+PASS invalid damage rejected: negative
+PASS invalid mana cost rejected: negative
+PASS invalid damage rejected: NaN
+PASS invalid mana cost rejected: NaN
+PASS invalid damage rejected: positive infinity
+PASS invalid mana cost rejected: positive infinity
+PASS invalid damage rejected: negative infinity
+PASS invalid mana cost rejected: negative infinity
+PASS invalid damage rejected: minimum finite
+PASS invalid mana cost rejected: minimum finite
+PASS invalid damage rejected: negative subnormal
+PASS invalid mana cost rejected: negative subnormal
+PASS normal mana use deducts exact cost
+PASS exact mana cost leaves zero
+PASS insufficient mana leaves balance unchanged
+PASS zero mana cannot be overspent
+PASS repeated valid costs do not overspend
+PASS largest finite mana balance can be consumed
+RESOURCE_CHECK_RESULT passed=40 failed=0
+Static input/animation contracts only: native device input, Animator playback and Game View remain unverified.
+test_all_animation_keys_resolve_to_real_sprite_subassets (rpg_input_animation_contracts.InputAnimationContracts.test_all_animation_keys_resolve_to_real_sprite_subassets) ... ok
+test_all_arrow_keys_are_a_normalized_composite (rpg_input_animation_contracts.InputAnimationContracts.test_all_arrow_keys_are_a_normalized_composite) ... ok
+test_controller_retains_immediate_death_and_revive_routes (rpg_input_animation_contracts.InputAnimationContracts.test_controller_retains_immediate_death_and_revive_routes) ... ok
+test_defeat_does_not_loop (rpg_input_animation_contracts.InputAnimationContracts.test_defeat_does_not_loop) ... ok
+test_defeat_holds_one_existing_pose (rpg_input_animation_contracts.InputAnimationContracts.test_defeat_holds_one_existing_pose) ... ok
+test_generated_wrapper_matches_input_asset (rpg_input_animation_contracts.InputAnimationContracts.test_generated_wrapper_matches_input_asset) ... ok
+test_input_identifiers_are_unique_and_move_is_vector (rpg_input_animation_contracts.InputAnimationContracts.test_input_identifiers_are_unique_and_move_is_vector) ... ok
+test_stick_is_bound_as_an_analog_vector (rpg_input_animation_contracts.InputAnimationContracts.test_stick_is_bound_as_an_analog_vector) ... ok
+test_wasd_preserved_as_a_single_composite (rpg_input_animation_contracts.InputAnimationContracts.test_wasd_preserved_as_a_single_composite) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.002s
+
+OK
+Compiling actual clearing rules and deterministic tests without Unity doubles
+PASS new run has three living sentinels and a locked objective
+PASS invalid sentinel contacts cannot mutate the run
+PASS invalid sentinel getters report a clear argument error
+PASS invalid mana and attack kinds never start actions or cooldowns
+PASS insufficient mana is rejected and an exact six mana balance is accepted
+PASS light attack does not require mana
+PASS light cooldown rejects held input until 0.45 seconds
+PASS burst cooldown rejects held input until 1.2 seconds
+PASS one contact window cannot overlap another player action
+PASS each player attack damages each sentinel at most once
+PASS a burst may hit all three distinct enemies once
+PASS expired attack contacts cannot damage enemies
+PASS wrong and superseded player tokens cannot deal damage
+PASS overkill clamps sentinel health at zero and rewards once
+PASS gate unlock requires three unique defeats
+PASS objective cannot complete before the gate is unlocked
+PASS objective completion is idempotent and stops combat
+PASS enemy damage waits for the full telegraph
+PASS enemy active phase allows at most one contact
+PASS enemy cannot begin again during telegraph or active or recovery
+PASS recovery contacts never deal damage
+PASS a long frame skips expired contact instead of delivering delayed damage
+PASS shared immunity prevents simultaneous sentinel pileup damage
+PASS immunity expires and a later fresh swing can hit
+PASS killing a winding-up sentinel cancels its hit
+PASS death cancels contacts and freezes all gameplay until retry
+PASS a dead player cannot claim an unlocked objective
+PASS retry resets progress enemies time cooldowns immunity and contact state
+PASS retry invalidates earlier attack tokens even at identical run time
+PASS invalid simulation deltas do not advance timers or enemy phases
+PASS full clear complete retry complete loop is replayable
+PASS deterministic mixed inputs preserve health progression and timer invariants
+Clearing rules: 32 passed, 0 failed; pure production C#, no Unity stubs.
+Static scene/level contracts only: no native Unity physics, rendering, UI layout or gameplay was run.
+test_actor_layers_collide_with_physical_walls_and_wall_queries (rpg_clearing_scene_contracts.ClearingSceneContracts.test_actor_layers_collide_with_physical_walls_and_wall_queries) ... ok
+test_bootstrap_is_active_and_resolves_real_player_and_camera (rpg_clearing_scene_contracts.ClearingSceneContracts.test_bootstrap_is_active_and_resolves_real_player_and_camera) ... ok
+test_combat_bridge_observes_latest_movement_input_and_facing (rpg_clearing_scene_contracts.ClearingSceneContracts.test_combat_bridge_observes_latest_movement_input_and_facing) ... ok
+test_death_is_observed_before_attack_and_objective_input (rpg_clearing_scene_contracts.ClearingSceneContracts.test_death_is_observed_before_attack_and_objective_input) ... ok
+test_enemy_attack_trigger_is_inside_its_warning_footprint (rpg_clearing_scene_contracts.ClearingSceneContracts.test_enemy_attack_trigger_is_inside_its_warning_footprint) ... ok
+test_hero_raster_feet_and_north_camera_envelope_match_play_space (rpg_clearing_scene_contracts.ClearingSceneContracts.test_hero_raster_feet_and_north_camera_envelope_match_play_space) ... ok
+test_hud_has_resolution_scaling_and_no_input_capture (rpg_clearing_scene_contracts.ClearingSceneContracts.test_hud_has_resolution_scaling_and_no_input_capture) ... ok
+test_hud_preserves_central_combat_space_at_reference_resolution (rpg_clearing_scene_contracts.ClearingSceneContracts.test_hud_preserves_central_combat_space_at_reference_resolution) ... ok
+test_original_hero_has_animation_body_and_audio_listener (rpg_clearing_scene_contracts.ClearingSceneContracts.test_original_hero_has_animation_body_and_audio_listener) ... ok
+test_outer_boundary_cannot_be_escaped_before_or_after_unlock (rpg_clearing_scene_contracts.ClearingSceneContracts.test_outer_boundary_cannot_be_escaped_before_or_after_unlock) ... ok
+test_scene_is_enabled_in_build_with_its_actual_guid (rpg_clearing_scene_contracts.ClearingSceneContracts.test_scene_is_enabled_in_build_with_its_actual_guid) ... ok
+test_seal_prevents_any_point_route_to_beacon (rpg_clearing_scene_contracts.ClearingSceneContracts.test_seal_prevents_any_point_route_to_beacon) ... ok
+test_strike_visible_rectangle_matches_directional_contact (rpg_clearing_scene_contracts.ClearingSceneContracts.test_strike_visible_rectangle_matches_directional_contact) ... ok
+test_unlocked_route_has_clearance_for_actual_player_footprint (rpg_clearing_scene_contracts.ClearingSceneContracts.test_unlocked_route_has_clearance_for_actual_player_footprint) ... ok
+test_world_root_preserves_the_geometry_coordinate_space (rpg_clearing_scene_contracts.ClearingSceneContracts.test_world_root_preserves_the_geometry_coordinate_space) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.100s
+
+OK
+{
+  "status": "passed",
+  "passed": true,
+  "base_sha": "abc74f5bef86edf06835a785a9e7205725e80e75",
+  "native_unity_run": false,
+  "checks": [
+    {
+      "name": "editor_version",
+      "status": "passed",
+      "editor": "2022.3.53f1"
+    },
+    {
+      "name": "asset_and_guid_integrity",
+      "status": "passed",
+      "pngs_decoded": 5,
+      "unique_meta_guids": 44,
+      "project_guid_references": 145
+    },
+    {
+      "name": "build_scenes_and_json",
+      "status": "passed",
+      "enabled_build_scenes": 2
+    },
+    {
+      "name": "lfs_sha256",
+      "status": "passed",
+      "lfs_objects_verified": 6
+    },
+    {
+      "name": "portable_skills_integrity",
+      "status": "passed",
+      "skill_bundles": 8,
+      "skill_files_verified": 65
+    },
+    {
+      "name": "player_movement_behavior",
+      "status": "passed",
+      "passed_tests": 14,
+      "failed_tests": 0,
+      "validation_kind": "real C# with Unity boundary doubles; not native Unity"
+    },
+    {
+      "name": "player_resource_behavior",
+      "status": "passed",
+      "passed_tests": 40,
+      "failed_tests": 0,
+      "validation_kind": "real C# with Unity boundary doubles; not native Unity"
+    },
+    {
+      "name": "input_and_animation_contracts",
+      "status": "passed",
+      "passed_tests": 9,
+      "failed_tests": 0,
+      "validation_kind": "serialized data / geometry checks; not native Unity"
+    },
+    {
+      "name": "clearing_combat_rules",
+      "status": "passed",
+      "passed_tests": 32,
+      "failed_tests": 0,
+      "validation_kind": "actual pure C# rules; no Unity engine"
+    },
+    {
+      "name": "clearing_scene_contracts",
+      "status": "passed",
+      "passed_tests": 15,
+      "failed_tests": 0,
+      "validation_kind": "serialized data / geometry checks; not native Unity"
+    }
+  ],
+  "not_run": [
+    "Unity import/compile",
+    "native physics",
+    "Animator rendering",
+    "EditMode/PlayMode",
+    "audio/playability",
+    "platform build"
+  ]
+}

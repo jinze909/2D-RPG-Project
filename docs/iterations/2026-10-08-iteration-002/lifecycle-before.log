@@ -1,0 +1,37 @@
+Compiling 6 actual production C# files with resource boundary doubles
+Offline C# compilation passed; native Unity/Animator tests remain unverified
+FAIL new player session owns full independent runtime stats: Object reference not set to an instance of an object
+FAIL two players cannot share current resources: Object reference not set to an instance of an object
+FAIL health and mana components consume the owner's runtime snapshot: Object reference not set to an instance of an object
+FAIL destroying player releases its runtime clone: Object reference not set to an instance of an object
+PASS normal damage reduces health without death
+PASS exact lethal damage triggers death once
+PASS overkill clamps health to zero
+PASS subsequent hits cannot damage dead player or replay death
+PASS already dead player receives no new death trigger
+PASS revived player can die again after explicit stats reset
+PASS largest finite damage is accepted and bounded
+PASS P debug damage input remains functional
+PASS invalid damage rejected: zero
+PASS invalid mana cost rejected: zero
+PASS invalid damage rejected: negative zero
+PASS invalid mana cost rejected: negative zero
+PASS invalid damage rejected: negative
+PASS invalid mana cost rejected: negative
+PASS invalid damage rejected: NaN
+PASS invalid mana cost rejected: NaN
+PASS invalid damage rejected: positive infinity
+PASS invalid mana cost rejected: positive infinity
+PASS invalid damage rejected: negative infinity
+PASS invalid mana cost rejected: negative infinity
+PASS invalid damage rejected: minimum finite
+PASS invalid mana cost rejected: minimum finite
+PASS invalid damage rejected: negative subnormal
+PASS invalid mana cost rejected: negative subnormal
+PASS normal mana use deducts exact cost
+PASS exact mana cost leaves zero
+PASS insufficient mana leaves balance unchanged
+PASS zero mana cannot be overspent
+PASS repeated valid costs do not overspend
+PASS largest finite mana balance can be consumed
+RESOURCE_CHECK_RESULT passed=30 failed=4

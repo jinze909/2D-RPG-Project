@@ -63,6 +63,72 @@ namespace ResourceChecks
 
         private static int Main()
         {
+            Check("new player session owns full independent runtime stats", delegate
+            {
+                var template = new PlayerStats { Health = 1f, MaxHealth = 10f, Mana = 0f, MaxMana = 20f };
+                var actor = new Player(); SetField(actor, "stats", template); Invoke(actor, "Awake");
+                if (ReferenceEquals(actor.Stats, template)) throw new Exception("session mutates the authoring asset");
+                Equal(10f, actor.Stats.Health, "new session health"); Equal(20f, actor.Stats.Mana, "new session mana");
+                actor.Stats.Health = 0f; Equal(1f, template.Health, "template health preserved");
+            });
+            Check("two players cannot share current resources", delegate
+            {
+                var template = new PlayerStats { Health = 5f, MaxHealth = 10f, MaxMana = 20f };
+                var a = new Player(); var b = new Player(); SetField(a, "stats", template); SetField(b, "stats", template);
+                Invoke(a, "Awake"); Invoke(b, "Awake"); a.Stats.Health = 2f;
+                Equal(10f, b.Stats.Health, "other player health");
+            });
+            Check("health and mana components consume the owner's runtime snapshot", delegate
+            {
+                var f = new Fixture(); var actor = new Player(); SetField(actor, "stats", f.Stats); Invoke(actor, "Awake");
+                f.Health.Components[typeof(Player)] = actor; f.Mana.Components[typeof(Player)] = actor;
+                Invoke(f.Health, "Awake"); Invoke(f.Mana, "Awake");
+                f.Health.TakeDamage(7f); f.Mana.UseMana(3f);
+                Equal(13f, actor.Stats.Health, "runtime health"); Equal(9f, actor.Stats.Mana, "runtime mana");
+                Equal(20f, f.Stats.Health, "authoring health"); Equal(12f, f.Stats.Mana, "authoring mana");
+            });
+            Check("destroying player releases its runtime clone", delegate
+            {
+                var actor = new Player(); SetField(actor, "stats", new PlayerStats { MaxHealth = 10f }); Invoke(actor, "Awake");
+                var snapshot = actor.Stats; Invoke(actor, "OnDestroy");
+                if (!snapshot.Destroyed) throw new Exception("runtime snapshot leaked");
+            });
+            Check("retry restores resources and cancels a pending defeat", delegate
+            {
+                var f = new Fixture(); var actor = new Player(); SetField(actor, "stats", f.Stats);
+                actor.Components[typeof(PlayerAnimations)] = f.Animations; Invoke(actor, "Awake");
+                actor.Stats.Health = 0f; actor.Stats.Mana = 0f; f.Animations.SetDeadAnimation();
+                actor.ResetForNewRun();
+                Equal(20f, actor.Stats.Health, "retry health"); Equal(12f, actor.Stats.Mana, "retry mana");
+                if (f.Animator.Triggers.Contains(Animator.StringToHash("Dead"))) throw new Exception("defeat trigger survived retry");
+                if (!f.Animator.Triggers.Contains(Animator.StringToHash("Revive"))) throw new Exception("revive trigger missing");
+            });
+            Check("defeat cancels a pending revive", delegate
+            {
+                var f = new Fixture(); f.Animations.SetReviveAnimation(); f.Animations.SetDeadAnimation();
+                if (f.Animator.Triggers.Contains(Animator.StringToHash("Revive"))) throw new Exception("revive survived later defeat");
+                Deaths(f, 1);
+            });
+            Check("invalid resource maxima reset to a bounded empty state", delegate
+            {
+                var stats = new PlayerStats { MaxHealth = float.NaN, MaxMana = float.PositiveInfinity };
+                stats.ResetPlayer(); Equal(0f, stats.Health, "health"); Equal(0f, stats.Mana, "mana");
+                stats.MaxHealth = -3f; stats.MaxMana = -2f; stats.ResetPlayer();
+                Equal(0f, stats.Health, "negative maximum health"); Equal(0f, stats.Mana, "negative maximum mana");
+            });
+            Check("mana spend reports accepted and rejected transactions", delegate
+            {
+                var f = new Fixture();
+                if (!f.Mana.TryUseMana(5f)) throw new Exception("valid spend rejected");
+                if (f.Mana.TryUseMana(8f)) throw new Exception("insufficient spend accepted");
+                Equal(7f, f.Stats.Mana, "mana after rejected spend");
+            });
+            Check("missing stats reject resource operations safely", delegate
+            {
+                var health = new PlayerHealth(); var mana = new PlayerMana();
+                Invoke(health, "Awake"); Invoke(mana, "Awake"); health.TakeDamage(1f);
+                if (mana.TryUseMana(1f)) throw new Exception("missing resource allowed spend");
+            });
             Check("normal damage reduces health without death", delegate
             {
                 var f = new Fixture(); f.Health.TakeDamage(7f);
@@ -103,6 +169,12 @@ namespace ResourceChecks
                 var f = new Fixture(); Input.DamageKeyPressed = true; Invoke(f.Health, "Update");
                 Input.DamageKeyPressed = false;
                 Equal(19f, f.Stats.Health, "health"); Deaths(f, 0);
+            });
+            Check("gameplay can disable the prototype debug damage key", delegate
+            {
+                var f = new Fixture(); f.Health.DebugDamageEnabled = false;
+                Input.DamageKeyPressed = true; Invoke(f.Health, "Update"); Input.DamageKeyPressed = false;
+                Equal(20f, f.Stats.Health, "health"); Deaths(f, 0);
             });
             float[] invalid = { 0f, -0f, -1f, float.NaN, float.PositiveInfinity,
                                 float.NegativeInfinity, float.MinValue, -float.Epsilon };

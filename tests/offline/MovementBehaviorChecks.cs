@@ -147,6 +147,20 @@ public static class MovementBehaviorChecks
             f.Tick("Update"); f.Tick("FixedUpdate");
             Expect(f.Body.MoveRequests == 0 && !f.Moving, "missing stats allowed movement"); f.Dispose();
         });
+        test("paused controls discard cached motion before resume", () =>
+        {
+            var f = new Fixture(); f.BeginRight(); float start = f.Body.position.x;
+            f.Movement.SetControlEnabled(false); f.Tick("Update"); f.Tick("FixedUpdate");
+            Expect(Near(start, f.Body.position.x) && !f.Moving, "paused control moved player");
+            f.Movement.SetControlEnabled(true); f.Tick("FixedUpdate");
+            Expect(Near(start, f.Body.position.x), "resume reused pre-pause input"); f.Dispose();
+        });
+        test("new run discards cached direction and physics velocity", () =>
+        {
+            var f = new Fixture(); f.BeginRight(); float start = f.Body.position.x; f.Body.velocity = new Vector2(3, 2);
+            f.Movement.ResetMovement(); f.Tick("FixedUpdate");
+            Expect(Near(start, f.Body.position.x) && f.Body.velocity == Vector2.zero && !f.Moving, "retry retained movement"); f.Dispose();
+        });
         Console.WriteLine("RESULT " + passed + " passed, " + failed + " failed; real project C# with Unity boundary doubles, not native Unity.");
         return failed == 0 ? 0 : 1;
     }

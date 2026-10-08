@@ -3,6 +3,19 @@ using UnityEngine;
 [RequireComponent(typeof(Player), typeof(PlayerAnimations), typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    public Vector2 FacingDirection { get; private set; } = Vector2.down;
+    private bool controlsEnabled = true;
+
+    public void SetControlEnabled(bool value)
+    {
+        controlsEnabled = value;
+        if (!value) StopMovement();
+    }
+
+    public void ResetMovement()
+    {
+        StopMovement();
+    }
     [Header("Config")]
     [SerializeField] private float speed;
 
@@ -47,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         playerAnimations.SetMoveBoolTransition(true);
+        FacingDirection = moveDirection.normalized;
         playerAnimations.SetMoveAnimation(moveDirection.normalized);
     }
 
@@ -71,7 +85,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CanMove()
     {
-        return player.Stats != null && player.Stats.Health > 0f;
+        return controlsEnabled && player.Stats != null && player.Stats.Health > 0f
+            && !float.IsNaN(player.Stats.Health) && !float.IsInfinity(player.Stats.Health);
     }
 
     private void StopMovement()
