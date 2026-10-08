@@ -41,12 +41,12 @@
     "date": "2026-10-08",
     "destination": ".agents/skills/imagegen",
     "notes": [
-      "Replaced historical host notes with repository-relative continuous-development guidance; no host-specific registration is required.",
+      "Updated local project authorization wording at user request.",
       "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites."
     ],
     "files_sha256": {
       "LICENSE.txt": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9",
-      "SKILL.md": "74af022624847d3dbde31f395a78da47e317f6b433d229e9dd3d35f84a67f174",
+      "SKILL.md": "5b8c3b24fb11346a5349f4e1d21093a089d87efd3b71572c5da7ccf548e74887",
       "agents/openai.yaml": "fafccbf7ded0d78be24c7dc1c0a2e0ac1bbf27bfd13a1fed969da643d973826a",
       "assets/imagegen-small.svg": "cff5f34f57ff60b3ee92eaedd17b15e96dd4b9e776df3e78936c9e00d42be294",
       "assets/imagegen.png": "95952f644064eb9e890f98d8db07216347186526e4c41ad66d3420629eb86e20",
@@ -56,7 +56,7 @@
       "references/pixel-animation-production.md": "2831d90ba71aaa4c820a6cb95fde74d1bb80e0e4bf3306036a0a37c745fbb2e8",
       "references/prompting.md": "e547ff9fe8e0de8e844c70a550e0b66e0f72323307e5acd0e562678f10eb0db2",
       "references/sample-prompts.md": "82b0e14db9eace50fca0a4e728b535ded0f3661893538e6b15b18a9a82b71d5b",
-      "references/unity-character-frames.md": "0ce3ca0655947cbd4b7f9fafc402e6404e6beedc1a331c523b86a45327cb97a4",
+      "references/unity-character-frames.md": "6a7f76e531826c8268125e342264ca4badaa706b3045d0f2af14823df149e679",
       "scripts/image_gen.py": "eaffd8fe4cde5722d748cc35729a03438d6b8fda5e84edd46ea1ce521d41f58b",
       "ATTRIBUTION.md": "2081427422a4e67bce12fd8f216088612844e09ecbf48b2c79e0454eab1b206f"
     }

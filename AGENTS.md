@@ -1,6 +1,6 @@
-# RPG autonomous development instructions
+# RPG development instructions
 
-The user authorizes autonomous game development, commits, normal pushes to master,
+The user authorizes game development, commits, normal pushes to master,
 and source-project deliveries. Preserve accepted designs, existing user work,
 working systems, save compatibility, and the original blonde hero identity.
 Use international Unity **2022.3.53f1** and pixel art; do not use China Unity or
@@ -66,7 +66,7 @@ Use meaningful tests when changing behavior. Existing actual-source checks are:
 python3 tools/run_player_checks.py --project-root .
 python3 tools/run_resource_checks.py --project-root .
 python3 tools/validate_project.py --root . --output /tmp/rpg-project-report.json
-python3 -m unittest discover -s tests/automation -p 'test_*.py'
+python3 -m unittest discover -s tests -p 'test_distribution.py'
 ```
 
 The offline C# runners use system Mono, or discover a retained Unity installation.
@@ -75,25 +75,15 @@ native physics, the real Input System, Animator rendering or Game View. Native
 import, tests and gameplay remain required when the environment supports them.
 Never reduce checks, fabricate counts or treat a zero-test run as success.
 
-## Delivery and unattended automation
+## Delivery
 
 Maintain all four root records with changes, real results, baseline/commit evidence,
 remaining issues and a next priority. Update KNOWN_ISSUES rather than repeat a
 completed fix merely to produce a commit. Complete and save tested work within the
 available time; isolate incomplete or high-risk changes with their evidence.
 
-The trusted GitHub workflow gates hourly wakeups with persisted 18,000-second
-elapsed time and a shared concurrency group. Read docs/AUTOMATION.md. A workflow
-file or mock gate test does not prove a live scheduled development cycle.
-ChatGPT subscriptions do not supply the Actions OpenAI API key or API credits.
-
-In Actions, the model has no publication credential. Workflows, trusted tools,
-tests, skills, AGENTS and .git remain immutable to its user. Only project files
-and iteration records are writable. Do not bypass these controls; propose needed
-trusted-tool changes in a record for a separately reviewed update. A fresh runner
-tests candidate sources with baseline fixtures; a separate publisher verifies the
-same patch hash and remote baseline before a normal master push. Failed or native
-unverifiable high-risk changes go to rpg/iteration-* branches.
+Keep native-unverified high-risk changes on rpg/iteration-* branches. Review
+fresh validation and the remote baseline before a normal master push.
 
 Package with the trusted tools/package_unity_project.py. Include real LFS objects,
 Assets, Packages, ProjectSettings and .meta; exclude caches and credentials.

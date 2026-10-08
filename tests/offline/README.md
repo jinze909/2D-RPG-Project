@@ -13,8 +13,8 @@ transitions, frame rendering, or gamepad hardware behavior. Native Unity tests
 and playtesting remain required for those claims.
 
 `--project-root PATH` loads candidate production scripts. The runner and
-fixtures always come from their own directory, allowing automation to copy
-reviewed baseline checks outside a candidate checkout before an AI edit.
+fixtures always come from their own directory, allowing reviewed baseline checks
+to run against a separate candidate checkout.
 New scripts are included in compilation; that alone does not establish
 behavior coverage for a new feature.
 

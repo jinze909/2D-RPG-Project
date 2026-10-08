@@ -3,13 +3,13 @@ name: systematic-debugging
 description: Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
 ---
 
-## Repository adaptation for continuous RPG development
+## Repository adaptation for RPG development
 
 Modified on 2026-10-08 by the project development agent for portable Codex Cloud and GitHub Actions use. Earlier host notes were replaced; upstream workflow and license notices are retained. The current user instruction and repository AGENTS.md take precedence over examples.
 
 - Work from the current Git checkout root; resolve all project paths relative to that root. Target international Unity 2022.3.53f1. Preserve existing user work, GUIDs, accepted character identity, and mature features. Do not upgrade to Unity 6 merely because an example names it.
 - Read DEVELOPMENT_PROGRESS.md, KNOWN_ISSUES.md, NEXT_ITERATION.md, SKILLS_USAGE.md and relevant current design/handoff records when present. Historical reports describe their own checkpoint, not proof that their code or art exists in this checkout. Inspect actual scenes and entry points before choosing Animator or OnGUI integration.
-- The user has authorized continuous scoped development, commits, ordinary pushes to master, packaging and scheduled iteration. Apply that authority without repeating design approval requests. Preserve dirty work; isolate changes that cannot receive the required validation. Never force push.
+- The user has authorized scoped game development, commits, ordinary pushes to master and packaging. Apply that authority without repeating design approval requests. Preserve dirty work; isolate changes that cannot receive the required validation. Never force push.
 - Inspect credential names/presence only. Never dump environment values or credential files, and never write secrets, Unity license contents or tokens into prompts, logs, assets or handoffs.
 - Use the real runtime tool list. A downloaded skill is guidance, not an installed MCP connection, external service, model, Unity license, or image generation entitlement. GitHub Actions must detect its own capabilities anew.
 - Preserve command exit status and fresh evidence. Distinguish static checks, offline C# harnesses, native Unity compilation, EditMode, PlayMode, graphics/animation inspection and gameplay/audio acceptance. Do not call an unrun or zero-test suite passed.

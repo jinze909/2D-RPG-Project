@@ -18,12 +18,12 @@
     "date": "2026-10-08",
     "destination": ".agents/skills/verification-before-completion",
     "notes": [
-      "Replaced historical host notes with repository-relative continuous-development guidance; no host-specific registration is required.",
+      "Updated local project authorization wording at user request.",
       "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites."
     ],
     "files_sha256": {
       "LICENSE": "a37e0e9697144819e1d965176ac4ae5bc3fa02d11e7812036bbcadf6dafe2400",
-      "SKILL.md": "0a12c2f6ec54ddfcf46ae6755da8342bc3d14a1444cadbbc66799c0c234c80e0",
+      "SKILL.md": "4c4b559312650a083d35c062678ab0ca59764f9719f91efb8c2fc66a01add55b",
       "ATTRIBUTION.md": "6327bf0e97afbb4be3628417fdc1bb7a5987410fb02371a4d00da5067c50603f"
     }
   }

@@ -19,13 +19,13 @@
     "date": "2026-10-08",
     "destination": ".agents/skills/game-art",
     "notes": [
-      "Replaced historical host notes with repository-relative continuous-development guidance; no host-specific registration is required.",
+      "Updated local project authorization wording at user request.",
       "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites."
     ],
     "files_sha256": {
       "LICENSE": "af98370a7edc0f00ec46979d049517833c9a7fa2ba74e3cf8cc42f7db557299d",
       "LICENSE-CONTENT": "deae07ece522fbca65ab33f0c18ca9630b1077a8f3f233c0af445235b3fb6fcf",
-      "SKILL.md": "9d1b4681e607e511002ff5d6e3c192366497acae256d287c5f31cf9df6c05bdf",
+      "SKILL.md": "d130ce7e737c5a8ff6ab2c6bba5b1b55fd0c833891c5bb032433203e2db02c46",
       "LICENSE-CC-BY-4.0.txt": "8ae9438818c26e4873b91d8c6ad620526c011e27e125677f13031eda903f007c",
       "ATTRIBUTION.md": "6596ac99ece8bef1ccd507e6d00c7b0b92596d509ced4a2c96f355bd41fd6749"
     }
