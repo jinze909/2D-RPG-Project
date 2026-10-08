@@ -47,3 +47,26 @@ hash-verified and portable; no skill replacements were required.
 Separate managed cloud runtime guidance was used for status/network policy. It is
 not bundled into this project. Team parallel work was reconciled through actual
 diffs and final tests; agent reports alone were not used as verification evidence.
+
+## Iteration 3 — 2026-10-08: clearing presentation polish
+
+Rediscovered and read all eight vendored SKILL.md files and necessary resume,
+root-cause, pixel-animation/character-frame and Unity test/UI references. All 65
+licensed skill files retain verified provenance/hashes; no capability was assumed
+from a skill's name. Existing runtime policy guidance was separately read.
+
+| Skill | Actual use and concrete limits |
+| --- | --- |
+| session-handoff | Reconciled master 2e8c154, PR #1 de06143, cleanup records and explicit no-merge instruction; maintained five root records, acceptance contract and persistent iteration-3 handoff. |
+| systematic-debugging | Reproduced HUD instructions in disabled states and feedback-region overlap using real Refresh/constructor values; traced accepted-contact missing confirmation; implemented focused fixes and before/after fixtures. New-FX baseline failures are not counted as existing bugs. |
+| verification-before-completion | Fresh baseline/current source checks, API-reference compilation, GUID/LFS/license evidence and actual hosted-run/job/artifact inspection. ZIP is checked after publication; no native gameplay claim. |
+| game-design | Completed one readable combat-presentation improvement: visible windup/active phase, contact/kill/reward confirmation and edge HUD; preserved timings, damage, controls, gate/retry and rejected scope expansion into unrelated systems. |
+| game-art | Authored shared 15-color PPU30 raster art in ClearingPalette/PixelArt/Visuals, with quiet ground, consistent stone/moss sentinel, wall and beacon silhouettes. Inspected exact-source pixel preview; 9 raster checks plus 10 original hero-file hashes. No native rendering acceptance. |
+| game-audio | Added two cached original synthesized contact/kill cues, suppressed multi-target/repeated spam, allowed a single later kill upgrade and stopped stale output on retry/disable. Recorded audio-call checks pass; no sound audition was possible. |
+| unity-mcp-orchestrator | Applied compatible Sprite.Create/FullRect/Point and Canvas/component/cache lifecycle guidance; checked official Unity 2022.3 Sprite bindings and compiled all 16 sources against real engine/uGUI references. Input System remains a boundary substitute; no live Unity MCP or licensed native editor. |
+| imagegen | Read image/identity/pixel workflow. This round extends the project's existing original code-native raster pipeline, so a bitmap-generation/edit call was not applicable. Built-in imagegen was available but not invoked; no Aseprite/PixelLab service was connected. |
+
+The preview is exact C# RGBA data rendered offline into a contact sheet, not imagegen
+output or a Game View screenshot. Team work was reviewed against actual production
+diffs and independently rerun evidence before delivery; instructions alone are not
+reported as completed tools/actions.

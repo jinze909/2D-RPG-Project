@@ -1,4 +1,4 @@
-# Combat Clearing — iteration 2 candidate
+# Combat Clearing — iterations 2/3 candidate
 
 Open `Assets/Scenes/CombatClearing.unity` in international Unity 2022.3.53f1.
 It is the candidate's first build scene; SampleScene remains available unchanged.
@@ -30,9 +30,21 @@ at most once; aim is fixed for that action while locomotion remains responsive.
 The blonde Viola sheets/controller and PPU30 are preserved. Death now holds an
 existing front pose instead of endlessly spinning through directions; this is a
 temporary defeat presentation, not newly authored death art. Environment and
-sentinels are original deterministic code-native blockout shapes. Four original
-synthesized cues are cached once and mixed quietly with three pitch variants.
+sentinels now share 15-color original deterministic pixel rasters at PPU30 with
+Point filtering, no mipmaps and explicit FullRect sprites. Stone courses, quiet
+moss ground, booted sentinels and carved rune/crystal shapes replace the flat
+blockout. Six original synthesized cues are cached once and mixed quietly with
+three pitch variants; accepted contact and kills now have distinct confirmation.
 Neither their sound quality nor native visual consistency has been accepted yet.
+
+The orange warning keeps the original fixed damage outline while its interior
+fills over the windup. During the active window an X motif distinguishes it from
+charging. Hit pulses last 0.12 seconds and kill pulses 0.3 seconds, including after
+the enemy body hides. All feedback is preallocated and follows simulation time:
+pause freezes it, retry/disable clears it. A multi-target action emits at most one
+hit cue and one later kill upgrade. Damage, timings, rewards and gate rules are
+unchanged. HUD messages replace the bottom-right help text rather than occupying
+the central combat band; unavailable actions/help hide on pause, defeat or victory.
 
 ## Architecture and state ownership
 

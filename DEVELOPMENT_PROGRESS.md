@@ -138,3 +138,56 @@ and current hosted CI receipts are included in the session's delivered manifest.
   passed. Native Unity acceptance remains pending as previously recorded.
 - All eight skill bundles still retain license/provenance metadata with updated
   local adaptation hashes. PR #1 remains a draft candidate, not a merged game.
+
+## Iteration 3 — 2026-10-08: clearing presentation polish
+
+Starting candidate: `de0614399bb878ae182f90f81074359824e5057b` on PR #1.
+Fresh master: `2e8c154f219256454ad981d6ebf11fdea5865d7d`. Explicitly fetched the
+candidate ref (the cloud's original fetch configuration covered master only),
+then selected `rpg/iteration-003-clearing-polish` without changing either baseline.
+PR #1 remains open/draft/unmerged; the user retains its merge decision.
+
+Cleanup regression: candidate 116 retained checks and master 48 checks passed.
+Exact hosted runs were independently read: master [37855895204](https://github.com/jinze909/2D-RPG-Project/actions/runs/37855895204)
+and candidate [37855964779](https://github.com/jinze909/2D-RPG-Project/actions/runs/37855964779)
+both succeeded through validation, ZIP packaging and artifact upload. Removed
+checks were not presented as still present. No cleanup regression was found.
+
+Selected one complete improvement: combat feedback and coherent clearing art,
+with HUD safety, rather than unrelated professions/inventory/save systems.
+
+- Added a shared 15-color palette and bounded deterministic managed raster
+  builders. Ground, stepping paths, stone walls, moss/stone sentinels, plinth,
+  crystal and rune now share PPU30/Point/no-mipmap art with explicit FullRect.
+  Native textures/sprites are generated once, cached and disposed; original ten
+  hero PNG/import files retain their exact candidate-baseline hashes.
+- Preserved fixed warning boundaries and added phase-progress fill plus an X
+  during the real contact window. Pooled hit/kill pulses survive hidden enemies
+  briefly, freeze on pause and clear on death/retry/disable. Distinct contact/kill
+  cues suppress repeated/multi-target spam; later kills can upgrade once.
+- Fixed confirmed HUD defects: unavailable beacon instructions on pause/death
+  and temporary feedback extending into the lower central combat region.
+  Feedback now replaces help in its edge slot and terminal states hide stale text.
+- Rules, damage/cooldowns, mana, rewards, scene/collider dimensions, actor anchors,
+  hero animations and gate completion conditions were not rewritten.
+
+Final local verification: 14 movement + 40 resource/lifecycle + 32 pure combat
+rules + 9 input/animation contracts + 15 scene/geometry + 14 presentation behavior
++ 9 managed-raster behavior + 1 original-hero hash check + 6 distribution = 140
+passing checks. Asset/GUID/build/package/LFS/skill integrity checks additionally
+passed. All 16 production C# files compile against 86 real installed Unity
+2022.3.53f1 engine/Editor/.NET/uGUI references; Input System is still substituted.
+
+Regression evidence: the same presentation fixture on retained de06143 yields
+2 passes / 12 failures, including reproduced HUD/action and contact-audio gaps.
+New FX expectations also fail there because those features did not exist;
+these are not described as twelve preexisting bugs. Raster mutation checks catch
+removed size guards and colors outside the exact palette. An inspected contact
+sheet contains exact production C# pixels, not a native screenshot.
+
+A fresh editor probe again fails with `No valid Unity Editor license found`.
+No native import/compile, EditMode/PlayMode, real physics, hardware input,
+render/layout/font acceptance, sound audition, playthrough or platform build was
+executed. Original gait/foot drift and new art/audio quality require that review.
+Publication receipts, exact final SHA, hosted CI and verified ZIP follow in the
+iteration directory / delivery manifest after actual publication.

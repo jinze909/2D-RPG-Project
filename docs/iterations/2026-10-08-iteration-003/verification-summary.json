@@ -1,0 +1,37 @@
+{
+  "candidate_baseline": "de0614399bb878ae182f90f81074359824e5057b",
+  "master_baseline": "2e8c154f219256454ad981d6ebf11fdea5865d7d",
+  "project_checks_passed": 134,
+  "distribution_checks_passed": 6,
+  "total_passed": 140,
+  "presentation_before": {
+    "passed": 2,
+    "failed": 12,
+    "note": "New FX expectations also fail because those features did not exist; not twelve existing bugs."
+  },
+  "presentation_after": {
+    "passed": 14,
+    "failed": 0
+  },
+  "raster_behavior_passed": 9,
+  "hero_files_hash_verified": 10,
+  "handoff_score": 100,
+  "native_editor_license_probe": "No valid Unity Editor license found. Please activate your license.",
+  "native_import": false,
+  "native_tests": false,
+  "native_playthrough": false,
+  "cleanup_hosted_runs": [
+    {
+      "head": "2e8c154f219256454ad981d6ebf11fdea5865d7d",
+      "id": 37855895204,
+      "conclusion": "success",
+      "artifact_id": 11584001730
+    },
+    {
+      "head": "de0614399bb878ae182f90f81074359824e5057b",
+      "id": 37855964779,
+      "conclusion": "success",
+      "artifact_id": 11583767157
+    }
+  ]
+}

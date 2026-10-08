@@ -1,14 +1,20 @@
 # Next iteration
 
-1. Fetch latest master and all unmerged `rpg/iteration-*` work. Read iteration 2
-   PR/records and validate the candidate before selecting work. Do not recreate
-   combat, HUD or the beacon loop merely because master predates this PR.
+1. Fetch latest master and all unmerged `rpg/iteration-*` work. Read iterations 2/3,
+   PR #1 and its stacked polish PR, exact hosted CI and verified ZIP receipts.
+   PR #1 merge remains the user's decision. Do not recreate combat, HUD, raster
+   art or the beacon loop merely because master predates those candidates.
 2. Perform `docs/game/COMBAT_CLEARING.md` native acceptance with licensed
    international Unity 2022.3.53f1: import/compile, EditMode/PlayMode, collisions,
-   gate, input/attack order, death/retry/pause, HUD screenshots and cue audition.
+   gate, input/attack order, death/retry/pause, HUD screenshots and all six cues.
+   Check FullRect sprite creation, pixel scale, sentinel feet/health bar layering,
+   warning-fill/X readability, hit/kill durations, multi-target sound deduplication,
+   stale sounds on retry and edge-slot messages in narrow/portrait windows.
    Keep high-risk work isolated until native evidence justifies merging.
 3. Resolve real visual defects: walking root/foot alignment, gait at partial
-   speed, coherent hero hurt/death/attack beats and readable enemy art. Preserve
+   speed, coherent hero hurt/death/attack beats and native enemy-art readability.
+   The new stone/moss raster art is already implemented; improve only confirmed
+   defects rather than replacing it just to increase modification count. Preserve
    blonde identity, PPU30 and accepted frames; rejected ranger arrows stay rejected.
 4. After accepting this loop, add one coherent extension: exploration/interaction
    with checkpoint or meaningful persistent rewards. Define save/version/reset

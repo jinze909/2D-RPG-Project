@@ -6,7 +6,7 @@ working systems, save compatibility, and the original blonde hero identity.
 Use international Unity **2022.3.53f1** and pixel art; do not use China Unity or
 China package services. Preserve the specified editor version.
 
-## Current architecture and iteration 2 contract
+## Current architecture and clearing contract
 
 - `SampleScene` retains the original player prototype. `CombatClearing` is the
   new, isolated candidate build entry: three sentinels, combat, a sealed beacon
@@ -17,17 +17,27 @@ China package services. Preserve the specified editor version.
 - `Gameplay/ClearingRules` is engine-independent timing/admission/reward logic;
   `ClearingRuntime` owns scene positions, contacts, input and the resource bridge.
   `ClearingVisuals`, `ClearingHud` and `ClearingAudio` own presentation. Runtime
-  geometry and synthesized cues are provisional blockout content, not final art.
+  art uses cached PPU30/Point code-native rasters and a shared 15-color palette.
+  New stone/moss sentinels, walls and beacon are an integrated art candidate;
+  native visual acceptance and synthesized cue audition remain pending.
 - Preserve attack tokens, stationary warning footprints, once-only rewards,
   HP-death synchronization, pause cleanup and full gate-to-boundary coverage.
   Player attacks use independent world effects and retain the existing walk cycle.
 - Read `docs/game/COMBAT_CLEARING.md` for controls and native acceptance steps.
-  Run `tools/validate_project.py` (movement/resources/input/animation/combat/scene
-  checks) and the distribution suite. When installed, also use
+  Run `tools/validate_project.py` (movement/resources/input/animation/combat/scene,
+  actual presentation behavior and managed-raster checks) and the distribution
+  suite. When installed, also use
   `tools/compile_unity_api.py`: real engine/uGUI signatures, with Input System
   explicitly reported as a substitute if its compiled assembly is absent.
 - Native-unverified iteration 2 stays on `rpg/iteration-002-clearing` / draft PR.
-  Fetch and inspect that work before starting another loop; do not recreate it.
+  Iteration 3 is stacked on that candidate at `rpg/iteration-003-clearing-polish`.
+  Fetch both before selecting work; do not recreate them. The user explicitly
+  reserved the merge decision for PR #1; do not merge it without new authorization.
+- Warning progress/X motifs remain inside the original saved contact outline.
+  Pooled hit/kill feedback uses simulation time and resets on retry/disable.
+  HUD messages share the help edge slot and hide unavailable actions on pause/death.
+  Preserve these contracts and original hero hashes; do not change hit geometry
+  merely to align with decoration or claim native rendering from offline rasters.
 
 ## Start every iteration
 
@@ -88,6 +98,8 @@ Use meaningful tests when changing behavior. Existing actual-source checks are:
 ```bash
 python3 tools/run_player_checks.py --project-root .
 python3 tools/run_resource_checks.py --project-root .
+python3 tools/run_presentation_checks.py --project-root .
+python3 tools/run_art_checks.py --project-root .
 python3 tools/validate_project.py --root . --output /tmp/rpg-project-report.json
 python3 -m unittest discover -s tests -p 'test_distribution.py'
 ```

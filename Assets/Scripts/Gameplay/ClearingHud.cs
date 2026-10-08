@@ -34,9 +34,11 @@ namespace Rpg.Gameplay
             skills = Label("Combat keys", new Vector2(0, 0), new Vector2(14, 12), new Vector2(400, 43), TextAnchor.LowerLeft, 15);
             help = Label("Movement keys", new Vector2(1, 0), new Vector2(-14, 12), new Vector2(350, 43), TextAnchor.LowerRight, 14);
             help.text = "WASD / arrows: move   E: beacon\nEsc: pause   M: mute   R: retry after run";
-            message = Label("Feedback", new Vector2(.5f, 0), new Vector2(0, 63), new Vector2(610, 23), TextAnchor.MiddleCenter, 16);
+            // Feedback replaces the secondary help column; never place a persistent
+            // message across the south combat lane or draw two labels in this slot.
+            message = Label("Feedback", new Vector2(1, 0), new Vector2(-14, 12), new Vector2(350, 43), TextAnchor.LowerRight, 14);
             terminal = Label("Run result", new Vector2(.5f, .5f), Vector2.zero, new Vector2(600, 135), TextAnchor.MiddleCenter, 24);
-            terminal.color = new Color(1f, .91f, .69f);
+            terminal.color = ClearingPalette.Cream;
         }
 
         private Text Label(string name, Vector2 anchor, Vector2 offset, Vector2 size, TextAnchor alignment, int fontSize)
@@ -52,12 +54,12 @@ namespace Rpg.Gameplay
             label.font = font;
             label.fontSize = fontSize;
             label.alignment = alignment;
-            label.color = new Color(.95f, .97f, .87f);
+            label.color = ClearingPalette.Cream;
             label.raycastTarget = false;
             label.horizontalOverflow = HorizontalWrapMode.Wrap;
             label.verticalOverflow = VerticalWrapMode.Truncate;
             Outline outline = item.GetComponent<Outline>();
-            outline.effectColor = new Color(.05f, .09f, .09f, .95f);
+            outline.effectColor = ClearingPalette.Ink;
             outline.effectDistance = new Vector2(1, -1);
             return label;
         }
@@ -73,8 +75,7 @@ namespace Rpg.Gameplay
             objective.rectTransform.sizeDelta = new Vector2(Mathf.Min(350f, column), 67f);
             skills.rectTransform.sizeDelta = new Vector2(Mathf.Min(400f, column), narrow ? 66f : 43f);
             help.rectTransform.sizeDelta = new Vector2(Mathf.Min(350f, column), narrow ? 66f : 43f);
-            message.rectTransform.sizeDelta = new Vector2(Mathf.Max(100f, Mathf.Min(610f, width - 28f)), 43f);
-            message.rectTransform.anchoredPosition = new Vector2(0f, narrow ? 85f : 63f);
+            message.rectTransform.sizeDelta = help.rectTransform.sizeDelta;
             terminal.rectTransform.sizeDelta = new Vector2(Mathf.Max(100f, Mathf.Min(600f, width - 28f)), 160f);
             resources.text = string.Format("HP {0:0.#}/{1:0.#}    MP {2:0.#}/{3:0.#}", stats.Health, stats.MaxHealth, stats.Mana, stats.MaxMana);
             objective.text = run.IsComplete ? "CLEARING RESTORED" : run.GateUnlocked ? "Gate open: approach the north beacon" :
@@ -83,8 +84,12 @@ namespace Rpg.Gameplay
             string burst = run.BurstCooldownRemaining > 0 ? run.BurstCooldownRemaining.ToString("0.0") + "s" :
                 stats.Mana < ClearingRun.BurstManaCost ? "need MP" : "ready";
             if (run.PlayerAttackActive) light = burst = "striking";
-            skills.text = "J / Space: light [" + light + "]\nK: mana burst (6 MP) [" + burst + "]";
-            message.text = nearBeacon && run.GateUnlocked && !run.IsComplete ? "E - restore the beacon" : feedback;
+            bool playable = !paused && !run.IsDead && !run.IsComplete;
+            skills.text = playable ? "J / Space: light [" + light + "]\nK: burst 6 MP [" + burst + "]" : "";
+            message.text = !playable ? "" : nearBeacon && run.GateUnlocked ? "E - restore the beacon" : feedback;
+            help.text = !playable || !string.IsNullOrEmpty(message.text) ? "" : narrow ?
+                "Move: WASD / arrows\nE: beacon   Esc: pause\nM: mute   R: retry after run" :
+                "WASD / arrows: move   E: beacon\nEsc: pause   M: mute   R: retry after run";
             terminal.text = paused ? "PAUSED\nEsc - resume" : run.IsDead ? "DEFEATED\nR - retry the clearing" :
                 run.IsComplete ? "BEACON RESTORED\n" + run.RewardCoins + " coins earned this run\nR - play again" : "";
             if (muted && !paused && !run.IsDead && !run.IsComplete) objective.text += "\nSound muted";

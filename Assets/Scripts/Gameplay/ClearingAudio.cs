@@ -11,6 +11,8 @@ namespace Rpg.Gameplay
         private readonly AudioClip burst;
         private readonly AudioClip hurt;
         private readonly AudioClip unlock;
+        private readonly AudioClip impact;
+        private readonly AudioClip defeat;
         private int variation;
         internal bool Muted { get { return source.mute; } }
 
@@ -24,6 +26,8 @@ namespace Rpg.Gameplay
             burst = Tone("Clearing burst", .17f, 330f, 880f);
             hurt = Tone("Clearing hurt", .12f, 160f, 85f);
             unlock = Tone("Clearing reward", .32f, 440f, 880f);
+            impact = Tone("Clearing contact", .06f, 260f, 95f);
+            defeat = Tone("Clearing sentinel defeat", .18f, 220f, 520f);
         }
 
         private static AudioClip Tone(string name, float seconds, float start, float end)
@@ -47,9 +51,15 @@ namespace Rpg.Gameplay
         internal void Attack(bool isBurst) { Play(isBurst ? burst : light); }
         internal void Hurt() { Play(hurt); }
         internal void Reward() { Play(unlock); }
-        private void Play(AudioClip clip)
+        internal void Hit(bool isKill, bool isBurst) { Play(isKill ? defeat : impact, isBurst ? 1.12f : 1f); }
+        internal void ResetFeedback()
         {
-            source.pitch = 1f + ((variation++ % 3) - 1) * .025f;
+            source.Stop();
+            variation = 0;
+        }
+        private void Play(AudioClip clip, float basePitch = 1f)
+        {
+            source.pitch = basePitch + ((variation++ % 3) - 1) * .025f;
             source.PlayOneShot(clip);
         }
 
@@ -59,6 +69,8 @@ namespace Rpg.Gameplay
             Object.Destroy(burst);
             Object.Destroy(hurt);
             Object.Destroy(unlock);
+            Object.Destroy(impact);
+            Object.Destroy(defeat);
         }
     }
 }
