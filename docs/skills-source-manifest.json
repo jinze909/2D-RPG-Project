@@ -148,10 +148,10 @@
         "references/pixel-animation-production.md": "2831d90ba71aaa4c820a6cb95fde74d1bb80e0e4bf3306036a0a37c745fbb2e8",
         "references/prompting.md": "e547ff9fe8e0de8e844c70a550e0b66e0f72323307e5acd0e562678f10eb0db2",
         "references/sample-prompts.md": "82b0e14db9eace50fca0a4e728b535ded0f3661893538e6b15b18a9a82b71d5b",
-        "references/unity-character-frames.md": "0ce3ca0655947cbd4b7f9fafc402e6404e6beedc1a331c523b86a45327cb97a4",
+        "references/unity-character-frames.md": "6a7f76e531826c8268125e342264ca4badaa706b3045d0f2af14823df149e679",
         "scripts/image_gen.py": "eaffd8fe4cde5722d748cc35729a03438d6b8fda5e84edd46ea1ce521d41f58b",
         "ATTRIBUTION.md": "2081427422a4e67bce12fd8f216088612844e09ecbf48b2c79e0454eab1b206f",
-        "INSTALLATION.json": "81169a8a3f12d1280a9412fc037c52f09bb213ca15872be59b5b02e4f1a5e5c5"
+        "INSTALLATION.json": "b0bba0144e2a0904019691f1ed8509c5fa74e35d4ccd9ad2f98b2e5c8cf532d9"
       }
     }
   ]

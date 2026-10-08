@@ -1,7 +1,7 @@
 # Design baseline and source boundary
 
 The active target is jinze909/2D-RPG-Project master, international Unity
-2022.3.53f1, 2D pixel art. The user now authorizes autonomous quality improvements,
+2022.3.53f1, 2D pixel art. The user authorizes quality improvements,
 coherent new content and refactoring. Preserve explicit accepted core design and
 working functionality; quality, playability and stability outweigh feature count.
 
