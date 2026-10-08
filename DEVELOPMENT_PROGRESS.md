@@ -132,3 +132,10 @@ uploaded its source artifact successfully. Scheduled gate 37793582047 reported
 `api_development_paused` and skipped generation/validation/publication. This round
 does not enable paid API work or claim Gemini Spark scheduling. Current candidate
 commit, PR/CI/ZIP receipts are recorded after publication and in ARCHIVE-INFO.json.
+
+Implementation was normally pushed as
+`f203cc1a0e4f6de50f5a8aaa73039298823cbec5`. Actual draft PR:
+https://github.com/jinze909/2D-RPG-Project/pull/1, targeting master and not merged.
+The final delivery-record commit follows this implementation; its exact source
+SHA is stored by the packager in ARCHIVE-INFO.json. The directly downloadable ZIP
+and current hosted CI receipts are included in the session's delivered manifest.

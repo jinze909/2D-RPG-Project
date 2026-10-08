@@ -10,6 +10,10 @@ bounded combat/reward/beacon/retry loop. Source and offline verification are rea
 licensed native import/play/visual/audio acceptance is pending. Publication receipts
 and the final ZIP commit/digest are recorded in the delivered manifest/final summary.
 
+Published implementation: f203cc1a0e4f6de50f5a8aaa73039298823cbec5.
+Actual draft PR https://github.com/jinze909/2D-RPG-Project/pull/1 targets master;
+it is not merged. Fetch that PR branch before selecting another task.
+
 ## Architecture Overview
 
 Player owns a runtime clone of the authoring PlayerStats. Health and mana share

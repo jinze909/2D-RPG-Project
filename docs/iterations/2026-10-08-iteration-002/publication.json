@@ -1,0 +1,13 @@
+{
+  "baseline": "abc74f5bef86edf06835a785a9e7205725e80e75",
+  "implementation_commit": "f203cc1a0e4f6de50f5a8aaa73039298823cbec5",
+  "implementation_url": "https://github.com/jinze909/2D-RPG-Project/commit/f203cc1a0e4f6de50f5a8aaa73039298823cbec5",
+  "branch": "rpg/iteration-002-clearing",
+  "pull_request": "https://github.com/jinze909/2D-RPG-Project/pull/1",
+  "draft": true,
+  "merged_to_master": false,
+  "offline_tests_passed": 143,
+  "native_unity_validation": false,
+  "final_archive_source": "Exact final source commit is recorded in the delivered ARCHIVE-INFO.json",
+  "ci_and_zip_receipts": "Observed hosted run and verified ZIP digest appear in the delivered session manifest"
+}
