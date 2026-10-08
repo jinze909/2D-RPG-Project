@@ -47,7 +47,14 @@
     "artifact_bytes": 398918,
     "artifact_expired_at_check": false,
     "artifact_expires_at": "2026-11-07T23:21:58Z",
-    "native_unity_run": false
+    "native_unity_run": false,
+    "inner_zip_log": {
+      "file_count": 228,
+      "bytes": 440865,
+      "sha256": "b01e44922966dbf3119177b8c7cfb857410ad31ad0ac9c068eac5f26ddd455db",
+      "evidence": "successful packaging job log; hosted Artifact not downloaded",
+      "note": "Hosted archive is a separate ZIP; use top-level sha256 for the verified direct download."
+    }
   },
   "pr1_merge_readiness": {
     "head": "de0614399bb878ae182f90f81074359824e5057b",
