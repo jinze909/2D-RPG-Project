@@ -1,0 +1,202 @@
+{
+  "project": "jinze909/2D-RPG-Project",
+  "observed_at_utc": "2026-10-09T04:22:08Z",
+  "review_mode": "read-only repository and GitHub inspection; this report is the only file written by this reviewer",
+  "evidence_sources": [
+    "git show origin/rpg/iteration-002-clearing:<path>",
+    "git show origin/rpg/iteration-003-clearing-polish:<path>",
+    "github_get_pr_info and github_list_pull_request_reviews",
+    "github_fetch GET https://api.github.com/repos/jinze909/2D-RPG-Project/actions/runs?head_sha=<exact-sha>&per_page=30",
+    "github_fetch_workflow_run_jobs and github_fetch_workflow_run_artifacts",
+    "git ls-remote origin refs/heads/rpg/* refs/heads/rpg-deliveries"
+  ],
+  "checkout_at_review_start": {
+    "branch": "rpg/iteration-004-combat-reliability",
+    "head": "53bd47eb63f5b512c1981605341d64eee8d2cfe7",
+    "working_tree_clean": true,
+    "uncommitted_work_found": false
+  },
+  "prs": [
+    {
+      "number": 1,
+      "url": "https://github.com/jinze909/2D-RPG-Project/pull/1",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "head_ref": "rpg/iteration-002-clearing",
+      "head_sha": "de0614399bb878ae182f90f81074359824e5057b",
+      "base_ref": "master",
+      "base_sha": "2e8c154f219256454ad981d6ebf11fdea5865d7d",
+      "submitted_reviews": [],
+      "ci": {
+        "event": "push",
+        "run_id": 37855964779,
+        "url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37855964779",
+        "head_sha": "de0614399bb878ae182f90f81074359824e5057b",
+        "status": "completed",
+        "conclusion": "success",
+        "job_id": 113580080371,
+        "job_name": "validate-and-package",
+        "job_status": "completed",
+        "job_conclusion": "success",
+        "step_count": 12,
+        "all_steps_success": true,
+        "artifact": {
+          "id": 11583767157,
+          "name": "unity-project-de0614399bb878ae182f90f81074359824e5057b",
+          "size_in_bytes": 369528,
+          "expired": false,
+          "expires_at": "2026-11-07T22:51:20Z",
+          "digest": "sha256:66f6c458d9b9837d3eb756493ba5fbf63b5cf4d3505e8f1f48d0026897511557"
+        },
+        "native_unity_validation": false,
+        "artifact_downloaded_by_this_reviewer": false
+      }
+    },
+    {
+      "number": 2,
+      "url": "https://github.com/jinze909/2D-RPG-Project/pull/2",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "head_ref": "rpg/iteration-003-clearing-polish",
+      "head_sha": "53bd47eb63f5b512c1981605341d64eee8d2cfe7",
+      "base_ref": "rpg/iteration-002-clearing",
+      "base_sha": "de0614399bb878ae182f90f81074359824e5057b",
+      "submitted_reviews": [],
+      "ci": {
+        "event": "push",
+        "run_id": 37864956027,
+        "url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37864956027",
+        "head_sha": "53bd47eb63f5b512c1981605341d64eee8d2cfe7",
+        "status": "completed",
+        "conclusion": "success",
+        "job_id": 113609370168,
+        "job_name": "validate-and-package",
+        "job_status": "completed",
+        "job_conclusion": "success",
+        "step_count": 12,
+        "all_steps_success": true,
+        "artifact": {
+          "id": 11588130508,
+          "name": "unity-project-53bd47eb63f5b512c1981605341d64eee8d2cfe7",
+          "size_in_bytes": 408146,
+          "expired": false,
+          "expires_at": "2026-11-08T00:29:06Z",
+          "digest": "sha256:bbc4d190f594c149db51e8522fd706e5a155ac8f8e84255baabcb99a10ba056c"
+        },
+        "native_unity_validation": false,
+        "artifact_downloaded_by_this_reviewer": false
+      }
+    }
+  ],
+  "api_caveat": "fetch_commit_workflow_runs filters pull_request-triggered runs only; empty results do not prove absent CI here because this workflow runs on push/dispatch. get_commit_combined_status exposes legacy statuses, not these Actions check suites.",
+  "source_review": {
+    "reviewed_paths": [
+      "Assets/Scripts/Gameplay/ClearingRules.cs",
+      "Assets/Scripts/Gameplay/ClearingRuntime.cs",
+      "Assets/Scripts/Gameplay/ClearingVisuals.cs",
+      "Assets/Scripts/Gameplay/ClearingHud.cs",
+      "Assets/Scripts/Gameplay/ClearingAudio.cs",
+      "Assets/Scripts/Player/Player.cs",
+      "Assets/Scripts/Player/PlayerMovement.cs",
+      "Assets/Scripts/Player/PlayerHealth.cs",
+      "Assets/Scripts/Player/PlayerMana.cs",
+      "Assets/Scenes/CombatClearing.unity",
+      "ProjectSettings/Physics2DSettings.asset",
+      "ProjectSettings/TagManager.asset",
+      "ProjectSettings/ProjectSettings.asset",
+      ".github/workflows/rpg-project-validation.yml",
+      "tools/package_unity_project.py",
+      "tests/test_distribution.py"
+    ],
+    "retained_contracts": [
+      "Per-actor runtime resource clones",
+      "Monotonic attack tokens retained across retry",
+      "Once-only sentinel rewards",
+      "Death/completion cancel active rule actions",
+      "Shared invulnerability across sentinel contacts",
+      "Static warning footprint matches contact geometry",
+      "Wall-only linecasts with collision-enabled actors",
+      "Cached deterministic PPU30 FullRect point-filtered rasters",
+      "Simulation-time warning/impact feedback"
+    ],
+    "settings_confirmed": {
+      "active_input_handler": 2,
+      "physics2d_collision_matrix": "all layer pairs enabled",
+      "player_sorting_layer_present": true,
+      "combat_scene_player_camera_refs_present": true
+    },
+    "unresolved_native_acceptance": [
+      "Licensed Editor import and real Input System compilation",
+      "Real physics and collider contact/tunneling",
+      "Animator timing, original slice/pivot drift and appearance",
+      "HUD font and text layout at required dimensions",
+      "Rendering/pixel consistency",
+      "Cue audition and mix",
+      "Native EditMode/PlayMode and target platform build"
+    ],
+    "fourth_iteration_changes_reviewed": true,
+    "no_new_framework_recommended": true,
+    "next_scope": "Complete the already assigned two runtime bridge reliability root-cause fixes; avoid unrelated pause-audio expansion."
+  },
+  "merge_recommendation": {
+    "authorization": "Current user permits autonomous review/fix/update/quality-gated merge; old PR text reserving approval is stale.",
+    "candidate_stack": "After final fourth-iteration source checks and exact-head hosted CI, merge fourth-iteration PR into iteration-003, then PR #2 into iteration-002. Recheck updated refs, mergeability and merge-commit CI.",
+    "master": "PR #1 should remain a draft until licensed native acceptance evidence exists. This is a validation limit, not missing user approval.",
+    "force_push": false
+  },
+  "delivery": {
+    "remote_delivery_head": "684ee349c1c8be17d389e33a88bbbb063f128f04",
+    "retained_iteration_003_source": "1bedd3296a31398db62dc27d07c466c125bd896e",
+    "retained_iteration_003_zip": "2D-RPG-Project-iteration-003-1bedd32.zip",
+    "retained_iteration_003_zip_bytes": 440865,
+    "retained_iteration_003_zip_sha256": "18394e7efad8a69899d99bce090012954836881e9ee13386dee8ad4473f67e6e",
+    "receipt_read_at_ref": "684ee349c1c8be17d389e33a88bbbb063f128f04",
+    "fixed_zip_url": "https://raw.githubusercontent.com/jinze909/2D-RPG-Project/e8e230be613b912d9b1a30b99d374b3688fa2ad3/2D-RPG-Project-iteration-003-1bedd32.zip",
+    "previous_zip_downloaded_by_this_reviewer": false,
+    "current_source_zip_required": true,
+    "strategy": "Package clean committed fourth-iteration source using trusted packager, verify local CRC/metadata/all source bytes/LFS, clone rpg-deliveries normally into separate directory, add uniquely named ZIP/checksum/receipt without deleting history, normal push, then verify immutable raw download bytes/hash/CRC/metadata against retained source ZIP.",
+    "ci_zip_is_distinct_from_local_zip": true
+  },
+  "remote_fourth_iteration_checkpoint_at_report_time": "b1fac682bda6da227dbf25e22fced7ad39088d2d",
+  "fourth_iteration_review": {
+    "parent_committed_head": "b1fac682bda6da227dbf25e22fced7ad39088d2d",
+    "validation_identity": "Uncommitted working file snapshot, not a future commit or old PR head",
+    "sha256": {
+      "Assets/Scripts/Gameplay/ClearingRules.cs": "c8748ff4140bca27e088bf857a1720c887ca2b97c03bdf6aab6cd591797b2794",
+      "Assets/Scripts/Gameplay/ClearingRuntime.cs": "f9d6ba55ce892bd4ef4b614e7efee9a3e620fcd769e51e23488a5f86947c6540",
+      "tests/presentation/PresentationBehaviorChecks.cs": "4ca92baa508b914b7ace4b7a29839b72296f6bd38e775455b2b62fb9daaeea79",
+      "tests/gameplay/ClearingRulesChecks.cs": "52fce0bb6d2466433ddf0d5cfc9c6668cc38117f718c768ace683442a4be4d7d"
+    },
+    "findings": [],
+    "assessment": "No evidenced new regression found in the two production-file and two regression-fixture diff.",
+    "reasoning": [
+      "CancelTransientActions invalidates the active player token and live enemy phases through existing CancelActions without mutating run clock, health, progression, player cooldowns, immunity or monotonic token sequence.",
+      "Fresh enemy swings reset HitResolved, issue a new sequence and require their telegraph; canceled phases do not resume on Advance.",
+      "OnDisable clears hurt and impact lifetimes before StopActors; pause does not call interruption logic, and terminal movement remains locked.",
+      "The first FixedUpdate loop resolves the admitted player action against all live targets before any lethal retaliation. The second loop skips defeated targets, preserving once-only rewards and gate behavior."
+    ],
+    "fresh_checks": [
+      {
+        "command": "python3 tools/run_presentation_checks.py --project-root /workspace/2D-RPG-Project",
+        "exit_code": 0,
+        "passed": 26,
+        "failed": 0,
+        "validation_kind": "Actual production C# with recording engine/audio boundaries; not native Unity"
+      },
+      {
+        "command": "python3 tools/run_gameplay_checks.py --project-root /workspace/2D-RPG-Project",
+        "exit_code": 0,
+        "passed": 36,
+        "failed": 0,
+        "validation_kind": "Pure actual production ClearingRules C# without Unity stubs"
+      }
+    ],
+    "reviewer_did_not_reproduce_prior_red_run": true,
+    "future_commit_ci_verified": false,
+    "native_unity_validation": false
+  }
+}

@@ -34,8 +34,10 @@
   Iteration-3 implementation 4ca71ef is green at run 37858757979 including upload;
   final source/CI/ZIP receipts are linked from iteration-3 publication.md.
   Native acceptance remains outstanding.
-- PR #1 must remain unmerged in this round by explicit user instruction. The
-  polish branch depends on its candidate and uses an independent stacked draft PR.
+- Current user authorization permits autonomous quality-gated merges of PR #1,
+  PR #2 and later PRs. PR #1 currently remains a draft because its new scene/input/
+  physics lack native acceptance, not because another user approval is required.
+  Tested refinements can be integrated into the isolated candidate first.
 - Standard Actions runners do not have the cloud's editor license, MCP connection
   or ChatGPT image-generation tools. Native/visual high-risk changes stay isolated.
 - Protected branches and unavailable GitHub access must be reported accurately.
@@ -66,3 +68,14 @@ central combat band. Accepted hits/kills now give pooled world/audio confirmatio
 progress and active-window motifs distinguish warning phases inside unchanged
 contact bounds. Retry/disable clears effects and sounds. Regressions execute real
 production methods with recording boundaries, not native playback.
+
+## Fixed in iteration 4 candidate
+
+Disable/resume no longer resurrects old player or sentinel contact windows,
+warnings or impacts. It preserves resources, rewards, cooldowns and immunity;
+pause remains a freeze and terminal control remains locked. A same-tick burst
+now resolves all eligible contacts before surviving enemies retaliate, so a
+lethal enemy's array index cannot truncate its multi-target damage. Killed enemies
+cannot retaliate on that tick; rewards/gate/audio remain once-only.
+Actual-source red/green checks and index permutations verify this offline;
+native lifecycle/physics still require the existing acceptance procedure.

@@ -1,5 +1,27 @@
 # Skills usage
 
+## Iteration 4 — resumed combat reliability
+
+Rediscovered all eight vendored bundles and their source/license manifest; read
+the applicable instructions and references. Actual applications:
+
+| Skill/plugin | Evidence and limits |
+| --- | --- |
+| session-handoff | Restored the full iterations 2/3 chain and staleness/resume checklist; verified actual post-quota Git, saved/pushed recovery checkpoint and unfinished list. The checker assumes .claude depth, so its docs-path missing-file report was checked against real repository files. |
+| systematic-debugging | Actual-source red tests traced hidden-but-live contacts/effect deadlines and an interleaved lethal-contact break; changed the two causes and reran original reproductions. |
+| verification-before-completion | Fresh 150 project + 6 distribution passes, real API compilation, reviewed diff, preserved red evidence and separate native-blocked status. Checkpoint CI uses its actual SHA, not the game implementation's future SHA. |
+| game-design | Made each multi-target action complete before retaliation regardless of enemy ordering; interrupt/resume retains earned progress and costs while requiring fresh telegraphs. |
+| game-art | Preserved original blonde hero, PPU30 and all ten hero PNG/meta hashes; reran raster/scene contracts. No image, animation or scene redesign. |
+| game-audio | Retained contact/kill deduplication and mute/reset behavior; exercised single kill/reward cues and absence of stale contact cues after disable. No audition or new synthesis claim. |
+| unity-mcp-orchestrator | Version-compatible component/state/verification guidance; checked real 2022.3 API references. No connected bridge, live editor operation or invented tool call. |
+| imagegen | Rediscovered its actual instructions/tool boundary; no bitmap task was required for these state fixes, so image generation and paid CLI were not invoked. |
+| Unity | Read unity-cli/integration compatibility guidance and checked actual binary/tool availability. Editor version and Mono/Roslyn are available; CLI/Pipeline/MCP are not. Pipeline's Unity 6 requirement excludes this project. |
+| Unity Essentials | Applied MCP Workflow, Project Onboarding (docs/UnityProjectContext.md), Bug Investigation evidence/hypothesis/state guidance and Build Validation foundations/checklists. One isolated native license probe failed before import; strongest available evidence is offline execution plus real API-reference compile. |
+
+Managed cloud runtime status/network guidance was also used. No package, license,
+login, version, paid model or automation configuration was changed. Reading a
+skill is not reported as an installed Unity service or native validation.
+
 ## Iteration 1 — 2026-10-08
 
 All eight installed RPG SKILL.md files were read in full, together with the required

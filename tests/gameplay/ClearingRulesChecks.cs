@@ -327,6 +327,91 @@ internal static class ClearingRulesChecks
             Require(run.Time == 0d && run.GetSentinel(0).AttackPhase == SentinelAttackPhase.Telegraph, "invalid clock accepted");
             Equal(1.2f, run.BurstCooldownRemaining, "invalid delta changed cooldown");
         });
+        Check("cancel transient actions invalidates player contacts and every live enemy phase", delegate {
+            var run = new ClearingRun();
+            Require(run.BeginSentinelAttack(0), "first enemy setup rejected");
+            run.Advance(ClearingRun.TelegraphDuration);
+            Require(run.BeginSentinelAttack(1), "second enemy setup rejected");
+            run.Advance(ClearingRun.SentinelActiveDuration);
+            Require(run.BeginSentinelAttack(2), "third enemy setup rejected");
+            Require(run.GetSentinel(0).AttackPhase == SentinelAttackPhase.Recovery
+                    && run.GetSentinel(1).AttackPhase == SentinelAttackPhase.Telegraph, "mixed phase setup failed");
+            long token = Attack(run, PlayerAttackKind.Burst);
+            run.CancelTransientActions();
+            Require(!run.PlayerAttackActive, "interrupted player contact remains active");
+            for (int i = 0; i < ClearingRun.SentinelCount; i++)
+            {
+                Require(!run.TryHitSentinel(token, i) && !run.TryResolveSentinelHit(i), "interrupted contact accepted");
+                Require(run.GetSentinel(i).AttackPhase == SentinelAttackPhase.Ready, "live enemy phase was retained");
+                Equal(0f, run.GetSentinel(i).PhaseProgress, "canceled phase has stale progress");
+            }
+            run.Advance(ClearingRun.TelegraphDuration);
+            for (int i = 0; i < ClearingRun.SentinelCount; i++)
+                Require(run.GetSentinel(i).AttackPhase == SentinelAttackPhase.Ready
+                        && !run.TryResolveSentinelHit(i), "old enemy swing returned as the clock advanced");
+        });
+        Check("cancel transient actions preserves progression health clock cooldowns and immunity", delegate {
+            var run = new ClearingRun(); Defeat(run, 0);
+            run.Advance(ClearingRun.BurstCooldown);
+            Require(run.BeginSentinelAttack(1), "immunity setup rejected");
+            run.Advance(ClearingRun.TelegraphDuration);
+            Require(run.TryResolveSentinelHit(1), "immunity setup had no active contact");
+            long light = Attack(run, PlayerAttackKind.Light);
+            Require(run.TryHitSentinel(light, 2), "light setup contact rejected");
+            run.Advance(ClearingRun.LightAttackWindow);
+            long burst = Attack(run, PlayerAttackKind.Burst);
+            Require(run.TryHitSentinel(burst, 2) && run.BeginSentinelAttack(2), "burst or warning setup rejected");
+            double time = run.Time;
+            float lightCooldown = run.LightCooldownRemaining, burstCooldown = run.BurstCooldownRemaining;
+            float immunity = run.PlayerInvulnerabilityRemaining;
+            float[] health = { run.GetSentinel(0).Health, run.GetSentinel(1).Health, run.GetSentinel(2).Health };
+            Require(lightCooldown > 0f && burstCooldown > 0f && immunity > 0f, "setup has no active timers");
+            run.CancelTransientActions();
+            Require(run.Time == time && run.DefeatedCount == 1 && run.RewardCoins == ClearingRun.CoinsPerSentinel
+                    && !run.GateUnlocked && !run.IsDead && !run.IsComplete, "cancel reset run progression or status");
+            Equal(lightCooldown, run.LightCooldownRemaining, "cancel refunded light cooldown");
+            Equal(burstCooldown, run.BurstCooldownRemaining, "cancel refunded burst cooldown");
+            Equal(immunity, run.PlayerInvulnerabilityRemaining, "cancel removed immunity");
+            for (int i = 0; i < ClearingRun.SentinelCount; i++)
+                Equal(health[i], run.GetSentinel(i).Health, "cancel reset sentinel health");
+            Require(run.GetSentinel(0).AttackPhase == SentinelAttackPhase.Dead, "cancel revived defeated sentinel");
+        });
+        Check("canceled tokens stay rejected after fresh actions and fresh enemy swings remain available", delegate {
+            var run = new ClearingRun();
+            long canceled = Attack(run, PlayerAttackKind.Burst);
+            Require(run.BeginSentinelAttack(0), "old swing setup rejected");
+            long oldSequence = run.GetSentinel(0).AttackSequence;
+            run.CancelTransientActions();
+            long blocked;
+            Require(!run.BeginPlayerAttack(PlayerAttackKind.Burst, 20f, out blocked), "cancel refunded burst admission");
+            run.Advance(ClearingRun.BurstCooldown);
+            long fresh = Attack(run, PlayerAttackKind.Burst);
+            Require(fresh != canceled && !run.TryHitSentinel(canceled, 0), "fresh action reused interrupted token");
+            Require(run.TryHitSentinel(fresh, 0), "fresh contact rejected after cancellation");
+            Require(run.BeginSentinelAttack(0) && run.GetSentinel(0).AttackSequence != oldSequence,
+                    "fresh enemy telegraph unavailable or reused old sequence");
+            Require(!run.TryResolveSentinelHit(0), "fresh swing skipped its telegraph");
+            run.Advance(ClearingRun.TelegraphDuration);
+            Require(run.TryResolveSentinelHit(0), "fresh telegraphed swing could not contact");
+        });
+        Check("cancel transient actions is idempotent and preserves death and objective completion", delegate {
+            foreach (bool complete in new[] { false, true })
+            {
+                var run = new ClearingRun();
+                if (complete) { DefeatAll(run); Require(run.TryCompleteObjective(), "completion setup rejected"); }
+                else { Attack(run, PlayerAttackKind.Light); run.NotifyPlayerDeath(); }
+                double time = run.Time;
+                int rewards = run.RewardCoins, defeats = run.DefeatedCount;
+                run.CancelTransientActions(); run.CancelTransientActions();
+                Require(complete ? run.IsComplete && !run.IsDead : run.IsDead && !run.IsComplete,
+                        "cancel changed terminal state");
+                Require(run.Time == time && run.RewardCoins == rewards && run.DefeatedCount == defeats,
+                        "repeated cancel changed terminal progression");
+                long token;
+                Require(!run.BeginPlayerAttack(PlayerAttackKind.Light, 20f, out token)
+                        && !run.BeginSentinelAttack(0) && !run.TryResolveSentinelHit(0), "cancel reopened terminal combat");
+            }
+        });
         Check("full clear complete retry complete loop is replayable", delegate {
             var run = new ClearingRun();
             for (int round = 0; round < 3; round++)

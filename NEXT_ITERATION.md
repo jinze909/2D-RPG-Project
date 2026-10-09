@@ -1,6 +1,8 @@
 # Next iteration
 
 For a new Codex window, first read
+[iteration-4 checkpoint](docs/iterations/2026-10-08-iteration-004/checkpoint.md),
+then the following inherited
 [new-window handoff](docs/iterations/2026-10-08-iteration-003/new-window-handoff.md).
 It records exact delivered source/ZIP identities, the user's license-login choice,
 and the now-readable Unity plugin skills. Recheck the actual CLI, license and MCP
@@ -8,7 +10,7 @@ connection; skill visibility alone does not establish native Editor readiness.
 
 1. Fetch latest master and all unmerged `rpg/iteration-*` work. Read iterations 2/3,
    PR #1 and its stacked polish PR, exact hosted CI and verified ZIP receipts.
-   PR #1 merge remains the user's decision. Do not recreate combat, HUD, raster
+   PR merges are autonomously authorized and gated by actual quality. Do not recreate combat, HUD, raster
    art or the beacon loop merely because master predates those candidates.
 2. Perform `docs/game/COMBAT_CLEARING.md` native acceptance with licensed
    international Unity 2022.3.53f1: import/compile, EditMode/PlayMode, collisions,
@@ -29,5 +31,9 @@ connection; skill visibility alone does not establish native Editor readiness.
    records. Every new task rediscovers tools, reference code and unmerged results.
 
 Earlier movement/numeric guards remain regression covered.
+The iteration-4 transient cancellation and two-pass contact fixes are complete
+and freshly checked (150 project + 6 distribution tests). Remaining work this
+round: exact-head CI, isolated candidate integration, complete source ZIP and final
+handoff. Finish those steps after any interruption before choosing new game work.
 Pursue new confirmed problems and complete playable loops, preserving user history
 and newer accepted work. This list does not override more serious new issues.

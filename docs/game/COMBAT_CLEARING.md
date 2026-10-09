@@ -26,6 +26,9 @@ Mana regenerates at 0.8 MP/s during an active run. Sentinels have 54 HP and deal
 0.12 s, recovery 0.7 s and shared player immunity 0.55 s. Warning and damage use
 the same saved footprint. Walls obstruct damage. A player action hits each enemy
 at most once; aim is fixed for that action while locomotion remains responsive.
+Each physics tick resolves all admitted player contacts before the surviving
+sentinels' contacts. A lethal sentinel's index does not truncate a multi-target
+burst, and a sentinel killed on that tick cannot retaliate.
 
 The blonde Viola sheets/controller and PPU30 are preserved. Death now holds an
 existing front pose instead of endlessly spinning through directions; this is a
@@ -56,7 +59,10 @@ rewards and completion; it owns no duplicate player HP/MP.
 
 ClearingRuntime runs after player input, synchronizes health before accepting
 actions, uses fixed simulation for contacts/regeneration and restores time scale
-when a paused component/scene is disabled. The gate fills the entire gap in a
+when a paused component/scene is disabled. Disable invalidates current contact
+tokens and clears warning/impact deadlines, retaining health, mana, progress,
+cooldowns and immunity. Resume needs fresh attacks and telegraphs; normal pause
+only freezes existing simulation state. The gate fills the entire gap in a
 partition connected to overlapping outer walls. The beacon checks run completion
 as well as actual player proximity. The Canvas HUD reserves screen edges, has no
 full-screen combat panel/raycast targets, and sizes its columns to the viewport.
