@@ -1,0 +1,100 @@
+{
+  "status": "passed",
+  "passed": true,
+  "base_sha": "50d42ceb950b57390b06dbc203e46286df5794ee",
+  "native_unity_run": false,
+  "checks": [
+    {
+      "name": "editor_version",
+      "status": "passed",
+      "editor": "2022.3.53f1"
+    },
+    {
+      "name": "asset_and_guid_integrity",
+      "status": "passed",
+      "pngs_decoded": 5,
+      "unique_meta_guids": 49,
+      "project_guid_references": 145
+    },
+    {
+      "name": "build_scenes_and_json",
+      "status": "passed",
+      "enabled_build_scenes": 2
+    },
+    {
+      "name": "lfs_sha256",
+      "status": "passed",
+      "lfs_objects_verified": 6
+    },
+    {
+      "name": "portable_skills_integrity",
+      "status": "passed",
+      "skill_bundles": 8,
+      "skill_files_verified": 65
+    },
+    {
+      "name": "player_movement_behavior",
+      "status": "passed",
+      "passed_tests": 14,
+      "failed_tests": 0,
+      "validation_kind": "real C# with Unity boundary doubles; not native Unity"
+    },
+    {
+      "name": "player_resource_behavior",
+      "status": "passed",
+      "passed_tests": 40,
+      "failed_tests": 0,
+      "validation_kind": "real C# with Unity boundary doubles; not native Unity"
+    },
+    {
+      "name": "input_and_animation_contracts",
+      "status": "passed",
+      "passed_tests": 9,
+      "failed_tests": 0,
+      "validation_kind": "serialized data / geometry checks; not native Unity"
+    },
+    {
+      "name": "clearing_combat_rules",
+      "status": "passed",
+      "passed_tests": 36,
+      "failed_tests": 0,
+      "validation_kind": "actual pure C# rules; no Unity engine"
+    },
+    {
+      "name": "clearing_progression_and_persistence",
+      "status": "passed",
+      "passed_tests": 51,
+      "failed_tests": 0,
+      "validation_kind": "actual pure C# progression/codec plus real Mono temporary-filesystem IO; no Unity engine"
+    },
+    {
+      "name": "clearing_scene_contracts",
+      "status": "passed",
+      "passed_tests": 15,
+      "failed_tests": 0,
+      "validation_kind": "serialized data / geometry checks; not native Unity"
+    },
+    {
+      "name": "clearing_presentation_behavior",
+      "status": "passed",
+      "passed_tests": 44,
+      "failed_tests": 0,
+      "validation_kind": "actual C# with recording component/audio boundaries; no native physics, UI layout or audible output"
+    },
+    {
+      "name": "clearing_pixel_art",
+      "status": "passed",
+      "passed_tests": 10,
+      "failed_tests": 0,
+      "validation_kind": "actual managed C# pixel arrays and original asset hashes; no native rendering"
+    }
+  ],
+  "not_run": [
+    "Unity import/compile",
+    "native physics",
+    "Animator rendering",
+    "EditMode/PlayMode",
+    "audio/playability",
+    "platform build"
+  ]
+}

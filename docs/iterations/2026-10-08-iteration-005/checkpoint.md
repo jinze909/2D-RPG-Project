@@ -28,3 +28,11 @@ Final source reports and before/after evidence are alongside this file.
 Pending: hosted CI/stacked PR merge into isolated candidate, final documentation
 commit, complete source ZIP, immutable download verification and delivery receipt.
 PR #1 remains draft; native acceptance and master merge remain deferred.
+
+## Resumed integration (2026-10-09)
+
+The earlier pending hosted-merge stage is now complete: PR4a20cb5a and PR1cb2d6fc
+merged normally, implementation/candidate/master merge CI all green. User now
+makes native acceptance optional for merging. Final source/handoff commit and
+ZIP/download/receipt outcomes resolve externally; earlier draft/master locks
+are historical and superseded. Preserve every checkpoint and prior ZIP.

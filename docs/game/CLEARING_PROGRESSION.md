@@ -99,8 +99,8 @@ cost/save feedback. These are not Unity physics/render/PlayMode tests.
 
 Licensed Unity 2022.3.53f1 acceptance still needs real input, lifecycle, visuals,
 multi-resolution result layout, persistence across actual player restarts, audio
-audition and platform build. PR #1 stays draft and master unchanged until that
-acceptance is complete. Save files, licenses and caches are excluded from source
+audition and platform build. The latest user resume instruction makes native acceptance optional for ordinary
+merges; PR #4 and PR #1 have merged after source review and successful CI. Save files, licenses and caches are excluded from source
 ZIP delivery.
 
 ## Researched APIs

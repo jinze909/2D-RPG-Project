@@ -1,5 +1,22 @@
 # Development progress
 
+## Iteration 5 resumed delivery — 2026-10-09
+
+Verified actual clean50d42ce checkout and zero unpushed commits. Both earlier
+checkpoints remain on GitHub; no surviving uncommitted production edit was assumed.
+Exact implementation CI37890323174 completed successfully: all12 steps and
+Artifact11598401753 verified. PR4 normally merged at a20cb5a; its exact CI37946345177
+and Artifact11624006491 are green. Merge tree equals the tested implementation.
+
+The user's latest resume instruction explicitly makes native acceptance optional
+for ordinary merges, superseding the earlier PR1-draft/master-lock requirement.
+An independent cumulative master-to-candidate audit and219-check rerun found no
+material code/resource omissions. PR1 normally merged into master at cb2d6fc;
+PR2/3 were already merged. No force push; original2e8c154 and full history remain
+recovery points. Final source handoff/CI/ZIP identities are resolved externally
+in iteration-005-delivery.json after the final documentation commit/publication.
+Native validation remains unrun; its availability does not block this delivery.
+
 ## Iteration 5 — integrated clearing growth checkpoint
 
 The player loop now completes: defeat three -> E at beacon -> save 30 coins ->
@@ -317,3 +334,6 @@ Student Pro cannot use ALF activation. No activation or interactive Hub endpoint
 was created. New Unity CLI and Unity MCP Workflow skills are now readable, updating
 the earlier conversation's visibility limitation; CLI is still absent from PATH
 and no Unity-specific MCP tools were found. Native acceptance remains pending.
+
+Master merge cb2d6fc also passed exact CI37946576919; all12 job steps and upload
+verified. Final documentation/source CI and archive completion resolve in the receipt.

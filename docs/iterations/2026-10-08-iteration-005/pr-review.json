@@ -1,0 +1,55 @@
+{
+  "user_native_acceptance_merge_gate": false,
+  "normal_merges": true,
+  "force_push": false,
+  "prs": [
+    {
+      "number": 1,
+      "url": "https://github.com/jinze909/2D-RPG-Project/pull/1",
+      "state": "closed",
+      "merged": true,
+      "draft": false,
+      "base": "master",
+      "base_sha": "2e8c154f219256454ad981d6ebf11fdea5865d7d",
+      "head": "rpg/iteration-002-clearing",
+      "head_sha": "a20cb5a9cc74966b7e9e671448bf60bbc5c0c9a4",
+      "merge_commit_sha": "cb2d6fc78d23c4faaaf0d389ee45737fabf029bb"
+    },
+    {
+      "number": 2,
+      "url": "https://github.com/jinze909/2D-RPG-Project/pull/2",
+      "state": "closed",
+      "merged": true,
+      "draft": false,
+      "base": "rpg/iteration-002-clearing",
+      "base_sha": "de0614399bb878ae182f90f81074359824e5057b",
+      "head": "rpg/iteration-003-clearing-polish",
+      "head_sha": "77dd22b1e08292a0e7d2d9ef0a6b085e3c449eea",
+      "merge_commit_sha": "baffbfa5a8962233585d98ebdd20ff3c522d1e07"
+    },
+    {
+      "number": 3,
+      "url": "https://github.com/jinze909/2D-RPG-Project/pull/3",
+      "state": "closed",
+      "merged": true,
+      "draft": false,
+      "base": "rpg/iteration-003-clearing-polish",
+      "base_sha": "53bd47eb63f5b512c1981605341d64eee8d2cfe7",
+      "head": "rpg/iteration-004-combat-reliability",
+      "head_sha": "1e7eb01c359eeba55b42c038652701f0a54bbb38",
+      "merge_commit_sha": "77dd22b1e08292a0e7d2d9ef0a6b085e3c449eea"
+    },
+    {
+      "number": 4,
+      "url": "https://github.com/jinze909/2D-RPG-Project/pull/4",
+      "state": "closed",
+      "merged": true,
+      "draft": false,
+      "base": "rpg/iteration-002-clearing",
+      "base_sha": "fe8b1f72841bade09ed5a1c39dbf1df5996c78df",
+      "head": "rpg/iteration-005-persistent-progression",
+      "head_sha": "50d42ceb950b57390b06dbc203e46286df5794ee",
+      "merge_commit_sha": "a20cb5a9cc74966b7e9e671448bf60bbc5c0c9a4"
+    }
+  ]
+}

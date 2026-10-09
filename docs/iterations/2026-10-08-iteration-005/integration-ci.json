@@ -1,0 +1,32 @@
+{
+  "implementation": {
+    "sha": "50d42ceb950b57390b06dbc203e46286df5794ee",
+    "run_id": 37890323174,
+    "status": "completed",
+    "conclusion": "success",
+    "all_12_steps_success": true,
+    "artifact_id": 11598401753,
+    "artifact_digest": "sha256:8800e41e35110ed798c12483771809e7b4cfa0f599d1b4783c59f7a86cb8d84c"
+  },
+  "candidate_merge": {
+    "sha": "a20cb5a9cc74966b7e9e671448bf60bbc5c0c9a4",
+    "run_id": 37946345177,
+    "status": "completed",
+    "conclusion": "success",
+    "all_12_steps_success": true,
+    "artifact_id": 11624006491,
+    "artifact_digest": "sha256:66515e26828dd562f63550b0dfe3a6041d61461d338ea97ff33c98a3916c157b"
+  },
+  "master_merge": {
+    "sha": "cb2d6fc78d23c4faaaf0d389ee45737fabf029bb",
+    "run_id": 37946576919,
+    "status": "completed",
+    "conclusion": "success",
+    "all_12_steps_success": true,
+    "artifact_id": 11623432106,
+    "artifact_digest": "sha256:fe78d23f75ea6606c26959720b5e6b031b7d230bbd0d8cc7f374b24bb40128cd"
+  },
+  "source_tree_equal_to_tested_implementation": true,
+  "native_unity_validation": false,
+  "final_source_ci": "Resolved in external iteration-005-delivery.json after final source commit."
+}

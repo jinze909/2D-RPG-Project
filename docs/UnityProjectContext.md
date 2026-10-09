@@ -71,3 +71,10 @@ saved bonuses to actor clones only on reset. Hud displays bank/ranks/result cost
 and truthful failure reasons; Audio reuses its accepted reward cue. No art, scene,
 package or settings changes. 219 project + 6 distribution checks and 19 sources
 against 86 actual references pass; InputSystem/native limits above still apply.
+
+## Resumed delivery policy and integration (2026-10-09)
+
+Latest user makes native acceptance optional for ordinary merging. PR4 merged
+(a20cb5a) and PR1 merged into master(cb2d6fc) after exact green candidate CI and
+cumulative review. Prior draft/master statements are historical. The actual
+feature tree equals tested50d42ce; native/tooling limitations still apply.

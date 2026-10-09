@@ -37,15 +37,13 @@ China package services. Preserve the specified editor version.
   suite. When installed, also use
   `tools/compile_unity_api.py`: real engine/uGUI signatures, with Input System
   explicitly reported as a substitute if its compiled assembly is absent.
-- Native-unverified clearing stays on `rpg/iteration-002-clearing` / draft PR #1.
-  PR #3 merged iteration 4 into iteration 3; PR #2 then merged all tested polish
-  and reliability work into that iteration-2 candidate. The current iteration-4
-  delivery branch includes both merge commits. Fetch all before selecting work;
-  read docs/iterations/2026-10-08-iteration-004/handoff.md and the separate delivery
-  receipt; do not recreate accepted candidate work. The current user has
-  explicitly authorized autonomous review, ordinary PR merges and delivery,
-  superseding historical user-only merge restrictions. Assess real CI and risk;
-  keep native-unverified high-risk changes isolated until adequate evidence exists.
+- PR #4 normally merged the fifth-round growth loop into iteration 2 (a20cb5a),
+  then PR #1 normally merged the reviewed candidate into master (cb2d6fc).
+  The user's 2026-10-09 resume instruction explicitly makes native validation
+  optional for ordinary merges, superseding earlier draft/master restrictions.
+  Master now includes CombatClearing and local growth; do not restart the prototype.
+  Check exact CI, code/resources and recovery history before later merges. Never
+  infer native acceptance from offline tests; continue recording its actual limits.
 - Warning progress/X motifs remain inside the original saved contact outline.
   Pooled hit/kill feedback uses simulation time and resets on retry/disable.
   HUD messages share the help edge slot and hide unavailable actions on pause/death.
@@ -137,7 +135,8 @@ The ordinary GitHub Actions workflow `rpg-project-validation.yml` checks pushed
 code or a manual run, then packages the validated project and uploads its ZIP and
 reports. Check the actual run and Artifact before claiming hosted success. Standard
 runners do not establish licensed native import, playback or visual acceptance.
-Keep failed or native-unverified high-risk changes on `rpg/iteration-*` branches.
+Keep failed changes on `rpg/iteration-*` branches. Use ordinary review/CI gates
+for merges; native evidence is optional under the current user instruction.
 
 Package with the trusted tools/package_unity_project.py. Include real LFS objects,
 Assets, Packages, ProjectSettings and .meta; exclude caches and credentials.

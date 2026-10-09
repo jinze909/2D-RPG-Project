@@ -1,5 +1,17 @@
 # Known issues
 
+## Current delivery policy and remaining work — 2026-10-09
+
+PR4 and PR1 are merged normally after review and verified candidate CI. Master
+now includes the clearing loop and persistent growth. The latest user explicitly
+makes native acceptance optional for merging; older draft/master restrictions
+in historical checkpoint/handoff sections are superseded, not still active.
+Native import/physics/input/render/HUD/audio/PlayMode/player-build remain unrun;
+licensed validation and real balance remain the highest-value evidence gap.
+Only the bounded local profile exists: no classes/inventory/equipment/world-state
+save/full story/Boss. Final source/ZIP/CI/download evidence is in the independent
+iteration-005 receipt; resume any incomplete delivery there before new features.
+
 ## Current iteration 5 candidate status
 
 Gameplay/input/result HUD/reward-cue/next-run integration is now implemented.
@@ -7,7 +19,8 @@ Gameplay/input/result HUD/reward-cue/next-run integration is now implemented.
 pass. The old foundation-only status below is historical, not an unfinished feature.
 Native import/PlayMode/EditMode, actual save-path/lifecycle/keyboard/physics,
 HUD glyph layout, real sound audition and player build remain unrun without a
-valid Unity license. PR #1 must stay draft and master unchanged.
+valid Unity license. The latest user instruction makes native acceptance optional for merges.
+PR #4 and PR #1 have now been normally merged; this limitation remains recorded.
 Future files are protected including oversized or malformed UTF-8 payloads;
 backup recovery may lose the latest transaction. This is a local bounded profile,
 not encrypted anti-cheat, a world save or a global historical reward replay ledger.
@@ -24,7 +37,7 @@ and balance acceptance remain pending with the existing license limitation.
 ## Confirmed current gaps
 
 - PR #3 and PR #2 are merged into the isolated iteration-2 candidate. PR #1 is
-  still draft; current fourth-round source/CI/ZIP identities are in the independent
+  now merged (cb2d6fc) after PR #4; historical fourth-round source/CI/ZIP identities are in the independent
   delivery receipt linked from docs/iterations/2026-10-08-iteration-004/publication.md.
 - Native Unity 2022.3.53f1 import/play/test is unavailable without valid licensing.
   Offline doubles do not validate real physics, Input System or visual playback.
@@ -61,8 +74,8 @@ and balance acceptance remain pending with the existing license limitation.
   final source/CI/ZIP receipts are linked from iteration-3 publication.md.
   Native acceptance remains outstanding.
 - Current user authorization permits autonomous quality-gated merges of PR #1,
-  PR #2 and later PRs. PR #1 currently remains a draft because its new scene/input/
-  physics lack native acceptance, not because another user approval is required.
+  PR #2 and later PRs. PR #1 merged after the user made native acceptance optional; native input/
+  physics evidence is still absent and not reported as passing.
   Tested refinements can be integrated into the isolated candidate first.
 - Standard Actions runners do not have the cloud's editor license, MCP connection
   or ChatGPT image-generation tools. Native/visual high-risk changes stay isolated.

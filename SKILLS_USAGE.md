@@ -1,5 +1,17 @@
 # Skills usage
 
+## Fifth-round resumed publication — 2026-10-09
+
+Applied the same session-handoff scaffold/resume/validator workflow to the actual
+50d42ce interruption point; preserved both checkpoints and eight bundles.
+Verification-before-completion checked exact implementation/candidate CI jobs and
+artifacts, actual PR states and clean source/merge-tree equality before merging.
+Cumulative review retained source/resource/native evidence distinctions. Updated
+policy to the user's explicit optional-native instruction; no extra approval asked.
+Final handoff/ZIP/download verification remains recorded in the external receipt,
+not inferred from the earlier draft PR or existing local archive. No native/audio/
+image generation/editor call is claimed during publication.
+
 ## Iteration 5 integration and validation evidence
 
 The planned loop is now implemented in ClearingRuntime/Hud. Game-design drove
@@ -141,3 +153,7 @@ constraints. No CLI, MCP, Hub, license activation or Unity package install was
 executed. A fresh tool-name inventory found no Unity-specific callable tools.
 New windows must rediscover packages rather than repeat the old unreadable-skill
 conclusion or assume that documentation access proves a live Editor connection.
+
+Persistent fifth handoff validated100/100 with checked local file references;
+master merge CI37946576919 all12 steps passed. Final source/download checks follow
+in the receipt and are not assumed complete before publication.
