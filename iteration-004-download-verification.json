@@ -1,0 +1,22 @@
+{
+  "verified": true,
+  "commit": "fe8b1f72841bade09ed5a1c39dbf1df5996c78df",
+  "unity": "2022.3.53f1",
+  "zip": "/workspace/rpg-iteration-004-delivery-output/downloaded-iteration-004.zip",
+  "zip_bytes": 483401,
+  "zip_sha256": "059da99931123778e25e51fb6a721c1a3091ac9855aade051e4c5d7047b5edc4",
+  "source_file_count": 246,
+  "zip_member_count": 247,
+  "asset_meta_count": 46,
+  "compared_source_bytes": 1225639,
+  "file_manifest_sha256": "e0fbe371574a9d03a4e7695d5d33961c8d0a97ac9771020c57dc926efb41e013",
+  "crc": "passed",
+  "exact_file_set": "passed",
+  "source_bytes_and_member_sha256": "passed",
+  "lfs_pointers": "none",
+  "cache_or_credential_members": "none",
+  "native_unity_validation": false,
+  "download_url": "https://raw.githubusercontent.com/jinze909/2D-RPG-Project/5c7e6776fed1fabde052cc327f9b192a9124e143/2D-RPG-Project-iteration-004-fe8b1f7.zip",
+  "checksum_https_verified": true,
+  "download_bytes_equal_local_archive": true
+}

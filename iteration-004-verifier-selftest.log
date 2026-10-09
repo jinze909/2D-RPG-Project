@@ -1,0 +1,24 @@
+PASS complete clean source archive with arbitrary filename
+PASS rejects wrong-commit
+PASS rejects dirty-metadata
+PASS rejects wrong-unity
+PASS rejects wrong-count
+PASS rejects native-claim
+PASS rejects unexpected-source-commit
+PASS rejects missing-source-file
+PASS rejects source-byte-mismatch
+PASS rejects LFS-pointer-member
+PASS rejects extra-member
+PASS rejects credential-member
+PASS rejects cache-member
+PASS rejects path-traversal
+PASS rejects malformed-metadata
+PASS rejects duplicate-name
+PASS rejects ZIP-symlink
+PASS rejects CRC-corruption
+PASS rejects dirty-source-checkout
+PASS rejects source-LFS-pointer
+PASS rejects source-credential-file
+PASS rejects uncommitted-included-source
+PASS rejects missing-source-meta
+RESULT 23 verifier self-checks passed; temporary fixtures removed; no Unity native run

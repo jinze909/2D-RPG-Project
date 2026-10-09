@@ -1,0 +1,19 @@
+{
+  "run_id": 37884850296,
+  "url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37884850296",
+  "head_sha": "fe8b1f72841bade09ed5a1c39dbf1df5996c78df",
+  "status": "completed",
+  "conclusion": "success",
+  "job_id": 113672434864,
+  "step_count": 12,
+  "all_steps_success": true,
+  "artifact_id": 11596395886,
+  "artifact_url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37884850296/artifacts/11596395886",
+  "artifact_name": "unity-project-fe8b1f72841bade09ed5a1c39dbf1df5996c78df",
+  "artifact_bytes": 437558,
+  "artifact_expired_at_check": false,
+  "artifact_expires_at": "2026-11-08T04:39:27Z",
+  "artifact_container_digest": "sha256:6d236a5e69c2ae419dbf2520fc162fcc97fdb5e429a539e37aeaad16f13ab45f",
+  "artifact_downloaded_by_this_check": false,
+  "native_unity_run": false
+}

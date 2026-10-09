@@ -1,0 +1,142 @@
+{
+  "project": "2D-RPG-Project",
+  "unity": "2022.3.53f1",
+  "commit": "fe8b1f72841bade09ed5a1c39dbf1df5996c78df",
+  "working_tree_has_local_changes": false,
+  "native_unity_validation": false,
+  "file_count": 246,
+  "zip": "2D-RPG-Project-iteration-004-fe8b1f7.zip",
+  "bytes": 483401,
+  "sha256": "059da99931123778e25e51fb6a721c1a3091ac9855aade051e4c5d7047b5edc4",
+  "delivery_complete": true,
+  "implementation_commit": "1e7eb01c359eeba55b42c038652701f0a54bbb38",
+  "baseline_commit": "53bd47eb63f5b512c1981605341d64eee8d2cfe7",
+  "recovery_checkpoint": "b1fac682bda6da227dbf25e22fced7ad39088d2d",
+  "source_commit_url": "https://github.com/jinze909/2D-RPG-Project/commit/fe8b1f72841bade09ed5a1c39dbf1df5996c78df",
+  "source_branches": [
+    "rpg/iteration-002-clearing",
+    "rpg/iteration-004-combat-reliability"
+  ],
+  "master_sha": "2e8c154f219256454ad981d6ebf11fdea5865d7d",
+  "master_updated": false,
+  "prs": [
+    {
+      "number": 1,
+      "url": "https://github.com/jinze909/2D-RPG-Project/pull/1",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "base_ref": "master",
+      "base_sha": "2e8c154f219256454ad981d6ebf11fdea5865d7d",
+      "head_ref": "rpg/iteration-002-clearing",
+      "head_sha": "fe8b1f72841bade09ed5a1c39dbf1df5996c78df",
+      "merge_commit_sha": null
+    },
+    {
+      "number": 2,
+      "url": "https://github.com/jinze909/2D-RPG-Project/pull/2",
+      "state": "closed",
+      "draft": false,
+      "merged": true,
+      "base_ref": "rpg/iteration-002-clearing",
+      "base_sha": "de0614399bb878ae182f90f81074359824e5057b",
+      "head_ref": "rpg/iteration-003-clearing-polish",
+      "head_sha": "77dd22b1e08292a0e7d2d9ef0a6b085e3c449eea",
+      "merge_commit_sha": "baffbfa5a8962233585d98ebdd20ff3c522d1e07"
+    },
+    {
+      "number": 3,
+      "url": "https://github.com/jinze909/2D-RPG-Project/pull/3",
+      "state": "closed",
+      "draft": false,
+      "merged": true,
+      "base_ref": "rpg/iteration-003-clearing-polish",
+      "base_sha": "53bd47eb63f5b512c1981605341d64eee8d2cfe7",
+      "head_ref": "rpg/iteration-004-combat-reliability",
+      "head_sha": "1e7eb01c359eeba55b42c038652701f0a54bbb38",
+      "merge_commit_sha": "77dd22b1e08292a0e7d2d9ef0a6b085e3c449eea"
+    }
+  ],
+  "project_checks": 150,
+  "distribution_checks": 6,
+  "project_distribution_total": 156,
+  "test_result": "passed",
+  "source_api_compile": {
+    "production_files": 16,
+    "actual_engine_editor_ugui_references": 86,
+    "input_system": "substituted boundary",
+    "native_import": false
+  },
+  "native_validation": {
+    "license_probe": "No valid Unity Editor license found; exited 1 before import",
+    "native_import": false,
+    "native_tests": false,
+    "real_input_physics": false,
+    "render_hud_animator": false,
+    "audio_playthrough": false,
+    "player_build": false
+  },
+  "delivery_commit": "5c7e6776fed1fabde052cc327f9b192a9124e143",
+  "download_url": "https://raw.githubusercontent.com/jinze909/2D-RPG-Project/5c7e6776fed1fabde052cc327f9b192a9124e143/2D-RPG-Project-iteration-004-fe8b1f7.zip",
+  "checksum_url": "https://raw.githubusercontent.com/jinze909/2D-RPG-Project/5c7e6776fed1fabde052cc327f9b192a9124e143/2D-RPG-Project-iteration-004-fe8b1f7.zip.sha256",
+  "archive_entries": 247,
+  "archive_crc_verified": true,
+  "all_source_file_bytes_matched": true,
+  "lfs_pointers_in_archive": false,
+  "download_verification": "passed: HTTPS bytes/checksum, SHA-256, CRC, source metadata and all 246 source files matched",
+  "archive_file_manifest_sha256": "e0fbe371574a9d03a4e7695d5d33961c8d0a97ac9771020c57dc926efb41e013",
+  "hosted_ci": {
+    "run_id": 37884850296,
+    "url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37884850296",
+    "head_sha": "fe8b1f72841bade09ed5a1c39dbf1df5996c78df",
+    "status": "completed",
+    "conclusion": "success",
+    "job_id": 113672434864,
+    "step_count": 12,
+    "all_steps_success": true,
+    "artifact_id": 11596395886,
+    "artifact_url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37884850296/artifacts/11596395886",
+    "artifact_name": "unity-project-fe8b1f72841bade09ed5a1c39dbf1df5996c78df",
+    "artifact_bytes": 437558,
+    "artifact_expired_at_check": false,
+    "artifact_expires_at": "2026-11-08T04:39:27Z",
+    "artifact_container_digest": "sha256:6d236a5e69c2ae419dbf2520fc162fcc97fdb5e429a539e37aeaad16f13ab45f",
+    "artifact_downloaded_by_this_check": false,
+    "native_unity_run": false
+  },
+  "source_branch_mirror_ci": {
+    "run_id": 37884850674,
+    "head_sha": "fe8b1f72841bade09ed5a1c39dbf1df5996c78df",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37884850674"
+  },
+  "source_handoff": {
+    "path": "docs/iterations/2026-10-08-iteration-004/handoff.md",
+    "score": 100,
+    "url": "https://github.com/jinze909/2D-RPG-Project/blob/fe8b1f72841bade09ed5a1c39dbf1df5996c78df/docs/iterations/2026-10-08-iteration-004/handoff.md"
+  },
+  "final_handoff": {
+    "file": "iteration-004-final-handoff.md",
+    "score": 100,
+    "sha256": "b7e92a4288628c3a1b788baae256c4faab41aa79109b93115318e4e788957443"
+  },
+  "archive_verifier": {
+    "file": "verify-iteration-004-archive.py",
+    "sha256": "3afdcd0a1baad02132b9b944da40e8cdb9d3c8178f5efb6f1a1227a51c2fbea9",
+    "self_checks_passed": 23,
+    "self_check_scope": "distribution verifier fixtures; not included in 156 project/distribution total"
+  },
+  "next_priority": "Licensed international Unity 2022.3.53f1 native acceptance, then assess PR #1 for master; preserve completed fourth-round fixes",
+  "earlier_deliveries_preserved": true,
+  "source_working_tree_clean_at_delivery": true,
+  "source_unpushed_commits_at_delivery": 0,
+  "source_refs_synced_at_delivery": true,
+  "independent_delivery_review": "passed: live PR/CI/artifact metadata, separate fixed HTTPS ZIP/checksum download, all archive bytes/source, final handoff cmp, historical ZIP/checksum Git blobs preserved",
+  "unfinished_work": [
+    "Licensed native import/package/Input System/physics/EditMode/PlayMode",
+    "Native Animator/render/HUD/audio/playthrough and target player build",
+    "Quality-gated PR #1 assessment after native evidence",
+    "Future full-RPG exploration/persistence/inventory/professions systems"
+  ]
+}

@@ -1,5 +1,38 @@
 # Unity project deliveries
 
+## Current delivery — Iteration 4 combat reliability
+
+Source: [fe8b1f72841bade09ed5a1c39dbf1df5996c78df](https://github.com/jinze909/2D-RPG-Project/commit/fe8b1f72841bade09ed5a1c39dbf1df5996c78df).
+Unity: international 2022.3.53f1.
+[Download the verified complete project ZIP](https://raw.githubusercontent.com/jinze909/2D-RPG-Project/5c7e6776fed1fabde052cc327f9b192a9124e143/2D-RPG-Project-iteration-004-fe8b1f7.zip).
+SHA-256: 059da99931123778e25e51fb6a721c1a3091ac9855aade051e4c5d7047b5edc4.
+
+483401 bytes; 246 source files plus metadata. Real LFS images, both scenes,
+all .meta, scripts, Packages, ProjectSettings, docs, tests/tools, workflow and
+eight licensed skills are included. The immutable HTTPS download was checked
+against the clean source: exact file set, every byte/SHA, metadata, CRC and checksum
+passed. Caches and credential files are excluded.
+
+150 actual-source project checks + six distribution tests pass; 16 production
+sources compile against 86 real Unity Engine/Editor/uGUI references, Input System
+substituted. [Exact-source CI 37884850296](https://github.com/jinze909/2D-RPG-Project/actions/runs/37884850296)
+completed successfully through all 12 steps and Artifact upload. The hosted
+Artifact is a separate archive; use the direct ZIP hash above for this download.
+
+PR #3 and #2 are merged into the isolated candidate. PR #1 remains draft and
+master unchanged because licensed native import/input/physics/render/audio/play
+and player builds remain unrun. Fourth-round code and delivery are complete;
+native acceptance is the next priority.
+
+[Actual delivery receipt](iteration-004-delivery.json) ·
+[Final continuation handoff](iteration-004-final-handoff.md) ·
+[Download verification](iteration-004-download-verification.json).
+
+The earlier deliveries below retain their original identities and stage-specific
+PR states. Current source and integration status are recorded above.
+
+## Earlier prototype delivery
+
 Source commit: [a81a6ce3617abdabc44706415d7059882c9928ec](https://github.com/jinze909/2D-RPG-Project/commit/a81a6ce3617abdabc44706415d7059882c9928ec).
 Unity: international 2022.3.53f1.
 
@@ -31,7 +64,7 @@ see iteration-002-delivery.json for observed receipt.
 
 Current source hosted CI completed successfully: actual project checks, boundary tests, ZIP packaging and upload all passed. Native Unity acceptance remains pending.
 
-## Current candidate project
+## Earlier iteration-2 candidate project
 
 Source: [de0614399bb878ae182f90f81074359824e5057b](https://github.com/jinze909/2D-RPG-Project/commit/de0614399bb878ae182f90f81074359824e5057b).
 [Download current complete project ZIP](2D-RPG-Project-iteration-002-de06143.zip).
