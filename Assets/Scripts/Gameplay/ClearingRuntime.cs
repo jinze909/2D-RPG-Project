@@ -218,6 +218,9 @@ namespace Rpg.Gameplay
                 player.Stats.Mana + ClearingRun.ManaRegenerationRate * Time.fixedDeltaTime);
             bool contactedSentinel = false;
             bool defeatedSentinel = false;
+            // Resolve this player's admitted action against every target before
+            // enemy contacts can end the run. A lethal enemy's array index must
+            // not decide how many targets the same burst reaches on this tick.
             for (int i = 0; i < enemies.Length; i++)
             {
                 EnemyView enemy = enemies[i];
@@ -238,6 +241,12 @@ namespace Rpg.Gameplay
                         continue;
                     }
                 }
+            }
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                EnemyView enemy = enemies[i];
+                SentinelState state = run.GetSentinel(i);
+                if (state.IsDead) continue;
                 Vector2 toPlayer = PlayerPoint - enemy.Body.position;
                 bool clear = ClearLine(enemy.Body.position, PlayerPoint);
                 if (state.AttackPhase == SentinelAttackPhase.Ready && clear && toPlayer.magnitude <= .85f)
@@ -491,6 +500,18 @@ namespace Rpg.Gameplay
             }
             if (movement != null && run != null)
             {
+                // Hiding objects alone lets RefreshViews/FixedUpdate resurrect
+                // their saved contacts and pulses after this component returns.
+                run.CancelTransientActions();
+                strikeId = 0;
+                foreach (EnemyView enemy in enemies)
+                {
+                    if (enemy == null) continue;
+                    enemy.HurtUntil = 0f;
+                    enemy.ImpactStartedAt = 0d;
+                    enemy.ImpactUntil = 0d;
+                    enemy.ImpactWasKill = false;
+                }
                 StopActors();
                 movement.SetControlEnabled(!run.IsDead && !run.IsComplete);
             }

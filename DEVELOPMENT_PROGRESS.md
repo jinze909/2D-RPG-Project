@@ -1,5 +1,35 @@
 # Development progress
 
+## Iteration 4 combat reliability — 2026-10-08 (America/Los_Angeles)
+
+Continued the interrupted work from checkpoint b1fac682bda6da227dbf25e22fced7ad39088d2d.
+Two actual-source defects were reproduced and corrected:
+
+- Disable only hid strike/warnings/impacts while the rule action and effect
+  deadlines survived. The next refresh/physics tick resurrected them and could
+  damage a new target without new input. CancelTransientActions invalidates
+  current player/enemy contacts; OnDisable clears pulse/hurt deadlines. HP, MP,
+  enemy health, coins, clock, cooldowns and immunity remain unchanged. Normal
+  pause still freezes attacks/effects; terminal movement remains locked.
+- Player contacts and retaliation shared one enemy loop. A low-index lethal
+  enemy stopped a burst before later targets received the admitted hit. Separate
+  passes now resolve the whole player action before remaining enemy contacts.
+  Three lethal-attacker index permutations agree; same-tick killed enemies do
+  not retaliate, rewards/gate/cues remain once-only.
+
+Red reproduction: 17 presentation checks passed, six failed before correction.
+Fresh final project validation: 14 movement + 40 resource + 9 input/animation +
+36 pure rules + 15 scene contracts + 26 presentation + 10 raster/hero = 150 pass,
+zero fail; six distribution tests also pass (156 total). API compilation passes
+for 16 sources against 86 real Unity 2022.3.53f1 references, Input substituted.
+No scenes, hero resources, packages or settings were modified. Independent source
+review and fresh focused re-execution found no new regression. Native import,
+physics, rendering, audio/playtest and platform build remain blocked/unrun.
+
+Baseline checkpoint push CI succeeded at run 37883493542. New game source needs
+its own exact-commit CI after the next push. Candidate integration, source ZIP
+publication and final session handoff remain pending at this stage.
+
 ## Iteration 4 recovery checkpoint — 2026-10-08 (America/Los_Angeles)
 
 Resumed the interrupted fourth round at 53bd47e on

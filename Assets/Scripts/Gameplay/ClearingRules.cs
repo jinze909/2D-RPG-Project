@@ -233,6 +233,16 @@ namespace Rpg.Gameplay
             return true;
         }
 
+        /// <summary>
+        /// Interrupt active contacts when the encounter is disabled. Retain run
+        /// progress, cooldowns and immunity; resuming requires fresh attack tokens.
+        /// Pausing must not call this: pause freezes the current simulation state.
+        /// </summary>
+        public void CancelTransientActions()
+        {
+            CancelActions();
+        }
+
         /// <summary>Retry resets the run; the bridge separately resets runtime player resources and positions.</summary>
         public void ResetRun()
         {

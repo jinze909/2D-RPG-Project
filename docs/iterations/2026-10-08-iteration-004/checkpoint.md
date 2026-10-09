@@ -52,3 +52,15 @@ green; this checkpoint will need its own hosted verification after push.
 
 Current native barriers and unimplemented full-RPG features are not closed by
 this checkpoint. No paid autonomous API or recurring job was enabled.
+
+## Completed implementation stage
+
+Both pending root causes above are now fixed in ClearingRules/ClearingRuntime.
+Original red reproduction had 17 pass/6 fail. Final focused checks have 26
+presentation and 36 pure-rule passes; full project validation has 150 passes,
+distribution six passes, and real Unity API compilation still passes. Sources,
+assets and bundle hashes pass; no native acceptance is claimed. The implementation
+checkpoint commit contains this updated file and final JSON/log evidence.
+Only hosted implementation CI, candidate integration, ZIP publication and final
+handoff remain outstanding. Read the final handoff/publication when present;
+these dated checkpoint sections describe their own stage, not current PR state.

@@ -123,6 +123,7 @@ public static class PresentationBehaviorChecks
         internal void Refresh() { Invoke(Runtime, "RefreshViews"); }
         internal Transform Impact(int id = 0) { return Get<Transform>(Enemies[id], "Impact"); }
         internal void Position(int id, Vector2 value) { Get<Rigidbody2D>(Enemies[id], "Body").position = value; }
+        internal bool ControlsEnabled { get { return Get<bool>(Get<PlayerMovement>(Runtime, "movement"), "controlsEnabled"); } }
     }
 
     private static void LowerToLastHit(ClearingRun run, int target)
@@ -330,6 +331,191 @@ public static class PresentationBehaviorChecks
             Expect(f.Audio.StopRequests == stops + 1 && f.Run.Time == time,
                    "disable retained pending sounds or advanced simulation time");
         });
+        test("first refresh after disable cannot restore an old strike warning or impact", () =>
+        {
+            var f = new RuntimeFixture(); f.Light(); f.Tick(); f.Refresh();
+            Expect(f.Run.PlayerAttackActive && f.Impact().gameObject.activeSelf
+                   && Get<Transform>(f.Enemies[0], "Warning").gameObject.activeSelf,
+                   "disable setup is missing an attack warning or impact");
+            Invoke(f.Runtime, "OnDisable"); f.Refresh();
+            Expect(!Get<SpriteRenderer>(f.Runtime, "strike").gameObject.activeSelf,
+                   "first refresh resurrected the interrupted player strike");
+            foreach (object enemy in f.Enemies)
+                Expect(!Get<Transform>(enemy, "Warning").gameObject.activeSelf
+                       && !Get<Transform>(enemy, "Impact").gameObject.activeSelf,
+                       "first refresh resurrected an interrupted warning or impact");
+        });
+        test("a fresh target takes no old player contact after disable and resume without input", () =>
+        {
+            var f = new RuntimeFixture(); f.Light(); f.Tick();
+            Invoke(f.Runtime, "OnDisable");
+            // Inside the old strike but outside enemy attack initiation range.
+            f.Position(1, new Vector2(.2f, -1.1f));
+            int cues = f.Audio.OneShots.Count;
+            f.Tick(); f.Refresh();
+            Expect(Near(f.Run.GetSentinel(1).Health, ClearingRun.SentinelMaxHealth),
+                   "resumed physics dealt stale player damage without a fresh attack input");
+            Expect(f.Audio.OneShots.Count == cues && !f.Impact(1).gameObject.activeSelf,
+                   "resumed physics emitted a stale contact cue or impact");
+        });
+        test("an interrupted enemy active window cannot hit after disable and resume", () =>
+        {
+            var f = new RuntimeFixture();
+            f.Position(0, new Vector2(4f, 0f));
+            Set(f.Enemies[0], "AttackCenter", Vector2.zero);
+            Expect(f.Run.BeginSentinelAttack(0), "enemy swing setup rejected");
+            f.Run.Advance(ClearingRun.TelegraphDuration);
+            Expect(f.Run.GetSentinel(0).AttackPhase == SentinelAttackPhase.Active, "setup is not an active enemy swing");
+            Invoke(f.Runtime, "OnDisable");
+            float health = f.Stats.Health;
+            f.Tick(); f.Refresh();
+            Expect(Near(f.Stats.Health, health), "resumed physics applied an interrupted enemy hit");
+            Expect(!Get<Transform>(f.Enemies[0], "Warning").gameObject.activeSelf,
+                   "interrupted active warning returned after resume");
+        });
+        test("disable preserves resources rewards cooldowns immunity and simulation time", () =>
+        {
+            var f = new RuntimeFixture(); LowerToLastHit(f.Run, 2);
+            long token;
+            Expect(f.Run.BeginPlayerAttack(PlayerAttackKind.Light, 12f, out token)
+                   && f.Run.TryHitSentinel(token, 2), "reward setup failed");
+            f.Run.Advance(ClearingRun.LightCooldown);
+            Expect(f.Run.BeginSentinelAttack(0), "immunity swing setup rejected");
+            f.Run.Advance(ClearingRun.TelegraphDuration);
+            Expect(f.Run.TryResolveSentinelHit(0), "immunity setup rejected");
+            f.Light(); f.Run.Advance(ClearingRun.LightAttackWindow); f.Burst();
+            f.Stats.Health = 7f;
+            float health = f.Stats.Health, mana = f.Stats.Mana;
+            float light = f.Run.LightCooldownRemaining, burst = f.Run.BurstCooldownRemaining;
+            float immunity = f.Run.PlayerInvulnerabilityRemaining;
+            double time = f.Run.Time;
+            int rewards = f.Run.RewardCoins, defeats = f.Run.DefeatedCount;
+            float[] enemyHealth = new float[ClearingRun.SentinelCount];
+            for (int i = 0; i < enemyHealth.Length; i++) enemyHealth[i] = f.Run.GetSentinel(i).Health;
+            Expect(light > 0f && burst > 0f && immunity > 0f && defeats == 1, "preservation setup has no live timers or reward");
+            Invoke(f.Runtime, "OnDisable"); f.Refresh();
+            Expect(Near(f.Stats.Health, health) && Near(f.Stats.Mana, mana) && f.Run.Time == time,
+                   "disable reset resources or advanced simulation");
+            Expect(f.Run.RewardCoins == rewards && f.Run.DefeatedCount == defeats && !f.Run.IsDead && !f.Run.IsComplete,
+                   "disable erased progression or ended the run");
+            Expect(Near(light, f.Run.LightCooldownRemaining) && Near(burst, f.Run.BurstCooldownRemaining)
+                   && Near(immunity, f.Run.PlayerInvulnerabilityRemaining), "disable refunded cooldown or immunity");
+            for (int i = 0; i < enemyHealth.Length; i++)
+                Expect(Near(enemyHealth[i], f.Run.GetSentinel(i).Health), "disable reset a sentinel health value");
+            Expect(f.Run.GetSentinel(2).IsDead && !f.Run.PlayerAttackActive, "disable revived a defeated enemy or kept a player action");
+        });
+        test("disable keeps terminal movement locked and restores the prior pause time scale", () =>
+        {
+            foreach (bool complete in new[] { false, true })
+            {
+                var f = new RuntimeFixture();
+                if (complete)
+                {
+                    for (int i = 0; i < ClearingRun.SentinelCount; i++)
+                    {
+                        LowerToLastHit(f.Run, i);
+                        long token;
+                        Expect(f.Run.BeginPlayerAttack(PlayerAttackKind.Light, 12f, out token)
+                               && f.Run.TryHitSentinel(token, i), "completion defeat setup failed");
+                        f.Run.Advance(ClearingRun.LightCooldown);
+                    }
+                    Expect(f.Run.TryCompleteObjective(), "completion setup rejected");
+                }
+                else { f.Stats.Health = 0f; f.Tick(); }
+                Invoke(f.Runtime, "StopActors");
+                Time.timeScale = .4f; Invoke(f.Runtime, "SetPaused", true);
+                Invoke(f.Runtime, "OnDisable");
+                Expect(!f.ControlsEnabled, "disabling a terminal run unlocked movement");
+                Expect(Near(Time.timeScale, .4f) && !Get<bool>(f.Runtime, "paused"),
+                       "disable did not restore the time scale saved before pause");
+                Expect(complete ? f.Run.IsComplete && !f.Run.IsDead : f.Run.IsDead && !f.Run.IsComplete,
+                       "disable changed the terminal result");
+            }
+        });
+        test("pause retains the player action and its warning until simulation resumes", () =>
+        {
+            var f = new RuntimeFixture(); f.Light(); f.Tick(); f.Refresh();
+            double time = f.Run.Time; float cooldown = f.Run.LightCooldownRemaining;
+            float health = f.Run.GetSentinel(0).Health;
+            Invoke(f.Runtime, "SetPaused", true);
+            for (int i = 0; i < 10; i++) { f.Tick(); f.Refresh(); }
+            Expect(f.Run.PlayerAttackActive && Get<SpriteRenderer>(f.Runtime, "strike").gameObject.activeSelf,
+                   "pause canceled the player attack instead of freezing it");
+            Expect(Get<Transform>(f.Enemies[0], "Warning").gameObject.activeSelf
+                   && f.Run.Time == time && Near(cooldown, f.Run.LightCooldownRemaining),
+                   "pause canceled a warning or advanced attack timers");
+            Invoke(f.Runtime, "SetPaused", false); f.Tick();
+            Expect(f.Run.Time > time && Near(health, f.Run.GetSentinel(0).Health),
+                   "resume failed to advance or duplicated the frozen player contact");
+        });
+        for (int lethalId = 0; lethalId < ClearingRun.SentinelCount; lethalId++)
+        {
+            int attacker = lethalId;
+            test("all same-tick burst contacts resolve before lethal enemy index " + attacker, () =>
+            {
+                var f = new RuntimeFixture();
+                for (int i = 0; i < ClearingRun.SentinelCount; i++)
+                    f.Position(i, new Vector2((i - 1) * .2f, -1.1f));
+                f.Stats.Health = ClearingRun.SentinelDamage;
+                Set(f.Enemies[attacker], "AttackCenter", Vector2.zero);
+                Expect(f.Run.BeginSentinelAttack(attacker), "lethal swing setup rejected");
+                f.Run.Advance(ClearingRun.TelegraphDuration - Time.fixedDeltaTime * .5f);
+                f.Burst(); int swingCues = f.Audio.OneShots.Count;
+                f.Tick(); f.Refresh();
+                for (int i = 0; i < ClearingRun.SentinelCount; i++)
+                    Expect(Near(f.Run.GetSentinel(i).Health, ClearingRun.SentinelMaxHealth - ClearingRun.BurstDamage),
+                           "same admitted burst skipped target " + i + " when lethal enemy occupied index " + attacker);
+                Expect(f.Run.IsDead && Near(f.Stats.Health, 0f) && f.Run.DefeatedCount == 0 && f.Run.RewardCoins == 0,
+                       "lethal same-tick contact did not end with equivalent health and progression");
+                Expect(f.Audio.OneShots.Count == swingCues + 1, "lethal tick produced duplicate hurt or terminal hit audio");
+                Expect(!f.ControlsEnabled && !f.Run.PlayerAttackActive
+                       && !Get<SpriteRenderer>(f.Runtime, "strike").gameObject.activeSelf,
+                       "lethal tick retained player control or an action");
+                foreach (object enemy in f.Enemies)
+                    Expect(!Get<Transform>(enemy, "Warning").gameObject.activeSelf
+                           && !Get<Transform>(enemy, "Impact").gameObject.activeSelf,
+                           "lethal tick retained live warning or impact presentation");
+                double time = f.Run.Time;
+                f.Tick();
+                Expect(f.Run.Time == time, "terminal tick continued the simulation");
+            });
+        }
+        for (int activeId = 0; activeId < ClearingRun.SentinelCount; activeId++)
+        {
+            int attacker = activeId;
+            test("same-tick burst defeats suppress retaliation and open gate with active enemy index " + attacker, () =>
+            {
+                var f = new RuntimeFixture();
+                for (int i = 0; i < ClearingRun.SentinelCount; i++)
+                {
+                    LowerToLastHit(f.Run, i);
+                    f.Position(i, new Vector2((i - 1) * .2f, -1.1f));
+                }
+                f.Stats.Health = ClearingRun.SentinelDamage;
+                Set(f.Enemies[attacker], "AttackCenter", Vector2.zero);
+                Expect(f.Run.BeginSentinelAttack(attacker), "finishing swing setup rejected");
+                f.Run.Advance(ClearingRun.TelegraphDuration - Time.fixedDeltaTime * .5f);
+                f.Burst(); int swingCues = f.Audio.OneShots.Count;
+                f.Tick(); f.Refresh();
+                Expect(Near(f.Stats.Health, ClearingRun.SentinelDamage) && !f.Run.IsDead && !f.Run.IsComplete,
+                       "sentinel defeated by this tick's player contact still retaliated");
+                Expect(f.Run.DefeatedCount == ClearingRun.SentinelCount
+                       && f.Run.RewardCoins == ClearingRun.CoinsPerSentinel * ClearingRun.SentinelCount
+                       && f.Run.GateUnlocked, "same-tick defeats lost rewards or gate progression");
+                Expect(!Get<ClearingVisuals>(f.Runtime, "visuals").Gate.activeSelf,
+                       "full same-tick clear did not remove the gate");
+                for (int i = 0; i < ClearingRun.SentinelCount; i++)
+                    Expect(f.Run.GetSentinel(i).IsDead && !Get<GameObject>(f.Enemies[i], "Object").activeSelf
+                           && !Get<Transform>(f.Enemies[i], "Warning").gameObject.activeSelf
+                           && f.Impact(i).gameObject.activeSelf,
+                           "one same-tick defeat retained its actor/warning or lost kill feedback");
+                Expect(f.Audio.OneShots.Count == swingCues + 2,
+                       "one burst and gate unlock did not produce exactly one kill cue and one reward cue");
+                f.Tick(); f.Refresh();
+                Expect(f.Run.RewardCoins == ClearingRun.CoinsPerSentinel * ClearingRun.SentinelCount
+                       && f.Audio.OneShots.Count == swingCues + 2, "repeated tick duplicated kill rewards or clear audio");
+            });
+        }
         Console.WriteLine("RESULT " + passed + " passed, " + failed + " failed; actual project C# with recording boundaries, not native Unity.");
         return failed == 0 ? 0 : 1;
     }

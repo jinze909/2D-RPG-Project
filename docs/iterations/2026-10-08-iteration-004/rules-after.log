@@ -1,0 +1,38 @@
+Compiling actual clearing rules and deterministic tests without Unity doubles
+PASS new run has three living sentinels and a locked objective
+PASS invalid sentinel contacts cannot mutate the run
+PASS invalid sentinel getters report a clear argument error
+PASS invalid mana and attack kinds never start actions or cooldowns
+PASS insufficient mana is rejected and an exact six mana balance is accepted
+PASS light attack does not require mana
+PASS light cooldown rejects held input until 0.45 seconds
+PASS burst cooldown rejects held input until 1.2 seconds
+PASS one contact window cannot overlap another player action
+PASS each player attack damages each sentinel at most once
+PASS a burst may hit all three distinct enemies once
+PASS expired attack contacts cannot damage enemies
+PASS wrong and superseded player tokens cannot deal damage
+PASS overkill clamps sentinel health at zero and rewards once
+PASS gate unlock requires three unique defeats
+PASS objective cannot complete before the gate is unlocked
+PASS objective completion is idempotent and stops combat
+PASS enemy damage waits for the full telegraph
+PASS enemy active phase allows at most one contact
+PASS enemy cannot begin again during telegraph or active or recovery
+PASS recovery contacts never deal damage
+PASS a long frame skips expired contact instead of delivering delayed damage
+PASS shared immunity prevents simultaneous sentinel pileup damage
+PASS immunity expires and a later fresh swing can hit
+PASS killing a winding-up sentinel cancels its hit
+PASS death cancels contacts and freezes all gameplay until retry
+PASS a dead player cannot claim an unlocked objective
+PASS retry resets progress enemies time cooldowns immunity and contact state
+PASS retry invalidates earlier attack tokens even at identical run time
+PASS invalid simulation deltas do not advance timers or enemy phases
+PASS cancel transient actions invalidates player contacts and every live enemy phase
+PASS cancel transient actions preserves progression health clock cooldowns and immunity
+PASS canceled tokens stay rejected after fresh actions and fresh enemy swings remain available
+PASS cancel transient actions is idempotent and preserves death and objective completion
+PASS full clear complete retry complete loop is replayable
+PASS deterministic mixed inputs preserve health progression and timer invariants
+Clearing rules: 36 passed, 0 failed; pure production C#, no Unity stubs.

@@ -23,6 +23,9 @@ China package services. Preserve the specified editor version.
 - Preserve attack tokens, stationary warning footprints, once-only rewards,
   HP-death synchronization, pause cleanup and full gate-to-boundary coverage.
   Player attacks use independent world effects and retain the existing walk cycle.
+  Resolve all player contacts before enemy retaliation on each physics tick.
+  Disable cancels transient contacts/effect deadlines without refunding cooldowns
+  or erasing progression; pause freezes those actions without canceling them.
 - Read `docs/game/COMBAT_CLEARING.md` for controls and native acceptance steps.
   Run `tools/validate_project.py` (movement/resources/input/animation/combat/scene,
   actual presentation behavior and managed-raster checks) and the distribution
