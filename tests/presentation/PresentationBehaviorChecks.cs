@@ -83,6 +83,7 @@ public static class PresentationBehaviorChecks
             Runtime.gameObject = new GameObject("Runtime");
             Runtime.transform = Runtime.gameObject.transform;
             Physics2D.LinecastResponse = null;
+            Physics2D.LinecastQuery = null;
             Time.timeScale = 1f;
             Set(Player, "stats", Stats);
             var animator = new Animator();
@@ -559,6 +560,325 @@ public static class PresentationBehaviorChecks
         });
     }
 
+    private static RuntimeFixture RoleFixture(int id, Vector2 enemyPoint, Vector2 playerPoint)
+    {
+        var f = new RuntimeFixture();
+        for (int i = 0; i < f.Enemies.Length; i++) f.Position(i, new Vector2(20f + i, 20f));
+        f.Position(id, enemyPoint);
+        f.Body.position = playerPoint - ClearingVisuals.PlayerFootOffset;
+        Invoke(f.Runtime, "ConfigureSentinelRole", f.Enemies[id], id);
+        return f;
+    }
+
+    private static void EnterActive(RuntimeFixture f, int id)
+    {
+        SentinelState state = f.Run.GetSentinel(id);
+        Expect(state.AttackPhase == SentinelAttackPhase.Telegraph, "actual tactical initiation did not telegraph");
+        f.Run.Advance(ClearingRun.WindupDuration(state.AttackKind) - Time.fixedDeltaTime * .5f);
+        f.Tick();
+        Expect(state.AttackPhase == SentinelAttackPhase.Active, "actual runtime tick did not enter the role's active phase");
+    }
+
+    private static Transform NamedChild(Transform parent, string name)
+    {
+        foreach (Transform child in parent.Children)
+            if (child.gameObject.name == name) return child;
+        throw new Exception("Authored child absent: " + name);
+    }
+
+    private static void AddTacticsChecks(Action<string, Action> test)
+    {
+        test("actual role configuration admits each distinct attack in FixedUpdate", () =>
+        {
+            foreach (int id in new[] { 0, 1, 2 })
+            {
+                float distance = id == 0 ? .6f : id == 1 ? 2f : 3f;
+                var f = RoleFixture(id, new Vector2(-distance, 0f), Vector2.zero);
+                f.Tick();
+                SentinelAttackKind expected = SentinelTactics.RoleForIndex(id);
+                Expect(Get<SentinelAttackKind>(f.Enemies[id], "Kind") == expected
+                    && f.Run.GetSentinel(id).AttackKind == expected
+                    && f.Run.GetSentinel(id).AttackPhase == SentinelAttackPhase.Telegraph,
+                    "configured role did not govern real attack admission for index " + id);
+                Expect(Get<SentinelFootprint>(f.Enemies[id], "Footprint") != null,
+                    "actual initiated attack has no locked shared footprint");
+            }
+        });
+        test("Lancer locks diagonal aim and holds position through charge active and recovery", () =>
+        {
+            var f = RoleFixture(1, new Vector2(-1.8f, -1.8f), Vector2.zero); f.Tick();
+            object enemy = f.Enemies[1];
+            var footprint = Get<SentinelFootprint>(enemy, "Footprint");
+            Expect(Near(footprint.AngleDegrees, 45f) && Near(footprint.Width, 3.2f) && Near(footprint.Height, .7f),
+                "diagonal Lancer did not lock a narrow directional lane");
+            Vector2 origin = Get<Rigidbody2D>(enemy, "Body").position;
+            f.Body.position = new Vector2(2f, -2f) - ClearingVisuals.PlayerFootOffset;
+            f.Tick();
+            Expect(object.ReferenceEquals(footprint, Get<SentinelFootprint>(enemy, "Footprint")),
+                "Lancer retargeted after the player dodged");
+            EnterActive(f, 1);
+            f.Run.Advance(ClearingRun.ActiveDuration(SentinelAttackKind.Lance)); f.Tick();
+            Expect(f.Run.GetSentinel(1).AttackPhase == SentinelAttackPhase.Recovery
+                && Get<Rigidbody2D>(enemy, "Body").position == origin
+                && Get<Rigidbody2D>(enemy, "Body").velocity == Vector2.zero,
+                "stationary Lancer moved while committed or recovering");
+        });
+        test("actual narrow rotated lane rejects side dodges and accepts one later contact", () =>
+        {
+            foreach (bool diagonal in new[] { false, true })
+            {
+                Vector2 origin = diagonal ? new Vector2(-1.8f, -1.8f) : new Vector2(-2f, 0f);
+                var f = RoleFixture(1, origin, Vector2.zero); f.Tick();
+                var footprint = Get<SentinelFootprint>(f.Enemies[1], "Footprint");
+                Vector2 center = new Vector2(footprint.CenterX, footprint.CenterY);
+                Vector2 aim = (Vector2.zero - origin).normalized;
+                Vector2 side = new Vector2(-aim.y, aim.x);
+                f.Body.position = center + side * .4f - ClearingVisuals.PlayerFootOffset;
+                int cues = f.Audio.OneShots.Count; EnterActive(f, 1);
+                Expect(Near(f.Stats.Health, 10f) && f.Audio.OneShots.Count == cues,
+                    "player beside the visible lane received damage or hurt audio");
+                f.Body.position = center - ClearingVisuals.PlayerFootOffset; f.Tick(); f.Tick();
+                Expect(Near(f.Stats.Health, 10f - ClearingRun.SentinelDamage) && f.Audio.OneShots.Count == cues + 1,
+                    "one in-lane contact did not apply exactly one damage/audio event");
+            }
+        });
+        test("locked attack still requires current wall line of sight before contact", () =>
+        {
+            var f = RoleFixture(1, new Vector2(-2f, 0f), Vector2.zero); f.Tick();
+            int cues = f.Audio.OneShots.Count; Physics2D.LinecastResponse = new BoxCollider2D();
+            try
+            {
+                EnterActive(f, 1);
+                Expect(Near(f.Stats.Health, 10f) && f.Audio.OneShots.Count == cues,
+                    "wall-blocked locked lane dealt damage or sounded a hit");
+                Physics2D.LinecastResponse = null; f.Tick();
+                Expect(Near(f.Stats.Health, 8f) && f.Audio.OneShots.Count == cues + 1,
+                    "unblocked valid contact was prematurely consumed by the wall rejection");
+            }
+            finally { Physics2D.LinecastResponse = null; }
+        });
+        test("Seer retreats when crowded and casts a locked mark when retreat is obstructed", () =>
+        {
+            var retreat = RoleFixture(2, new Vector2(1f, 0f), Vector2.zero); retreat.Tick();
+            Expect(Get<Rigidbody2D>(retreat.Enemies[2], "Body").position.x > 1f
+                && retreat.Run.GetSentinel(2).AttackPhase == SentinelAttackPhase.Ready
+                && Get<SentinelFootprint>(retreat.Enemies[2], "Footprint") == null,
+                "crowded Seer did not request retreat before attacking");
+            var f = RoleFixture(2, new Vector2(1f, 0f), Vector2.zero);
+            Physics2D.LinecastQuery = (start, end, mask) => end.x > start.x ? new BoxCollider2D() : null;
+            try
+            {
+                f.Tick(); var footprint = Get<SentinelFootprint>(f.Enemies[2], "Footprint");
+                Expect(f.Run.GetSentinel(2).AttackPhase == SentinelAttackPhase.Telegraph && footprint != null
+                    && Near(footprint.CenterX, 0f) && Near(footprint.CenterY, 0f)
+                    && Near(footprint.Width, 1.4f) && Get<Rigidbody2D>(f.Enemies[2], "Body").position == new Vector2(1f, 0f),
+                    "wall-blocked retreat left the Seer inert instead of marking the locked player point");
+                f.Body.position = new Vector2(.8f, 0f) - ClearingVisuals.PlayerFootOffset;
+                EnterActive(f, 2); f.Refresh();
+                Expect(Near(f.Stats.Health, 10f) && object.ReferenceEquals(footprint, Get<SentinelFootprint>(f.Enemies[2], "Footprint")),
+                    "Seer mark followed a dodge or damaged a player outside its marked square");
+                f.Body.position = new Vector2(.5f, 0f) - ClearingVisuals.PlayerFootOffset; f.Tick();
+                Expect(Near(f.Stats.Health, 8f), "valid later contact inside the locked Seer mark dealt no damage");
+            }
+            finally { Physics2D.LinecastQuery = null; }
+        });
+        test("zero-distance Seer casts instead of retreating forever on an empty direction", () =>
+        {
+            var f = RoleFixture(2, Vector2.zero, Vector2.zero); f.Tick();
+            Expect(f.Run.GetSentinel(2).AttackPhase == SentinelAttackPhase.Telegraph
+                && Get<SentinelFootprint>(f.Enemies[2], "Footprint") != null,
+                "coincident player and Seer became permanently inert with zero retreat displacement");
+        });
+        test("tactical approach obeys awareness range and wall admission", () =>
+        {
+            foreach (int id in new[] { 1, 2 })
+            {
+                var f = RoleFixture(id, new Vector2(-3.5f, 0f), Vector2.zero); f.Tick();
+                Expect(Get<Rigidbody2D>(f.Enemies[id], "Body").position.x > -3.5f
+                    && f.Run.GetSentinel(id).AttackPhase == SentinelAttackPhase.Ready,
+                    "visible out-of-cast-range enemy did not approach");
+                var blocked = RoleFixture(id, new Vector2(-2.5f, 0f), Vector2.zero);
+                Physics2D.LinecastResponse = new BoxCollider2D();
+                try
+                {
+                    blocked.Tick();
+                    Expect(Get<Rigidbody2D>(blocked.Enemies[id], "Body").position == new Vector2(-2.5f, 0f)
+                        && blocked.Run.GetSentinel(id).AttackPhase == SentinelAttackPhase.Ready
+                        && Get<SentinelFootprint>(blocked.Enemies[id], "Footprint") == null,
+                        "wall-obscured target caused movement or a new warning");
+                }
+                finally { Physics2D.LinecastResponse = null; }
+                var distant = RoleFixture(id, new Vector2(-7f, 0f), Vector2.zero); distant.Tick();
+                Expect(Get<Rigidbody2D>(distant.Enemies[id], "Body").position.x == -7f
+                    && distant.Run.GetSentinel(id).AttackPhase == SentinelAttackPhase.Ready,
+                    "out-of-awareness enemy pursued or attacked");
+            }
+        });
+        test("warning center angle and charge dimensions use the same locked tactical footprint", () =>
+        {
+            foreach (int id in new[] { 0, 1, 2 })
+            {
+                Vector2 origin = id == 0 ? new Vector2(-.6f, 0f) : id == 1 ? new Vector2(-1.8f, -1.8f) : new Vector2(-3f, 0f);
+                var f = RoleFixture(id, origin, Vector2.zero); f.Tick(); f.Run.Advance(.2f); f.Refresh();
+                object enemy = f.Enemies[id]; var footprint = Get<SentinelFootprint>(enemy, "Footprint");
+                Transform warning = Get<Transform>(enemy, "Warning");
+                Transform fill = Get<SpriteRenderer>(enemy, "WarningFill").transform;
+                float charge = f.Run.GetSentinel(id).PhaseProgress;
+                Expect((Vector2)warning.position == new Vector2(footprint.CenterX, footprint.CenterY)
+                    && Near(warning.rotation.RecordedEulerZ, footprint.AngleDegrees)
+                    && Near(warning.localScale.x, 1f) && Near(warning.localScale.y, 1f),
+                    "warning outer pose or scale disagrees with its locked contact footprint");
+                Expect(Near(fill.localScale.x, footprint.Width * charge) && Near(fill.localScale.y, footprint.Height * charge),
+                    "charge fill dimensions do not use the role's actual contact bounds");
+                f.Run.Advance(ClearingRun.WindupDuration(f.Run.GetSentinel(id).AttackKind) - .2f); f.Refresh();
+                Expect(f.Run.GetSentinel(id).AttackPhase == SentinelAttackPhase.Active
+                    && Near(fill.localScale.x, footprint.Width) && Near(fill.localScale.y, footprint.Height),
+                    "active warning does not fill exactly the saved footprint");
+                foreach (string crossName in new[] { "WarningCrossA", "WarningCrossB" })
+                {
+                    var cross = Get<SpriteRenderer>(enemy, crossName);
+                    Expect(cross.gameObject.activeSelf && cross.transform.localScale.x <= Math.Min(footprint.Width, footprint.Height),
+                        "active non-color motif exceeds the role's narrowest contact dimension");
+                }
+            }
+        });
+        test("a timing hitch skips new role damage and leaves recovery stationary", () =>
+        {
+            foreach (int id in new[] { 1, 2 })
+            {
+                var f = RoleFixture(id, new Vector2(id == 1 ? -2f : -3f, 0f), Vector2.zero); f.Tick();
+                Vector2 origin = Get<Rigidbody2D>(f.Enemies[id], "Body").position;
+                SentinelAttackKind kind = f.Run.GetSentinel(id).AttackKind;
+                int cues = f.Audio.OneShots.Count;
+                f.Run.Advance(ClearingRun.WindupDuration(kind) + ClearingRun.ActiveDuration(kind) + .05f); f.Tick(); f.Refresh();
+                Expect(f.Run.GetSentinel(id).AttackPhase == SentinelAttackPhase.Recovery && Near(f.Stats.Health, 10f)
+                    && f.Audio.OneShots.Count == cues && Get<Rigidbody2D>(f.Enemies[id], "Body").position == origin
+                    && !Get<Transform>(f.Enemies[id], "Warning").gameObject.activeSelf,
+                    "hitch applied a delayed hit, chased during recovery or retained an active warning");
+            }
+        });
+        test("pause freezes locked role snapshots and resumes their same timing", () =>
+        {
+            foreach (int id in new[] { 1, 2 })
+            {
+                var f = RoleFixture(id, new Vector2(id == 1 ? -2f : -3f, 0f), Vector2.zero); f.Tick(); f.Refresh();
+                var footprint = Get<SentinelFootprint>(f.Enemies[id], "Footprint"); double time = f.Run.Time;
+                Invoke(f.Runtime, "SetPaused", true);
+                for (int tick = 0; tick < 8; tick++) { f.Tick(); f.Refresh(); }
+                Expect(f.Run.Time == time && object.ReferenceEquals(footprint, Get<SentinelFootprint>(f.Enemies[id], "Footprint"))
+                    && Get<Transform>(f.Enemies[id], "Warning").gameObject.activeSelf,
+                    "pause advanced, replaced or cleared an in-flight role warning");
+                Invoke(f.Runtime, "SetPaused", false); f.Tick();
+                Expect(f.Run.Time > time && object.ReferenceEquals(footprint, Get<SentinelFootprint>(f.Enemies[id], "Footprint")),
+                    "resume did not retain and advance the locked role attack");
+            }
+        });
+        test("disable death and retry clear tactical footprints without losing role assignment", () =>
+        {
+            foreach (int id in new[] { 1, 2 }) foreach (int ending in new[] { 0, 1, 2 })
+            {
+                var f = RoleFixture(id, new Vector2(id == 1 ? -2f : -3f, 0f), Vector2.zero); f.Tick();
+                Expect(Get<SentinelFootprint>(f.Enemies[id], "Footprint") != null, "cleanup setup has no actual footprint");
+                if (ending == 0) Invoke(f.Runtime, "OnDisable");
+                if (ending == 1) { f.Stats.Health = 0f; f.Tick(); }
+                if (ending == 2) Invoke(f.Runtime, "ResetRun");
+                f.Refresh();
+                Expect(Get<SentinelFootprint>(f.Enemies[id], "Footprint") == null
+                    && !Get<Transform>(f.Enemies[id], "Warning").gameObject.activeSelf
+                    && Get<SentinelAttackKind>(f.Enemies[id], "Kind") == SentinelTactics.RoleForIndex(id),
+                    "terminal/interruption cleanup retained a snapshot or lost its configured role");
+                if (ending == 0)
+                {
+                    f.Position(id, new Vector2(-10f, 0f)); f.Tick();
+                    Expect(Near(f.Stats.Health, 10f) && Get<SentinelFootprint>(f.Enemies[id], "Footprint") == null,
+                        "resumed role applied a stale contact without fresh admission");
+                }
+            }
+        });
+        test("new role defeats still resolve all burst targets before active retaliation", () =>
+        {
+            foreach (int id in new[] { 1, 2 })
+            {
+                var f = new RuntimeFixture();
+                for (int i = 0; i < f.Enemies.Length; i++)
+                {
+                    LowerToLastHit(f.Run, i); f.Position(i, new Vector2((i - 1) * .2f, -1.1f));
+                }
+                Invoke(f.Runtime, "ConfigureSentinelRole", f.Enemies[id], id);
+                Physics2D.LinecastQuery = (start, end, mask) => end.y < start.y ? new BoxCollider2D() : null;
+                try
+                {
+                    f.Tick(); Expect(f.Run.GetSentinel(id).AttackPhase == SentinelAttackPhase.Telegraph, "role defeat setup did not begin an attack");
+                    f.Run.Advance(ClearingRun.WindupDuration(f.Run.GetSentinel(id).AttackKind) - Time.fixedDeltaTime * .5f);
+                    // Player strike LOS differs from the Seer's backward retreat probe.
+                    Physics2D.LinecastQuery = null;
+                    f.Stats.Health = ClearingRun.SentinelDamage; f.Burst(); f.Tick(); f.Refresh();
+                    Expect(!f.Run.IsDead && Near(f.Stats.Health, ClearingRun.SentinelDamage)
+                        && f.Run.DefeatedCount == 3 && f.Run.RewardCoins == 30 && f.Run.GateUnlocked,
+                        "new active role retaliated after the same burst defeated every target");
+                }
+                finally { Physics2D.LinecastQuery = null; }
+            }
+        });
+        test("actual sentinel creation records distinct markers and role-sized four-border warnings", () =>
+        {
+            var visuals = new ClearingVisuals(new GameObject("Role visual fixture").transform);
+            try
+            {
+                foreach (int id in new[] { 0, 1, 2 })
+                {
+                    SpriteRenderer eye, health; Transform warning;
+                    GameObject actor = visuals.CreateSentinel(id, Vector2.zero, out eye, out health, out warning);
+                    NamedChild(actor.transform, id == 0 ? "Warden crest" : id == 1 ? "Lancer side spear" : "Seer rune");
+                    float width = id == 0 ? 1.9f : id == 1 ? 3.2f : 1.4f;
+                    float height = id == 1 ? .7f : width;
+                    foreach (string name in new[] { "North warning", "South warning" })
+                    {
+                        Transform border = NamedChild(warning, name);
+                        Expect(Near(border.localScale.x, width) && Near(border.localScale.y, .067f)
+                            && Near(Math.Abs(border.localPosition.y), height * .5f), "horizontal role warning border disagrees with contact bounds");
+                    }
+                    foreach (string name in new[] { "West warning", "East warning" })
+                    {
+                        Transform border = NamedChild(warning, name);
+                        Expect(Near(border.localScale.x, .067f) && Near(border.localScale.y, height)
+                            && Near(Math.Abs(border.localPosition.x), width * .5f), "vertical role warning border disagrees with contact bounds");
+                    }
+                }
+            }
+            finally { visuals.Dispose(); }
+        });
+        test("live role guidance shares the existing edge help slot and yields to active feedback", () =>
+        {
+            foreach (float width in new[] { 620f, 960f, 1280f })
+            {
+                var f = new HudFixture(); f.Width(width); f.Refresh(near: false);
+                Expect(f.Help.text.Contains("Lancer: sidestep lane") && f.Help.text.Contains("Seer: leave mark"),
+                    "live edge help omits the actual new threat responses");
+                Rect rect = RecordedLabelRect(f.Help, new Vector2(width, 540f));
+                Expect(rect.y + rect.height <= 81f && f.Help.rectTransform.sizeDelta == f.Message.rectTransform.sizeDelta,
+                    "role guidance extends into the south combat band or drifts from its shared slot");
+                f.Refresh(near: false, feedback: "Accepted contact");
+                Expect(f.Help.text == "" && f.Message.text == "Accepted contact", "role guide overlaps transient feedback");
+                f.Refresh(near: true);
+                Expect(f.Help.text == "" && f.Message.text.Contains("E -"), "role guide hides actionable beacon interaction");
+            }
+        });
+        test("role guide advertises no unavailable actions in paused dead or completed results", () =>
+        {
+            foreach (int state in new[] { 0, 1, 2 })
+            {
+                var f = new HudFixture();
+                if (state == 1) f.Run.NotifyPlayerDeath();
+                if (state == 2) Expect(f.Run.TryCompleteObjective(), "role guide completion setup rejected");
+                f.Refresh(paused: state == 0, near: false);
+                Expect(string.IsNullOrEmpty(f.Help.text) && string.IsNullOrEmpty(f.Message.text)
+                    && !string.IsNullOrEmpty(Get<Text>(f.Hud, "terminal").text),
+                    "result retains live role guides or hides the result prompt");
+            }
+        });
+    }
+
     private static int Main()
     {
         int passed = 0, failed = 0;
@@ -939,6 +1259,7 @@ public static class PresentationBehaviorChecks
             });
         }
         AddProgressionChecks(test);
+        AddTacticsChecks(test);
         Console.WriteLine("RESULT " + passed + " passed, " + failed + " failed; actual project C# with recording boundaries, not native Unity.");
         return failed == 0 ? 0 : 1;
     }

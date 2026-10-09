@@ -32,11 +32,11 @@ namespace Rpg.Gameplay
             resources = Label("Resources", new Vector2(0, 1), new Vector2(14, -12), new Vector2(260, 35), TextAnchor.UpperLeft, 17);
             objective = Label("Objective", new Vector2(1, 1), new Vector2(-14, -12), new Vector2(350, 50), TextAnchor.UpperRight, 16);
             skills = Label("Combat keys", new Vector2(0, 0), new Vector2(14, 12), new Vector2(400, 43), TextAnchor.LowerLeft, 15);
-            help = Label("Movement keys", new Vector2(1, 0), new Vector2(-14, 12), new Vector2(350, 43), TextAnchor.LowerRight, 14);
-            help.text = "WASD / arrows: move   E: beacon\nEsc: pause   M: mute   R: retry after run";
+            help = Label("Movement keys", new Vector2(1, 0), new Vector2(-14, 12), new Vector2(350, 66), TextAnchor.LowerRight, 14);
+            help.text = MovementGuide(false);
             // Feedback replaces the secondary help column; never place a persistent
             // message across the south combat lane or draw two labels in this slot.
-            message = Label("Feedback", new Vector2(1, 0), new Vector2(-14, 12), new Vector2(350, 43), TextAnchor.LowerRight, 14);
+            message = Label("Feedback", new Vector2(1, 0), new Vector2(-14, 12), new Vector2(350, 66), TextAnchor.LowerRight, 14);
             terminal = Label("Run result", new Vector2(.5f, .5f), Vector2.zero, new Vector2(600, 135), TextAnchor.MiddleCenter, 24);
             terminal.color = ClearingPalette.Cream;
         }
@@ -77,7 +77,8 @@ namespace Rpg.Gameplay
             resources.rectTransform.sizeDelta = new Vector2(Mathf.Min(260f, column), progress == null ? 35f : 77f);
             objective.rectTransform.sizeDelta = new Vector2(Mathf.Min(350f, column), 67f);
             skills.rectTransform.sizeDelta = new Vector2(Mathf.Min(400f, column), narrow ? 66f : 43f);
-            help.rectTransform.sizeDelta = new Vector2(Mathf.Min(350f, column), narrow ? 66f : 43f);
+            help.rectTransform.sizeDelta = new Vector2(Mathf.Min(350f, column), 66f);
+            help.fontSize = narrow ? 11 : 14;
             message.rectTransform.sizeDelta = help.rectTransform.sizeDelta;
             bool showShop = progress != null && run.IsComplete && !paused;
             terminal.rectTransform.sizeDelta = new Vector2(Mathf.Max(1f, Mathf.Min(600f, width - 28f)),
@@ -101,9 +102,7 @@ namespace Rpg.Gameplay
             bool playable = !paused && !run.IsDead && !run.IsComplete;
             skills.text = playable ? "J / Space: light [" + light + "]\nK: burst 6 MP [" + burst + "]" : "";
             message.text = !playable ? "" : nearBeacon && run.GateUnlocked ? "E - restore the beacon" : feedback;
-            help.text = !playable || !string.IsNullOrEmpty(message.text) ? "" : narrow ?
-                "Move: WASD / arrows\nE: beacon   Esc: pause\nM: mute   R: retry after run" :
-                "WASD / arrows: move   E: beacon\nEsc: pause   M: mute   R: retry after run";
+            help.text = !playable || !string.IsNullOrEmpty(message.text) ? "" : MovementGuide(narrow);
             terminal.text = paused ? "PAUSED\nEsc - resume" : run.IsDead ? "DEFEATED\nR - retry the clearing" :
                 run.IsComplete ? "BEACON RESTORED\n" + run.RewardCoins + " coins earned this run\nR - play again" : "";
             if (showShop)
@@ -122,6 +121,14 @@ namespace Rpg.Gameplay
                     (string.IsNullOrEmpty(progressNotice) ? "" : "\n" + progressNotice);
             }
             if (muted && !paused && !run.IsDead && !run.IsComplete) objective.text += "\nSound muted";
+        }
+
+        private static string MovementGuide(bool narrow)
+        {
+            // Keep tactical hints in the existing edge column; feedback takes
+            // priority and terminal states suppress the entire playable guide.
+            return narrow ? "Move: WASD / arrows\nE: beacon   Esc: pause\nM: mute   R: retry after run\nLancer: sidestep lane\nSeer: leave mark" :
+                "WASD / arrows: move   E: beacon\nEsc: pause   M: mute   R: retry after run\nLancer: sidestep lane\nSeer: leave mark";
         }
 
         private static string UpgradeLine(ClearingProgress progress, ClearingUpgrade upgrade, string title, string bonus)

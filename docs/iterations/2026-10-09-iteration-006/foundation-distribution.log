@@ -1,0 +1,24 @@
+test_caches_and_home_credentials_do_not_enter_archive (test_distribution.DistributionChecks.test_caches_and_home_credentials_do_not_enter_archive) ... ok
+test_complete_archive_contains_real_png_meta_and_settings (test_distribution.DistributionChecks.test_complete_archive_contains_real_png_meta_and_settings) ... fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+ok
+test_lfs_pointer_cannot_be_delivered_as_image (test_distribution.DistributionChecks.test_lfs_pointer_cannot_be_delivered_as_image) ... ok
+test_required_unity_directory_must_exist (test_distribution.DistributionChecks.test_required_unity_directory_must_exist) ... ok
+test_secret_file_inside_required_tree_is_refused (test_distribution.DistributionChecks.test_secret_file_inside_required_tree_is_refused) ... ok
+test_symlink_cannot_read_files_outside_project (test_distribution.DistributionChecks.test_symlink_cannot_read_files_outside_project) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.176s
+
+OK
+{
+  "project": "2D-RPG-Project",
+  "unity": "2022.3.53f1",
+  "commit": null,
+  "working_tree_has_local_changes": null,
+  "native_unity_validation": false,
+  "file_count": 114,
+  "zip": "/tmp/rpg-distribution-check-wya6nb8z/project.zip",
+  "bytes": 148069,
+  "sha256": "9e3cd106f7c8bdb63e1e171706bb09702ff946549554260dac2d20f3a2e93a84"
+}

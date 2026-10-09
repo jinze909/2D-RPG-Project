@@ -1,5 +1,26 @@
 # Known issues
 
+## Iteration 6 integrated encounter — supersedes foundation pending list
+
+Three distinct roles, runtime contacts/movement, cached warning/silhouette and
+edge hints are implemented. Offline behavior/API/resource checks supply evidence;
+real Unity collision/LOS, text glyph fitting, rendered diagonal pixel strokes,
+input/audio and gameplay balance are still unrun. The Seer's retreat probe is a
+wall line query, not a native collider sweep; wall-corner movement needs actual play.
+PR/merge, final exact-source CI, ZIP/download and final handoff publication remain
+outstanding until confirmed in iteration-006's independent delivery receipt.
+No profile migration, new equipment/class/story/world-save system is implemented.
+
+## Iteration 6 foundation — current unfinished list
+
+Pure tactics/timing/footprints are implemented and checked; actual encounter
+wiring, cached role warning/silhouette, HUD counters, integration evidence and
+GitHub/ZIP/handoff delivery remain outstanding at this checkpoint. The older
+fifth-round unfinished headings below are historical and already superseded.
+The sixth iteration does not add classes/equipment/story or change profile v1.
+Native physics/Animator/glyph/audio/balance acceptance remains unrun, optional
+for normal quality-gated merges under the latest user instruction.
+
 ## Current delivery policy and remaining work — 2026-10-09
 
 PR4 and PR1 are merged normally after review and verified candidate CI. Master

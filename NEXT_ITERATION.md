@@ -1,28 +1,27 @@
-# Next iteration
+# Next iteration / current continuation
 
-Resume from docs/iterations/2026-10-08-iteration-005/handoff.md and publication.md.
-Read the independent iteration-005-delivery.json / iteration-005-final-handoff.md
-on rpg-deliveries for actual final source SHA, successful CI and checked ZIP.
-If that receipt is incomplete or absent, finish delivery before new development.
+Resume docs/iterations/2026-10-09-iteration-006/handoff.md and publication.md;
+read the independent iteration-006 delivery receipt/final handoff on rpg-deliveries
+for final source/CI/PR/ZIP/download completion. If absent/incomplete, finish delivery
+before unrelated features. Pure foundation a5dabec and integrated checkpoint retain
+three real tactical roles; do not repeat the implemented fifth saved growth loop.
 
-1. Verify actual checkout/HEAD/status/remotes and PRs; preserve both checkpoint
-   commits819c6bf/50d42ce and the implemented persistent growth loop. PR4 merged
-   into candidate at a20cb5a, PR1 into master at cb2d6fc. Old2e8c154 is a recovery
-   point. No force push or worktree creation. Latest user permits autonomous
-   quality-gated ordinary merges and makes native acceptance optional.
-2. Use all applicable local/plugin Skills; confirm actual Editor/license/CLI/MCP
-   separately. Do not repeat the unchanged failed license probe or fabricate play.
-3. Highest-value evidence gap: licensed2022.3.53f1 combat/progression acceptance
-   in COMBAT_CLEARING.md and CLEARING_PROGRESSION.md. Real persistent path/restart,
-   backup/future/error behavior, input, physics, animator, multi-resolution result
-   glyphs, six cues and a player build remain unrun. Fix observed defects normally.
-4. If native tooling is still unavailable, choose one coherent extension based
-   on actual player value (e.g. exploration/interaction) rather than reimplement
-   bank/save/upgrades. Inventory/classes/story/world-state saves remain absent.
-5. Save/push every independently verified stage and maintain five root records.
+1. Inspect actual status/branch/fullHEAD/remotes/PRs and preserve dirty work, all
+   checkpoints and earlier ZIPs. Never force push, overwrite history or create worktrees.
+2. Read five root records, SENTINEL_TACTICS.md, COMBAT_CLEARING.md and
+   CLEARING_PROGRESSION.md. Rediscover eight local Skills and appropriate plugin
+   guides; documentation, CLI, Editor license, MCP and native success are separate.
+3. Final current checks:271project+6distribution=277passed;20production sources
+   compile against86real UnityAPI refs, InputSystem substituted. Native checks
+   remain optional/unrun; do not repeat unchanged license probes or fabricate play.
+4. When a licensed Editor is available, exercise locked lance sidesteps, remote
+   sigil dodges, wall-corner Seer retreat/fallback, diagonal edges, simultaneous
+   contacts, pause/disable/death/retry, saved completion and upgrades, real text,
+   sound and difficulty. Offline line queries/rectangles do not establish these.
+5. If native remains unavailable, choose one coherent exploration/interaction
+   extension or observed defect, rather than rewrite accepted combat/progression.
+   Classes/equipment/inventory/NPC/fullstory/world-state saves/Boss remain absent.
+   Save/push each independently verified stage and maintain records.
 
-Fresh225 checks pass:219project+6distribution;19sources compile against86real
-Unity references with InputSystem substituted. Scene/GUID/meta/LFS/hero/Skill
-integrity pass. Pure51 progression cases use real temp filesystem;44 Runtime/Hud
-cases use recording boundaries, not native gameplay. Historical iteration2/3/4
-handoffs, original assets and earlier delivery ZIPs remain preserved.
+Fifth source d8c7048/delivery f04d853 remain preserved; original2e8c154 is an older
+recovery point. User permits autonomous reviewed green-CI ordinary master merges.
