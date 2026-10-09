@@ -1,5 +1,14 @@
 # Known issues
 
+## Iteration 5 checkpoint status
+
+The progression domain/codec/file store is implemented and tested; it is not yet
+connected to gameplay at this checkpoint. Integration, runtime/UI evidence,
+final GitHub CI/PR, ZIP and handoff remain outstanding. Future/corrupt save files
+are protected rather than silently reset; backup recovery can roll back the last
+transaction and must be clearly announced. Native save-path/lifecycle/input/HUD
+and balance acceptance remain pending with the existing license limitation.
+
 ## Confirmed current gaps
 
 - PR #3 and PR #2 are merged into the isolated iteration-2 candidate. PR #1 is

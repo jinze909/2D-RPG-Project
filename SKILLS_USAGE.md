@@ -1,5 +1,23 @@
 # Skills usage
 
+## Iteration 5 — persistent clearing progression
+
+Rediscovered eight local bundles; read applicable instructions and resume/root-cause
+references. Unity Essentials feature-implementation and its architecture, lifecycle,
+serialization, testing, performance, gameplay/input/save/UI references informed this
+change. Read cloud-runtime/network guidance; no live Unity MCP/CLI was discovered.
+
+| Skill | Concrete use and limits |
+| --- | --- |
+| session-handoff | Reconciled actual checkout/remote PRs against the fourth-round chain and preserved completed work; checkpoint and root records maintained. |
+| systematic-debugging | Traced two initial fault-fixture failures to incorrect temporary/backup paths; corrected fixtures against actual store paths, then reran real IO tests. No baseline game bug invented. |
+| verification-before-completion | Fresh 196 project/6 distribution checks and 19-source real-API compilation; native execution explicitly absent. |
+| game-design | Defined one complete completion-to-bank-to-upgrade-to-retry loop, bounded prices/ranks and failure/recovery behavior in CLEARING_PROGRESSION.md. |
+| game-art | Preserved hero identity/PPU/palette/animations; original raster/hash regressions pass. No new bitmap task was required. |
+| game-audio | Planned reuse of the existing reward cue only on accepted transactions; no synthesized assets or sound audition at this checkpoint. |
+| unity-mcp-orchestrator | Applied Unity 2022.3 persistentDataPath, actor-owned state, callback ordering and compatibility guidance; checked official File.Replace/Flush and Unity references. No live editor connection. |
+| imagegen | Read applicability/identity guidance; no image generation/edit was appropriate and no tool call is claimed. |
+
 ## Iteration 4 — resumed combat reliability
 
 Rediscovered all eight vendored bundles and their source/license manifest; read

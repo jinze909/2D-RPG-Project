@@ -1,5 +1,14 @@
 # Next iteration
 
+Iteration 5 is in progress on rpg/iteration-005-persistent-progression.
+Read docs/iterations/2026-10-08-iteration-005/checkpoint.md and
+ docs/game/CLEARING_PROGRESSION.md. Persistence foundation is tested; next
+finish gameplay/input/HUD/actor integration and runtime regressions, push the
+second checkpoint, verify hosted CI/stacked PR, then ZIP/download/handoff.
+Keep PR #1 draft and master unchanged until licensed native acceptance.
+
+Previous completed-round context follows; do not restart its implemented fixes.
+
 Continue from the [fourth-round handoff](docs/iterations/2026-10-08-iteration-004/handoff.md)
 and [publication record](docs/iterations/2026-10-08-iteration-004/publication.md).
 Read the independent [delivery receipt](https://raw.githubusercontent.com/jinze909/2D-RPG-Project/rpg-deliveries/iteration-004-delivery.json)

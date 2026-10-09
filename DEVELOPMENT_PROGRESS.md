@@ -1,5 +1,21 @@
 # Development progress
 
+## Iteration 5 — persistence foundation checkpoint (2026-10-08 local)
+
+Verified clean HEAD fe8b1f7 and actual remote history/PR state before selecting
+rpg/iteration-005-persistent-progression from iteration 2. Retained all fourth-round
+work; PR #2/#3 are already merged. PR #1 stays draft and master unchanged.
+
+Implemented pure clearing progression and durable version-1 local storage:
+30 coins only for completed beacon runs, once per current attempt, two upgrades
+with three bounded ranks, strict ledger/checksum validation, save-before-mutate,
+real atomic file replacement/backup, stale-writer and incompatible-file protection.
+Player, input, HUD integration is still pending at this checkpoint.
+
+Fresh checks: 196 project + 6 distribution passed; 19 sources compiled against
+86 real Unity references with Input System substituted. See iteration-005/checkpoint.md.
+Native validation remains unavailable due to the inherited license gap.
+
 ## Iteration 4 verified integration and delivery handoff — 2026-10-09 UTC
 
 Game fix checkpoint 1e7eb01c359eeba55b42c038652701f0a54bbb38 was safely pushed;
