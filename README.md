@@ -34,13 +34,15 @@ J/空格攻击，K 法力爆发，E 激活北侧信标，胜败后 R 重试，Es
 致命攻击显示剩余生命值，避免把过量伤害当成真实扣血。数字漂浮淡出，暂停冻结，
 击杀后短暂保留，重试或关卡结束时清空。固定对象池复用，沿用已有受击与音效反馈。
 详见 [伤害反馈合同](docs/game/DAMAGE_FEEDBACK.md)。原生可读性尚待试玩。
-第八轮开发分支增加可选探索补给：西侧草药最多恢复 4 HP，东侧符文最多恢复
+第八轮增加可选探索补给：西侧草药最多恢复 4 HP，东侧符文最多恢复
 6 MP；靠近发现后按 E 使用，每处每轮一次，资源已满时保留。符文可补足已有
 爆发攻击的蓝耗。道具显示发现/用尽状态和短暂领取脉冲，提示沿用边缘区域；
 暂停冻结表现，停用不补货，真正重试才重置。北侧信标和结算存档仍优先使用 E。
 详见 [探索补给合同](docs/game/EXPLORATION_SUPPLIES.md)。当前已接入实际玩法，
 322 项离线/打包检查和 24 份脚本的 Unity API 引用编译通过（Input System 使用替身）。
-最终 CI、PR/master 合并与完整 ZIP 交付仍待核实；未宣称原生试玩通过。
+[PR #7](https://github.com/jinze909/2D-RPG-Project/pull/7) 已普通合入 master，
+实现 CI 已通过；最终源码 CI、完整 ZIP 和下载回验见独立
+[第八轮交付回执](https://raw.githubusercontent.com/jinze909/2D-RPG-Project/rpg-deliveries/iteration-008-delivery.json)。原生试玩未执行。
 注册源已改为 `packages.unity.com`，未升级任何锁定包版本。云端缺少有效 Unity
 许可证，尚未完成原生导入、真实碰撞、Animator 视觉或游戏试玩；离线检查不代替它们。
 

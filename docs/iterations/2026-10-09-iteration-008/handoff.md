@@ -17,8 +17,9 @@ HP/MP restoration -> existing combat. Foundation checkpoint 2c99ecfc62d476bbe4bf
 is normally pushed; CI37995620781 passed all12 steps. Live integration is locally
 implemented and independently reviewed. Fresh316 project +6distribution=322
 checks pass;24production sources/86realUnityAPIrefs compile with Input System
-substituted. Handoff validator100/100. Ordinary PR merge and final source
-publication follow the implementation checkpoint. Final
+substituted. Handoff validator100/100. Implementation30588a2 exactCI37996558184/all12steps/artifact11647800082 passed.
+PR7 normally merged atba41be15660d4c675306f90b0fee500d7cc036c6; its tree exactly
+equals reviewed30588a2. Final source publication follows this record. Final
 completion identities resolve in the independent iteration-008-delivery.json
 receipt after source commit/CI/ZIP/HTTPS verification; no future success is claimed.
 
@@ -92,11 +93,13 @@ match exact final source SHA and full fresh CI, never seventh ZIP or helper-only
 foundation. Keep all16 earlier delivery ZIP/checksum blobs unchanged.
 
 ## Immediate Next Steps
-1. Finish verified implementation checkpoint and normal push; inspect exact CI.
-2. Review ordinary PR and merge if complete green/no serious regression.
-3. Update final source publication record, run exact source CI, package outside
-   source, verify CRC/all source bytes/member SHA/meta/LFS and HTTPS redownload.
-4. Publish completed independent receipt/final handoff and report actual identities.
+1. Inspect actual master/branch/dirty state and independent eighth delivery receipt.
+   If incomplete, finish final source CI/completeZIP CRC/memberSHA/sourcebytes/LFS
+   and immutable HTTPS redownload, final handoff/receipt before new development.
+2. If receipt is complete, preserve this fully implemented loop and select the next
+   coherent valuable feature from real code; Boss/exploration objective are candidates.
+3. Native input/physics/render/Animator/audio/difficulty/player build remains optional
+   and unrun; never present recording doubles as native acceptance.
 
 ## Blockers/Open Questions
 No known gameplay/code blocker after reviewed integration. Current executor is

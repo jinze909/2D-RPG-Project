@@ -1,6 +1,21 @@
 # Development progress
 
-## Iteration 8 — recovered and integrated exploration supplies
+## Iteration 8 — reviewed ordinary master integration
+
+Implementation 30588a2829d934854cd78487e3e4a4076fd6e2a0 was safely pushed; exact CI37996558184
+passed all12 steps and uploaded Artifact11647800082. PR7 normally merged into
+master ba41be15660d4c675306f90b0fee500d7cc036c6; its file tree exactly equals the
+reviewed/tested implementation. Baseline3f3fbd4/foundation2c99ecf and all earlier
+features/source/archive history remain recovery paths. No force push or worktree.
+
+316 project +6 distribution =322 checks pass;24production scripts compile against
+86actual Unity2022.3engine/Editor/uGUI refs, Input System substituted. Allold69
+presentation groups remain within81; pure supply13/scene15 pass. Handoff100/100.
+Final exact source SHA/CI, completeZIP CRC/every source byte/member SHA-256/LFS
+and immutable HTTPS download plus final handoff resolve in the independent
+iteration-008-delivery.json receipt. Native play/render/audio/build is unrun optional.
+
+## Historical iteration 8 verified implementation checkpoint
 
 Recovered execution access and confirmed the actual eighth branch at safely
 published foundation 2c99ecfc62d476bbe4bf30adb874c8b52254498e. Exact foundation
@@ -21,8 +36,8 @@ restocks both points; disable/resume retains their discovery and spent state.
 
 Cached original herb/cross and rune/diamond props reuse the clearing's existing
 PPU1 Point square sprite/palette, sized in 1/30-unit world pixels. They have no
-blocking collider, show discovery/spent states and
-a short claim pulse. Pulse time freezes on pause and clears on interruption.
+blocking collider, show discovery/spent states and a short claim pulse. Pulse
+time freezes on pause and clears on interruption.
 Accepted claims reuse the existing reward cue; rejection/discovery is silent.
 Truthful nearby/full/spent hints share the existing edge feedback slot.
 
@@ -37,8 +52,8 @@ the rule property incorrectly; the fixture was corrected, not a game defect.
 65 files in eight licensed Skill bundles pass. Root generated/filled the actual
 chained handoff and validated it at 100/100 with three existing file references.
 Review/publication evidence and safe implementation checkpoint follow after
-verification. Native import/play/input/physics/render/
-audio/player build remains unrun and optional. Profile v1, mature combat/tactics/
+verification. Native import/play/input/physics/render/audio/player build remains
+unrun and optional. Profile v1, mature combat/tactics/
 damage feedback, original hero/animation and existing scene geometry remain.
 
 ## Historical iteration 8 foundation and execution outage — superseded

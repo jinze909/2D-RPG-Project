@@ -69,20 +69,16 @@ China package services. Preserve the specified editor version.
   Preserve these contracts and original hero hashes; do not change hit geometry
   merely to align with decoration or claim native rendering from offline rasters.
 
-## Current iteration 8 integrated candidate
+## Current iteration 8 reviewed master integration
 
-Execution access recovered. Local branch rpg/iteration-008-exploration-supplies
-continues verified foundation 2c99ecfc62d476bbe4bf30adb874c8b52254498e; exact
-foundation CI37995620781 passed all 12 steps. Six real LFS objects are restored.
-The discovery -> E -> actual HP/MP restoration -> existing combat loop is now
-wired to Runtime, cached props, reward cue and edge HUD. Focused presentation
-checks pass 81 groups, retaining the old 69. Fresh whole-project evidence is
-316 project + 6 distribution = 322 checks; 24 production scripts compile against
-86 actual Unity references with Input System substituted. The actual chained
-handoff validates 100/100. Implementation checkpoint/CI, PR/master integration,
-source ZIP and publication remain to be verified. Do not treat historical outage/foundation
-pending lists below as the current implementation state. Native acceptance is
-optional and unrun; no Boss, inventory or world-save schema is added.
+PR7 normally merged reviewed/tested30588a2 into masterba41be1; merge tree equals
+implementation exactly. ExactCI37996558184 passed all12steps/artifact11647800082.
+Fresh322checks,24sources/86realAPIrefsInputsub and100/100handoff are recorded.
+Exploration supplies are fully wired; do not resume historical helper-only lists.
+Final source/CI/ZIP/download identities resolve externally in the eighth delivery
+receipt after source publication. Check that receipt before starting another loop;
+if complete, do not redo eighth development. Native acceptance remains optional
+and unrun. Preserve per-attempt charges, beacon/save priority and mature systems.
 
 ## Historical iteration 8 interruption — resolved
 

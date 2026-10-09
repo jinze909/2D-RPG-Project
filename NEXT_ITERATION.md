@@ -1,30 +1,25 @@
 # Current continuation / next iteration
 
-## Current priority — finish integrated eighth-round delivery
+## Current priority — resolve final eighth delivery, then new player value
 
-Continue rpg/iteration-008-exploration-supplies from verified foundation
-2c99ecfc62d476bbe4bf30adb874c8b52254498e. Execution access is restored; exact
-foundation CI37995620781 passed all 12 steps. Runtime/prop/HUD exploration supplies
-are implemented; do not repeat the helper or rewrite completed seventh systems.
-Read docs/game/EXPLORATION_SUPPLIES.md and the latest actual checkpoint/handoff.
+PR7 normally merged verified exploration supplies atba41be1; implementation
+30588a2 exactCI37996558184/all12steps/artifact11647800082 passed.322localchecks,
+24sources/86realAPIrefsInputsub and100/100handoff pass. Do not rewrite this loop,
+saved growth, tactical roles or damage numbers. Read the eighth handoff/contract.
 
-Final local whole-project/geometry/API checks have passed: 316 project + 6
-distribution = 322, presentation 81 retaining old 69, scene 15 and 24 scripts/86
-real Unity references with Input System substituted. The rune E -> K loop passes;
-the actual chained handoff validates 100/100. Next finish independent review and
-save/push the integrated checkpoint. Verify its exact CI/artifact,
-normally merge the complete reviewed PR into master, and finish exact-source CI,
-full Unity ZIP with CRC/every source byte/member SHA-256/LFS and immutable HTTPS
-download verification. Update the final handoff/receipt only with actual results.
-Do not infer implementation CI or publication from the foundation's green CI.
+First verify actual master/branch/dirty/unpushed state and the completed external
+rpg-deliveries iteration-008-delivery.json/final-handoff. Final source/CI/ZIP/hash,
+CRC/member/sourcebytes/LFS/immutableHTTPS identities follow the source commit.
+If that receipt is incomplete, finish delivery before new development. When it
+is complete, select the next coherent player-value feature from actual code,
+such as a small distinctive Boss encounter or further exploration objectives.
+Boss/classes/equipment/NPC/story/full world saving are not implemented here.
 
-Preserve optional one-charge supplies, full-resource protection, foot/LOS admission,
-beacon/save-retry E priority, disable state retention and genuine new-run restock.
-Keep profile v1, original hero, saved growth, enemy tactics and damage feedback.
-Native play/animation/physics/HUD/audio/build stays optional and unrun; assess it
-when supported without repeating unchanged failed license probes. No Boss or
-inventory/world-save is claimed. Keep all prior source checkpoints and archives;
-never force push or overwrite user work.
+Preserve herbs4HP/rune6MP actual gain, full/invalid charge protection, feet/LOS,
+beacon/terminalsave E priority, disable retention and genuine run reset. Native
+real input/physics/Animator/render/HUD/audio/balance/player build remains optional
+and unrun; avoid repeating unchanged failed license probes. Retain prior commits,
+all16 older ZIP/checksum blobs and the eighth delivery; never force push.
 
 ## Historical foundation resume list — superseded after recovery/integration
 

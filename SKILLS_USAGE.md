@@ -1,5 +1,13 @@
 # Skills usage
 
+## Iteration 8 publication verification
+
+Session-handoff scaffold/resume/validator and persistent records preserve the
+seventh-to-eighth chain and resolved executor/LFS recovery. Verification-before-
+completion checked exact implementation CI all12steps/artifact and actual PR7
+ordinary merge/tree equality; final source/ZIP/download evidence resolves in the
+independent receipt. No native engine play, imagegen or audio audition is inferred.
+
 ## Iteration 8 — recovered runtime/art/UI integration
 
 All eight local bundles were rediscovered and their retained applicable guidance

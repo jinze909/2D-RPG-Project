@@ -1,6 +1,6 @@
 # Known issues
 
-## Iteration 8 integrated candidate — current
+## Iteration 8 reviewed master integration — current
 
 Execution access is restored; foundation 2c99ecf and exact green CI37995620781
 are verified. Runtime discovery/E/actual actor HP/MP restoration, cached prop
@@ -9,9 +9,10 @@ outage and helper-only pending headings below are historical, superseded here.
 Fresh final local checks pass 316 project + 6 distribution = 322 groups, including
 81 presentation groups retaining the old 69 and 15 scene contracts. Real Unity
 API-reference compilation passes for 24 scripts, with Input System substituted.
-The actual chained handoff validates 100/100. Implementation checkpoint/CI/PR/
-master merge, ZIP/hash/CRC/HTTPS and final publication
-publication are still delivery work until independently confirmed.
+The actual chained handoff validates 100/100. Implementation30588a2 was pushed;
+exactCI37996558184/all12steps passed. PR7 normally merged atba41be1 with matching
+tree. Final exact-source CI/ZIP/hash/CRC/HTTPS and completion are resolved in the
+independent iteration-008-delivery.json receipt; verify it before further work.
 
 Supply state is attempt-local, with one charge per point and no saved inventory
 or world-state persistence. Full resources retain a charge; a fractional positive

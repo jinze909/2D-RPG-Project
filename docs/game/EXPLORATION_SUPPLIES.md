@@ -70,7 +70,7 @@ its roots; shared sprites/texture remain owned by ClearingVisuals.
 Published foundation 2c99ecfc62d476bbe4bf30adb874c8b52254498e has exact successful
 CI37995620781/all 12 steps, 303 project + 6 distribution checks and 23-source/86-real-
 reference API compilation. The execution outage is resolved. Runtime/prop/HUD
-integration now exists locally. Fresh final validation passes 316 project + 6
+integration is reviewed and normally merged through PR7. Fresh final validation passes 316 project + 6
 distribution = 322 checks: 13 new pure supply groups, 12 new presentation groups
 and one added geometry group retain all earlier checks. Actual-method presentation
 totals 81, retaining the previous 69; scene contracts total 15. The rune E -> K
@@ -78,8 +78,10 @@ burst loop passes. The integrated 24 production scripts compile
 against real Unity2022.3 engine/Editor/uGUI references, Input System substituted.
 54 unique meta GUIDs/145 serialized references/six LFS objects/eight licensed
 bundles are intact. The actual chained handoff validates 100/100 with three file
-references. Implementation checkpoint/CI, review/PR/master and
-ZIP/CRC/source/member SHA-256/HTTPS publication follow actual verification.
+references. Implementation30588a2 exactCI37996558184 passed all12steps and
+uploaded Artifact11647800082; PR7 normally merged atba41be1 with equal tree.
+Final source/CI/ZIP/CRC/source/member SHA-256/HTTPS publication identities resolve
+in the independent iteration-008-delivery.json receipt after this source record.
 
 Pure tests execute real discovery/charge/capped-gain rules; presentation tests
 execute real Runtime/Hud/props with explicit recording boundaries. Geometry
