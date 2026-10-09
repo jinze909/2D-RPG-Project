@@ -24,6 +24,14 @@ China package services. Preserve the specified editor version.
   four fixed labels and cached glyphs. Runtime feeds accepted before/after deltas.
   Preserve simulation-time pause, fixed hit origins, kill visibility and cleanup
   on defeat/completion/retry/disable. Read docs/game/DAMAGE_FEEDBACK.md.
+- Iteration 8 ClearingSupplies owns two optional attempt-local discoveries/charges.
+  Runtime uses the player's foot point and wall LOS for discovery/E interaction,
+  then restores the same actor-owned HP/MP snapshot. Herbs supply at most 4 HP;
+  the rune supplies at most 6 MP. Full/invalid/no-gain attempts preserve charges.
+  Only a genuine new-run reset restocks; disable/resume preserves spent/discovered
+  state. ClearingSupplyVisuals caches nonblocking props and simulation-time pulses;
+  HUD hints reuse the existing edge slot. Beacon E and completed-save retry retain
+  priority. Read docs/game/EXPLORATION_SUPPLIES.md before changing this contract.
 - `Gameplay/ClearingRules` is engine-independent timing/admission/reward logic;
   `ClearingRuntime` owns scene positions, contacts, input and the resource bridge.
   `ClearingVisuals`, `ClearingHud` and `ClearingAudio` own presentation. Runtime
@@ -61,7 +69,22 @@ China package services. Preserve the specified editor version.
   Preserve these contracts and original hero hashes; do not change hit geometry
   merely to align with decoration or claim native rendering from offline rasters.
 
-## Current iteration 8 interruption
+## Current iteration 8 integrated candidate
+
+Execution access recovered. Local branch rpg/iteration-008-exploration-supplies
+continues verified foundation 2c99ecfc62d476bbe4bf30adb874c8b52254498e; exact
+foundation CI37995620781 passed all 12 steps. Six real LFS objects are restored.
+The discovery -> E -> actual HP/MP restoration -> existing combat loop is now
+wired to Runtime, cached props, reward cue and edge HUD. Focused presentation
+checks pass 81 groups, retaining the old 69. Fresh whole-project evidence is
+316 project + 6 distribution = 322 checks; 24 production scripts compile against
+86 actual Unity references with Input System substituted. The actual chained
+handoff validates 100/100. Implementation checkpoint/CI, PR/master integration,
+source ZIP and publication remain to be verified. Do not treat historical outage/foundation
+pending lists below as the current implementation state. Native acceptance is
+optional and unrun; no Boss, inventory or world-save schema is added.
+
+## Historical iteration 8 interruption — resolved
 
 Read docs/iterations/2026-10-09-iteration-008/handoff.md before new features.
 Supply domain foundation is isolated on rpg/iteration-008-exploration-supplies;

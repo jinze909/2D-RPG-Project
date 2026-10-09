@@ -1,6 +1,29 @@
 # Skills usage
 
-## Iteration 8 — real continuity, design and outage diagnosis
+## Iteration 8 — recovered runtime/art/UI integration
+
+All eight local bundles were rediscovered and their retained applicable guidance
+was applied to the actual source; reading a bundle is not a service/tool call.
+
+| Skill | Actual application and evidence limits |
+| --- | --- |
+| session-handoff | Reconciled completed seventh receipt/source/PR/CI and the eighth remote foundation after execution recovery; maintains these five root records and the exploration contract. Root generated and filled the actual chained scaffold, validated 100/100 with three existing references. Final publication remains separate work. |
+| systematic-debugging | Traced the earlier kernel Git index.lock blockage and exec transport failure without deleting locks or overwriting work; distinguishes recovery from Unity licensing. The new rune/burst fixture's property-name typo was a fixture defect, not a claimed production bug. |
+| verification-before-completion | Reads actual foundation 303 project/six distribution and fresh final 316 project/six distribution = 322, presentation 81 retaining 69, scene 15 and 24-source/86-reference reports; uses exact green foundation CI37995620781 rather than inheriting seventh counts. Implementation CI/merge/ZIP/download remains to be verified. |
+| game-design | Completes optional detour -> discover -> E -> capped restoration -> existing fight. One charge per point/full-resource preservation adds a timing choice without changing objectives, coins, burst cost/cooldown or profile v1. |
+| game-art | ClearingSupplyVisuals authors original cached herb/cross and rune/diamond silhouettes, subdued/discovered/spent states and an integer-pixel claim border. Reuses the existing PPU1 Point square/palette, sized in 1/30-unit world pixels; no replacement raster. Preserves blonde hero/animation; recorded resource reuse is not native visual acceptance. |
+| game-audio | Actual accepted restoration invokes the existing Reward cue once; discovery/rejection is silent and existing mute/cleanup remains. Recording checks are not a sound audition; no new sound asset or mix is claimed. |
+| unity-mcp-orchestrator | Applies Unity2022.3 component ownership, same actor-resource authority, foot/LOS interaction, cached presentation and interruption lifecycle; compiled24 production sources against real engine/Editor/uGUI references, Input System substituted. No live Unity MCP/CLI/native test is inferred. |
+| imagegen | Applicability/identity guidance retained. These original props reuse the established code-native primitive pipeline; no external bitmap generation/edit task or image-service call was needed or claimed. |
+
+Freshly read Unity Essentials feature/build foundations and gameplay/input/UI/
+build/CI guidance, plus retained lifecycle/performance and Unity pixel/UI/uGUI
+guidance, inform the existing Built-in rendering,
+shared sprite ownership, fixed prop pool and single edge feedback slot. Skill
+availability does not establish a connected/licensed Editor or native rendering.
+Execution connectivity has recovered; the outage notes below are historical.
+
+## Historical iteration 8 continuity/design/outage diagnosis
 
 Rediscovered all eight local Skill locators and fetched their immutable current
 GitHub files; unchanged full guidance from prior rounds remains retained.

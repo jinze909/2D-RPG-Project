@@ -236,9 +236,9 @@ public static class PresentationBehaviorChecks
         string notice = "", bool paused = false)
     {
         var method = typeof(ClearingHud).GetMethod("Refresh", BindingFlags.Instance | BindingFlags.NonPublic);
-        if (method == null || method.GetParameters().Length != 9)
+        if (method == null || method.GetParameters().Length != 10)
             throw new Exception("Progression HUD Refresh signature absent");
-        method.Invoke(f.Hud, new object[] { f.Stats, f.Run, paused, false, true, "", progress, rewardId, notice });
+        method.Invoke(f.Hud, new object[] { f.Stats, f.Run, paused, false, true, "", progress, rewardId, notice, "" });
     }
 
     private static string HudText(ClearingHud hud)
@@ -1077,6 +1077,328 @@ public static class PresentationBehaviorChecks
         });
     }
 
+
+    // Discovery, E input, actor resources and props are actual project C#.
+    // Physics visibility, key presses and hierarchy writes are recorded only;
+    // these checks establish integration, not native traversal or rendering.
+    private sealed class SupplyFixture
+    {
+        internal readonly ProgressFixture P = new ProgressFixture();
+        internal readonly ClearingSupplyVisuals Props;
+        internal ClearingSupplies Supplies { get { return Get<ClearingSupplies>(P.F.Runtime, "supplies"); } }
+        internal SupplyFixture()
+        {
+            Props = new ClearingSupplyVisuals(P.F.Runtime.transform, Get<ClearingVisuals>(P.F.Runtime, "visuals"));
+            Set(P.F.Runtime, "supplyVisuals", Props);
+        }
+        internal static Vector2 Point(int index)
+        {
+            return new Vector2(ClearingSupplies.PositionX(index), ClearingSupplies.PositionY(index));
+        }
+        internal void Feet(int index, Vector2 offset)
+        {
+            P.F.Body.position = Point(index) + offset - ClearingVisuals.PlayerFootOffset;
+        }
+        internal GameObject Prop(int index) { return Get<GameObject[]>(Props, "points")[index]; }
+        internal SpriteRenderer Glyph(int index) { return Get<SpriteRenderer[][]>(Props, "glyphs")[index][0]; }
+        internal SpriteRenderer Empty(int index) { return Get<SpriteRenderer[]>(Props, "emptyMarks")[index]; }
+        internal SpriteRenderer Pulse(int index) { return Get<SpriteRenderer[][]>(Props, "pulsePieces")[index][0]; }
+    }
+
+    private static void NoSupplyColliders(Transform root)
+    {
+        Expect(root.gameObject.GetComponent<BoxCollider2D>() == null
+            && root.gameObject.GetComponent<CircleCollider2D>() == null
+            && root.gameObject.GetComponent<CapsuleCollider2D>() == null
+            && root.gameObject.GetComponent<Rigidbody2D>() == null,
+            "a decorative supply changed world collisions");
+        foreach (Transform child in root.Children) NoSupplyColliders(child);
+    }
+
+    private static void AddSupplyChecks(Action<string, Action> test)
+    {
+        test("supplies discover from actor feet inside range and recorded Default-wall visibility", () =>
+        {
+            var f = new SupplyFixture();
+            f.P.Update();
+            Expect(!f.Supplies.IsDiscovered(0) && !f.Supplies.IsDiscovered(1),
+                "supply was discovered from the distant spawn");
+            f.Feet(0, new Vector2(ClearingSupplies.DiscoveryRadius + .01f, 0f));
+            f.P.Update();
+            Expect(!f.Supplies.IsDiscovered(0), "outside discovery radius revealed herbs");
+            f.Feet(0, new Vector2(ClearingSupplies.DiscoveryRadius - .01f, 0f));
+            Vector2 feet = f.P.F.Body.position + ClearingVisuals.PlayerFootOffset;
+            bool observed = false;
+            Physics2D.LinecastQuery = (start, end, mask) =>
+            {
+                if (end == SupplyFixture.Point(0))
+                {
+                    Expect(start == feet && mask == 1,
+                        "supply visibility used actor center or a non-wall layer mask");
+                    observed = true;
+                }
+                return null;
+            };
+            try { f.P.Update(); }
+            finally { Physics2D.LinecastQuery = null; }
+            Expect(observed && f.Supplies.IsDiscovered(0) && !f.Supplies.IsDiscovered(1)
+                && !f.Supplies.IsClaimed(0), "visible discovery consumed or revealed both supplies");
+        });
+        test("actual E respects foot interaction radius and restores only the actor-owned health clone once", () =>
+        {
+            var f = new SupplyFixture(); f.P.Stats.Health = 5f;
+            int cues = f.P.F.Audio.OneShots.Count;
+            // With centered Viola frames, standing body center on the prop
+            // leaves the actual feet 1.1 units away and outside the use radius.
+            f.P.F.Body.position = SupplyFixture.Point(0);
+            f.P.Update(KeyCode.E);
+            Expect(f.Supplies.IsDiscovered(0) && !f.Supplies.IsClaimed(0)
+                && Near(f.P.Stats.Health, 5f) && f.P.F.Audio.OneShots.Count == cues,
+                "body-center proximity bypassed the foot interaction radius");
+            f.Feet(0, Vector2.zero); f.P.Update(KeyCode.E);
+            Expect(f.Supplies.IsClaimed(0) && Near(f.P.Stats.Health, 9f)
+                && Near(f.P.Stats.Mana, 12f) && f.P.F.Audio.OneShots.Count == cues + 1,
+                "E did not apply one four-health gain and one accepted reward cue");
+            string accepted = Get<Text>(f.P.Hud, "message").text.ToLowerInvariant();
+            Expect(accepted.Contains("+4") && accepted.Contains("hp"), "accepted health gain was hidden by a spent-supply hint");
+            f.P.Stats.Health = 1f; f.P.Update(KeyCode.E); f.P.Update(KeyCode.E);
+            Expect(Near(f.P.Stats.Health, 1f) && f.P.F.Audio.OneShots.Count == cues + 1
+                && f.P.Store.Attempts == 0 && f.P.Progress.Data.BankCoins == 0,
+                "spent herbs replayed healing/audio or awarded persistent coins");
+            f.P.AssertTemplate();
+        });
+        test("actual rune E restores capped mana without health coins or template changes", () =>
+        {
+            var f = new SupplyFixture(); f.P.Stats.Health = 7f; f.P.Stats.Mana = 10f;
+            f.Feet(1, Vector2.zero); int cues = f.P.F.Audio.OneShots.Count;
+            f.P.Update(KeyCode.E);
+            Expect(f.Supplies.IsClaimed(1) && !f.Supplies.IsClaimed(0)
+                && Near(f.P.Stats.Mana, 12f) && Near(f.P.Stats.Health, 7f)
+                && f.P.F.Audio.OneShots.Count == cues + 1,
+                "rune did not restore the actual two-mana deficit once");
+            string accepted = Get<Text>(f.P.Hud, "message").text.ToLowerInvariant();
+            Expect(accepted.Contains("+2") && accepted.Contains("mp"), "actual capped mana gain was hidden by its spent hint");
+            f.P.Stats.Mana = 0f; f.P.Update(KeyCode.E);
+            Expect(Near(f.P.Stats.Mana, 0f) && f.P.F.Audio.OneShots.Count == cues + 1
+                && f.P.Store.Attempts == 0 && f.P.Progress.Data.ClearedRuns == 0,
+                "spent rune restored again or wrote progression");
+            f.P.AssertTemplate();
+        });
+        test("a discovered rune supplies exactly one admitted burst through real E then K input", () =>
+        {
+            var f = new SupplyFixture(); f.P.Stats.Mana = 0f;
+            f.Feet(1, Vector2.zero); int cues = f.P.F.Audio.OneShots.Count;
+            f.P.Update(KeyCode.E);
+            Expect(f.Supplies.IsClaimed(1) && Near(f.P.Stats.Mana, ClearingRun.BurstManaCost),
+                "empty mana did not receive exactly one six-mana burst budget");
+            f.P.Update(KeyCode.K);
+            Expect(f.P.F.Run.PlayerAttackActive && f.P.F.Run.BurstCooldownRemaining > 0f
+                && Near(f.P.Stats.Mana, 0f) && f.P.F.Audio.OneShots.Count == cues + 2,
+                "restored actor mana did not fund one actual K burst with its cooldown and cue");
+            long action = Get<long>(f.P.F.Run, "currentPlayerActionId");
+            f.P.Update(KeyCode.E, KeyCode.K);
+            Expect(Get<long>(f.P.F.Run, "currentPlayerActionId") == action && Near(f.P.Stats.Mana, 0f)
+                && f.P.F.Audio.OneShots.Count == cues + 2 && f.Supplies.IsClaimed(1),
+                "spent rune or active attack funded or replayed another burst");
+            f.P.AssertTemplate();
+        });
+        test("full health and mana E preserve supplies and success audio until useful", () =>
+        {
+            foreach (int id in new[] { 0, 1 })
+            {
+                var f = new SupplyFixture(); f.Feet(id, Vector2.zero);
+                int cues = f.P.F.Audio.OneShots.Count;
+                f.P.Update(KeyCode.E);
+                Expect(f.Supplies.IsDiscovered(id) && !f.Supplies.IsClaimed(id)
+                    && f.P.F.Audio.OneShots.Count == cues,
+                    "full resource consumed a supply or emitted a success cue");
+                string prompt = Get<Text>(f.P.Hud, "message").text.ToLowerInvariant();
+                Expect(prompt.Contains("full") && prompt.Contains(id == 0 ? "hp" : "mp"),
+                    "full supply lacks the actual capacity reason in its edge hint");
+                if (id == 0) f.P.Stats.Health = 8.5f;
+                else f.P.Stats.Mana = 9.75f;
+                f.P.Update(KeyCode.E);
+                Expect(f.Supplies.IsClaimed(id) && f.P.F.Audio.OneShots.Count == cues + 1
+                    && Near(id == 0 ? f.P.Stats.Health : f.P.Stats.Mana, id == 0 ? 10f : 12f),
+                    "previous full-resource refusal prevented a later capped restoration");
+            }
+        });
+        test("recorded wall blocks discovery and later known-supply E without spending or success cue", () =>
+        {
+            var f = new SupplyFixture(); f.P.Stats.Health = 5f; f.Feet(0, Vector2.zero);
+            int cues = f.P.F.Audio.OneShots.Count;
+            Physics2D.LinecastResponse = new BoxCollider2D();
+            try { f.P.Update(KeyCode.E); }
+            finally { Physics2D.LinecastResponse = null; }
+            Expect(!f.Supplies.IsDiscovered(0) && !f.Supplies.IsClaimed(0)
+                && Near(f.P.Stats.Health, 5f) && f.P.F.Audio.OneShots.Count == cues,
+                "blocked wall visibility discovered or consumed herbs");
+            f.P.Update();
+            Expect(f.Supplies.IsDiscovered(0), "clear discovery did not recover after wall response ended");
+            Physics2D.LinecastResponse = new BoxCollider2D();
+            try { f.P.Update(KeyCode.E); }
+            finally { Physics2D.LinecastResponse = null; }
+            Expect(!f.Supplies.IsClaimed(0) && Near(f.P.Stats.Health, 5f)
+                && f.P.F.Audio.OneShots.Count == cues, "remembered discovery bypassed current wall visibility");
+            f.P.Update(KeyCode.E);
+            Expect(f.Supplies.IsClaimed(0) && Near(f.P.Stats.Health, 9f),
+                "a blocked attempt permanently consumed the useful supply");
+        });
+        test("paused dead and completed Update never discover or restore supplies", () =>
+        {
+            foreach (int state in new[] { 0, 1, 2 })
+            {
+                var f = new SupplyFixture();
+                if (state == 0) Invoke(f.P.F.Runtime, "SetPaused", true);
+                if (state == 1) { f.P.Stats.Health = 0f; f.P.Update(); }
+                if (state == 2) f.P.Complete();
+                f.Feet(0, Vector2.zero);
+                float health = f.P.Stats.Health, mana = f.P.Stats.Mana;
+                int cues = f.P.F.Audio.OneShots.Count;
+                f.P.Update(KeyCode.E);
+                Expect(!f.Supplies.IsDiscovered(0) && !f.Supplies.IsClaimed(0)
+                    && Near(f.P.Stats.Health, health) && Near(f.P.Stats.Mana, mana)
+                    && f.P.F.Audio.OneShots.Count == cues,
+                    "inactive state " + state + " discovered/healed or emitted a supply reward");
+            }
+            var known = new SupplyFixture(); known.Feet(0, Vector2.zero); known.P.Update();
+            known.P.Stats.Health = 4f; Invoke(known.P.F.Runtime, "SetPaused", true);
+            known.P.Update(KeyCode.E);
+            Expect(known.Supplies.IsDiscovered(0) && !known.Supplies.IsClaimed(0)
+                && Near(known.P.Stats.Health, 4f), "pause erased discovery or accepted a known supply");
+            Invoke(known.P.F.Runtime, "SetPaused", false); known.P.Update(KeyCode.E);
+            Expect(known.Supplies.IsClaimed(0) && Near(known.P.Stats.Health, 8f),
+                "resume could not use the still-available supply");
+        });
+        test("disable preserves discovery and spent charges while genuine death R retry restocks", () =>
+        {
+            var f = new SupplyFixture(); f.P.Stats.Health = 5f; f.P.Stats.Mana = 0f;
+            f.Feet(0, Vector2.zero); f.P.Update(KeyCode.E);
+            f.Feet(1, Vector2.zero); f.P.Update();
+            Expect(f.Supplies.IsClaimed(0) && f.Supplies.IsDiscovered(1) && !f.Supplies.IsClaimed(1),
+                "restock preservation setup failed");
+            Invoke(f.P.F.Runtime, "OnDisable");
+            f.P.Stats.Health = 1f; f.Feet(0, Vector2.zero);
+            int cues = f.P.F.Audio.OneShots.Count; f.P.Update(KeyCode.E);
+            Expect(f.Supplies.IsClaimed(0) && f.Supplies.IsDiscovered(1) && !f.Supplies.IsClaimed(1)
+                && Near(f.P.Stats.Health, 1f) && f.P.F.Audio.OneShots.Count == cues,
+                "disable/resume restocked herbs or forgot the rune discovery");
+            f.P.Stats.Health = 0f; f.P.Update(); f.P.Update(KeyCode.R);
+            Expect(!f.P.F.Run.IsDead && !f.Supplies.IsDiscovered(0) && !f.Supplies.IsDiscovered(1)
+                && !f.Supplies.IsClaimed(0) && !f.Supplies.IsClaimed(1),
+                "genuine new attempt failed to reset both supply lifecycles");
+            f.P.Stats.Health = 5f; f.Feet(0, Vector2.zero); f.P.Update(KeyCode.E);
+            Expect(f.Supplies.IsClaimed(0) && Near(f.P.Stats.Health, 9f), "new-attempt herbs were not usable");
+            f.P.AssertTemplate();
+        });
+        test("beacon completion takes E priority and completed E still retries storage near a supply", () =>
+        {
+            var f = new SupplyFixture(); f.Feet(0, Vector2.zero); f.P.Update();
+            f.P.Stats.Health = 5f; f.P.Store.AcceptWrites = false;
+            f.P.Complete();
+            Expect(f.P.F.Run.IsComplete && !f.Supplies.IsClaimed(0)
+                && Near(f.P.Stats.Health, 5f) && f.P.Store.Writes == 0,
+                "beacon E was replaced by herb restoration or saved a refused write");
+            string id = f.P.RewardId; f.Feet(0, Vector2.zero); f.P.Store.AcceptWrites = true;
+            f.P.Update(KeyCode.E); f.P.Update(KeyCode.E);
+            Expect(f.P.Store.Writes == 1 && f.P.Progress.Data.BankCoins == 30
+                && f.P.Progress.IsCompletionBanked(id) && f.P.RewardId == id
+                && Near(f.P.Stats.Health, 5f) && !f.Supplies.IsClaimed(0),
+                "terminal E near herbs diverted storage retry or duplicated the completed reward");
+        });
+        test("supply props cache distinct nonblocking glyphs and swap discovered content for spent marks", () =>
+        {
+            var shared = new ClearingVisuals(new GameObject("Shared supply-art owner").transform);
+            int initialTextures = Texture2D.CreatedCount, initialSprites = Sprite.CreatedCount;
+            var isolated = new ClearingSupplyVisuals(new GameObject("Nonblocking supply fixture").transform, shared);
+            Expect(Texture2D.CreatedCount == initialTextures && Sprite.CreatedCount == initialSprites,
+                "decorative supplies created replacement textures or sprites instead of reusing the clearing pixel");
+            isolated.Dispose(); shared.Dispose();
+            var f = new SupplyFixture();
+            int objects = GameObject.CreatedCount, textures = Texture2D.CreatedCount, sprites = Sprite.CreatedCount;
+            Expect(Get<SpriteRenderer[][]>(f.Props, "glyphs")[0].Length != Get<SpriteRenderer[][]>(f.Props, "glyphs")[1].Length,
+                "health and mana content lost their distinct authored silhouettes");
+            f.Props.Refresh(f.Supplies, f.P.F.Run.Time);
+            foreach (int id in new[] { 0, 1 })
+            {
+                NoSupplyColliders(f.Prop(id).transform);
+                Expect((Vector2)f.Prop(id).transform.localPosition == SupplyFixture.Point(id),
+                    "prop local world position differs from interaction rules");
+                Expect(f.Glyph(id).gameObject.activeSelf && !f.Empty(id).gameObject.activeSelf,
+                    "fresh prop lacks an unclaimed motif");
+            }
+            Color hidden = f.Glyph(0).color;
+            f.Feet(0, Vector2.zero); f.P.Update();
+            Color revealed = f.Glyph(0).color;
+            Expect(!Near(hidden.r, revealed.r) || !Near(hidden.g, revealed.g) || !Near(hidden.b, revealed.b),
+                "discovery has no visible palette-state change");
+            f.P.Stats.Health = 5f; f.P.Update(KeyCode.E);
+            Expect(!f.Glyph(0).gameObject.activeSelf && f.Empty(0).gameObject.activeSelf
+                && f.Glyph(1).gameObject.activeSelf && !f.Empty(1).gameObject.activeSelf,
+                "claim did not swap only its own content for a spent mark");
+            for (int i = 0; i < 25; i++) f.P.Update();
+            Expect(GameObject.CreatedCount == objects && Texture2D.CreatedCount == textures
+                && Sprite.CreatedCount == sprites, "supply refresh/claim allocated new objects or rasters");
+        });
+        test("claim pulse freezes on pause then expires and clears on disable retry and disposal", () =>
+        {
+            var f = new SupplyFixture(); f.P.Stats.Health = 5f;
+            f.Feet(0, Vector2.zero); f.P.Update(KeyCode.E);
+            Expect(f.Pulse(0).gameObject.activeSelf, "accepted supply has no cached claim pulse");
+            float alpha = f.Pulse(0).color.a, scale = f.Pulse(0).transform.localScale.x;
+            double time = f.P.F.Run.Time; int objects = GameObject.CreatedCount;
+            Invoke(f.P.F.Runtime, "SetPaused", true);
+            Time.unscaledTime += 50f;
+            for (int i = 0; i < 8; i++) { f.P.F.Tick(); f.P.Update(); }
+            Expect(f.P.F.Run.Time == time && f.Pulse(0).gameObject.activeSelf
+                && Near(f.Pulse(0).color.a, alpha) && Near(f.Pulse(0).transform.localScale.x, scale),
+                "pause advanced or erased the simulation-time supply pulse");
+            Invoke(f.P.F.Runtime, "SetPaused", false);
+            f.P.F.Run.Advance(.5f); f.P.Update();
+            Expect(!f.Pulse(0).gameObject.activeSelf, "expired claim pulse stayed active");
+            f.Props.ShowClaim(0, f.P.F.Run.Time); f.P.F.Refresh();
+            Invoke(f.P.F.Runtime, "OnDisable"); f.P.F.Refresh();
+            Expect(!f.Pulse(0).gameObject.activeSelf && f.Supplies.IsClaimed(0),
+                "disable retained a pulse or restocked the consumed supply");
+            f.Props.ShowClaim(0, f.P.F.Run.Time); f.P.F.Refresh();
+            Expect(f.Pulse(0).gameObject.activeSelf, "retry clear setup has no live claim pulse");
+            Invoke(f.P.F.Runtime, "ResetRun"); f.P.F.Refresh();
+            Expect(!f.Pulse(0).gameObject.activeSelf && !f.Pulse(1).gameObject.activeSelf
+                && GameObject.CreatedCount == objects, "retry retained a claim pulse or allocated replacement props");
+            GameObject first = f.Prop(0), second = f.Prop(1); f.Props.Dispose();
+            Expect(first.Destroyed && second.Destroyed, "owned supply roots were not disposed");
+        });
+        test("supply hints share the existing edge slot behind the beacon and vanish in terminal states", () =>
+        {
+            foreach (float width in new[] { 620f, 960f, 1280f })
+            {
+                var f = new HudFixture(); f.Width(width);
+                f.Hud.Refresh(f.Stats, f.Run, false, false, false, "Accepted contact", null, "", "", "E - herbs: +4 HP");
+                Expect(f.Message.text == "E - herbs: +4 HP" && f.Help.text == "",
+                    "nearby supply action did not replace transient feedback in its shared slot");
+                Rect rect = RecordedLabelRect(f.Message, new Vector2(width, 540f));
+                Expect(rect.y + rect.height <= 81f && f.Message.rectTransform.sizeDelta == f.Help.rectTransform.sizeDelta,
+                    "supply hint extended into the south combat view or allocated a second edge column");
+                f.Hud.Refresh(f.Stats, f.Run, false, false, true, "Accepted contact", null, "", "", "E - herbs: +4 HP");
+                Expect(f.Message.text.Contains("beacon") && !f.Message.text.Contains("herbs"),
+                    "supply hint hid the available beacon action");
+                f.Hud.Refresh(f.Stats, f.Run, false, false, false, "Accepted contact");
+                Expect(f.Message.text == "Accepted contact", "leaving supply range did not restore existing transient feedback");
+                f.Hud.Refresh(f.Stats, f.Run, true, false, false, "", null, "", "", "E - herbs: +4 HP");
+                Expect(f.Message.text == "" && f.Help.text == "", "pause still advertises a supply action");
+            }
+            foreach (bool complete in new[] { false, true })
+            {
+                var f = new HudFixture();
+                if (complete) Expect(f.Run.TryCompleteObjective(), "supply HUD completion setup rejected");
+                else f.Run.NotifyPlayerDeath();
+                f.Hud.Refresh(f.Stats, f.Run, false, false, false, "", null, "", "", "E - herbs: +4 HP");
+                Expect(f.Message.text == "" && f.Help.text == "" && !string.IsNullOrEmpty(Get<Text>(f.Hud, "terminal").text),
+                    "terminal HUD advertises a supply or hides its result");
+            }
+        });
+    }
+
     private static int Main()
     {
         int passed = 0, failed = 0;
@@ -1459,6 +1781,7 @@ public static class PresentationBehaviorChecks
         AddProgressionChecks(test);
         AddTacticsChecks(test);
         AddDamageNumberChecks(test);
+        AddSupplyChecks(test);
         Console.WriteLine("RESULT " + passed + " passed, " + failed + " failed; actual project C# with recording boundaries, not native Unity.");
         return failed == 0 ? 0 : 1;
     }

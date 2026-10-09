@@ -252,6 +252,45 @@ class ClearingSceneContracts(unittest.TestCase):
         target = (round(self.beacon[0] / .1), round(self.beacon[1] / .1))
         self.assertIn(target, visited, "The gate opens but the player's footprint still cannot reach the beacon")
 
+    def test_optional_supplies_are_reachable_before_unlock_without_cross_seal_interaction(self):
+        supplies = (PROJECT_ROOT / "Assets/Scripts/Gameplay/ClearingSupplies.cs").read_text()
+        count = re.search(r"const int Count\s*=\s*(\d+)\s*;", supplies)
+        radius = re.search(r"const float UseRadius\s*=\s*" + NUMBER + r"\s*;", supplies)
+        size = re.search(r"collider\.size\s*=\s*" + VECTOR, self.runtime)
+        self.assertIsNotNone(count, "Read the actual number of authored supply points")
+        self.assertIsNotNone(radius, "Read the actual supply interaction radius")
+        self.assertIsNotNone(size, "Read the actual player foot collider before checking access")
+        count = int(count[1])
+        radius = float(radius[1])
+        self.assertGreater(count, 0)
+        self.assertTrue(math.isfinite(radius) and radius > 0)
+        axes = []
+        for axis in ("X", "Y"):
+            body = method_body(supplies, "Position" + axis)
+            positions = {int(match[1]): float(match[2]) for match in re.finditer(
+                r"if\s*\(index\s*==\s*(\d+)\)\s*return\s*" + NUMBER + r"\s*;", body)}
+            self.assertEqual(set(range(count)), set(positions),
+                             "Every supply must have an actual authored " + axis + " coordinate")
+            axes.append(positions)
+        footprint = (float(size[1]) / 2, float(size[2]) / 2)
+        closed = [*self.walls, self.gate]
+        visited, escaped = reachable(closed, self.spawn, footprint)
+        self.assertFalse(escaped)
+        for index in range(count):
+            point = (axes[0][index], axes[1][index])
+            with self.subTest(supply=index):
+                self.assertTrue(all(math.isfinite(value) for value in point))
+                self.assertIn((round(point[0] / .1), round(point[1] / .1)), visited,
+                              "Optional supply is inaccessible until the objective gate opens")
+                # The entire use disk, including conservative actor clearance,
+                # stays inside the same sealed region as its reachable center.
+                # Thus it cannot offer an interaction from across any wall/gate.
+                for x, y, half_x, half_y in closed:
+                    dx = max(abs(point[0] - x) - half_x - footprint[0], 0)
+                    dy = max(abs(point[1] - y) - half_y - footprint[1], 0)
+                    self.assertGreater(math.hypot(dx, dy), radius,
+                                       "Supply interaction disk reaches a sealed wall or gate")
+
     def test_hero_raster_feet_and_north_camera_envelope_match_play_space(self):
         # Use actual scene/animation sprite references, not an assumed frame size.
         references = set(re.findall(r"(?:m_Sprite:|value:) \{fileID: (-?\d+), guid: ([0-9a-f]{32}), type: 3\}", self.scene))

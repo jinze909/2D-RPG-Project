@@ -1,6 +1,47 @@
 # Development progress
 
-## Iteration 8 — exploration supplies foundation; execution outage
+## Iteration 8 — recovered and integrated exploration supplies
+
+Recovered execution access and confirmed the actual eighth branch at safely
+published foundation 2c99ecfc62d476bbe4bf30adb874c8b52254498e. Exact foundation
+CI37995620781 completed all 12 steps successfully. Six materialized LFS objects
+are restored. Fresh foundation evidence: 303 project + 6 distribution = 309
+checks; 23 production sources compile against 86 real Unity API references,
+Input System substituted. The earlier execution outage below is resolved.
+
+Implemented one optional explore -> discover -> E -> restore -> fight loop:
+west herbs restore up to 4 HP, east rune up to 6 MP, each once per attempt.
+Discovery/use require the actual player foot point and clear wall LOS, with
+2.4/0.8-unit radii. Full/invalid/no-effective-gain attempts preserve the charge;
+accepted feedback reports the clamped actual gain on the actor-owned stats.
+The rune can fund the existing six-MP burst without altering its cost/cooldown.
+Beacon interaction and terminal save retry retain E priority; supplies never
+change the three-enemy objective or deposit coins. Genuine R/new-run reset
+restocks both points; disable/resume retains their discovery and spent state.
+
+Cached original herb/cross and rune/diamond props reuse the clearing's existing
+PPU1 Point square sprite/palette, sized in 1/30-unit world pixels. They have no
+blocking collider, show discovery/spent states and
+a short claim pulse. Pulse time freezes on pause and clears on interruption.
+Accepted claims reuse the existing reward cue; rejection/discovery is silent.
+Truthful nearby/full/spent hints share the existing edge feedback slot.
+
+Fresh final local evidence: 316 project + 6 distribution = 322 checks pass.
+The 13 new pure supply, 12 new actual-method presentation and one new geometry
+group retain all old checks. Presentation 81 includes the previous 69; scene
+contracts total 15. The rune E -> K burst end-to-end case passes. All 24 production
+scripts compile against 86 real Unity API references, with the reviewed Input
+System substitute. A new rune-to-burst fixture initially named
+the rule property incorrectly; the fixture was corrected, not a game defect.
+54 unique meta GUIDs, 145 serialized references, six materialized LFS objects and
+65 files in eight licensed Skill bundles pass. Root generated/filled the actual
+chained handoff and validated it at 100/100 with three existing file references.
+Review/publication evidence and safe implementation checkpoint follow after
+verification. Native import/play/input/physics/render/
+audio/player build remains unrun and optional. Profile v1, mature combat/tactics/
+damage feedback, original hero/animation and existing scene geometry remain.
+
+## Historical iteration 8 foundation and execution outage — superseded
 
 Verified remote master 3f3fbd41d2c6a4d3536001c817ae88a1489ebd21, seventh completed receipt
 d0e59185db40cf83eebca8015b16402425673505, merged PR6 and exact final CI.
