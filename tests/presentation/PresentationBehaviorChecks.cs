@@ -21,7 +21,9 @@ public static class PresentationBehaviorChecks
     private static void Set(object target, string name, object value) { Field(target, name).SetValue(target, value); }
     private static void Invoke(object target, string name, params object[] args)
     {
-        target.GetType().GetMethod(name, BindingFlags.Instance | BindingFlags.NonPublic).Invoke(target, args);
+        var method = target.GetType().GetMethod(name, BindingFlags.Instance | BindingFlags.NonPublic);
+        if (method == null) throw new Exception("Presentation method absent: " + name);
+        method.Invoke(target, args);
     }
     private static void Expect(bool condition, string message) { if (!condition) throw new Exception(message); }
     private static bool Near(float a, float b) { return Math.Abs(a - b) < .0001f; }
@@ -135,6 +137,426 @@ public static class PresentationBehaviorChecks
             Expect(run.TryHitSentinel(token, target), "setup contact rejected");
             run.Advance(.46f);
         }
+    }
+
+    private sealed class RecordedProgressStore : IClearingProgressStore
+    {
+        internal ClearingProgressData Saved;
+        internal bool AcceptWrites = true;
+        internal readonly bool Writable;
+        internal readonly ProgressLoadKind Kind;
+        internal int Attempts, Writes;
+        internal RecordedProgressStore(ClearingProgressData data = null, bool writable = true,
+            ProgressLoadKind kind = ProgressLoadKind.New)
+        {
+            Saved = data ?? ClearingProgressData.Fresh;
+            Writable = writable;
+            Kind = kind;
+        }
+        public ProgressLoadResult Load() { return new ProgressLoadResult(Saved, Kind, Writable); }
+        public bool TrySave(ClearingProgressData expected, ClearingProgressData next)
+        {
+            Attempts++;
+            if (!AcceptWrites || !Writable || !object.ReferenceEquals(expected, Saved)) return false;
+            Saved = next;
+            Writes++;
+            return true;
+        }
+    }
+
+    private sealed class ProgressFixture
+    {
+        internal readonly RuntimeFixture F = new RuntimeFixture();
+        internal readonly PlayerStats Template;
+        internal readonly ClearingHud Hud;
+        internal readonly RecordedProgressStore Store;
+        internal readonly ClearingProgress Progress;
+        internal PlayerStats Stats { get { return F.Player.Stats; } }
+        internal string RewardId { get { return Get<string>(F.Runtime, "rewardId"); } }
+        internal string Terminal { get { return Get<Text>(Hud, "terminal").text; } }
+        internal ProgressFixture(ClearingProgressData data = null, bool writable = true,
+            ProgressLoadKind kind = ProgressLoadKind.New)
+        {
+            Input.ClearPressed();
+            // Exercise the actual actor-owned clone, never substitute a saved
+            // authoring asset or hide template mutations behind a fake Player.
+            Template = F.Stats;
+            Invoke(F.Player, "Awake");
+            Expect(!object.ReferenceEquals(Template, Stats), "Player Awake did not clone its authoring stats");
+            Hud = new ClearingHud(F.Runtime.transform);
+            ((RectTransform)Get<Transform>(Hud, "root")).rect = new Rect(0, 0, 960, 540);
+            Set(F.Runtime, "hud", Hud);
+            Store = new RecordedProgressStore(data, writable, kind);
+            Progress = new ClearingProgress(Store);
+            Invoke(F.Runtime, "InitializeProgress", Progress);
+            Invoke(F.Runtime, "ResetRun");
+        }
+        internal void Update(params KeyCode[] keys)
+        {
+            Time.unscaledTime += .1f;
+            Set(F.Runtime, "nextHudAt", 0f);
+            Input.SetPressed(keys);
+            try { Invoke(F.Runtime, "Update"); }
+            finally { Input.ClearPressed(); }
+        }
+        internal void Unlock()
+        {
+            for (int i = 0; i < ClearingRun.SentinelCount; i++)
+                while (!F.Run.GetSentinel(i).IsDead)
+                {
+                    long token;
+                    Expect(F.Run.BeginPlayerAttack(PlayerAttackKind.Light, Stats.Mana, out token), "progress setup attack rejected");
+                    Expect(F.Run.TryHitSentinel(token, i), "progress setup contact rejected");
+                    F.Run.Advance(ClearingRun.LightCooldown);
+                }
+        }
+        internal void Complete()
+        {
+            Unlock();
+            F.Body.position = ClearingVisuals.BeaconPosition - ClearingVisuals.PlayerFootOffset;
+            Update(KeyCode.E);
+            Expect(F.Run.IsComplete, "actual near-beacon E did not complete the clearing");
+        }
+        internal void AssertTemplate()
+        {
+            Expect(Near(Template.Health, 10f) && Near(Template.MaxHealth, 10f)
+                && Near(Template.Mana, 12f) && Near(Template.MaxMana, 12f),
+                "progression mutated the authored PlayerStats template");
+        }
+    }
+
+    private static ClearingProgressData SavedCoins(int clears)
+    {
+        return new ClearingProgressData(clears, clears * ClearingProgressData.CompletionCoins, clears, 0, 0,
+            clears == 0 ? "" : Guid.NewGuid().ToString("N"));
+    }
+
+    private static void RefreshProgress(HudFixture f, ClearingProgress progress, string rewardId,
+        string notice = "", bool paused = false)
+    {
+        var method = typeof(ClearingHud).GetMethod("Refresh", BindingFlags.Instance | BindingFlags.NonPublic);
+        if (method == null || method.GetParameters().Length != 9)
+            throw new Exception("Progression HUD Refresh signature absent");
+        method.Invoke(f.Hud, new object[] { f.Stats, f.Run, paused, false, true, "", progress, rewardId, notice });
+    }
+
+    private static string HudText(ClearingHud hud)
+    {
+        return Get<Text>(hud, "resources").text + "\n" + Get<Text>(hud, "objective").text + "\n"
+            + Get<Text>(hud, "terminal").text;
+    }
+
+    private static Rect RecordedLabelRect(Text text, Vector2 viewport)
+    {
+        // These labels have fixed anchors/pivots and no layout group. Compute
+        // only their declared rectangles; do not infer glyph or native layout.
+        RectTransform rect = text.rectTransform;
+        return new Rect(rect.anchorMin.x * viewport.x + rect.anchoredPosition.x - rect.pivot.x * rect.sizeDelta.x,
+            rect.anchorMin.y * viewport.y + rect.anchoredPosition.y - rect.pivot.y * rect.sizeDelta.y,
+            rect.sizeDelta.x, rect.sizeDelta.y);
+    }
+
+    private static bool RectanglesOverlap(Rect first, Rect second)
+    {
+        return first.x < second.x + second.width && second.x < first.x + first.width
+            && first.y < second.y + second.height && second.y < first.y + first.height;
+    }
+
+    private static void AddProgressionChecks(Action<string, Action> test)
+    {
+        test("actual E cannot bank a locked objective or an unlocked far beacon", () =>
+        {
+            var p = new ProgressFixture();
+            p.Update(KeyCode.E);
+            Expect(!p.F.Run.IsComplete && p.Store.Attempts == 0 && p.Progress.Data.BankCoins == 0,
+                "locked objective deposited rewards");
+            p.Unlock(); p.Update(KeyCode.E);
+            Expect(!p.F.Run.IsComplete && p.Store.Attempts == 0 && p.Progress.Data.ClearedRuns == 0,
+                "far beacon deposited an unfinished encounter");
+        });
+        test("actual near-beacon E banks thirty once and locks completed movement", () =>
+        {
+            var p = new ProgressFixture(); p.Complete();
+            Expect(p.Progress.Data.BankCoins == 30 && p.Progress.Data.ClearedRuns == 1 && p.Store.Writes == 1
+                && p.Progress.IsCompletionBanked(p.RewardId), "completed encounter was not banked once");
+            Expect(!p.F.ControlsEnabled && p.F.Body.velocity == Vector2.zero, "banked completion retained movement");
+            int cues = p.F.Audio.OneShots.Count;
+            p.Update(KeyCode.E); p.Update(KeyCode.E);
+            Invoke(p.F.Runtime, "OnDisable"); p.Update(KeyCode.E);
+            Expect(p.Progress.Data.BankCoins == 30 && p.Progress.Data.ClearedRuns == 1
+                && p.Store.Writes == 1 && p.F.Audio.OneShots.Count == cues,
+                "repeated E or disable/resume duplicated banked rewards or audio");
+            p.AssertTemplate();
+        });
+        test("failed completion preserves ledger and E retries the same reward exactly once", () =>
+        {
+            var p = new ProgressFixture(); p.Store.AcceptWrites = false;
+            ClearingProgressData before = p.Progress.Data; string id = p.RewardId;
+            p.Complete();
+            Expect(object.ReferenceEquals(before, p.Progress.Data) && p.Progress.SaveFailed && p.Store.Writes == 0
+                && p.F.Run.IsComplete && p.RewardId == id, "save failure changed ledger or reward identity");
+            string failure = p.Terminal.ToLowerInvariant();
+            Expect(failure.Contains("unbanked") && failure.Contains("e") && failure.Contains("r")
+                && (failure.Contains("lost") || failure.Contains("lose")), "failed reward lacks retry/continue-loss choices");
+            p.Update(KeyCode.E);
+            Expect(p.Store.Writes == 0 && p.Progress.Data.BankCoins == 0, "failed retry awarded live coins");
+            p.Store.AcceptWrites = true; p.Update(KeyCode.E);
+            Expect(p.Progress.Data.BankCoins == 30 && p.Progress.Data.ClearedRuns == 1
+                && p.Store.Writes == 1 && !p.Progress.SaveFailed && p.RewardId == id,
+                "same completed reward did not recover once after storage resumed");
+            p.Update(KeyCode.E);
+            Expect(p.Store.Writes == 1 && p.Progress.Data.BankCoins == 30, "successful retry duplicated a deposit");
+        });
+        test("R after an unbanked completion continues without inventing saved rewards", () =>
+        {
+            var p = new ProgressFixture(); p.Store.AcceptWrites = false; p.Complete();
+            string previousId = p.RewardId; p.Update(KeyCode.R);
+            Expect(!p.F.Run.IsComplete && !p.F.Run.IsDead && p.F.Run.RewardCoins == 0
+                && p.Progress.Data.BankCoins == 0 && p.Progress.Data.ClearedRuns == 0 && p.Store.Writes == 0,
+                "continuing an unbanked result silently awarded or retained its coins");
+            Expect(previousId != p.RewardId && p.RewardId.Length == 32 && p.F.ControlsEnabled,
+                "next encounter did not get a fresh identity and controls");
+            p.AssertTemplate();
+        });
+        test("upgrade keys cannot spend in active paused dead or unbanked states", () =>
+        {
+            foreach (int state in new[] { 0, 1, 2, 3, 4 })
+            {
+                var p = new ProgressFixture(SavedCoins(3));
+                if (state == 1) Invoke(p.F.Runtime, "SetPaused", true);
+                if (state == 2) { p.Stats.Health = 0f; p.Update(); }
+                if (state == 3) { p.Store.AcceptWrites = false; p.Complete(); }
+                if (state == 4) { p.Complete(); Invoke(p.F.Runtime, "SetPaused", true); }
+                ClearingProgressData before = p.Progress.Data; int attempts = p.Store.Attempts;
+                foreach (KeyCode key in new[] { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Keypad1, KeyCode.Keypad2 }) p.Update(key);
+                Expect(object.ReferenceEquals(before, p.Progress.Data) && p.Store.Attempts == attempts,
+                    "upgrade key spent coins in disabled state " + state);
+                p.AssertTemplate();
+            }
+        });
+        foreach (bool focus in new[] { false, true })
+        {
+            bool isFocus = focus;
+            test((isFocus ? "Focus" : "Vitality") + " main and keypad choices spend saved coins and activate next run only", () =>
+            {
+                foreach (KeyCode key in isFocus ? new[] { KeyCode.Alpha2, KeyCode.Keypad2 } : new[] { KeyCode.Alpha1, KeyCode.Keypad1 })
+                {
+                    var p = new ProgressFixture(); p.Complete();
+                    p.Stats.Health = 7f; p.Stats.Mana = 8f;
+                    int cues = p.F.Audio.OneShots.Count; p.Update(key);
+                    Expect(p.Progress.Data.BankCoins == 0 && p.Store.Writes == 2
+                        && (isFocus ? p.Progress.Data.FocusRank : p.Progress.Data.VitalityRank) == 1,
+                        "accepted upgrade did not consume its thirty saved coins");
+                    Expect(Near(p.Stats.MaxHealth, 10f) && Near(p.Stats.MaxMana, 12f)
+                        && Near(p.Stats.Health, 7f) && Near(p.Stats.Mana, 8f),
+                        "purchase changed the already completed encounter's resources");
+                    Expect(p.F.Audio.OneShots.Count == cues + 1, "saved purchase produced no distinct reward cue");
+                    p.Update(KeyCode.R);
+                    Expect(Near(p.Stats.MaxHealth, isFocus ? 10f : 12f) && Near(p.Stats.MaxMana, isFocus ? 14f : 12f)
+                        && Near(p.Stats.Health, p.Stats.MaxHealth) && Near(p.Stats.Mana, p.Stats.MaxMana),
+                        "retry did not apply and fill the purchased next-run bonus");
+                    p.AssertTemplate();
+                }
+            });
+        }
+        test("failed purchase preserves bank rank actor and audio until the same choice saves", () =>
+        {
+            var p = new ProgressFixture(); p.Complete(); p.Store.AcceptWrites = false;
+            ClearingProgressData before = p.Progress.Data; int cues = p.F.Audio.OneShots.Count;
+            p.Update(KeyCode.Alpha1);
+            Expect(object.ReferenceEquals(before, p.Progress.Data) && p.Progress.SaveFailed
+                && p.Progress.Data.VitalityRank == 0 && p.Progress.Data.BankCoins == 30
+                && p.F.Audio.OneShots.Count == cues && Near(p.Stats.MaxHealth, 10f),
+                "failed purchase mutated bank/rank/resources or played a success cue");
+            Expect(p.Terminal.ToLowerInvariant().Contains("fail") || p.Terminal.ToLowerInvariant().Contains("not saved"),
+                "failed purchase has no truthful storage failure feedback");
+            p.Store.AcceptWrites = true; p.Update(KeyCode.Alpha1);
+            Expect(p.Progress.Data.VitalityRank == 1 && p.Progress.Data.BankCoins == 0 && p.Store.Writes == 2
+                && !p.Progress.SaveFailed && p.F.Audio.OneShots.Count == cues + 1, "purchase retry did not commit once");
+            p.Update(KeyCode.Alpha1);
+            Expect(p.Store.Writes == 2 && p.F.Audio.OneShots.Count == cues + 1, "insufficient coins replayed success");
+        });
+        test("loaded bonuses and repeated retries never stack or mutate the authoring template", () =>
+        {
+            var data = new ClearingProgressData(5, 30, 3, 1, 1, Guid.NewGuid().ToString("N"));
+            var p = new ProgressFixture(data, kind: ProgressLoadKind.Loaded);
+            Expect(Near(p.Stats.MaxHealth, 12f) && Near(p.Stats.MaxMana, 14f), "loaded ranks were not applied at run start");
+            for (int i = 0; i < 4; i++)
+            {
+                string id = p.RewardId; p.Stats.Health = 0f; p.Stats.Mana = 1f; p.Update(); p.Update(KeyCode.R);
+                Expect(Near(p.Stats.MaxHealth, 12f) && Near(p.Stats.MaxMana, 14f)
+                    && Near(p.Stats.Health, 12f) && Near(p.Stats.Mana, 14f) && p.RewardId != id,
+                    "retry accumulated bonuses, retained old reward identity or failed to refill");
+                Expect(p.Progress.Data.BankCoins == 30 && p.Progress.Data.ClearedRuns == 3 && p.Store.Attempts == 0,
+                    "death or retry banked an unfinished encounter");
+                p.AssertTemplate();
+            }
+        });
+        test("terminal R cannot admit held-frame attacks or beacon input into the next encounter", () =>
+        {
+            foreach (bool completed in new[] { false, true })
+            {
+                var p = new ProgressFixture();
+                if (completed) p.Complete();
+                else { p.Stats.Health = 0f; p.Update(); }
+                int writes = p.Store.Writes;
+                p.Update(KeyCode.R, KeyCode.J, KeyCode.K, KeyCode.E);
+                Expect(!p.F.Run.IsComplete && !p.F.Run.IsDead && !p.F.Run.PlayerAttackActive
+                    && Near(p.F.Run.LightCooldownRemaining, 0f) && Near(p.F.Run.BurstCooldownRemaining, 0f)
+                    && Near(p.Stats.Mana, p.Stats.MaxMana) && p.Store.Writes == writes,
+                    "restart admitted a previous result-frame attack or objective input");
+                p.AssertTemplate();
+            }
+        });
+        test("protected progress permits clearing but never claims or writes a saved completion", () =>
+        {
+            var p = new ProgressFixture(SavedCoins(3), false, ProgressLoadKind.Unsupported);
+            ClearingProgressData before = p.Progress.Data; p.Complete();
+            p.Update(KeyCode.E); p.Update(KeyCode.Alpha1); p.Update(KeyCode.Alpha2);
+            Expect(object.ReferenceEquals(before, p.Progress.Data) && p.Store.Attempts == 0 && p.F.Run.IsComplete,
+                "protected save was overwritten by completion or upgrade input");
+            string terminal = p.Terminal.ToLowerInvariant();
+            Expect(terminal.Contains("unbanked") && (terminal.Contains("protected") || terminal.Contains("unavailable")),
+                "protected completion was presented as successfully saved");
+        });
+        test("full profile capacity preserves its ledger and permits an explicitly unbanked next run", () =>
+        {
+            var p = new ProgressFixture(SavedCoins(ClearingProgressData.MaxClearedRuns));
+            ClearingProgressData before = p.Progress.Data; p.Complete();
+            Expect(object.ReferenceEquals(before, p.Progress.Data) && p.Store.Attempts == 0,
+                "full ledger deposited beyond its bounded completion count");
+            string terminal = p.Terminal.ToLowerInvariant();
+            Expect(terminal.Contains("unbanked") && (terminal.Contains("cap") || terminal.Contains("limit")),
+                "capacity rejection was advertised as saved or omitted its cause");
+            p.Update(KeyCode.Alpha1); p.Update(KeyCode.Alpha2); p.Update(KeyCode.R);
+            Expect(object.ReferenceEquals(before, p.Progress.Data) && p.Store.Attempts == 0
+                && !p.F.Run.IsComplete && p.F.ControlsEnabled, "capacity rejection locked play or spent an unbanked result");
+        });
+        test("all upgrade price tiers commit once and capped input never spends or plays success", () =>
+        {
+            foreach (KeyCode key in new[] { KeyCode.Alpha1, KeyCode.Alpha2 })
+            {
+                var p = new ProgressFixture(SavedCoins(10)); p.Complete();
+                int coins = 330;
+                foreach (int price in new[] { 30, 45, 60 })
+                {
+                    Expect(p.Terminal.Contains(price.ToString()), "result omits the next valid upgrade price");
+                    p.Update(key); coins -= price;
+                    Expect(p.Progress.Data.BankCoins == coins, "actual input used the wrong upgrade tier price");
+                }
+                int attempts = p.Store.Attempts, cues = p.F.Audio.OneShots.Count;
+                p.Update(key);
+                Expect(p.Progress.Data.BankCoins == coins && p.Store.Attempts == attempts
+                    && p.F.Audio.OneShots.Count == cues && p.Terminal.ToLowerInvariant().Contains("max"),
+                    "capped input spent coins, wrote state or emitted success without a purchase");
+                Expect(Near(p.Stats.MaxHealth, 10f) && Near(p.Stats.MaxMana, 12f), "tiered purchases applied before a new encounter");
+                p.Update(KeyCode.R);
+                Expect(Near(p.Stats.MaxHealth, key == KeyCode.Alpha1 ? 16f : 10f)
+                    && Near(p.Stats.MaxMana, key == KeyCode.Alpha2 ? 18f : 12f), "maximum saved rank was not applied once on restart");
+                p.AssertTemplate();
+            }
+        });
+        test("HUD displays saved bank and next-run upgrade ranks during actual play", () =>
+        {
+            var f = new HudFixture();
+            var data = new ClearingProgressData(5, 30, 3, 1, 1, Guid.NewGuid().ToString("N"));
+            var progress = new ClearingProgress(new RecordedProgressStore(data));
+            RefreshProgress(f, progress, Guid.NewGuid().ToString("N"));
+            string text = HudText(f.Hud).ToLowerInvariant();
+            Expect(text.Contains("bank") && text.Contains("30") && text.Contains("vitality") && text.Contains("focus"),
+                "live HUD has no bank/rank summary");
+            Expect(Get<Text>(f.Hud, "terminal").text == "", "active game displays terminal choices over combat");
+        });
+        test("empty platform persistence path creates a read-only profile instead of relative files", () =>
+        {
+            string original = Application.persistentDataPath;
+            string taskDirectory = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "rpg-empty-path-" + Guid.NewGuid().ToString("N"));
+            string previousDirectory = System.IO.Directory.GetCurrentDirectory();
+            System.IO.Directory.CreateDirectory(taskDirectory);
+            try
+            {
+                System.IO.Directory.SetCurrentDirectory(taskDirectory);
+                foreach (string path in new[] { "", " \t\r\n" })
+                {
+                    Application.persistentDataPath = path;
+                    var create = typeof(ClearingRuntime).GetMethod("CreateProgress", BindingFlags.Static | BindingFlags.NonPublic);
+                    Expect(create != null, "platform progress factory absent");
+                    var progress = (ClearingProgress)create.Invoke(null, null);
+                    Expect(!progress.CanWrite && progress.LoadKind == ProgressLoadKind.Unavailable
+                        && progress.Data.BankCoins == 0, "empty persistence path admitted writable relative storage");
+                    var run = UnlockedRun(); Expect(run.TryCompleteObjective(), "empty path setup rejected");
+                    Expect(progress.BankCompletion(run, Guid.NewGuid().ToString("N")) == ProgressActionResult.Unavailable,
+                        "empty platform path saved a completion");
+                    Expect(System.IO.Directory.GetFileSystemEntries(taskDirectory).Length == 0,
+                        "empty platform path created files in the working directory");
+                }
+            }
+            finally
+            {
+                Application.persistentDataPath = original;
+                System.IO.Directory.SetCurrentDirectory(previousDirectory);
+                System.IO.Directory.Delete(taskDirectory, true);
+            }
+        });
+        test("banked completion HUD shows both next-run choices prices and rank cap", () =>
+        {
+            var f = new HudFixture(); Expect(f.Run.TryCompleteObjective(), "HUD complete setup rejected");
+            string id = Guid.NewGuid().ToString("N");
+            var progress = new ClearingProgress(new RecordedProgressStore());
+            Expect(progress.BankCompletion(f.Run, id) == ProgressActionResult.Saved, "HUD bank setup failed");
+            RefreshProgress(f, progress, id);
+            string text = Get<Text>(f.Hud, "terminal").text.ToLowerInvariant();
+            Expect(text.Contains("1") && text.Contains("2") && text.Contains("vitality") && text.Contains("focus")
+                && text.Contains("30") && text.Contains("next"), "banked result omits upgrade prices or next-run activation");
+            var capped = new ClearingProgressData(15, 0, 9, 3, 3, id);
+            RefreshProgress(f, new ClearingProgress(new RecordedProgressStore(capped)), id);
+            text = Get<Text>(f.Hud, "terminal").text.ToLowerInvariant();
+            Expect(text.Contains("max") && !text.Contains("cost 0"), "capped choices advertise a zero-cost purchase");
+        });
+        test("completion HUD limits result rectangles on short and narrow canvas boundaries", () =>
+        {
+            foreach (Vector2 viewport in new[] { new Vector2(620, 320), new Vector2(720, 400), new Vector2(960, 540) })
+            {
+                var f = new HudFixture();
+                ((RectTransform)Get<Transform>(f.Hud, "root")).rect = new Rect(0, 0, viewport.x, viewport.y);
+                Expect(f.Run.TryCompleteObjective(), "short HUD setup rejected");
+                string id = Guid.NewGuid().ToString("N");
+                var progress = new ClearingProgress(new RecordedProgressStore());
+                progress.BankCompletion(f.Run, id); RefreshProgress(f, progress, id);
+                var terminal = Get<Text>(f.Hud, "terminal");
+                Expect(terminal.rectTransform.sizeDelta.x <= viewport.x - 28f
+                    && terminal.rectTransform.sizeDelta.y <= viewport.y - 28f && terminal.fontSize >= 14,
+                    "result rectangle extends outside a short/narrow recording canvas");
+                Expect(terminal.text.Contains("R") && terminal.text.Contains("1") && terminal.text.Contains("2"),
+                    "responsive result lost its available choices");
+            }
+        });
+        test("completion shop rectangles never overlap visible corner labels on short or ultrawide canvases", () =>
+        {
+            foreach (Vector2 viewport in new[] { new Vector2(620, 320), new Vector2(960, 468), new Vector2(960, 540) })
+            {
+                foreach (bool banked in new[] { false, true })
+                {
+                    var f = new HudFixture();
+                    ((RectTransform)Get<Transform>(f.Hud, "root")).rect = new Rect(0, 0, viewport.x, viewport.y);
+                    Expect(f.Run.TryCompleteObjective(), "shop overlap setup rejected");
+                    string id = Guid.NewGuid().ToString("N");
+                    var progress = new ClearingProgress(new RecordedProgressStore());
+                    if (banked) Expect(progress.BankCompletion(f.Run, id) == ProgressActionResult.Saved, "overlap bank setup rejected");
+                    RefreshProgress(f, progress, id);
+                    Text terminal = Get<Text>(f.Hud, "terminal");
+                    Expect(!string.IsNullOrEmpty(terminal.text), "completed shop result missing");
+                    Rect shop = RecordedLabelRect(terminal, viewport);
+                    foreach (string name in new[] { "resources", "objective" })
+                    {
+                        Text corner = Get<Text>(f.Hud, name);
+                        if (string.IsNullOrEmpty(corner.text)) continue;
+                        Expect(!RectanglesOverlap(shop, RecordedLabelRect(corner, viewport)),
+                            "completed shop overlaps visible " + name + " at " + viewport.x + "x" + viewport.y);
+                    }
+                }
+            }
+        });
     }
 
     private static int Main()
@@ -516,6 +938,7 @@ public static class PresentationBehaviorChecks
                        && f.Audio.OneShots.Count == swingCues + 2, "repeated tick duplicated kill rewards or clear audio");
             });
         }
+        AddProgressionChecks(test);
         Console.WriteLine("RESULT " + passed + " passed, " + failed + " failed; actual project C# with recording boundaries, not native Unity.");
         return failed == 0 ? 0 : 1;
     }

@@ -1,5 +1,26 @@
 # Known issues
 
+## Current iteration 5 candidate status
+
+Gameplay/input/result HUD/reward-cue/next-run integration is now implemented.
+219 project and 6 distribution checks plus real Unity API-reference compilation
+pass. The old foundation-only status below is historical, not an unfinished feature.
+Native import/PlayMode/EditMode, actual save-path/lifecycle/keyboard/physics,
+HUD glyph layout, real sound audition and player build remain unrun without a
+valid Unity license. PR #1 must stay draft and master unchanged.
+Future files are protected including oversized or malformed UTF-8 payloads;
+backup recovery may lose the latest transaction. This is a local bounded profile,
+not encrypted anti-cheat, a world save or a global historical reward replay ledger.
+
+## Historical iteration 5 foundation checkpoint (superseded below)
+
+The progression domain/codec/file store is implemented and tested; it is not yet
+connected to gameplay at this checkpoint. Integration, runtime/UI evidence,
+final GitHub CI/PR, ZIP and handoff remain outstanding. Future/corrupt save files
+are protected rather than silently reset; backup recovery can roll back the last
+transaction and must be clearly announced. Native save-path/lifecycle/input/HUD
+and balance acceptance remain pending with the existing license limitation.
+
 ## Confirmed current gaps
 
 - PR #3 and PR #2 are merged into the isolated iteration-2 candidate. PR #1 is
@@ -11,8 +32,10 @@
   objective, HUD and cues on an isolated branch. Their real engine/visual behavior
   is not yet accepted. Original SampleScene remains the bare prototype; the old
   forest-gate report describes a different source and was not claimed recovered.
-- No professions, inventory, persistent equipment/progression/save, full story,
-  large world or boss system exists. Run-local coins are feedback, not a saved economy.
+- Iteration 5 implements local clearing progression, banked completion coins and
+  bounded HP/MP upgrades. Professions, inventory/equipment, world-state saves,
+  full story, large world and bosses remain absent. Desktop persistence is a
+  candidate; browser/mobile/console support and real balance are unaccepted.
 - Arrow/analog/D-pad bindings are corrected and serialized/wrapper-coherent;
   actual Input System package behavior and hardware deadzones require native tests.
 - Existing walking slices have heights 66–69 with center pivots and a duplicated

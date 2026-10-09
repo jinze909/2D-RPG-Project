@@ -1,0 +1,53 @@
+Compiling actual progression, codec and file store; no Unity doubles
+PASS fresh progress has no coins, ranks or bonuses
+PASS invalid ledger construction fails before data enters a transaction
+PASS kill rewards do not bank before beacon completion
+PASS death and null runs cannot bank rewards
+PASS beacon completion deposits exactly thirty coins and one clear
+PASS repeated completion ID cannot duplicate a deposited reward
+PASS reload retains the last deposit ID across an upgrade purchase
+PASS different completed runs accumulate persistent coins
+PASS malformed completion identities reject without touching the ledger
+PASS completion identities normalize letter case without granting a duplicate reward
+PASS failed banking preserves the old ledger and allows a fresh retry
+PASS purchases require sufficient saved coins and never spend on rejection
+PASS vitality and focus each buy a two-point bonus for thirty coins
+PASS upgrade prices scale thirty forty-five sixty and stop at rank three
+PASS failed purchase leaves coins ranks and bonuses unchanged then retries once
+PASS unsupported or unavailable persistence blocks writes and purchases
+PASS capacity limit rejects another clear without touching stored currency
+PASS unknown upgrade never purchases or grants bonuses
+PASS codec round trips fresh and maximum mixed upgrades
+PASS codec remains invariant under a non-English current culture
+PASS codec rejects empty truncated and oversized content
+PASS checksum rejects changed reward coins before semantic parsing
+PASS codec rejects ledger inflation even with a matching checksum
+PASS codec rejects negative out-of-range and noncanonical numbers
+PASS codec rejects malformed and missing reward identities
+PASS codec rejects reordered duplicated and trailing fields
+PASS future schema is identified and blocked even when its checksum differs
+PASS recognizable oversized future codec data stays protected from downgrade
+PASS real empty directory loads a new writable ledger without creating files
+PASS real first save reloads byte-valid earned coins
+PASS real replacement keeps prior valid bytes in backup
+PASS real purchase survives a fresh store instance with coins and bonus intact
+PASS real corrupt primary recovers a verified backup
+PASS saving recovered progress preserves last good backup instead of rotating corruption
+PASS missing primary can recover a valid backup
+PASS two damaged saves remain untouched and block automatic reset
+PASS future primary is preserved despite an older usable backup
+PASS future backup also blocks downgrade writes while preserving both files
+PASS oversized future primary cannot recover an older backup and overwrite future progress
+PASS oversized future backup blocks a valid primary from downgrading the save pair
+PASS future primary with malformed UTF-8 after its header remains protected
+PASS future backup with malformed UTF-8 after its header remains protected
+PASS real invalid UTF-8 and oversized primary data remain unavailable
+PASS orphan staging data never supersedes the committed save
+PASS real staging failure leaves memory unchanged and can retry after removing the fault
+PASS real backup path collision preserves committed bytes and retries without duplicate reward
+PASS real exclusive-lock contention rejects a save then permits a later retry
+PASS real staging fault preserves both the latest save and prior backup
+PASS real store rejects skipped revisions and same-revision divergent snapshots
+PASS real stale writer is rejected without overwriting a newer purchase
+PASS real path collision reports unavailable without replacing unrelated data
+Progression: 51 passed, 0 failed; actual pure C# and real temporary filesystem IO.

@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using UnityEngine;
 
 namespace Rpg.Gameplay
@@ -15,6 +17,11 @@ namespace Rpg.Gameplay
         private readonly Vector2[] enemySpawns = { new Vector2(-4f, -.3f), new Vector2(4f, -.3f), new Vector2(0f, 1.15f) };
         private readonly EnemyView[] enemies = new EnemyView[ClearingRun.SentinelCount];
         private ClearingRun run;
+        private ClearingProgress progress;
+        private string rewardId;
+        private float baseMaxHealth;
+        private float baseMaxMana;
+        private string progressNotice;
         private ClearingVisuals visuals;
         private ClearingHud hud;
         private ClearingAudio sound;
@@ -122,7 +129,50 @@ namespace Rpg.Gameplay
             strike.gameObject.SetActive(false);
             hud = new ClearingHud(transform);
             sound = new ClearingAudio(gameObject);
+            InitializeProgress(CreateProgress());
             ResetRun();
+        }
+
+        private sealed class UnavailableProgressStore : IClearingProgressStore
+        {
+            public ProgressLoadResult Load()
+            {
+                return new ProgressLoadResult(ClearingProgressData.Fresh, ProgressLoadKind.Unavailable, false);
+            }
+            public bool TrySave(ClearingProgressData expected, ClearingProgressData next) { return false; }
+        }
+
+        private static ClearingProgress CreateProgress()
+        {
+            // An empty platform path must never turn into a relative project save.
+            if (!string.IsNullOrWhiteSpace(Application.persistentDataPath))
+            {
+                try
+                {
+                    return new ClearingProgress(new FileClearingProgressStore(
+                        Path.Combine(Application.persistentDataPath, "ClearingProgress")));
+                }
+                catch (ArgumentException) { }
+                catch (IOException) { }
+                catch (NotSupportedException) { }
+                catch (System.Security.SecurityException) { }
+            }
+            return new ClearingProgress(new UnavailableProgressStore());
+        }
+
+        private void InitializeProgress(ClearingProgress value)
+        {
+            progress = value;
+            // Player.Awake already cloned the asset before this runtime's Start.
+            baseMaxHealth = player.Stats.MaxHealth;
+            baseMaxMana = player.Stats.MaxMana;
+            progressNotice = LoadNotice();
+        }
+
+        private string LoadNotice()
+        {
+            if (progress == null || !progress.CanWrite) return "Save unavailable; existing files protected.";
+            return progress.LoadKind == ProgressLoadKind.Recovered ? "Recovered earlier progress; latest transaction may be lost." : "";
         }
 
         private Vector2 PlayerPoint { get { return playerBody.position + ClearingVisuals.PlayerFootOffset; } }
@@ -133,21 +183,34 @@ namespace Rpg.Gameplay
             if (run == null) return;
             SynchronizeDeath();
             if (Input.GetKeyDown(KeyCode.M)) sound.ToggleMute();
-            if ((run.IsDead || run.IsComplete) && Input.GetKeyDown(KeyCode.R)) ResetRun();
-            if (!run.IsDead && !run.IsComplete && Input.GetKeyDown(KeyCode.Escape)) SetPaused(!paused);
-            if (!paused && !run.IsDead && !run.IsComplete)
+            // Snapshot terminal admission so R cannot also attack/interact this frame.
+            if (run.IsDead || run.IsComplete)
             {
-                if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.Space)) StartAttack(PlayerAttackKind.Light);
-                if (Input.GetKeyDown(KeyCode.K)) StartAttack(PlayerAttackKind.Burst);
-                if (Input.GetKeyDown(KeyCode.E))
+                if (run.IsComplete && !paused)
                 {
-                    if (NearBeacon && run.TryCompleteObjective())
+                    if (Input.GetKeyDown(KeyCode.E)) BankCompletion();
+                    if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1)) BuyUpgrade(ClearingUpgrade.Vitality);
+                    else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2)) BuyUpgrade(ClearingUpgrade.Focus);
+                }
+                if (Input.GetKeyDown(KeyCode.R)) ResetRun();
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.Escape)) SetPaused(!paused);
+                if (!paused)
+                {
+                    if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.Space)) StartAttack(PlayerAttackKind.Light);
+                    if (Input.GetKeyDown(KeyCode.K)) StartAttack(PlayerAttackKind.Burst);
+                    if (Input.GetKeyDown(KeyCode.E))
                     {
-                        StopActors();
-                        sound.Reward();
-                        Feedback("The beacon is restored. The clearing is safe.", 5f);
+                        if (NearBeacon && run.TryCompleteObjective())
+                        {
+                            StopActors();
+                            if (BankCompletion() != ProgressActionResult.Saved) sound.Reward();
+                            Feedback("The beacon is restored. The clearing is safe.", 5f);
+                        }
+                        else Feedback(run.GateUnlocked ? "Move closer to the north beacon." : "Defeat all three sentinels to break the seal.", 2f);
                     }
-                    else Feedback(run.GateUnlocked ? "Move closer to the north beacon." : "Defeat all three sentinels to break the seal.", 2f);
                 }
             }
             RefreshViews();
@@ -156,8 +219,49 @@ namespace Rpg.Gameplay
             {
                 nextHudAt = Time.unscaledTime + .05f;
                 hud.Refresh(player.Stats, run, paused, sound.Muted, NearBeacon,
-                    Time.unscaledTime < feedbackUntil ? feedback : "");
+                    Time.unscaledTime < feedbackUntil ? feedback : "", progress, rewardId, progressNotice);
             }
+        }
+
+        private ProgressActionResult BankCompletion()
+        {
+            if (paused || run.IsDead || !run.IsComplete) return ProgressActionResult.RunIncomplete;
+            ProgressActionResult result = progress == null ? ProgressActionResult.Unavailable : progress.BankCompletion(run, rewardId);
+            if (result == ProgressActionResult.Saved)
+            {
+                progressNotice = "30 coins banked. Upgrades apply next run.";
+                sound.Reward();
+            }
+            else if (result != ProgressActionResult.AlreadyBanked)
+                progressNotice = result == ProgressActionResult.CapacityReached ?
+                    "Progress limit reached; reward unbanked. R loses these run coins." :
+                    result == ProgressActionResult.Unavailable ?
+                    "Save unavailable; existing files protected. Reward unbanked." :
+                    "Reward not saved; unbanked. E - retry; R loses these run coins.";
+            nextHudAt = 0f;
+            return result;
+        }
+
+        private void BuyUpgrade(ClearingUpgrade upgrade)
+        {
+            if (paused || run.IsDead || !run.IsComplete) return;
+            if (progress == null || !progress.IsCompletionBanked(rewardId))
+            {
+                progressNotice = progress == null || !progress.CanWrite ?
+                    "Save unavailable; existing files protected. Reward unbanked." :
+                    progress.Data.ClearedRuns == ClearingProgressData.MaxClearedRuns ?
+                    "Progress limit reached; reward unbanked. R loses these run coins." :
+                    "Reward unbanked. Bank this run first. E - retry saving.";
+                nextHudAt = 0f;
+                return;
+            }
+            ProgressActionResult result = progress.Buy(upgrade);
+            progressNotice = result == ProgressActionResult.Saved ? "Upgrade saved. Bonus applies next run." :
+                result == ProgressActionResult.InsufficientCoins ? "Not enough banked coins. Complete another run." :
+                result == ProgressActionResult.MaxRank ? "This upgrade is already at maximum rank." :
+                "Upgrade not saved; coins unchanged. Press the same key to retry.";
+            if (result == ProgressActionResult.Saved) sound.Reward();
+            nextHudAt = 0f;
         }
 
         private void StartAttack(PlayerAttackKind kind)
@@ -455,8 +559,17 @@ namespace Rpg.Gameplay
 
         private void ResetRun()
         {
+            bool lostReward = run.IsComplete && progress != null && !progress.IsCompletionBanked(rewardId);
             if (paused) SetPaused(false);
             run.ResetRun();
+            rewardId = Guid.NewGuid().ToString("N");
+            if (progress != null)
+            {
+                // Recompute from authoring bases, never from previously boosted maxima.
+                player.Stats.MaxHealth = baseMaxHealth > 0f && !float.IsInfinity(baseMaxHealth) ? baseMaxHealth + progress.BonusHealth : baseMaxHealth;
+                player.Stats.MaxMana = baseMaxMana > 0f && !float.IsInfinity(baseMaxMana) ? baseMaxMana + progress.BonusMana : baseMaxMana;
+                progressNotice = LoadNotice();
+            }
             player.ResetForNewRun();
             movement.ResetMovement();
             playerBody.position = ClearingVisuals.PlayerSpawn - ClearingVisuals.PlayerFootOffset;
@@ -486,7 +599,8 @@ namespace Rpg.Gameplay
                 enemy.WarningCrossB.gameObject.SetActive(false);
                 enemy.Warning.gameObject.SetActive(false);
             }
-            Feedback("Defeat the three sentinels. Step out of orange warnings.", 7f);
+            Feedback(lostReward ? "Previous run coins were not saved. Defeat the three sentinels." :
+                "Defeat the three sentinels. Step out of orange warnings.", 7f);
         }
 
         private void OnDisable()

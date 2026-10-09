@@ -60,3 +60,14 @@ offline fixtures, validation/package tools and the push workflow. Onboarding did
 not modify scenes, resources, packages or settings.
 
 <!-- unity-onboarding:generated:end -->
+
+## Iteration 5 update (2026-10-08 local)
+
+From verified fe8b1f7, implemented ClearingProgress (immutable bounded ledger),
+ClearingProgressCodec (strict v1/checksum/future header protection), and desktop
+FileClearingProgressStore (lock/expected snapshot/flushed atomic replacement).
+ClearingRuntime banks only completed attempts, handles terminal input and applies
+saved bonuses to actor clones only on reset. Hud displays bank/ranks/result costs
+and truthful failure reasons; Audio reuses its accepted reward cue. No art, scene,
+package or settings changes. 219 project + 6 distribution checks and 19 sources
+against 86 actual references pass; InputSystem/native limits above still apply.

@@ -145,6 +145,8 @@ def validate(root: Path) -> dict:
     check('player_resource_behavior', lambda: behavior('run_resource_checks.py'))
     check('input_and_animation_contracts', lambda: contracts('run_input_animation_checks.py'))
     check('clearing_combat_rules', lambda: behavior('run_gameplay_checks.py', 'actual pure C# rules; no Unity engine'))
+    check('clearing_progression_and_persistence', lambda: behavior('run_progression_checks.py',
+          'actual pure C# progression/codec plus real Mono temporary-filesystem IO; no Unity engine'))
     check('clearing_scene_contracts', lambda: contracts('run_scene_checks.py'))
     check('clearing_presentation_behavior', lambda: behavior('run_presentation_checks.py',
           'actual C# with recording component/audio boundaries; no native physics, UI layout or audible output'))

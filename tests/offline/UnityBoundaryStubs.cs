@@ -68,8 +68,24 @@ namespace UnityEngine
         public void SetBool(int key, bool value) { Bools[key] = value; }
         public void SetFloat(int key, float value) { Floats[key] = value; }
     }
-    public static partial class Input { public static bool GetKeyDown(KeyCode key) { return false; } }
-    public enum KeyCode { P, J, K, E, R, M, Space, Escape }
+    public static partial class Input
+    {
+        // Explicit frame input only. GetKeyDown stays true for every query in
+        // that frame, matching the API contract without emulating hardware.
+        private static readonly HashSet<KeyCode> pressed = new HashSet<KeyCode>();
+        public static bool GetKeyDown(KeyCode key) { return pressed.Contains(key); }
+        public static void SetPressed(params KeyCode[] keys)
+        {
+            pressed.Clear();
+            foreach (KeyCode key in keys) pressed.Add(key);
+        }
+        public static void ClearPressed() { pressed.Clear(); }
+    }
+    public enum KeyCode { P, J, K, E, R, M, Space, Escape, Alpha1, Alpha2, Keypad1, Keypad2 }
+    public static class Application
+    {
+        public static string persistentDataPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "rpg-recording-boundary");
+    }
     public static partial class Debug
     {
         public static void Assert(bool condition, string message)

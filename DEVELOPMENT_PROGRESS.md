@@ -1,5 +1,47 @@
 # Development progress
 
+## Iteration 5 — integrated clearing growth checkpoint
+
+The player loop now completes: defeat three -> E at beacon -> save 30 coins ->
+1/2 (or keypad) buys Vitality/Focus -> R applies +2 HP/MP per saved rank.
+Each upgrade has three ranks costing 30/45/60. Saved bank/ranks load on restart;
+current encounters and the authored PlayerStats never become save data.
+Actor bonuses are recomputed from captured bases, never stacked on repeated R.
+Failed saves keep live coins/ranks unchanged; E retries the current completion;
+unbanked R explicitly loses that run's reward. Corrupt/future files are protected.
+No input on a terminal R frame leaks an attack into the new encounter.
+
+Independent review reproduced an oversized future-schema overwrite bug in this
+round's foundation: 46 pass/5 fail. Bounded header detection now precedes body
+size/UTF-8 validation; 51 progression checks pass, including exact-byte protection.
+A real completed-shop/corner overlap at short/ultrawide sizes was reproduced
+(43 pass/1 fail) and fixed by hiding redundant corner labels only at completion.
+Unbanked upgrade choices now explicitly say bank first.
+Initial integration fixture retained 26 passes and 13 new-feature gaps; final
+44 presentation checks pass. Recording boundaries are not native rendering/play.
+
+Fresh total: 219 project + 6 distribution = 225 passing checks; integrity of
+scene/build references, GUID/meta, six LFS objects and eight skills also passed.
+19 production C# sources compile against 86 real Unity 2022.3.53f1 references;
+Input System remains substituted. Foundation checkpoint 819c6bf was pushed.
+GitHub CI/stacked PR and final ZIP/receipt/handoff follow after this second checkpoint.
+
+## Iteration 5 — persistence foundation checkpoint (2026-10-08 local)
+
+Verified clean HEAD fe8b1f7 and actual remote history/PR state before selecting
+rpg/iteration-005-persistent-progression from iteration 2. Retained all fourth-round
+work; PR #2/#3 are already merged. PR #1 stays draft and master unchanged.
+
+Implemented pure clearing progression and durable version-1 local storage:
+30 coins only for completed beacon runs, once per current attempt, two upgrades
+with three bounded ranks, strict ledger/checksum validation, save-before-mutate,
+real atomic file replacement/backup, stale-writer and incompatible-file protection.
+Player, input, HUD integration is still pending at this checkpoint.
+
+Fresh checks: 196 project + 6 distribution passed; 19 sources compiled against
+86 real Unity references with Input System substituted. See iteration-005/checkpoint.md.
+Native validation remains unavailable due to the inherited license gap.
+
 ## Iteration 4 verified integration and delivery handoff — 2026-10-09 UTC
 
 Game fix checkpoint 1e7eb01c359eeba55b42c038652701f0a54bbb38 was safely pushed;

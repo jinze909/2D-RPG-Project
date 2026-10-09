@@ -13,7 +13,9 @@ China package services. Preserve the specified editor version.
   region, completion/retry and compact Canvas HUD. Its native acceptance is pending.
 - `Player` clones the authoring `PlayerStats` in Awake. Health and mana resolve
   that same actor-owned snapshot. New session/retry fills valid maxima; the template
-  is never a save file. No persistent save, inventory or class system exists yet.
+  is never a save file. Iteration 5 adds engine-independent clearing progression
+  and versioned local storage, result-screen purchases and next-run actor bonuses.
+  Inventory, equipment and classes remain absent.
 - `Gameplay/ClearingRules` is engine-independent timing/admission/reward logic;
   `ClearingRuntime` owns scene positions, contacts, input and the resource bridge.
   `ClearingVisuals`, `ClearingHud` and `ClearingAudio` own presentation. Runtime
@@ -27,6 +29,9 @@ China package services. Preserve the specified editor version.
   Disable cancels transient contacts/effect deadlines without refunding cooldowns
   or erasing progression; pause freezes those actions without canceling them.
 - Read `docs/game/COMBAT_CLEARING.md` for controls and native acceptance steps.
+  Read `docs/game/CLEARING_PROGRESSION.md` before changing the reward ledger:
+  only a completed beacon run deposits coins; save-before-mutate, same-attempt
+  idempotency, bounded ranks and next-run-only actor bonuses are required.
   Run `tools/validate_project.py` (movement/resources/input/animation/combat/scene,
   actual presentation behavior and managed-raster checks) and the distribution
   suite. When installed, also use
@@ -108,6 +113,7 @@ Use meaningful tests when changing behavior. Existing actual-source checks are:
 ```bash
 python3 tools/run_player_checks.py --project-root .
 python3 tools/run_resource_checks.py --project-root .
+python3 tools/run_progression_checks.py --project-root .
 python3 tools/run_presentation_checks.py --project-root .
 python3 tools/run_art_checks.py --project-root .
 python3 tools/validate_project.py --root . --output /tmp/rpg-project-report.json
