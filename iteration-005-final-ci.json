@@ -1,0 +1,135 @@
+{
+  "source_sha": "d8c70488a010e1bb46c979a752d7ed5b1e662484",
+  "runs": [
+    {
+      "id": 37947125081,
+      "branch": "master",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "d8c70488a010e1bb46c979a752d7ed5b1e662484",
+      "url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37947125081"
+    },
+    {
+      "id": 37947125114,
+      "branch": "rpg/iteration-005-persistent-progression",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "d8c70488a010e1bb46c979a752d7ed5b1e662484",
+      "url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37947125114"
+    },
+    {
+      "id": 37947125483,
+      "branch": "rpg/iteration-002-clearing",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "d8c70488a010e1bb46c979a752d7ed5b1e662484",
+      "url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37947125483"
+    }
+  ],
+  "master_jobs": [
+    {
+      "id": 113876189738,
+      "name": "validate-and-package",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 37947125081,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Check out the complete Unity project",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Set up Python",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Install signed distribution compiler packages and image verifier",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Validate actual project sources and resource references",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Verify project packaging boundaries",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Package the complete project without Unity caches",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Upload project ZIP and verification report",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Publish the real download entry",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Post Set up Python",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17
+        },
+        {
+          "name": "Post Check out the complete Unity project",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19
+        }
+      ]
+    }
+  ],
+  "master_artifacts": [
+    {
+      "id": 11624656691,
+      "name": "unity-project-d8c70488a010e1bb46c979a752d7ed5b1e662484",
+      "size_in_bytes": 488265,
+      "url": "https://api.github.com/repos/jinze909/2D-RPG-Project/actions/artifacts/11624656691",
+      "archive_download_url": "https://api.github.com/repos/jinze909/2D-RPG-Project/actions/artifacts/11624656691/zip",
+      "expired": false,
+      "created_at": "2026-10-09T14:50:51Z",
+      "expires_at": "2026-11-08T14:50:50Z",
+      "updated_at": "2026-10-09T14:50:51Z",
+      "digest": "sha256:d886455a54b56d456e01571d68e85f077e3cf72fb52b5f76cda268ff2d7b8642",
+      "workflow_run": {
+        "id": 37947125081,
+        "repository_id": 943325134,
+        "head_repository_id": 943325134,
+        "head_branch": "master",
+        "head_sha": "d8c70488a010e1bb46c979a752d7ed5b1e662484"
+      }
+    }
+  ],
+  "native_unity_validation": false
+}

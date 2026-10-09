@@ -1,6 +1,16 @@
 # Unity project deliveries
 
-## Current delivery — Iteration 4 combat reliability
+## Fifth round — 2026-10-09 delivery
+
+Source d8c7048 on master includes the complete persistent clearing growth loop.
+PR4 and PR1 merged normally;225 offline/distribution checks and exact-source CI
+pass. Native acceptance is optional by the latest user instruction and unrun.
+Download [complete Unity project](https://raw.githubusercontent.com/jinze909/2D-RPG-Project/0208d6f9989777592df78d02625f6690cff8376f/2D-RPG-Project-iteration-005-d8c7048.zip) and [SHA-256](https://raw.githubusercontent.com/jinze909/2D-RPG-Project/0208d6f9989777592df78d02625f6690cff8376f/2D-RPG-Project-iteration-005-d8c7048.zip.sha256).
+See [receipt](iteration-005-delivery.json) and [final handoff](iteration-005-final-handoff.md).
+276sourcefiles+metadata; CRC/source-byte/SHA checks and HTTPS redownload verified.
+Prior source archives and receipts remain available below.
+
+## Fourth-round delivery (historical) combat reliability
 
 Source: [fe8b1f72841bade09ed5a1c39dbf1df5996c78df](https://github.com/jinze909/2D-RPG-Project/commit/fe8b1f72841bade09ed5a1c39dbf1df5996c78df).
 Unity: international 2022.3.53f1.
