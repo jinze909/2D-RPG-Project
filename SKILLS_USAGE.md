@@ -1,5 +1,27 @@
 # Skills usage
 
+## Iteration 8 — real continuity, design and outage diagnosis
+
+Rediscovered all eight local Skill locators and fetched their immutable current
+GitHub files; unchanged full guidance from prior rounds remains retained.
+Session-handoff reconciled seventh source, receipt/chain and actual GitHub PR/CI.
+Verification-before-completion ran fresh baseline API compilation22/86 and six
+distribution tests, distinguishes inaccessible local reports from hosted evidence,
+and will use exact eighth CI rather than old counts.
+Game-design selected optional exploration/resupply with explicit discovery/use/
+charge/resource rules. Game-art/game-audio informed proposed distinct herb/rune
+silhouettes and accepted-claim-only reward cue; these art/audio integrations are
+planned, not implemented at the foundation. Imagegen applicability was reviewed;
+no image-service call or generated bitmap is claimed.
+Systematic-debugging traced blocked syscall to .git/index.lock before transport
+failure, preserved locks/work and separated execution outage from Unity licensing.
+Unity-mcp-orchestrator/retained Unity Essentials guidance keep2022.3/Built-in and
+ownership/validation boundaries; no Unity-specific live MCP tool was found.
+The cloud-environment-runtime Skill was read and its actual environment-status/
+recovery tools were used: status offline, desiredrunning, observedstarting. A ready
+response did not prove shell restored. GitHub structured APIs preserve isolated
+checkpoint work without force-pushing or rewriting master.
+
 ## Iteration 7 review and publication verification
 
 Verification-before-completion checked actual implementation SHA CI, all 12 steps,

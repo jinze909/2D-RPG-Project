@@ -1,5 +1,24 @@
 # Known issues
 
+## Iteration 8 — current execution blocker and unwired feature
+
+The current execution host's filesystem blocked Git status at .git/index.lock,
+then command creation failed with exec-server transport disconnected / recovery
+timeout. Managed connectivity reports offline/starting; a readiness wait alone
+has not restored shell access. Locks and existing work were preserved.
+
+The supply domain foundation is a proposed optional4HP/6MP once-per-run reserve,
+not an implemented world interaction yet. Runtime E/LOS/resources, discovery
+presentation, prop art/HUD and interruption integration remain outstanding.
+Master still contains completed seventh source 3f3fbd41d2c6a4d3536001c817ae88a1489ebd21.
+The eighth branch stays isolated/draft until actual integration and review pass.
+An Actions source ZIP of this checkpoint is not a completed eighth gameplay ZIP.
+
+Native historical movement/animation/UI/physics/audio evidence gaps remain.
+The forest/archery/full quest system is absent from this checkout; no nonexistent
+regression result is invented. Save profile v1 and mature combat/tactics/feedback
+must be preserved. The blocker is execution connectivity, not native Unity licensing.
+
 ## Iteration 7 merged status — current
 
 PR6 is normally merged into master 3d00f72 after independent review and exact

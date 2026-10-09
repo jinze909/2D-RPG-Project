@@ -1,19 +1,20 @@
 # Current continuation / next iteration
 
-First read docs/iterations/2026-10-09-iteration-007/handoff.md and publication.md,
-then the actual iteration-007-delivery.json on rpg-deliveries. PR6 normally merged
-into master 3d00f72 after 296 offline/distribution groups, 22-source real API compile,
-independent review and exact CI 37983507184/all 12 steps/Artifact11642675735.
-The external receipt resolves final source, CI, ZIP/hash/HTTPS and companion handoff.
-If it is absent or incomplete, finish that delivery before another feature.
+Resume eighth exploration-supplies work, not a new unrelated feature. First check
+actual GitHub branch rpg/iteration-008-exploration-supplies, latest checkpoint/CI
+and docs/iterations/2026-10-09-iteration-008/handoff.md. Master remains completed
+seventh source 3f3fbd41d2c6a4d3536001c817ae88a1489ebd21; receipt d0e5918 is complete.
 
-When delivery is complete, prioritize native readability/balance if supported or
-a coherent exploration/objective slice. Numbers are newest-contact-per-actor;
-keep bounded glyph caches, simulation pause and interruption cleanup. Do not
-rebuild delivered save/growth, tactical roles, combat reliability or hero assets.
-Broader equipment/classes/story/world-state saves remain unimplemented.
+Execution must recover from blocked .git/index.lock and exec-server disconnection.
+Do not delete locks blindly or overwrite original work; recheck local branch/HEAD,
+dirty files and pending process state. GitHub connector was usable for isolated
+foundation commits/CI. Domain-only success is not Runtime or native acceptance.
 
-Foundation74e4494, implementation011d236, merge3d00f72 and previous source/archives
-remain recovery paths. Preserve dirty work/history/all archives; never force push
-or create an unasked worktree. Native acceptance is optional/unrun. Do not repeat
-unchanged license probes or call recording boundaries actual play.
+Next implement discovery/claim via actual player foot position and wall LOS:
+herbs(-5.6,-2.35) restore at most4HP, rune(5.6,1.15) at most6MP; discovery2.4,
+use0.8, E beacon priority, no charge consumed at full/invalid resources, one claim
+per point per run, reset only on actual new run. Disable/resume retains charges.
+Then cached original PPU30 props, true edge hints/actual gains/reward cue, meaningful
+actual-method tests and unchanged save/combat/hero/gate regressions. Save verified
+checkpoints, review CI, normally merge complete feature and deliver full verified
+ZIP with download/hash/CRC/source-byte checks and final handoff. Never force push.

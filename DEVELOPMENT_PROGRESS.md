@@ -1,5 +1,38 @@
 # Development progress
 
+## Iteration 8 — exploration supplies foundation; execution outage
+
+Verified remote master 3f3fbd41d2c6a4d3536001c817ae88a1489ebd21, seventh completed receipt
+d0e59185db40cf83eebca8015b16402425673505, merged PR6 and exact final CI.
+No seventh gameplay or delivery task was lost or restarted. Eighth work uses the
+ordinary isolated branch rpg/iteration-008-exploration-supplies.
+
+Selected player value: optional health/herb and mana/rune reserves away from the
+central combat route, forming explore -> discover -> E -> restore -> fight.
+Design audit confirms proposed feet positions (-5.6,-2.35) and (5.6,1.15) are
+reachable behind the closed seal using the current player-footprint geometry.
+This is offline geometry evidence, not native collision/play acceptance.
+
+Execution environment failed while checking fresh Git state: multiple Git calls
+blocked opening .git/index.lock, then the exec-server transport disconnected.
+No lock was removed or existing local gameplay file overwritten. A recovery wait
+reported ready but shell execution did not recover; managed status remained offline.
+GitHub connector remains callable. Pure domain/test foundation is authored on the
+remote isolated branch and must pass actual Actions checks before being considered
+verified. It is not yet wired to Runtime, art, E interaction or HUD.
+
+Before the outage, fresh baseline API compilation exited 0 for22 production
+sources/86 real Unity references, Input System substituted; six distribution tests
+passed. The fresh full-project baseline runner also exited0. Final eighth-specific
+counts/CI and packaging evidence must be read from the actual new run, never
+copied from seventh delivery. Native import/play/render/audio/build remains unrun.
+
+Remaining: domain CI review/checkpoint evidence; recover execution environment;
+Runtime resources/LOS/input/ownership, cached prop art and shared edge HUD;
+actual-method regression/red-green checks, independent review, final CI and normal
+PR/master merge, source ZIP/all bytes/hash/CRC/HTTPS and final validated handoff.
+Do not merge a helper-only exploration feature or claim supplies are playable.
+
 ## Iteration 7 — reviewed ordinary master integration
 
 Implementation checkpoint 011d23659268342f453a34dd9054ce29a0a9b041 was safely

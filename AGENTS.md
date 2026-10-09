@@ -61,6 +61,14 @@ China package services. Preserve the specified editor version.
   Preserve these contracts and original hero hashes; do not change hit geometry
   merely to align with decoration or claim native rendering from offline rasters.
 
+## Current iteration 8 interruption
+
+Read docs/iterations/2026-10-09-iteration-008/handoff.md before new features.
+Supply domain foundation is isolated on rpg/iteration-008-exploration-supplies;
+Runtime/prop/HUD integration is unfinished. Recover actual execution connectivity
+before local edits and preserve any interrupted branch/process/work. Never delete
+index locks based only on a timeout. No new eighth world interaction is claimed.
+
 ## Start every iteration
 
 1. Read this file, README.md, DEVELOPMENT_PROGRESS.md, KNOWN_ISSUES.md,
