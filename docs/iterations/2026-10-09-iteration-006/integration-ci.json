@@ -1,0 +1,314 @@
+{
+  "foundation": {
+    "sha": "a5dabecdfe80e7a8ffc154a188ea28cd1f2ba72f",
+    "run": 37955083123,
+    "jobs": [
+      {
+        "id": 113903438845,
+        "name": "validate-and-package",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 37955083123,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Check out the complete Unity project",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install signed distribution compiler packages and image verifier",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Validate actual project sources and resource references",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Verify project packaging boundaries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Package the complete project without Unity caches",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Upload project ZIP and verification report",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Publish the real download entry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Check out the complete Unity project",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      }
+    ]
+  },
+  "implementation": {
+    "sha": "c7d5ac3f969a160172d52174a58e951f84fc725f",
+    "run": 37956249461,
+    "jobs": [
+      {
+        "id": 113907390771,
+        "name": "validate-and-package",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 37956249461,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Check out the complete Unity project",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install signed distribution compiler packages and image verifier",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Validate actual project sources and resource references",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Verify project packaging boundaries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Package the complete project without Unity caches",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Upload project ZIP and verification report",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Publish the real download entry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Check out the complete Unity project",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      }
+    ],
+    "artifacts": [
+      {
+        "id": 11628286722,
+        "name": "unity-project-c7d5ac3f969a160172d52174a58e951f84fc725f",
+        "size_in_bytes": 523693,
+        "url": "https://api.github.com/repos/jinze909/2D-RPG-Project/actions/artifacts/11628286722",
+        "archive_download_url": "https://api.github.com/repos/jinze909/2D-RPG-Project/actions/artifacts/11628286722/zip",
+        "expired": false,
+        "created_at": "2026-10-09T16:03:58Z",
+        "expires_at": "2026-11-08T16:03:56Z",
+        "updated_at": "2026-10-09T16:03:58Z",
+        "digest": "sha256:5f333a587b610182430f783a9c31fad92c267fac5bfa919459bc142884ba0d5d",
+        "workflow_run": {
+          "id": 37956249461,
+          "repository_id": 943325134,
+          "head_repository_id": 943325134,
+          "head_branch": "rpg/iteration-006-sentinel-tactics",
+          "head_sha": "c7d5ac3f969a160172d52174a58e951f84fc725f"
+        }
+      }
+    ]
+  },
+  "reviewed": {
+    "sha": "0e9c6f687fdb8522a422fcc2ddcde8da9e964d53",
+    "run": 37956506051,
+    "jobs": [
+      {
+        "id": 113908261331,
+        "name": "validate-and-package",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 37956506051,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Check out the complete Unity project",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Install signed distribution compiler packages and image verifier",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Validate actual project sources and resource references",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Verify project packaging boundaries",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Package the complete project without Unity caches",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Upload project ZIP and verification report",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Publish the real download entry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9
+          },
+          {
+            "name": "Post Set up Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Post Check out the complete Unity project",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          }
+        ]
+      }
+    ],
+    "artifacts": [
+      {
+        "id": 11628411667,
+        "name": "unity-project-0e9c6f687fdb8522a422fcc2ddcde8da9e964d53",
+        "size_in_bytes": 523612,
+        "url": "https://api.github.com/repos/jinze909/2D-RPG-Project/actions/artifacts/11628411667",
+        "archive_download_url": "https://api.github.com/repos/jinze909/2D-RPG-Project/actions/artifacts/11628411667/zip",
+        "expired": false,
+        "created_at": "2026-10-09T16:05:45Z",
+        "expires_at": "2026-11-08T16:05:45Z",
+        "updated_at": "2026-10-09T16:05:45Z",
+        "digest": "sha256:293afb15af9d77a1189e25aa1abd27e3230c2f01227d9147056e1e7bf92978c3",
+        "workflow_run": {
+          "id": 37956506051,
+          "repository_id": 943325134,
+          "head_repository_id": 943325134,
+          "head_branch": "rpg/iteration-006-sentinel-tactics",
+          "head_sha": "0e9c6f687fdb8522a422fcc2ddcde8da9e964d53"
+        }
+      }
+    ]
+  },
+  "pr5_merge": {
+    "sha": "47c22893ad8955ca227e7f5f91f87d6946413c02",
+    "merged": true,
+    "message": "Pull Request successfully merged"
+  },
+  "native_unity_validation": false
+}

@@ -45,7 +45,8 @@ China package services. Preserve the specified editor version.
   then PR #1 normally merged the reviewed candidate into master (cb2d6fc).
   The user's 2026-10-09 resume instruction explicitly makes native validation
   optional for ordinary merges, superseding earlier draft/master restrictions.
-  Master now includes CombatClearing and local growth; do not restart the prototype.
+  Master now includes CombatClearing, local growth and PR5 tactical enemy roles;
+  do not restart the prototype or redo delivered roles.
   Check exact CI, code/resources and recovery history before later merges. Never
   infer native acceptance from offline tests; continue recording its actual limits.
 - Warning progress/X motifs remain inside the original saved contact outline.

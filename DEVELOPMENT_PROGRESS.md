@@ -1,5 +1,18 @@
 # Development progress
 
+## Iteration 6 — reviewed ordinary master integration
+
+Integrated checkpointc7d5ac3 and evidence-format correction0e9c6f6 were normally
+pushed. Exact implementationCI37956249461 and reviewedheadCI37956506051 succeeded,
+all12steps each with Artifacts11628286722/11628411667. PR5 normally merged into
+master at47c22893ad8955ca227e7f5f91f87d6946413c02; merge tree exactly equals
+reviewed/tested0e9c6f6. Originald8c7048 and all previous checkpoint/delivery history
+remain recovery paths. No forcepush, missingresources or save/hero rewrite.
+271project+6distribution277pass,20sources/86realAPIrefsInputsub;100/100handoff.
+Final exactsourceCI/artifact, ZIPCRC/sourcebyte/hash/HTTPSdownload and completed
+handoff live in the independent iteration-006 receipt after finalpublication.
+Native acceptance remains unrun and optional, not reported passing.
+
 ## Iteration 6 — live tactical encounter integration
 
 Fresh final integration evidence:271 project +6 distribution=277 passing checks:

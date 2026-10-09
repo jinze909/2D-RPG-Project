@@ -1,5 +1,14 @@
 # Skills usage
 
+## Iteration 6 publication verification
+
+Session-handoff used the real scaffold and unchangedvalidator result API; actual
+100/100/12refs report serialized as validJSON after detecting CLI ignored--json.
+Verification-before-completion checked exact reviewedheadCI all12steps/artifact,
+actual PR5merge and merge-tree equality before ordinary master integration.
+FinalsourceCI/archive/download checks follow in independent receipt; no native
+Editor/image/audio service execution is inferred or invented from plugin guides.
+
 ## Iteration 6 — actual integration and regression evidence
 
 Game-design/Essentials gameplay+AI guidance now execute through real FixedUpdate:

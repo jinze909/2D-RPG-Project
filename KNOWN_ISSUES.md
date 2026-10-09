@@ -1,5 +1,15 @@
 # Known issues
 
+## Iteration 6 merged status — current
+
+PR5 is normally merged into master47c2289 after independently reviewed source
+and exact greenCI. Tactical roles/HUD/warnings are implemented; earlier sixth
+foundation/integration pending lists below are historical. Finalsource/ZIP/download/
+handoff evidence resolves in independent iteration-006 receipt, not a planned URL.
+Native import/physics/input/Animator/render/glyph/audio/difficulty/playerbuild
+remain unrun and optional. Retreat probe is a line query, not collider clearance.
+Profilev1 preserves its desktop/backup limits; broader RPG systems remain absent.
+
 ## Iteration 6 integrated encounter — supersedes foundation pending list
 
 Three distinct roles, runtime contacts/movement, cached warning/silhouette and

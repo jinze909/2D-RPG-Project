@@ -6,8 +6,11 @@ Project /workspace/2D-RPG-Project; international Unity2022.3.53f1.
 Iteration2026-10-09 America/Los_Angeles. Starting clean/refreshed master
  d8c70488a010e1bb46c979a752d7ed5b1e662484. Isolated branch
 rpg/iteration-006-sentinel-tactics. Foundation a5dabecdfe80e7a8ffc154a188ea28cd1f2ba72f
-is pushed; exact CI37955083123 and all12job steps succeeded. Integrated checkpoint
-follows this tested source record; its actual identity must be read from Git.
+is pushed; exact CI37955083123 and all12job steps succeeded. Integratedcheckpointc7d5ac3f969a160172d52174a58e951f84fc725f and reviewreceipt
+0e9c6f687fdb8522a422fcc2ddcde8da9e964d53 are safely pushed. Implementation
+CI37956249461/reviewCI37956506051 passed all12steps/artifacts. PR5 normally
+merged into master47c22893ad8955ca227e7f5f91f87d6946413c02; tree equals
+reviewedhead. Finalsource/CI/ZIPidentities resolve in externalreceipt.
 
 ## Handoff Chain
 
@@ -33,8 +36,9 @@ combat36,progression51,tactics38,scene14,presentation59,raster/hero10. GUID/meta
 build/package/sixLFS/eightlicensedSkill integrity pass.20production sources compile
 against86real2022.3engine/Editor/uGUIrefs, InputSystem substituted. Native import/
 EditMode/PlayMode/physics/render/input/audio/build remain unrun, optional for merge.
-Ordinary PR/CI/master merge and final archive publication follow this checkpoint;
-resolve completion in the independent iteration-006 receipt, never infer it.
+PR5/master ordinarymerge is verified. FinalexactsourceCI/archive/download and
+publication completion resolve in the independent iteration-006 receipt, never
+infer them from a localZIP or earlier checkpoint.
 
 ## Architecture Overview
 
