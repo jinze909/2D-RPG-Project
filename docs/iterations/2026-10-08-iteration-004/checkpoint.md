@@ -61,6 +61,8 @@ presentation and 36 pure-rule passes; full project validation has 150 passes,
 distribution six passes, and real Unity API compilation still passes. Sources,
 assets and bundle hashes pass; no native acceptance is claimed. The implementation
 checkpoint commit contains this updated file and final JSON/log evidence.
-Only hosted implementation CI, candidate integration, ZIP publication and final
-handoff remain outstanding. Read the final handoff/publication when present;
-these dated checkpoint sections describe their own stage, not current PR state.
+Implementation and merge CI subsequently passed; PR #3 then PR #2 were normally
+merged into the isolated candidate. Final handoff/publication now supersede this
+stage's pending list. The independent delivery receipt records actual final-source
+CI/ZIP completion; dated checkpoint sections describe their own stage, not current
+PR state. Master remains unchanged and native acceptance remains pending.

@@ -32,9 +32,12 @@ China package services. Preserve the specified editor version.
   suite. When installed, also use
   `tools/compile_unity_api.py`: real engine/uGUI signatures, with Input System
   explicitly reported as a substitute if its compiled assembly is absent.
-- Native-unverified iteration 2 stays on `rpg/iteration-002-clearing` / draft PR.
-  Iteration 3 is stacked on that candidate at `rpg/iteration-003-clearing-polish`.
-  Fetch both before selecting work; do not recreate them. The current user has
+- Native-unverified clearing stays on `rpg/iteration-002-clearing` / draft PR #1.
+  PR #3 merged iteration 4 into iteration 3; PR #2 then merged all tested polish
+  and reliability work into that iteration-2 candidate. The current iteration-4
+  delivery branch includes both merge commits. Fetch all before selecting work;
+  read docs/iterations/2026-10-08-iteration-004/handoff.md and the separate delivery
+  receipt; do not recreate accepted candidate work. The current user has
   explicitly authorized autonomous review, ordinary PR merges and delivery,
   superseding historical user-only merge restrictions. Assess real CI and risk;
   keep native-unverified high-risk changes isolated until adequate evidence exists.

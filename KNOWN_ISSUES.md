@@ -2,6 +2,9 @@
 
 ## Confirmed current gaps
 
+- PR #3 and PR #2 are merged into the isolated iteration-2 candidate. PR #1 is
+  still draft; current fourth-round source/CI/ZIP identities are in the independent
+  delivery receipt linked from docs/iterations/2026-10-08-iteration-004/publication.md.
 - Native Unity 2022.3.53f1 import/play/test is unavailable without valid licensing.
   Offline doubles do not validate real physics, Input System or visual playback.
 - The new CombatClearing candidate implements collision, attacks, enemies, sealed

@@ -1,39 +1,43 @@
 # Next iteration
 
-For a new Codex window, first read
-[iteration-4 checkpoint](docs/iterations/2026-10-08-iteration-004/checkpoint.md),
-then the following inherited
-[new-window handoff](docs/iterations/2026-10-08-iteration-003/new-window-handoff.md).
-It records exact delivered source/ZIP identities, the user's license-login choice,
-and the now-readable Unity plugin skills. Recheck the actual CLI, license and MCP
-connection; skill visibility alone does not establish native Editor readiness.
+Continue from the [fourth-round handoff](docs/iterations/2026-10-08-iteration-004/handoff.md)
+and [publication record](docs/iterations/2026-10-08-iteration-004/publication.md).
+Read the independent [delivery receipt](https://raw.githubusercontent.com/jinze909/2D-RPG-Project/rpg-deliveries/iteration-004-delivery.json)
+for the final full source SHA, successful exact-head CI and verified ZIP identities.
+Those identities are external to the packaged source to avoid self-reference.
 
-1. Fetch latest master and all unmerged `rpg/iteration-*` work. Read iterations 2/3,
-   PR #1 and its stacked polish PR, exact hosted CI and verified ZIP receipts.
-   PR merges are autonomously authorized and gated by actual quality. Do not recreate combat, HUD, raster
-   art or the beacon loop merely because master predates those candidates.
-2. Perform `docs/game/COMBAT_CLEARING.md` native acceptance with licensed
-   international Unity 2022.3.53f1: import/compile, EditMode/PlayMode, collisions,
-   gate, input/attack order, death/retry/pause, HUD screenshots and all six cues.
-   Check FullRect sprite creation, pixel scale, sentinel feet/health bar layering,
-   warning-fill/X readability, hit/kill durations, multi-target sound deduplication,
-   stale sounds on retry and edge-slot messages in narrow/portrait windows.
-   Keep high-risk work isolated until native evidence justifies merging.
-3. Resolve real visual defects: walking root/foot alignment, gait at partial
-   speed, coherent hero hurt/death/attack beats and native enemy-art readability.
-   The new stone/moss raster art is already implemented; improve only confirmed
-   defects rather than replacing it just to increase modification count. Preserve
-   blonde identity, PPU30 and accepted frames; rejected ranger arrows stay rejected.
-4. After accepting this loop, add one coherent extension: exploration/interaction
-   with checkpoint or meaningful persistent rewards. Define save/version/reset
-   contracts before inventory/equipment/classes. Balance using actual play.
-5. Verify candidate CI/ZIP provenance and maintain eight skills and all five root
-   records. Every new task rediscovers tools, reference code and unmerged results.
+1. Inspect actual Git/remote state, uncommitted files, PR #1 and latest receipt.
+   PR #3 (77dd22b) merged the fourth round into iteration 3, then PR #2 (baffbfa)
+   integrated it into iteration 2. Fetch every rpg/iteration-* branch before
+   selecting a baseline. Master remains 2e8c154; PR #1 remains a draft because
+   native acceptance is missing. Autonomous ordinary merges are authorized;
+   quality evidence determines readiness. No force push or worktree creation.
+2. Recheck international Unity 2022.3.53f1 license, real editor, CLI/MCP and test
+   capabilities. Read applicable Unity / Unity Essentials skills; skill visibility
+   does not establish a connected Editor. The last actual native probe failed
+   before import because there was no valid license. Do not repeat that unchanged
+   probe or reinstall packages merely to claim progress.
+3. In a licensed environment, complete docs/game/COMBAT_CLEARING.md native
+   acceptance: import/compile, EditMode/PlayMode, input, fixed-update contacts,
+   all three lethal-attacker orderings, disable/resume, collisions/gate,
+   beacon/win/death/retry/pause, real HUD/Animator screenshots and all six cues.
+   Check FullRect pixel creation, sentinel feet/layering, warning progress/X,
+   multi-target sound deduplication, stale effects/sounds after retry/disable,
+   and edge-slot messages at narrow/portrait sizes. Produce a real player build
+   only when its licensing and target support are available.
+4. Fix observed native defects, then reevaluate PR #1 for master. Existing
+   stone/moss raster art, blonde hero, PPU30, accepted frames and rejected ranger
+   arrows are preserved. Walking foot drift, partial-speed cadence and proper
+   hurt/death/attack character motion need visual review; do not replace existing
+   art solely to increase the change count.
+5. After the current loop is accepted, add one coherent exploration/interaction
+   extension with checkpoint or persistent reward. Define save/version/reset
+   contracts before inventory/equipment/classes; balance using actual play.
 
-Earlier movement/numeric guards remain regression covered.
-The iteration-4 transient cancellation and two-pass contact fixes are complete
-and freshly checked (150 project + 6 distribution tests). Remaining work this
-round: exact-head CI, isolated candidate integration, complete source ZIP and final
-handoff. Finish those steps after any interruption before choosing new game work.
-Pursue new confirmed problems and complete playable loops, preserving user history
-and newer accepted work. This list does not override more serious new issues.
+Fourth-round code and tests are complete: 150 project + 6 distribution passes,
+16-source compilation against 86 real Unity references (Input System substituted).
+Transient cancellation and two-pass player contacts must not be reimplemented.
+Publication is resumable from the receipt if a quota interruption occurs before
+its final verification. Earlier movement/resource guards and all eight vendored
+skills remain preserved. Save and safely push each independently verified stage;
+maintain actual completed and unfinished work in the five root records.

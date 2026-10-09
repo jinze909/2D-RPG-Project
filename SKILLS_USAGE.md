@@ -7,9 +7,9 @@ the applicable instructions and references. Actual applications:
 
 | Skill/plugin | Evidence and limits |
 | --- | --- |
-| session-handoff | Restored the full iterations 2/3 chain and staleness/resume checklist; verified actual post-quota Git, saved/pushed recovery checkpoint and unfinished list. The checker assumes .claude depth, so its docs-path missing-file report was checked against real repository files. |
+| session-handoff | Restored the full iterations 2/3 chain and staleness/resume checklist; verified actual post-quota Git, saved/pushed recovery checkpoint and unfinished list. Filled the generated continuation scaffold, validated at the checker's required .claude depth and copied the persistent handoff into docs/iterations/2026-10-08-iteration-004/. |
 | systematic-debugging | Actual-source red tests traced hidden-but-live contacts/effect deadlines and an interleaved lethal-contact break; changed the two causes and reran original reproductions. |
-| verification-before-completion | Fresh 150 project + 6 distribution passes, real API compilation, reviewed diff, preserved red evidence and separate native-blocked status. Checkpoint CI uses its actual SHA, not the game implementation's future SHA. |
+| verification-before-completion | Fresh 150 project + 6 distribution passes, real API compilation, reviewed diff, preserved red evidence and separate native-blocked status. Observed exact implementation/merge CI and artifacts before autonomous candidate merges; final source CI and downloaded ZIP byte/hash provenance live in the independent delivery receipt. |
 | game-design | Made each multi-target action complete before retaliation regardless of enemy ordering; interrupt/resume retains earned progress and costs while requiring fresh telegraphs. |
 | game-art | Preserved original blonde hero, PPU30 and all ten hero PNG/meta hashes; reran raster/scene contracts. No image, animation or scene redesign. |
 | game-audio | Retained contact/kill deduplication and mute/reset behavior; exercised single kill/reward cues and absence of stale contact cues after disable. No audition or new synthesis claim. |

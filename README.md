@@ -18,7 +18,8 @@ J/空格攻击，K 法力爆发，E 激活北侧信标，胜败后 R 重试，Es
 临时死亡表现；未新增或替换主角图片。
 第三轮候选统一了石墙、苔地、守卫和符文信标的 15 色像素美术，增加蓄力与攻击
 生效标记、复用的命中/击杀反馈及音效；临时提示改用边缘位置，暂停或死亡后
-不再显示不可执行的交互。两个候选均保持独立草稿评审，PR #1 尚未合并。
+不再显示不可执行的交互。PR #2、#3 已普通合并到隔离候选；PR #1 仍为草稿，
+等待原生验收后再评估是否合入 master。
 第四轮修复了停用后旧攻击/反馈恢复，以及同一时刻多目标命中受敌人顺序影响的问题；
 暂停仍冻结现有动作，冷却、资源与奖励保留。原生物理和试玩仍待验收。
 注册源已改为 `packages.unity.com`，未升级任何锁定包版本。云端缺少有效 Unity
@@ -36,6 +37,14 @@ PNG 验证需要 Pillow。脚本从实际工程源码编译，所有程序集写
 普通 CI 使用 [RPG Project Validation and ZIP](.github/workflows/rpg-project-validation.yml)，
 在代码推送或手动触发后检查工程源码、资源和打包边界，并上传完整工程 ZIP 与报告。
 以实际 Actions 运行结果和 Artifact 为交付证据；标准 runner 尚不包含授权 Unity Editor。
+
+第四轮的实际测试、合并记录与接力说明见
+[本轮交付记录](docs/iterations/2026-10-08-iteration-004/publication.md)和
+[接力文档](docs/iterations/2026-10-08-iteration-004/handoff.md)。最终源码提交、
+完整 Unity 工程 ZIP、SHA-256 与对应 CI 位于独立
+[交付回执](https://raw.githubusercontent.com/jinze909/2D-RPG-Project/rpg-deliveries/iteration-004-delivery.json)。
+ZIP 包含 Assets、Packages、ProjectSettings、全部 .meta、文档及八个 Skills；
+这是源码工程，尚无原生玩家构建。
 
 8 个许可清晰的 Skills 随源码保存在 [.agents/skills](.agents/skills/README.md)。
 每轮先读 [AGENTS.md](AGENTS.md) 和四份根开发记录。实际工程边界与设计约束见

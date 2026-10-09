@@ -1,5 +1,24 @@
 # Development progress
 
+## Iteration 4 verified integration and delivery handoff — 2026-10-09 UTC
+
+Game fix checkpoint 1e7eb01c359eeba55b42c038652701f0a54bbb38 was safely pushed;
+exact-head CI 37883929552 and all 12 job steps succeeded, including ZIP upload.
+PR #3 was normally merged to iteration 3 at 77dd22b1e08292a0e7d2d9ef0a6b085e3c449eea,
+then verified merge CI 37884061641. PR #2 was normally merged to iteration 2 at
+baffbfa5a8962233585d98ebdd20ff3c522d1e07; its CI 37884336027 also succeeded,
+with all 12 steps and Artifact 11595597061. Both merge trees match the tested
+implementation tree exactly. No force push; previous work and delivery history
+are retained. User approval is not required for authorized candidate merges.
+
+PR #1 remains open/draft; master remains 2e8c154. The reason is missing licensed
+native acceptance for its new scene/input/physics, not missing user permission.
+The persistent iteration-4 handoff/publication supersedes older pending stage
+statuses below. Final source SHA, exact source CI, complete ZIP/HTTPS checks and
+actual publication completion are saved in the independent rpg-deliveries
+iteration-004-delivery.json receipt. This source record precedes its own final
+commit/archive and does not claim future upload success.
+
 ## Iteration 4 combat reliability — 2026-10-08 (America/Los_Angeles)
 
 Continued the interrupted work from checkpoint b1fac682bda6da227dbf25e22fced7ad39088d2d.
