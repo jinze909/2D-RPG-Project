@@ -1,5 +1,79 @@
 # Development progress
 
+## Iteration 8 — recovered and integrated exploration supplies
+
+Recovered execution access and confirmed the actual eighth branch at safely
+published foundation 2c99ecfc62d476bbe4bf30adb874c8b52254498e. Exact foundation
+CI37995620781 completed all 12 steps successfully. Six materialized LFS objects
+are restored. Fresh foundation evidence: 303 project + 6 distribution = 309
+checks; 23 production sources compile against 86 real Unity API references,
+Input System substituted. The earlier execution outage below is resolved.
+
+Implemented one optional explore -> discover -> E -> restore -> fight loop:
+west herbs restore up to 4 HP, east rune up to 6 MP, each once per attempt.
+Discovery/use require the actual player foot point and clear wall LOS, with
+2.4/0.8-unit radii. Full/invalid/no-effective-gain attempts preserve the charge;
+accepted feedback reports the clamped actual gain on the actor-owned stats.
+The rune can fund the existing six-MP burst without altering its cost/cooldown.
+Beacon interaction and terminal save retry retain E priority; supplies never
+change the three-enemy objective or deposit coins. Genuine R/new-run reset
+restocks both points; disable/resume retains their discovery and spent state.
+
+Cached original herb/cross and rune/diamond props reuse the clearing's existing
+PPU1 Point square sprite/palette, sized in 1/30-unit world pixels. They have no
+blocking collider, show discovery/spent states and
+a short claim pulse. Pulse time freezes on pause and clears on interruption.
+Accepted claims reuse the existing reward cue; rejection/discovery is silent.
+Truthful nearby/full/spent hints share the existing edge feedback slot.
+
+Fresh final local evidence: 316 project + 6 distribution = 322 checks pass.
+The 13 new pure supply, 12 new actual-method presentation and one new geometry
+group retain all old checks. Presentation 81 includes the previous 69; scene
+contracts total 15. The rune E -> K burst end-to-end case passes. All 24 production
+scripts compile against 86 real Unity API references, with the reviewed Input
+System substitute. A new rune-to-burst fixture initially named
+the rule property incorrectly; the fixture was corrected, not a game defect.
+54 unique meta GUIDs, 145 serialized references, six materialized LFS objects and
+65 files in eight licensed Skill bundles pass. Root generated/filled the actual
+chained handoff and validated it at 100/100 with three existing file references.
+Review/publication evidence and safe implementation checkpoint follow after
+verification. Native import/play/input/physics/render/
+audio/player build remains unrun and optional. Profile v1, mature combat/tactics/
+damage feedback, original hero/animation and existing scene geometry remain.
+
+## Historical iteration 8 foundation and execution outage — superseded
+
+Verified remote master 3f3fbd41d2c6a4d3536001c817ae88a1489ebd21, seventh completed receipt
+d0e59185db40cf83eebca8015b16402425673505, merged PR6 and exact final CI.
+No seventh gameplay or delivery task was lost or restarted. Eighth work uses the
+ordinary isolated branch rpg/iteration-008-exploration-supplies.
+
+Selected player value: optional health/herb and mana/rune reserves away from the
+central combat route, forming explore -> discover -> E -> restore -> fight.
+Design audit confirms proposed feet positions (-5.6,-2.35) and (5.6,1.15) are
+reachable behind the closed seal using the current player-footprint geometry.
+This is offline geometry evidence, not native collision/play acceptance.
+
+Execution environment failed while checking fresh Git state: multiple Git calls
+blocked opening .git/index.lock, then the exec-server transport disconnected.
+No lock was removed or existing local gameplay file overwritten. A recovery wait
+reported ready but shell execution did not recover; managed status remained offline.
+GitHub connector remains callable. Pure domain/test foundation is authored on the
+remote isolated branch and must pass actual Actions checks before being considered
+verified. It is not yet wired to Runtime, art, E interaction or HUD.
+
+Before the outage, fresh baseline API compilation exited 0 for22 production
+sources/86 real Unity references, Input System substituted; six distribution tests
+passed. The fresh full-project baseline runner also exited0. Final eighth-specific
+counts/CI and packaging evidence must be read from the actual new run, never
+copied from seventh delivery. Native import/play/render/audio/build remains unrun.
+
+Remaining: domain CI review/checkpoint evidence; recover execution environment;
+Runtime resources/LOS/input/ownership, cached prop art and shared edge HUD;
+actual-method regression/red-green checks, independent review, final CI and normal
+PR/master merge, source ZIP/all bytes/hash/CRC/HTTPS and final validated handoff.
+Do not merge a helper-only exploration feature or claim supplies are playable.
+
 ## Iteration 7 — reviewed ordinary master integration
 
 Implementation checkpoint 011d23659268342f453a34dd9054ce29a0a9b041 was safely

@@ -1,5 +1,48 @@
 # Known issues
 
+## Iteration 8 integrated candidate — current
+
+Execution access is restored; foundation 2c99ecf and exact green CI37995620781
+are verified. Runtime discovery/E/actual actor HP/MP restoration, cached prop
+states/pulse, accepted reward cue and edge hints are implemented. The earlier
+outage and helper-only pending headings below are historical, superseded here.
+Fresh final local checks pass 316 project + 6 distribution = 322 groups, including
+81 presentation groups retaining the old 69 and 15 scene contracts. Real Unity
+API-reference compilation passes for 24 scripts, with Input System substituted.
+The actual chained handoff validates 100/100. Implementation checkpoint/CI/PR/
+master merge, ZIP/hash/CRC/HTTPS and final publication
+publication are still delivery work until independently confirmed.
+
+Supply state is attempt-local, with one charge per point and no saved inventory
+or world-state persistence. Full resources retain a charge; a fractional positive
+gain uses the whole charge. Props are subdued before discovery, not wholly invisible.
+Native collision/LOS/corner access, rendered silhouette/readability, pulse layering,
+HUD font/layout, real resource balance, audio and device input remain unrun.
+Props reuse the existing PPU1 square, with 1/30-unit geometry; Point filtering and
+integer-pixel pieces do not prove native pixel-perfect rendering.
+Offline grid/recording/API evidence does not establish native play. Native checks
+are optional under current user authorization. No Boss, classes/equipment/story
+or new save schema is implemented; prior broader RPG and gait/art limits remain.
+
+## Historical iteration 8 execution blocker and unwired foundation — resolved
+
+The current execution host's filesystem blocked Git status at .git/index.lock,
+then command creation failed with exec-server transport disconnected / recovery
+timeout. Managed connectivity reports offline/starting; a readiness wait alone
+has not restored shell access. Locks and existing work were preserved.
+
+The supply domain foundation is a proposed optional4HP/6MP once-per-run reserve,
+not an implemented world interaction yet. Runtime E/LOS/resources, discovery
+presentation, prop art/HUD and interruption integration remain outstanding.
+Master still contains completed seventh source 3f3fbd41d2c6a4d3536001c817ae88a1489ebd21.
+The eighth branch stays isolated/draft until actual integration and review pass.
+An Actions source ZIP of this checkpoint is not a completed eighth gameplay ZIP.
+
+Native historical movement/animation/UI/physics/audio evidence gaps remain.
+The forest/archery/full quest system is absent from this checkout; no nonexistent
+regression result is invented. Save profile v1 and mature combat/tactics/feedback
+must be preserved. The blocker is execution connectivity, not native Unity licensing.
+
 ## Iteration 7 merged status — current
 
 PR6 is normally merged into master 3d00f72 after independent review and exact

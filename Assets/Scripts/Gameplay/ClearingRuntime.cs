@@ -26,6 +26,9 @@ namespace Rpg.Gameplay
         private ClearingHud hud;
         private ClearingAudio sound;
         private ClearingDamageNumbers damageNumbers;
+        private readonly ClearingSupplies supplies = new ClearingSupplies();
+        private readonly string[] supplyNotices = new string[ClearingSupplies.Count];
+        private ClearingSupplyVisuals supplyVisuals;
         private PlayerHealth health;
         private PlayerMana mana;
         private PlayerMovement movement;
@@ -104,6 +107,7 @@ namespace Rpg.Gameplay
             run = new ClearingRun();
             visuals = new ClearingVisuals(transform);
             visuals.BuildWorld();
+            supplyVisuals = new ClearingSupplyVisuals(transform, visuals);
             for (int i = 0; i < enemies.Length; i++)
             {
                 EnemyView enemy = new EnemyView();
@@ -204,17 +208,29 @@ namespace Rpg.Gameplay
                 if (Input.GetKeyDown(KeyCode.Escape)) SetPaused(!paused);
                 if (!paused)
                 {
+                    DiscoverSupplies();
                     if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.Space)) StartAttack(PlayerAttackKind.Light);
                     if (Input.GetKeyDown(KeyCode.K)) StartAttack(PlayerAttackKind.Burst);
                     if (Input.GetKeyDown(KeyCode.E))
                     {
-                        if (NearBeacon && run.TryCompleteObjective())
+                        // Objective interaction keeps priority over optional supplies.
+                        if (NearBeacon)
                         {
-                            StopActors();
-                            if (BankCompletion() != ProgressActionResult.Saved) sound.Reward();
-                            Feedback("The beacon is restored. The clearing is safe.", 5f);
+                            if (run.TryCompleteObjective())
+                            {
+                                StopActors();
+                                if (BankCompletion() != ProgressActionResult.Saved) sound.Reward();
+                                Feedback("The beacon is restored. The clearing is safe.", 5f);
+                            }
+                            else Feedback("Defeat all three sentinels to break the seal.", 2f);
                         }
-                        else Feedback(run.GateUnlocked ? "Move closer to the north beacon." : "Defeat all three sentinels to break the seal.", 2f);
+                        else
+                        {
+                            int nearby = NearbySupply();
+                            if (nearby >= 0) TryUseSupply(nearby);
+                            else Feedback(run.GateUnlocked ? "Move closer to the north beacon." :
+                                "Defeat all three sentinels to break the seal.", 2f);
+                        }
                     }
                 }
             }
@@ -224,8 +240,112 @@ namespace Rpg.Gameplay
             {
                 nextHudAt = Time.unscaledTime + .05f;
                 hud.Refresh(player.Stats, run, paused, sound.Muted, NearBeacon,
-                    Time.unscaledTime < feedbackUntil ? feedback : "", progress, rewardId, progressNotice);
+                    Time.unscaledTime < feedbackUntil ? feedback : "", progress, rewardId, progressNotice, SupplyHint());
             }
+        }
+
+        private static Vector2 SupplyPoint(int index)
+        {
+            return new Vector2(ClearingSupplies.PositionX(index), ClearingSupplies.PositionY(index));
+        }
+
+        private bool SuppliesPlayable
+        {
+            get
+            {
+                return run != null && !paused && !run.IsDead && !run.IsComplete && player != null &&
+                    player.Stats != null && player.Stats.Health > 0f &&
+                    !float.IsNaN(player.Stats.Health) && !float.IsInfinity(player.Stats.Health);
+            }
+        }
+
+        private void DiscoverSupplies()
+        {
+            if (!SuppliesPlayable) return;
+            Vector2 feet = PlayerPoint;
+            for (int index = 0; index < ClearingSupplies.Count; index++)
+            {
+                if (supplies.IsDiscovered(index)) continue;
+                Vector2 point = SupplyPoint(index);
+                float distance = Vector2.Distance(feet, point);
+                if (distance <= ClearingSupplies.DiscoveryRadius &&
+                    supplies.TryDiscover(index, distance, ClearLine(feet, point), true))
+                    Feedback(index == 0 ? "Herbs found. Approach and press E when you need HP." :
+                        "Rune found. Approach and press E when you need MP.", 3f);
+            }
+        }
+
+        private int NearbySupply()
+        {
+            if (!SuppliesPlayable) return -1;
+            Vector2 feet = PlayerPoint;
+            int nearest = -1;
+            float nearestDistance = float.PositiveInfinity;
+            for (int index = 0; index < ClearingSupplies.Count; index++)
+            {
+                if (!supplies.IsDiscovered(index)) continue;
+                Vector2 point = SupplyPoint(index);
+                float distance = Vector2.Distance(feet, point);
+                if (distance <= ClearingSupplies.UseRadius && distance < nearestDistance &&
+                    ClearLine(feet, point))
+                {
+                    nearest = index;
+                    nearestDistance = distance;
+                }
+            }
+            return nearest;
+        }
+
+        private void TryUseSupply(int index)
+        {
+            if (!SuppliesPlayable || index < 0 || index >= ClearingSupplies.Count) return;
+            Vector2 point = SupplyPoint(index);
+            PlayerStats stats = player.Stats;
+            float gain;
+            SupplyClaimResult result = supplies.TryClaim(index, Vector2.Distance(PlayerPoint, point),
+                ClearLine(PlayerPoint, point), true, stats.Health, stats.MaxHealth, stats.Mana, stats.MaxMana, out gain);
+            if (result == SupplyClaimResult.Restored)
+            {
+                // The same actor-owned snapshot is used by damage, mana costs and HUD.
+                // Admission reports the clamped, representable gain; apply it once.
+                if (index == 0) stats.Health = Mathf.Min(stats.MaxHealth, stats.Health + gain);
+                else stats.Mana = Mathf.Min(stats.MaxMana, stats.Mana + gain);
+                if (supplyVisuals != null) supplyVisuals.ShowClaim(index, run.Time);
+                sound.Reward();
+                string amount = gain < .01f ? "<0.01" :
+                    gain.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+                supplyNotices[index] = (index == 0 ? "Herbs: +" : "Rune: +") + amount + (index == 0 ? " HP." : " MP.");
+                Feedback(supplyNotices[index], 3f);
+            }
+            else if (result == SupplyClaimResult.Full)
+                Feedback(index == 0 ? "HP full; herbs saved for later." : "MP full; rune saved for later.", 2f);
+            else if (result == SupplyClaimResult.Spent)
+                Feedback(index == 0 ? "Herbs already used this run." : "Rune already used this run.", 2f);
+            else if (result == SupplyClaimResult.Invalid)
+                Feedback("Supply unavailable with invalid resources; charge preserved.", 2f);
+            else if (result == SupplyClaimResult.Blocked || result == SupplyClaimResult.OutOfRange)
+                Feedback("Approach the supply with a clear path.", 2f);
+            nextHudAt = 0f;
+        }
+
+        private string SupplyHint()
+        {
+            int index = NearbySupply();
+            if (index < 0) return "";
+            if (supplies.IsClaimed(index))
+                return string.IsNullOrEmpty(supplyNotices[index]) ?
+                    (index == 0 ? "Herbs used this run" : "Rune used this run") :
+                    supplyNotices[index] + " Used this run.";
+            PlayerStats stats = player.Stats;
+            bool valid = stats.MaxHealth > 0f && stats.Health <= stats.MaxHealth &&
+                stats.MaxMana >= 0f && stats.Mana >= 0f && stats.Mana <= stats.MaxMana &&
+                !float.IsNaN(stats.MaxHealth) && !float.IsInfinity(stats.MaxHealth) &&
+                !float.IsNaN(stats.Mana) && !float.IsInfinity(stats.Mana) &&
+                !float.IsNaN(stats.MaxMana) && !float.IsInfinity(stats.MaxMana);
+            if (!valid) return "Supply unavailable; charge preserved";
+            if (index == 0 && stats.Health >= stats.MaxHealth) return "HP full - herbs saved for later";
+            if (index == 1 && stats.Mana >= stats.MaxMana) return "MP full - rune saved for later";
+            return index == 0 ? "E - herbs: restore up to 4 HP" : "E - rune: restore up to 6 MP";
         }
 
         private ProgressActionResult BankCompletion()
@@ -328,6 +448,7 @@ namespace Rpg.Gameplay
             SynchronizeDeath();
             if (paused || run.IsDead || run.IsComplete) return;
             run.Advance(Time.fixedDeltaTime);
+            DiscoverSupplies();
             player.Stats.Mana = Mathf.Min(player.Stats.MaxMana,
                 player.Stats.Mana + ClearingRun.ManaRegenerationRate * Time.fixedDeltaTime);
             bool contactedSentinel = false;
@@ -463,6 +584,7 @@ namespace Rpg.Gameplay
         private void RefreshViews()
         {
             if (damageNumbers != null) damageNumbers.Refresh(run.Time);
+            if (supplyVisuals != null) supplyVisuals.Refresh(supplies, run.Time);
             bool active = run.PlayerAttackActive;
             strike.gameObject.SetActive(active);
             if (active)
@@ -602,6 +724,7 @@ namespace Rpg.Gameplay
         private void StopActors()
         {
             if (damageNumbers != null) damageNumbers.Clear();
+            if (supplyVisuals != null) supplyVisuals.Clear();
             movement.SetControlEnabled(false);
             playerBody.velocity = Vector2.zero;
             if (strike != null) strike.gameObject.SetActive(false);
@@ -618,6 +741,9 @@ namespace Rpg.Gameplay
         private void ResetRun()
         {
             if (damageNumbers != null) damageNumbers.Clear();
+            if (supplyVisuals != null) supplyVisuals.Clear();
+            supplies.Reset();
+            for (int index = 0; index < supplyNotices.Length; index++) supplyNotices[index] = "";
             bool lostReward = run.IsComplete && progress != null && !progress.IsCompletionBanked(rewardId);
             if (paused) SetPaused(false);
             run.ResetRun();
@@ -666,6 +792,7 @@ namespace Rpg.Gameplay
         private void OnDisable()
         {
             if (damageNumbers != null) damageNumbers.Clear();
+            if (supplyVisuals != null) supplyVisuals.Clear();
             if (sound != null) sound.ResetFeedback();
             // A paused scene must never leave the next loaded scene frozen.
             if (paused)
@@ -695,6 +822,7 @@ namespace Rpg.Gameplay
         private void OnDestroy()
         {
             if (damageNumbers != null) damageNumbers.Dispose();
+            if (supplyVisuals != null) supplyVisuals.Dispose();
             if (visuals != null) visuals.Dispose();
             if (sound != null) sound.Dispose();
         }

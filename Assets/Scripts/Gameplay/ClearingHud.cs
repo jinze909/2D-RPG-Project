@@ -65,7 +65,7 @@ namespace Rpg.Gameplay
         }
 
         internal void Refresh(PlayerStats stats, ClearingRun run, bool paused, bool muted, bool nearBeacon, string feedback,
-            ClearingProgress progress = null, string rewardId = "", string progressNotice = "")
+            ClearingProgress progress = null, string rewardId = "", string progressNotice = "", string supplyHint = "")
         {
             // Keep two edge columns from intersecting on square/narrow viewports.
             float width = ((RectTransform)root).rect.width;
@@ -101,7 +101,8 @@ namespace Rpg.Gameplay
             if (run.PlayerAttackActive) light = burst = "striking";
             bool playable = !paused && !run.IsDead && !run.IsComplete;
             skills.text = playable ? "J / Space: light [" + light + "]\nK: burst 6 MP [" + burst + "]" : "";
-            message.text = !playable ? "" : nearBeacon && run.GateUnlocked ? "E - restore the beacon" : feedback;
+            message.text = !playable ? "" : nearBeacon && run.GateUnlocked ? "E - restore the beacon" :
+                !string.IsNullOrEmpty(supplyHint) ? supplyHint : feedback;
             help.text = !playable || !string.IsNullOrEmpty(message.text) ? "" : MovementGuide(narrow);
             terminal.text = paused ? "PAUSED\nEsc - resume" : run.IsDead ? "DEFEATED\nR - retry the clearing" :
                 run.IsComplete ? "BEACON RESTORED\n" + run.RewardCoins + " coins earned this run\nR - play again" : "";
@@ -127,8 +128,8 @@ namespace Rpg.Gameplay
         {
             // Keep tactical hints in the existing edge column; feedback takes
             // priority and terminal states suppress the entire playable guide.
-            return narrow ? "Move: WASD / arrows\nE: beacon   Esc: pause\nM: mute   R: retry after run\nLancer: sidestep lane\nSeer: leave mark" :
-                "WASD / arrows: move   E: beacon\nEsc: pause   M: mute   R: retry after run\nLancer: sidestep lane\nSeer: leave mark";
+            return narrow ? "Move: WASD / arrows\nE: interact   Esc: pause\nM: mute   R: retry after run\nLancer: sidestep lane\nSeer: leave mark" :
+                "WASD / arrows: move   E: interact\nEsc: pause   M: mute   R: retry after run\nLancer: sidestep lane\nSeer: leave mark";
         }
 
         private static string UpgradeLine(ClearingProgress progress, ClearingUpgrade upgrade, string title, string bonus)
