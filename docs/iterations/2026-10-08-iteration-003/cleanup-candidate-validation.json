@@ -1,0 +1,79 @@
+{
+  "status": "passed",
+  "passed": true,
+  "base_sha": "de0614399bb878ae182f90f81074359824e5057b",
+  "native_unity_run": false,
+  "checks": [
+    {
+      "name": "editor_version",
+      "status": "passed",
+      "editor": "2022.3.53f1"
+    },
+    {
+      "name": "asset_and_guid_integrity",
+      "status": "passed",
+      "pngs_decoded": 5,
+      "unique_meta_guids": 44,
+      "project_guid_references": 145
+    },
+    {
+      "name": "build_scenes_and_json",
+      "status": "passed",
+      "enabled_build_scenes": 2
+    },
+    {
+      "name": "lfs_sha256",
+      "status": "passed",
+      "lfs_objects_verified": 6
+    },
+    {
+      "name": "portable_skills_integrity",
+      "status": "passed",
+      "skill_bundles": 8,
+      "skill_files_verified": 65
+    },
+    {
+      "name": "player_movement_behavior",
+      "status": "passed",
+      "passed_tests": 14,
+      "failed_tests": 0,
+      "validation_kind": "real C# with Unity boundary doubles; not native Unity"
+    },
+    {
+      "name": "player_resource_behavior",
+      "status": "passed",
+      "passed_tests": 40,
+      "failed_tests": 0,
+      "validation_kind": "real C# with Unity boundary doubles; not native Unity"
+    },
+    {
+      "name": "input_and_animation_contracts",
+      "status": "passed",
+      "passed_tests": 9,
+      "failed_tests": 0,
+      "validation_kind": "serialized data / geometry checks; not native Unity"
+    },
+    {
+      "name": "clearing_combat_rules",
+      "status": "passed",
+      "passed_tests": 32,
+      "failed_tests": 0,
+      "validation_kind": "actual pure C# rules; no Unity engine"
+    },
+    {
+      "name": "clearing_scene_contracts",
+      "status": "passed",
+      "passed_tests": 15,
+      "failed_tests": 0,
+      "validation_kind": "serialized data / geometry checks; not native Unity"
+    }
+  ],
+  "not_run": [
+    "Unity import/compile",
+    "native physics",
+    "Animator rendering",
+    "EditMode/PlayMode",
+    "audio/playability",
+    "platform build"
+  ]
+}

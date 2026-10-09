@@ -1,0 +1,28 @@
+{
+  "unity_version": "2022.3.53f1",
+  "editor_path": "/workspace/.cloud-tools/unity-onboarding/2022.3.53f1/Editor/Unity",
+  "mono_path": "/workspace/.cloud-tools/unity-onboarding/2022.3.53f1/Editor/Data/MonoBleedingEdge/bin/mono",
+  "csc_path": "/workspace/.cloud-tools/unity-onboarding/2022.3.53f1/Editor/Data/MonoBleedingEdge/lib/mono/4.5/csc.exe",
+  "mono_version": "6.13.0",
+  "csc_version": "3.7.0-5.20367.1",
+  "compiler_probe": {
+    "compile_exit_code": 0,
+    "execution_exit_code": 0
+  },
+  "api_reference_compile_report": "/tmp/rpg-unity-api-baseline.json",
+  "native_probe": {
+    "attempts": 1,
+    "exit_code": 1,
+    "timed_out": false,
+    "license_message": "No valid Unity Editor license found",
+    "project_import_started": false
+  },
+  "unity_cli_on_path": false,
+  "system_mono_on_path": false,
+  "live_mcp_tools": 0,
+  "mcp_package_detected": false,
+  "display_configured": false,
+  "licensed_native_import": false,
+  "native_tests": false,
+  "runtime_playtest": false
+}

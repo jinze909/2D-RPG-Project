@@ -4,7 +4,53 @@ The user authorizes game development, commits, normal pushes to master,
 and source-project deliveries. Preserve accepted designs, existing user work,
 working systems, save compatibility, and the original blonde hero identity.
 Use international Unity **2022.3.53f1** and pixel art; do not use China Unity or
-China package services. Do not upgrade the editor automatically.
+China package services. Preserve the specified editor version.
+
+## Current architecture and clearing contract
+
+- `SampleScene` retains the original player prototype. `CombatClearing` is the
+  new, isolated candidate build entry: three sentinels, combat, a sealed beacon
+  region, completion/retry and compact Canvas HUD. Its native acceptance is pending.
+- `Player` clones the authoring `PlayerStats` in Awake. Health and mana resolve
+  that same actor-owned snapshot. New session/retry fills valid maxima; the template
+  is never a save file. Iteration 5 adds engine-independent clearing progression
+  and versioned local storage, result-screen purchases and next-run actor bonuses.
+  Inventory, equipment and classes remain absent.
+- `Gameplay/ClearingRules` is engine-independent timing/admission/reward logic;
+  `ClearingRuntime` owns scene positions, contacts, input and the resource bridge.
+  `ClearingVisuals`, `ClearingHud` and `ClearingAudio` own presentation. Runtime
+  art uses cached PPU30/Point code-native rasters and a shared 15-color palette.
+  New stone/moss sentinels, walls and beacon are an integrated art candidate;
+  native visual acceptance and synthesized cue audition remain pending.
+- Preserve attack tokens, stationary warning footprints, once-only rewards,
+  HP-death synchronization, pause cleanup and full gate-to-boundary coverage.
+  Player attacks use independent world effects and retain the existing walk cycle.
+  Resolve all player contacts before enemy retaliation on each physics tick.
+  Disable cancels transient contacts/effect deadlines without refunding cooldowns
+  or erasing progression; pause freezes those actions without canceling them.
+- Read `docs/game/COMBAT_CLEARING.md` for controls and native acceptance steps.
+  Read `docs/game/CLEARING_PROGRESSION.md` before changing the reward ledger:
+  only a completed beacon run deposits coins; save-before-mutate, same-attempt
+  idempotency, bounded ranks and next-run-only actor bonuses are required.
+  Run `tools/validate_project.py` (movement/resources/input/animation/combat/scene,
+  actual presentation behavior and managed-raster checks) and the distribution
+  suite. When installed, also use
+  `tools/compile_unity_api.py`: real engine/uGUI signatures, with Input System
+  explicitly reported as a substitute if its compiled assembly is absent.
+- Native-unverified clearing stays on `rpg/iteration-002-clearing` / draft PR #1.
+  PR #3 merged iteration 4 into iteration 3; PR #2 then merged all tested polish
+  and reliability work into that iteration-2 candidate. The current iteration-4
+  delivery branch includes both merge commits. Fetch all before selecting work;
+  read docs/iterations/2026-10-08-iteration-004/handoff.md and the separate delivery
+  receipt; do not recreate accepted candidate work. The current user has
+  explicitly authorized autonomous review, ordinary PR merges and delivery,
+  superseding historical user-only merge restrictions. Assess real CI and risk;
+  keep native-unverified high-risk changes isolated until adequate evidence exists.
+- Warning progress/X motifs remain inside the original saved contact outline.
+  Pooled hit/kill feedback uses simulation time and resets on retry/disable.
+  HUD messages share the help edge slot and hide unavailable actions on pause/death.
+  Preserve these contracts and original hero hashes; do not change hit geometry
+  merely to align with decoration or claim native rendering from offline rasters.
 
 ## Start every iteration
 
@@ -21,6 +67,8 @@ China package services. Do not upgrade the editor automatically.
 5. Recheck actual capabilities: compiler, editor/license, native tests, image
    tools, audio tools, service connections and credentials by name/presence only.
    Never print environment values, authentication files, private keys or licenses.
+6. Save and normally push a checkpoint after each independently verified stage.
+   Record unfinished work; resume that checkpoint after a quota interruption.
 
 ## Apply the skills to real work
 
@@ -41,7 +89,7 @@ China package services. Do not upgrade the editor automatically.
   Live operation requires an actual compatible connected editor and server.
 - imagegen: use available built-in image tools when a real bitmap task calls for
   them. GitHub Actions does not inherit ChatGPT image tools. Do not invent calls,
-  silently use paid services, or redesign the existing hero merely to use a skill.
+  invent unavailable capabilities, or redesign the existing hero merely to use a skill.
 
 Record exact skill usage, affected files, evidence and unavailable capabilities in
 SKILLS_USAGE.md. All eight skills must be rediscovered for each fresh task; only
@@ -65,6 +113,9 @@ Use meaningful tests when changing behavior. Existing actual-source checks are:
 ```bash
 python3 tools/run_player_checks.py --project-root .
 python3 tools/run_resource_checks.py --project-root .
+python3 tools/run_progression_checks.py --project-root .
+python3 tools/run_presentation_checks.py --project-root .
+python3 tools/run_art_checks.py --project-root .
 python3 tools/validate_project.py --root . --output /tmp/rpg-project-report.json
 python3 -m unittest discover -s tests -p 'test_distribution.py'
 ```
@@ -75,15 +126,18 @@ native physics, the real Input System, Animator rendering or Game View. Native
 import, tests and gameplay remain required when the environment supports them.
 Never reduce checks, fabricate counts or treat a zero-test run as success.
 
-## Delivery
+## Delivery and CI
 
 Maintain all four root records with changes, real results, baseline/commit evidence,
 remaining issues and a next priority. Update KNOWN_ISSUES rather than repeat a
 completed fix merely to produce a commit. Complete and save tested work within the
 available time; isolate incomplete or high-risk changes with their evidence.
 
-Keep native-unverified high-risk changes on rpg/iteration-* branches. Review
-fresh validation and the remote baseline before a normal master push.
+The ordinary GitHub Actions workflow `rpg-project-validation.yml` checks pushed
+code or a manual run, then packages the validated project and uploads its ZIP and
+reports. Check the actual run and Artifact before claiming hosted success. Standard
+runners do not establish licensed native import, playback or visual acceptance.
+Keep failed or native-unverified high-risk changes on `rpg/iteration-*` branches.
 
 Package with the trusted tools/package_unity_project.py. Include real LFS objects,
 Assets, Packages, ProjectSettings and .meta; exclude caches and credentials.

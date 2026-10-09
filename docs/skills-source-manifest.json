@@ -27,7 +27,7 @@
         "scripts/list_handoffs.py": "69485ec8a25ba7795e590e96b84534d986086a769932342efb34e86a25de33f8",
         "scripts/validate_handoff.py": "e63fed866fafb7a8055c51a19e5c576bce73bc0ec474c09c9be6962f596ba677",
         "ATTRIBUTION.md": "026d7e5af25568dcd55e177c4b38d785ce546fed2cd950aebdfafc338d93b510",
-        "INSTALLATION.json": "298e731ab6910af452985d41853e0db2e9d3fcc00e61b1a5ea55b0d359577d04"
+        "INSTALLATION.json": "42542932ebb1e80f94f81b9fd953ee7835e9ad270d2467bf696adc5ea2179b37"
       }
     },
     {
@@ -45,7 +45,7 @@
         "references/tools-reference.md": "1fa6bf8c2b758b953dce45559a7bed197ac0a5392132a62c4acd2839de9675e3",
         "references/workflows.md": "b19818a5bbca2412fb7e78b5089b9f64c4a8bd4cee46d91058d8fb17020577a2",
         "ATTRIBUTION.md": "8415f10dfa6e97e53bc9c90f40e13590945d60dd887b144ba3f721e25a88b3e2",
-        "INSTALLATION.json": "15699f7f77ea41d0d1aff8360ee956a025b04958abb9c51f54df01ff163fe87a"
+        "INSTALLATION.json": "d48cdcc21c1f284f289a733fc90d083d28a0b6bbd85df84f0d12b499d6a1c580"
       }
     },
     {
@@ -61,7 +61,7 @@
         "SKILL.md": "38a4b391795575903e060caafd586cfe8257e4ca4ff8691cc160f9fee0d1f501",
         "LICENSE-CC-BY-4.0.txt": "8ae9438818c26e4873b91d8c6ad620526c011e27e125677f13031eda903f007c",
         "ATTRIBUTION.md": "1a7c84a8042d74b41f967e30051e0d61a903edee0bc741ebed53fe630dbd3680",
-        "INSTALLATION.json": "bbd08e639946fc02ff8f1fbb948d782a49ddfeec87fbd9f2d720eb9585798ba9"
+        "INSTALLATION.json": "2516d92f50d679d90e6b15d25539700191a1f623220037cb65a85c79c344031f"
       }
     },
     {
@@ -77,7 +77,7 @@
         "SKILL.md": "d130ce7e737c5a8ff6ab2c6bba5b1b55fd0c833891c5bb032433203e2db02c46",
         "LICENSE-CC-BY-4.0.txt": "8ae9438818c26e4873b91d8c6ad620526c011e27e125677f13031eda903f007c",
         "ATTRIBUTION.md": "6596ac99ece8bef1ccd507e6d00c7b0b92596d509ced4a2c96f355bd41fd6749",
-        "INSTALLATION.json": "a1a71adc96743926a471f6ecacd340c1377cfd624deaad6d2472caa7b0acb904"
+        "INSTALLATION.json": "56a2f280b285ca60c36cd05c8090d844489c418fc69d82fdcc544a0a5d577189"
       }
     },
     {
@@ -93,7 +93,7 @@
         "SKILL.md": "0188dd204cf49acc00bf097ffca7cd1f7b2f7b034edb3d4b6e1befe5a6070aa1",
         "LICENSE-CC-BY-4.0.txt": "8ae9438818c26e4873b91d8c6ad620526c011e27e125677f13031eda903f007c",
         "ATTRIBUTION.md": "40fab853d721211256c5f224f1caaf0997bab343a15ac5b05b658204e462c83e",
-        "INSTALLATION.json": "1cc33b6c37570313bf3385b85b262a82b0db6f3f0d5c7a0f0fdb40fb4f62f026"
+        "INSTALLATION.json": "8e57402586258143ac72e5349ba0de5cecdf5465a707026e956909f93b0b3c73"
       }
     },
     {
@@ -112,7 +112,7 @@
         "find-polluter.sh": "dd7b8f13c4cc2a24b33ff87b18da9248f3e1c80a085c3316224f69ff0fa5c43c",
         "root-cause-tracing.md": "75b933b6a8c40bdb2031b10f21654395b56ec6ab6bc7b018c18d3fe57aeb7fb8",
         "ATTRIBUTION.md": "fc8290ef2522580daa6196f2660d7633ac1af62f47351eaa2c1d84c61dbd6e0b",
-        "INSTALLATION.json": "4a6f75ba50c54a2925f8ee825e77f4c720ce6d1da241ded839ded2642e0dbace"
+        "INSTALLATION.json": "41d5b0332ec906101a0eb1c0cef721d19c44e84e4134f567635adde9dbfaa684"
       }
     },
     {
@@ -126,7 +126,7 @@
         "LICENSE": "a37e0e9697144819e1d965176ac4ae5bc3fa02d11e7812036bbcadf6dafe2400",
         "SKILL.md": "4c4b559312650a083d35c062678ab0ca59764f9719f91efb8c2fc66a01add55b",
         "ATTRIBUTION.md": "6327bf0e97afbb4be3628417fdc1bb7a5987410fb02371a4d00da5067c50603f",
-        "INSTALLATION.json": "6081d91ffda69d17ace78b7d4d60e73d74824e7985d43e80261ac489b85ef418"
+        "INSTALLATION.json": "54e8bba8612de67b8f51646e72414ff22317296a79d18ef2099580cbcc7c1b27"
       }
     },
     {
@@ -151,7 +151,7 @@
         "references/unity-character-frames.md": "6a7f76e531826c8268125e342264ca4badaa706b3045d0f2af14823df149e679",
         "scripts/image_gen.py": "eaffd8fe4cde5722d748cc35729a03438d6b8fda5e84edd46ea1ce521d41f58b",
         "ATTRIBUTION.md": "2081427422a4e67bce12fd8f216088612844e09ecbf48b2c79e0454eab1b206f",
-        "INSTALLATION.json": "bd465b32235dbe4b107c1fc0a0dab42b09a454a55602dc174f68d51656d07cee"
+        "INSTALLATION.json": "b0bba0144e2a0904019691f1ed8509c5fa74e35d4ccd9ad2f98b2e5c8cf532d9"
       }
     }
   ]

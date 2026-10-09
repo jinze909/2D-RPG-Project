@@ -54,7 +54,7 @@ def main() -> int:
     root = args.project_root.resolve()
     fixtures = Path(__file__).resolve().parents[1] / "tests/resources"
     production = [root / "Assets/Scripts" / path for path in (
-        "Extra/IDamageable.cs", "Player/PlayerStats.cs", "Player/PlayerAnimations.cs",
+        "Extra/IDamageable.cs", "Player/Player.cs", "Player/PlayerStats.cs", "Player/PlayerAnimations.cs",
         "Player/PlayerHealth.cs", "Player/PlayerMana.cs")]
     missing = [str(path.relative_to(root)) for path in production if not path.is_file()]
     if missing:
@@ -74,7 +74,7 @@ def main() -> int:
         command = [*compiler, "-nologo", "-nowarn:0649", "-out:" + str(executable),
                    str(fixtures / "UnityResourceBoundaryStubs.cs"),
                    str(fixtures / "ResourceBehaviorChecks.cs"), *map(str, production)]
-        print("Compiling 5 actual production C# files with resource boundary doubles", flush=True)
+        print(f"Compiling {len(production)} actual production C# files with resource boundary doubles", flush=True)
         compiled = subprocess.run(command, check=False)
         if compiled.returncode:
             return compiled.returncode

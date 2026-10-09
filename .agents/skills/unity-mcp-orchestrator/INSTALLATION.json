@@ -26,8 +26,9 @@
     "date": "2026-10-08",
     "destination": ".agents/skills/unity-mcp-orchestrator",
     "notes": [
-      "Updated local project authorization wording at user request.",
-      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites."
+      "Replaced historical host notes with repository-relative continuous-development guidance; no host-specific registration is required.",
+      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites.",
+      "Updated the local project authorization wording at the user's request; upstream content and licenses remain intact."
     ],
     "files_sha256": {
       "LICENSE": "6efe650c965012ac418238dcd6b9116e4130a5220717ef0dfb539dd159c4245c",

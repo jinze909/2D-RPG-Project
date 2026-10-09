@@ -7,8 +7,9 @@
     "date": "2026-10-08",
     "destination": ".agents/skills/session-handoff",
     "notes": [
-      "Updated local project authorization wording at user request.",
-      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites."
+      "Replaced historical host notes with repository-relative continuous-development guidance; no host-specific registration is required.",
+      "Preserved upstream provenance and licenses; omitted __pycache__, eval fixtures, pressure-test examples, and creation logs because they are not runtime skill prerequisites.",
+      "Updated the local project authorization wording at the user's request; upstream content and licenses remain intact."
     ],
     "files_sha256": {
       "LICENSE": "4b4447da5344f8b2d3a8a19ba8366d1ac7a24d9ab4690bd04576dc772ddf8321",

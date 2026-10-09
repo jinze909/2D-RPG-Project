@@ -1,0 +1,41 @@
+Compiling 19 actual project C# files for recording-boundary presentation checks
+PASS beacon prompt is actionable during an active unlocked run
+PASS paused run hides disabled beacon interaction
+PASS dead run hides disabled beacon interaction
+PASS feedback and movement help share one unobstructive edge slot
+PASS actual HUD refresh fits narrow edge columns and hides terminal feedback
+PASS accepted contact produces one hit cue and repeated token produces none
+PASS missed expired and wall-rejected contacts never emit hit feedback
+PASS one burst contacting two targets emits one cue and two cached impacts
+PASS a later kill upgrades one action once even when another target also dies
+PASS kill confirmation survives hidden enemy and expires without allocation
+PASS telegraph charge and active motif differ inside the fixed contact outline
+PASS pause freezes impact state and resume lets the cached pulse expire
+PASS death and retry clear cached feedback and stop stale sounds
+PASS disabling encounter immediately clears warnings impacts strikes and audio
+PASS first refresh after disable cannot restore an old strike warning or impact
+PASS a fresh target takes no old player contact after disable and resume without input
+PASS an interrupted enemy active window cannot hit after disable and resume
+PASS disable preserves resources rewards cooldowns immunity and simulation time
+PASS disable keeps terminal movement locked and restores the prior pause time scale
+PASS pause retains the player action and its warning until simulation resumes
+PASS all same-tick burst contacts resolve before lethal enemy index 0
+PASS all same-tick burst contacts resolve before lethal enemy index 1
+PASS all same-tick burst contacts resolve before lethal enemy index 2
+PASS same-tick burst defeats suppress retaliation and open gate with active enemy index 0
+PASS same-tick burst defeats suppress retaliation and open gate with active enemy index 1
+PASS same-tick burst defeats suppress retaliation and open gate with active enemy index 2
+FAIL actual E cannot bank a locked objective or an unlocked far beacon: Presentation method absent: InitializeProgress
+FAIL actual near-beacon E banks thirty once and locks completed movement: Presentation method absent: InitializeProgress
+FAIL failed completion preserves ledger and E retries the same reward exactly once: Presentation method absent: InitializeProgress
+FAIL R after an unbanked completion continues without inventing saved rewards: Presentation method absent: InitializeProgress
+FAIL upgrade keys cannot spend in active paused dead or unbanked states: Presentation method absent: InitializeProgress
+FAIL Vitality main and keypad choices spend saved coins and activate next run only: Presentation method absent: InitializeProgress
+FAIL Focus main and keypad choices spend saved coins and activate next run only: Presentation method absent: InitializeProgress
+FAIL failed purchase preserves bank rank actor and audio until the same choice saves: Presentation method absent: InitializeProgress
+FAIL loaded bonuses and repeated retries never stack or mutate the authoring template: Presentation method absent: InitializeProgress
+FAIL protected progress permits clearing but never claims or writes a saved completion: Presentation method absent: InitializeProgress
+FAIL HUD displays saved bank and next-run upgrade ranks during actual play: Progression HUD Refresh signature absent
+FAIL banked completion HUD shows both next-run choices prices and rank cap: Progression HUD Refresh signature absent
+FAIL completion HUD limits result rectangles on short and narrow canvas boundaries: Progression HUD Refresh signature absent
+RESULT 26 passed, 13 failed; actual project C# with recording boundaries, not native Unity.

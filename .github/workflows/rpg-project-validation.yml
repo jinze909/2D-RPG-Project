@@ -46,7 +46,7 @@ jobs:
           from pathlib import Path
           detail = Path(sys.argv[1]).read_text()[-2500:]
           detail = detail.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
-          print('::error title=RPG boundary test failure::' + detail)
+          print('::error title=RPG distribution test failure::' + detail)
           PY
           }
           if ! python3 -m unittest discover -s tests -p 'test_distribution.py' -v 2>&1 | tee "$RUNNER_TEMP/rpg-validation/distribution-tests.txt"; then
@@ -77,7 +77,7 @@ jobs:
             echo '## Project verification and delivery'
             echo "Commit: $GITHUB_SHA"
             echo "Offline project validation: $VALIDATION_OUTCOME"
-            echo "Distribution boundary tests: $DISTRIBUTION_OUTCOME"
+            echo "Project packaging checks: $DISTRIBUTION_OUTCOME"
             echo 'Native Unity Editor import, EditMode/PlayMode and playback: not run on this runner.'
             if [ -n "$ARTIFACT_URL" ]; then
               echo "[Download the uploaded artifact]($ARTIFACT_URL)"

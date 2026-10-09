@@ -1,5 +1,108 @@
 # Development progress
 
+## Iteration 5 — integrated clearing growth checkpoint
+
+The player loop now completes: defeat three -> E at beacon -> save 30 coins ->
+1/2 (or keypad) buys Vitality/Focus -> R applies +2 HP/MP per saved rank.
+Each upgrade has three ranks costing 30/45/60. Saved bank/ranks load on restart;
+current encounters and the authored PlayerStats never become save data.
+Actor bonuses are recomputed from captured bases, never stacked on repeated R.
+Failed saves keep live coins/ranks unchanged; E retries the current completion;
+unbanked R explicitly loses that run's reward. Corrupt/future files are protected.
+No input on a terminal R frame leaks an attack into the new encounter.
+
+Independent review reproduced an oversized future-schema overwrite bug in this
+round's foundation: 46 pass/5 fail. Bounded header detection now precedes body
+size/UTF-8 validation; 51 progression checks pass, including exact-byte protection.
+A real completed-shop/corner overlap at short/ultrawide sizes was reproduced
+(43 pass/1 fail) and fixed by hiding redundant corner labels only at completion.
+Unbanked upgrade choices now explicitly say bank first.
+Initial integration fixture retained 26 passes and 13 new-feature gaps; final
+44 presentation checks pass. Recording boundaries are not native rendering/play.
+
+Fresh total: 219 project + 6 distribution = 225 passing checks; integrity of
+scene/build references, GUID/meta, six LFS objects and eight skills also passed.
+19 production C# sources compile against 86 real Unity 2022.3.53f1 references;
+Input System remains substituted. Foundation checkpoint 819c6bf was pushed.
+GitHub CI/stacked PR and final ZIP/receipt/handoff follow after this second checkpoint.
+
+## Iteration 5 — persistence foundation checkpoint (2026-10-08 local)
+
+Verified clean HEAD fe8b1f7 and actual remote history/PR state before selecting
+rpg/iteration-005-persistent-progression from iteration 2. Retained all fourth-round
+work; PR #2/#3 are already merged. PR #1 stays draft and master unchanged.
+
+Implemented pure clearing progression and durable version-1 local storage:
+30 coins only for completed beacon runs, once per current attempt, two upgrades
+with three bounded ranks, strict ledger/checksum validation, save-before-mutate,
+real atomic file replacement/backup, stale-writer and incompatible-file protection.
+Player, input, HUD integration is still pending at this checkpoint.
+
+Fresh checks: 196 project + 6 distribution passed; 19 sources compiled against
+86 real Unity references with Input System substituted. See iteration-005/checkpoint.md.
+Native validation remains unavailable due to the inherited license gap.
+
+## Iteration 4 verified integration and delivery handoff — 2026-10-09 UTC
+
+Game fix checkpoint 1e7eb01c359eeba55b42c038652701f0a54bbb38 was safely pushed;
+exact-head CI 37883929552 and all 12 job steps succeeded, including ZIP upload.
+PR #3 was normally merged to iteration 3 at 77dd22b1e08292a0e7d2d9ef0a6b085e3c449eea,
+then verified merge CI 37884061641. PR #2 was normally merged to iteration 2 at
+baffbfa5a8962233585d98ebdd20ff3c522d1e07; its CI 37884336027 also succeeded,
+with all 12 steps and Artifact 11595597061. Both merge trees match the tested
+implementation tree exactly. No force push; previous work and delivery history
+are retained. User approval is not required for authorized candidate merges.
+
+PR #1 remains open/draft; master remains 2e8c154. The reason is missing licensed
+native acceptance for its new scene/input/physics, not missing user permission.
+The persistent iteration-4 handoff/publication supersedes older pending stage
+statuses below. Final source SHA, exact source CI, complete ZIP/HTTPS checks and
+actual publication completion are saved in the independent rpg-deliveries
+iteration-004-delivery.json receipt. This source record precedes its own final
+commit/archive and does not claim future upload success.
+
+## Iteration 4 combat reliability — 2026-10-08 (America/Los_Angeles)
+
+Continued the interrupted work from checkpoint b1fac682bda6da227dbf25e22fced7ad39088d2d.
+Two actual-source defects were reproduced and corrected:
+
+- Disable only hid strike/warnings/impacts while the rule action and effect
+  deadlines survived. The next refresh/physics tick resurrected them and could
+  damage a new target without new input. CancelTransientActions invalidates
+  current player/enemy contacts; OnDisable clears pulse/hurt deadlines. HP, MP,
+  enemy health, coins, clock, cooldowns and immunity remain unchanged. Normal
+  pause still freezes attacks/effects; terminal movement remains locked.
+- Player contacts and retaliation shared one enemy loop. A low-index lethal
+  enemy stopped a burst before later targets received the admitted hit. Separate
+  passes now resolve the whole player action before remaining enemy contacts.
+  Three lethal-attacker index permutations agree; same-tick killed enemies do
+  not retaliate, rewards/gate/cues remain once-only.
+
+Red reproduction: 17 presentation checks passed, six failed before correction.
+Fresh final project validation: 14 movement + 40 resource + 9 input/animation +
+36 pure rules + 15 scene contracts + 26 presentation + 10 raster/hero = 150 pass,
+zero fail; six distribution tests also pass (156 total). API compilation passes
+for 16 sources against 86 real Unity 2022.3.53f1 references, Input substituted.
+No scenes, hero resources, packages or settings were modified. Independent source
+review and fresh focused re-execution found no new regression. Native import,
+physics, rendering, audio/playtest and platform build remain blocked/unrun.
+
+Baseline checkpoint push CI succeeded at run 37883493542. New game source needs
+its own exact-commit CI after the next push. Candidate integration, source ZIP
+publication and final session handoff remain pending at this stage.
+
+## Iteration 4 recovery checkpoint — 2026-10-08 (America/Los_Angeles)
+
+Resumed the interrupted fourth round at 53bd47e on
+`rpg/iteration-004-combat-reliability`. Actual inspection found no fourth-round
+commit or dirty code; only investigation files under /tmp survived. Restored six
+LFS objects and reran the original baseline: 134 project + 6 distribution checks
+passed. Unity API compilation: 16 sources/86 real references, substituted Input
+System. Native probe exited 1 before import due to missing valid license.
+PR #1/#2 remain draft/unmerged. New autonomous merge authority is reflected in
+AGENTS.md. Investigation and unfinished implementation are saved in
+docs/iterations/2026-10-08-iteration-004/checkpoint.md; no game fix is claimed yet.
+
 ## Iteration 1 — 2026-10-08 UTC
 
 Baseline: `26d29dbbf41e39d811f1d876ae45ddf22d11e50d`, `master`.
@@ -16,7 +119,7 @@ This record describes real edits to this repository's player prototype.
   service, preserving dependency versions and graph. Native resolution was not run.
 - Added actual-source offline C# checks, asset/meta/scene/LFS integrity checks,
   complete project packaging, source/skill/license records and eight portable skills.
-- Added project verification, ZIP packaging and Artifact delivery workflow.
+- Added project validation, complete source ZIP packaging and hosted Artifact delivery.
 
 Observed validation: 12 movement and 30 resource behavior tests passed; all 9
 production C# files compiled against boundary doubles. Five PNGs decoded, all six
@@ -28,20 +131,26 @@ Real Unity engine/Editor API reference compilation was additionally exercised fo
 the movement source, with Input System still substituted. No native Unity import,
 PlayMode, physics, rendering, audio, full gameplay or platform build passed.
 
-Distribution boundary checks: 6 packaging tests passed. These checks verify
-source archive content, cache exclusions, credential-file rejection, LFS pointers,
-symlinks and required Unity directories. They do not prove native Unity gameplay.
+Six packaging boundary tests passed. During iteration 1, cloud GitHub REST access
+returned proxy Forbidden; its required domain was added to the environment draft.
 
 Published game/skills commit: d2783214e752ddf35c5cf22f6332a5a3fa8ed0eb.
-Published CI workflow commit: 1e00d30ad2df4371ee96fa8f81b048ace9b8aaef.
+Published workflow commit: 1e00d30ad2df4371ee96fa8f81b048ace9b8aaef.
 Actual first GitHub Actions run: https://github.com/jinze909/2D-RPG-Project/actions/runs/37739823460.
-The hosted project validation passed, but another check failed and ZIP creation
-was correctly skipped. Hosted CI follow-up 37740874645 also passed actual-source
-validation. Fresh hosted revalidation and source ZIP delivery remain required
-before reporting success.
+The hosted project validation passed, but delivery boundary tests
+failed and ZIP creation was correctly skipped. Follow-up isolates GitHub step
+output transports in fixtures, removes fixture dependence on LFS local-transfer
+smudging, and retains failure logs/annotations. Local checks pass; the corrected
+hosted run must be observed before reporting successful CI or ZIP publication.
 
-Next: verify project CI and source ZIP delivery, then close collision/input/respawn
+Next: verify corrected CI and source ZIP delivery, then close collision/input/respawn
 gaps with appropriate native evidence.
+
+Hosted CI follow-up 37740874645 again passed actual-source validation while an
+LFS resource-transfer check failed. Investigation found that legitimate Git LFS
+cache hardlinks were being rejected. This delivery failure was distinct from
+the game-source validation and was corrected before the subsequent successful
+baseline CI run recorded below.
 
 First recoverable source ZIP for a81a6ce3617abdabc44706415d7059882c9928ec was
 published on rpg-deliveries and downloaded over HTTPS: 377919 bytes, SHA-256
@@ -49,14 +158,162 @@ published on rpg-deliveries and downloaded over HTTPS: 377919 bytes, SHA-256
 It contains 188 source files plus metadata and has a clean source worktree. A
 final delivery will follow the validated workflow correction.
 
-## Repository maintenance — 2026-10-08
+## Iteration 2 — 2026-10-08 (America/Los_Angeles)
 
-Baseline: `abc74f5bef86edf06835a785a9e7205725e80e75`, fresh `origin/master`.
-Updated project guidance, skill authorization wording and the project verification /
-ZIP delivery workflow. Unity source, assets, package versions and project settings
-remain unchanged. Upstream skill provenance and license files are preserved; all
-eight local adaptation records and manifest checksums match the retained files.
+Starting baseline: `abc74f5bef86edf06835a785a9e7205725e80e75`.
+`git fetch origin master` refreshed the stale tracking ref and exact remote master
+matched this HEAD; there were no unmerged iteration branches. Local work remained
+isolated on `rpg/iteration-002-clearing`. All six real LFS objects were restored
+after initializing the repository's local LFS filter; no pointers are deliverable.
 
-Fresh verification: 12 movement and 30 resource boundary behavior checks, 6
-distribution checks and all project integrity checks passed. Native Unity import,
-PlayMode, physics and visual acceptance were not executed.
+Actual development:
+
+- Actor-owned PlayerStats clones, full valid resource initialization, coherent
+  health/mana ownership, retry/revive, invalid configuration guards and cleanup.
+  Pause/retry discard cached motion. Prototype P damage is disabled in gameplay.
+- WASD preserved; arrows, analog left stick and D-pad added with generated-wrapper
+  JSON coherence. Hardware/package-native input tests remain pending.
+- Replaced the old looping four-direction death spin with one existing front pose.
+  Opposing death/revive requests are canceled; no new hero motion art was invented.
+- Implemented CombatClearing with a collidable closed perimeter, three chasing /
+  telegraphing sentinels, light strikes, mana burst, contact-window deduplication,
+  cooldowns, immunity, mana regeneration, unique rewards, a fully sealed north
+  objective region, gate unlock, beacon completion, defeat and full retry.
+- Compact adaptive Canvas HUD, actionable status/goal/cooldown/mana feedback,
+  stationary world warning/strike footprints, cached foot-Y actor depth and four
+  original quiet synthesized cues with variation/mute. Blockout art and cue mix
+  remain provisional; hero images/imports, original SampleScene and PPU30 preserved.
+- Corrected defects found during implementation: wrongly typed scene bootstrap,
+  enemy initiation outside its damage footprint, dead-player input admission,
+  narrow HUD overlap, torso-aligned physics/contact, north camera head clipping
+  and pause-disable cleanup. New loops were reviewed against actual code/assets.
+
+Main files: new `Assets/Scenes/CombatClearing.unity`, five `Gameplay/Clearing*.cs`
+with meta; Player/Health/Mana/Stats/Movement/Animations; input asset/wrapper;
+Dead.anim; build entry; actual-source/contract/API runners and regression fixtures.
+Five root records, a scene design/acceptance contract and persistent handoff updated.
+Older rpg-by-ai source was read at b0aae3d329c5b0b200b30b1457d0f692257b9f06 for
+reference; no foreign game source/assets/save schema was silently imported.
+
+Recorded iteration 2 game/project validation: 14 movement, 40
+resource/lifecycle, 32 pure combat rules, 9 input/animation serialized contracts,
+15 scene/geometry/raster contracts and 6 distribution tests passed. These are
+historical implementation results; follow-up changes require fresh verification.
+All 14 production C# files compile against boundary doubles and separately against
+86 real installed Unity 2022.3.53f1 engine/Editor/.NET/uGUI references. The latter
+still substitutes Input System. Five PNGs decode, six LFS hashes match, 44 Unity
+GUIDs are unique, 145 project references resolve, two enabled scenes resolve and
+all 65 files in eight licensed skill bundles match recorded hashes.
+
+Regression evidence: prior lifecycle source failed four new checks; original
+input/death data failed four contracts. Scene tests failed on the wrong bootstrap
+component before its fix. Memory mutations detect removed partition, excessive
+enemy attack range, missing late input order, torso foot anchor and cropped camera.
+The handoff's identical completed working copy validated 100/100, eight referenced
+files present and no secrets; persistent version is under this iteration directory.
+
+Native limit: a fresh empty-project license probe failed with `No valid Unity
+Editor license found`. No native import/compile, EditMode/PlayMode, collision
+simulation, rendering, audio audition, playthrough or platform build passed.
+API compilation/offline doubles/floodfill do not establish those results. This
+high-risk candidate will be delivered through an isolated draft PR, not merged
+into stable master without required evidence. See COMBAT_CLEARING acceptance list.
+
+Prior baseline hosted CI was verified: run 37741402547 validated, packaged and
+uploaded its source artifact successfully. Current candidate commit, PR/CI/ZIP
+receipts are recorded after publication and in ARCHIVE-INFO.json.
+
+Implementation was normally pushed as
+`f203cc1a0e4f6de50f5a8aaa73039298823cbec5`. Actual draft PR:
+https://github.com/jinze909/2D-RPG-Project/pull/1, targeting master and not merged.
+The final delivery-record commit follows this implementation; its exact source
+SHA is stored by the packager in ARCHIVE-INFO.json. The directly downloadable ZIP
+and current hosted CI receipts are included in the session's delivered manifest.
+
+## Project guidance and CI maintenance — 2026-10-08
+
+- Simplified root instructions, portable skill authorization, project documentation
+  and handoff records; removed unused infrastructure and its dedicated evidence.
+- Preserved game code, assets, Unity version, real resource files and ordinary
+  source-validation/ZIP CI.
+- Fresh retained checks: 14 movement, 40 resource/lifecycle, 32 pure combat rules,
+  9 input/animation contracts, 15 scene/geometry and 6 distribution checks: 116
+  passed. Native Unity acceptance remains pending as previously recorded.
+- All eight skill bundles still retain license/provenance metadata with updated
+  local adaptation hashes. PR #1 remains a draft candidate, not a merged game.
+
+## Iteration 3 — 2026-10-08: clearing presentation polish
+
+Starting candidate: `de0614399bb878ae182f90f81074359824e5057b` on PR #1.
+Fresh master: `2e8c154f219256454ad981d6ebf11fdea5865d7d`. Explicitly fetched the
+candidate ref (the cloud's original fetch configuration covered master only),
+then selected `rpg/iteration-003-clearing-polish` without changing either baseline.
+PR #1 remains open/draft/unmerged; the user retains its merge decision.
+
+Cleanup regression: candidate 116 retained checks and master 48 checks passed.
+Exact hosted runs were independently read: master [37855895204](https://github.com/jinze909/2D-RPG-Project/actions/runs/37855895204)
+and candidate [37855964779](https://github.com/jinze909/2D-RPG-Project/actions/runs/37855964779)
+both succeeded through validation, ZIP packaging and artifact upload. Removed
+checks were not presented as still present. No cleanup regression was found.
+
+Selected one complete improvement: combat feedback and coherent clearing art,
+with HUD safety, rather than unrelated professions/inventory/save systems.
+
+- Added a shared 15-color palette and bounded deterministic managed raster
+  builders. Ground, stepping paths, stone walls, moss/stone sentinels, plinth,
+  crystal and rune now share PPU30/Point/no-mipmap art with explicit FullRect.
+  Native textures/sprites are generated once, cached and disposed; original ten
+  hero PNG/import files retain their exact candidate-baseline hashes.
+- Preserved fixed warning boundaries and added phase-progress fill plus an X
+  during the real contact window. Pooled hit/kill pulses survive hidden enemies
+  briefly, freeze on pause and clear on death/retry/disable. Distinct contact/kill
+  cues suppress repeated/multi-target spam; later kills can upgrade once.
+- Fixed confirmed HUD defects: unavailable beacon instructions on pause/death
+  and temporary feedback extending into the lower central combat region.
+  Feedback now replaces help in its edge slot and terminal states hide stale text.
+- Rules, damage/cooldowns, mana, rewards, scene/collider dimensions, actor anchors,
+  hero animations and gate completion conditions were not rewritten.
+
+Final local verification: 14 movement + 40 resource/lifecycle + 32 pure combat
+rules + 9 input/animation contracts + 15 scene/geometry + 14 presentation behavior
++ 9 managed-raster behavior + 1 original-hero hash check + 6 distribution = 140
+passing checks. Asset/GUID/build/package/LFS/skill integrity checks additionally
+passed. All 16 production C# files compile against 86 real installed Unity
+2022.3.53f1 engine/Editor/.NET/uGUI references; Input System is still substituted.
+
+Regression evidence: the same presentation fixture on retained de06143 yields
+2 passes / 12 failures, including reproduced HUD/action and contact-audio gaps.
+New FX expectations also fail there because those features did not exist;
+these are not described as twelve preexisting bugs. Raster mutation checks catch
+removed size guards and colors outside the exact palette. An inspected contact
+sheet contains exact production C# pixels, not a native screenshot.
+
+A fresh editor probe again fails with `No valid Unity Editor license found`.
+No native import/compile, EditMode/PlayMode, real physics, hardware input,
+render/layout/font acceptance, sound audition, playthrough or platform build was
+executed. Original gait/foot drift and new art/audio quality require that review.
+Publication receipts, exact final SHA, hosted CI and verified ZIP follow in the
+iteration directory / delivery manifest after actual publication.
+
+Implementation normally pushed as `4ca71ef52d4918256ddf8e824a23911c0c37de4d`.
+Actual stacked draft PR #2: https://github.com/jinze909/2D-RPG-Project/pull/2.
+Exact implementation CI run 37858757979 completed successfully, with all
+validation/packaging/upload steps and Artifact 11584913917 verified. See
+docs/iterations/2026-10-08-iteration-003/publication.md for PR #1 readiness and
+the final source/CI/ZIP receipt location. Neither draft has been merged to master.
+
+## New Codex window handoff — 2026-10-09 UTC
+
+At the user's request, created a session-handoff record at
+docs/iterations/2026-10-08-iteration-003/new-window-handoff.md and linked it from
+NEXT_ITERATION.md. Starting HEAD was 1bedd3296a31398db62dc27d07c466c125bd896e,
+with a clean working tree. Explicit fetch refreshed master and both candidate refs;
+the two PRs remain open/draft/unmerged. Exact game-source run 37858940651 was
+rechecked as completed/success. Its verified ZIP remains the 1bedd32 delivery;
+the added handoff documents do not change gameplay or that archive's provenance.
+
+Recorded the user's Personal/Student Pro account-login choice and correction that
+Student Pro cannot use ALF activation. No activation or interactive Hub endpoint
+was created. New Unity CLI and Unity MCP Workflow skills are now readable, updating
+the earlier conversation's visibility limitation; CLI is still absent from PATH
+and no Unity-specific MCP tools were found. Native acceptance remains pending.
