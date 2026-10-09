@@ -1,0 +1,19 @@
+{
+  "verified": true,
+  "commit": "b8d55f07969574ed2f45bc756f4d063212c2b87b",
+  "unity": "2022.3.53f1",
+  "zip": "/workspace/rpg-iteration-006-delivery-output/2D-RPG-Project-iteration-006-b8d55f0.zip",
+  "zip_bytes": 584935,
+  "zip_sha256": "0fce675e6a58e23acf3304a3a208b1ec5b8aa1d47a706e6df83d8d6b2419263d",
+  "source_file_count": 298,
+  "zip_member_count": 299,
+  "asset_meta_count": 50,
+  "compared_source_bytes": 1531638,
+  "file_manifest_sha256": "d9e2fe59a42c37582f835275007b40cc687d6f62b97c3442cdff11c9b9dbdb9f",
+  "crc": "passed",
+  "exact_file_set": "passed",
+  "source_bytes_and_member_sha256": "passed",
+  "lfs_pointers": "none",
+  "cache_or_credential_members": "none",
+  "native_unity_validation": false
+}
