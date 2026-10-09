@@ -14,8 +14,8 @@ China package services. Preserve the specified editor version.
 - `Player` clones the authoring `PlayerStats` in Awake. Health and mana resolve
   that same actor-owned snapshot. New session/retry fills valid maxima; the template
   is never a save file. Iteration 5 adds engine-independent clearing progression
-  and versioned local storage; consult the current checkpoint before assuming
-  its player/UI integration is finished. Inventory and classes remain absent.
+  and versioned local storage, result-screen purchases and next-run actor bonuses.
+  Inventory, equipment and classes remain absent.
 - `Gameplay/ClearingRules` is engine-independent timing/admission/reward logic;
   `ClearingRuntime` owns scene positions, contacts, input and the resource bridge.
   `ClearingVisuals`, `ClearingHud` and `ClearingAudio` own presentation. Runtime

@@ -1,5 +1,22 @@
 # Skills usage
 
+## Iteration 5 integration and validation evidence
+
+The planned loop is now implemented in ClearingRuntime/Hud. Game-design drove
+completion-only banking, result-only purchases and next-run bonuses; game-audio
+reuses the existing reward cue once for accepted deposit/purchase (recorded calls,
+not audition). Unity UI -> uGUI skills were read and applied to the existing Canvas:
+edge bank/rank labels, bounded terminal rect and terminal-only best-fit text;
+kept established legacy Text rather than introducing a TMP resource migration.
+Unity Essentials build-validation mandatory evidence/baseline/safety/status guides
+and compilation/test/save/UI/CI/artifact checklists were read and applied.
+Systematic-debugging reproduced the future-schema downgrade (5 red cases), fixed
+bounded header recognition, and verified 51 green progression cases. Integration
+feedback gaps were traced and corrected; final 44 real-method presentation cases
+include actual Player.Awake clone protection. 225 offline/distribution checks and
+19-source/86-reference compilation are the current evidence. Native acceptance
+is blocked; no live editor, device, imagegen or sound audition is claimed.
+
 ## Iteration 5 — persistent clearing progression
 
 Rediscovered eight local bundles; read applicable instructions and resume/root-cause

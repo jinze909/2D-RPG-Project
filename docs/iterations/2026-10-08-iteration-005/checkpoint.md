@@ -17,3 +17,14 @@ Reports in this directory. No native import/play/render/audio/build ran.
 Next: result-screen/input integration, actor-owned next-run bonuses, real-method
 runtime/HUD regression fixtures, checkpoint push, CI/stacked PR, source ZIP,
 verified hosted download and final handoff. This checkpoint is not final delivery.
+
+## Integration checkpoint (supersedes foundation-only pending list)
+
+Implemented complete E-bank / 1-or-2-upgrade / R-next-run flow, actor-owned
+bonuses, saved bank/rank HUD, failure/retry/readonly notices and reward cue reuse.
+Oversized future-version downgrade reproduced and fixed (five red/green cases).
+Fresh 219 project + 6 distribution checks and 19-source real-API compile pass.
+Final source reports and before/after evidence are alongside this file.
+Pending: hosted CI/stacked PR merge into isolated candidate, final documentation
+commit, complete source ZIP, immutable download verification and delivery receipt.
+PR #1 remains draft; native acceptance and master merge remain deferred.

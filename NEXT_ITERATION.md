@@ -1,11 +1,16 @@
 # Next iteration
 
-Iteration 5 is in progress on rpg/iteration-005-persistent-progression.
-Read docs/iterations/2026-10-08-iteration-005/checkpoint.md and
- docs/game/CLEARING_PROGRESSION.md. Persistence foundation is tested; next
-finish gameplay/input/HUD/actor integration and runtime regressions, push the
-second checkpoint, verify hosted CI/stacked PR, then ZIP/download/handoff.
-Keep PR #1 draft and master unchanged until licensed native acceptance.
+Iteration 5 on rpg/iteration-005-persistent-progression has completed the local
+clearing growth loop and offline verification. Read its checkpoint, current root
+records and docs/game/CLEARING_PROGRESSION.md. 219 project + 6 distribution checks,
+19-source real Unity API compile pass; native acceptance remains unrun.
+Foundation checkpoint819c6bf was safely pushed; integration checkpoint follows.
+
+Immediate remaining delivery: exact-head GitHub CI/jobs/artifact, stacked PR into
+rpg/iteration-002-clearing, final source/handoff commit, complete source ZIP and
+immutable HTTPS download/checksum/byte verification. Do not restart implemented
+work. PR #1 stays draft and master unchanged until licensed native acceptance.
+Final receipt will resolve source/ZIP/CI identities without self-reference.
 
 Previous completed-round context follows; do not restart its implemented fixes.
 

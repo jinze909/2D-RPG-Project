@@ -1,0 +1,17 @@
+{
+  "unity": "2022.3.53f1",
+  "retained_editor_executable": true,
+  "api_compile_sources": 19,
+  "actual_unity_references": 86,
+  "input_system": "boundary double",
+  "native_license": "inherited probe: No valid Unity Editor license found; no new activation or unchanged retry",
+  "unity_cli_available": false,
+  "live_unity_mcp_connected": false,
+  "native_import": false,
+  "native_tests": false,
+  "native_playthrough": false,
+  "native_audio_audition": false,
+  "player_build": false,
+  "plugins": "Unity and Unity Essentials skills readable; guide visibility is not an editor connection",
+  "imagegen": "available but no relevant bitmap task; not invoked"
+}

@@ -101,9 +101,22 @@ namespace Rpg.Gameplay
         {
             using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                if (stream.Length > ClearingProgressCodec.MaximumBytes) return Unavailable();
-                byte[] bytes = new byte[(int)stream.Length];
+                long length = stream.Length;
+                byte[] header = new byte[(int)Math.Min(length, ClearingProgressCodec.MaximumHeaderBytes)];
                 int read = 0;
+                while (read < header.Length)
+                {
+                    int count = stream.Read(header, read, header.Length - read);
+                    if (count == 0) return Unavailable();
+                    read += count;
+                }
+                // Header recognition uses only bounded ASCII-compatible bytes;
+                // oversized or invalid UTF-8 future payloads remain protected.
+                if (ClearingProgressCodec.HasFutureVersion(Encoding.ASCII.GetString(header)))
+                    return ClearingProgressCodec.Invalid(ProgressLoadKind.Unsupported);
+                if (length > ClearingProgressCodec.MaximumBytes) return Unavailable();
+                byte[] bytes = new byte[(int)length];
+                Buffer.BlockCopy(header, 0, bytes, 0, header.Length);
                 while (read < bytes.Length)
                 {
                     int count = stream.Read(bytes, read, bytes.Length - read);

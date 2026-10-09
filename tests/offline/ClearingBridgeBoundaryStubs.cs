@@ -220,6 +220,8 @@ namespace UnityEngine.UI
     {
         public Font font;
         public int fontSize;
+        public bool resizeTextForBestFit;
+        public int resizeTextMinSize, resizeTextMaxSize;
         public TextAnchor alignment;
         public string text;
         public HorizontalWrapMode horizontalOverflow;

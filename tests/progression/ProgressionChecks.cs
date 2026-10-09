@@ -361,6 +361,12 @@ internal static class ProgressionChecks
             ProgressLoadResult result = ClearingProgressCodec.Decode(future);
             Require(result.Kind == ProgressLoadKind.Unsupported && !result.CanWrite, "future schema treated as writable corruption");
         });
+        Check("recognizable oversized future codec data stays protected from downgrade", delegate {
+            string future = "RPG-CLEARING-PROGRESS\nversion=2\n" + new string('x', 5000);
+            ProgressLoadResult result = ClearingProgressCodec.Decode(future);
+            Require(result.Kind == ProgressLoadKind.Unsupported && !result.CanWrite,
+                "v1 length limit discarded future-schema protection");
+        });
         Check("real empty directory loads a new writable ledger without creating files", delegate {
             InDirectory(delegate(string directory) {
                 var store = new FileClearingProgressStore(directory); ProgressLoadResult result = store.Load();
@@ -461,6 +467,68 @@ internal static class ProgressionChecks
                 Require(!store.TrySave(Data(2, 0, 0, RewardB), Data(3, 0, 0, RewardC)), "future backup overwritten");
                 Require(File.ReadAllText(store.PrimaryPath) == primary && File.ReadAllText(store.BackupPath) == future,
                     "future backup protection changed save files");
+            });
+        });
+        Check("oversized future primary cannot recover an older backup and overwrite future progress", delegate {
+            InDirectory(delegate(string directory) {
+                var store = new FileClearingProgressStore(directory); SeedTwoSaves(store);
+                string future = "RPG-CLEARING-PROGRESS\nversion=2\n" + new string('x', 5000);
+                string backup = File.ReadAllText(store.BackupPath); File.WriteAllText(store.PrimaryPath, future);
+                ProgressLoadResult result = store.Load();
+                Require(result.Kind == ProgressLoadKind.Unsupported && !result.CanWrite,
+                    "oversized future primary became a writable recovery");
+                Require(!store.TrySave(Data(1, 0, 0, RewardA), Data(2, 0, 0, RewardC)),
+                    "oversized future primary accepted a downgrade save");
+                Require(File.ReadAllText(store.PrimaryPath) == future && File.ReadAllText(store.BackupPath) == backup,
+                    "oversized future primary or usable backup changed");
+            });
+        });
+        Check("oversized future backup blocks a valid primary from downgrading the save pair", delegate {
+            InDirectory(delegate(string directory) {
+                var store = new FileClearingProgressStore(directory); SeedTwoSaves(store);
+                string primary = File.ReadAllText(store.PrimaryPath);
+                string future = "RPG-CLEARING-PROGRESS\nversion=2\n" + new string('x', 5000);
+                File.WriteAllText(store.BackupPath, future);
+                ProgressLoadResult result = store.Load();
+                Require(result.Kind == ProgressLoadKind.Unsupported && !result.CanWrite,
+                    "oversized future backup was discarded despite its recognizable schema");
+                Require(!store.TrySave(Data(2, 0, 0, RewardB), Data(3, 0, 0, RewardC)),
+                    "oversized future backup accepted a downgrade save");
+                Require(File.ReadAllText(store.PrimaryPath) == primary && File.ReadAllText(store.BackupPath) == future,
+                    "oversized future backup or usable primary changed");
+            });
+        });
+        Check("future primary with malformed UTF-8 after its header remains protected", delegate {
+            InDirectory(delegate(string directory) {
+                var store = new FileClearingProgressStore(directory); SeedTwoSaves(store);
+                byte[] header = Encoding.ASCII.GetBytes("RPG-CLEARING-PROGRESS\nversion=2\n");
+                byte[] future = new byte[header.Length + 3]; Array.Copy(header, future, header.Length);
+                future[header.Length] = 0xff; future[header.Length + 1] = 0xfe; future[header.Length + 2] = 0xfd;
+                string backup = File.ReadAllText(store.BackupPath); File.WriteAllBytes(store.PrimaryPath, future);
+                ProgressLoadResult result = store.Load();
+                Require(result.Kind == ProgressLoadKind.Unsupported && !result.CanWrite,
+                    "future primary UTF-8 tail bypassed protection");
+                Require(!store.TrySave(Data(1, 0, 0, RewardA), Data(2, 0, 0, RewardC)),
+                    "future primary malformed tail permitted overwrite");
+                Require(Convert.ToBase64String(File.ReadAllBytes(store.PrimaryPath)) == Convert.ToBase64String(future)
+                    && File.ReadAllText(store.BackupPath) == backup, "future primary malformed bytes changed");
+            });
+        });
+        Check("future backup with malformed UTF-8 after its header remains protected", delegate {
+            InDirectory(delegate(string directory) {
+                var store = new FileClearingProgressStore(directory); SeedTwoSaves(store);
+                byte[] header = Encoding.ASCII.GetBytes("RPG-CLEARING-PROGRESS\nversion=2\n");
+                byte[] future = new byte[header.Length + 2]; Array.Copy(header, future, header.Length);
+                future[header.Length] = 0xc0; future[header.Length + 1] = 0xaf;
+                string primary = File.ReadAllText(store.PrimaryPath); File.WriteAllBytes(store.BackupPath, future);
+                ProgressLoadResult result = store.Load();
+                Require(result.Kind == ProgressLoadKind.Unsupported && !result.CanWrite,
+                    "future backup UTF-8 tail bypassed protection");
+                Require(!store.TrySave(Data(2, 0, 0, RewardB), Data(3, 0, 0, RewardC)),
+                    "future backup malformed tail permitted overwrite");
+                Require(File.ReadAllText(store.PrimaryPath) == primary
+                    && Convert.ToBase64String(File.ReadAllBytes(store.BackupPath)) == Convert.ToBase64String(future),
+                    "future backup malformed bytes changed");
             });
         });
         Check("real invalid UTF-8 and oversized primary data remain unavailable", delegate {

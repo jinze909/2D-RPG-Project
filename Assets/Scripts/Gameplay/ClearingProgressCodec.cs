@@ -13,6 +13,7 @@ namespace Rpg.Gameplay
     public static class ClearingProgressCodec
     {
         public const int MaximumBytes = 4096;
+        internal const int MaximumHeaderBytes = 64;
         private const string Magic = "RPG-CLEARING-PROGRESS";
         internal static readonly UTF8Encoding Utf8 = new UTF8Encoding(false, true);
 
@@ -28,6 +29,10 @@ namespace Rpg.Gameplay
 
         public static ProgressLoadResult Decode(string text)
         {
+            // Protect a recognizable newer schema before validating its unknown
+            // payload. A newer writer may legitimately use a larger body, and
+            // later damage must never make that file eligible for v1 recovery.
+            if (HasFutureVersion(text)) return Invalid(ProgressLoadKind.Unsupported);
             if (text == null || text.Length > MaximumBytes) return Invalid(ProgressLoadKind.Unavailable);
             try
             {
@@ -36,8 +41,6 @@ namespace Rpg.Gameplay
                 int version;
                 if (lines.Length < 2 || lines[0] != Magic || !TryNumber(lines[1], "version=", out version))
                     return Invalid(ProgressLoadKind.Unavailable);
-                // A recognizable newer schema always disables writes, even if truncated.
-                if (version > 1) return Invalid(ProgressLoadKind.Unsupported);
                 if (version != 1 || lines.Length != 10 || lines[9] != "") return Invalid(ProgressLoadKind.Unavailable);
                 int revision, coins, clears, vitality, focus;
                 if (!TryNumber(lines[2], "revision=", out revision) || !TryNumber(lines[3], "bankCoins=", out coins)
@@ -57,6 +60,26 @@ namespace Rpg.Gameplay
         internal static ProgressLoadResult Invalid(ProgressLoadKind kind)
         {
             return new ProgressLoadResult(ClearingProgressData.Fresh, kind, false);
+        }
+
+        internal static bool HasFutureVersion(string text)
+        {
+            const string prefix = Magic + "\nversion=";
+            if (text == null || !text.StartsWith(prefix, StringComparison.Ordinal)) return false;
+            int end = Math.Min(text.Length, MaximumHeaderBytes);
+            int digits = 0;
+            char first = '\0';
+            for (int i = prefix.Length; i < end; i++)
+            {
+                char c = text[i];
+                if (c == '\n') break;
+                if (c < '0' || c > '9') return false;
+                if (digits == 0) first = c;
+                digits++;
+            }
+            // Any canonical multi-digit version is newer than v1; inspecting
+            // digits avoids overflow when a future version exceeds Int32.
+            return digits > 0 && first != '0' && (digits > 1 || first > '1');
         }
 
         private static bool TryNumber(string line, string prefix, out int value)
