@@ -1,5 +1,12 @@
 # Known issues
 
+## Iteration 7 foundation — current unfinished list
+
+Pure damage readout helper exists; cachedworldlabels/actualcontact integration,
+newruntimechecks/review/CI/PR/mastermerge/ZIP/handoff remain pending. No hitstop/
+camerashake/newability/schema is claimed. Prior6source/ZIP fullydelivered. Native
+visualreadability/audio/input/physics/build remain unrun, optional for merge.
+
 ## Iteration 6 merged status — current
 
 PR5 is normally merged into master47c2289 after independently reviewed source

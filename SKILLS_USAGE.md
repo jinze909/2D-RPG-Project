@@ -1,5 +1,20 @@
 # Skills usage
 
+## Iteration 7 — accepted damage feedback
+
+All8localSKILL.md rediscovered; unchanged guidance read earlier in this conversation
+is retained, relevant design/verification/handoff instructions reread. Session-
+handoff verified actual6receipt/Git/cleanbaseline and maintains checkpointrecords.
+Game-design selected a bounded accepted-contact readout closedloop. Game-art/
+Unitypixelprinciples preserve hero/PPU30/15palette and original cachedglyphart;
+imagegen applicability excludes this code-native bitmap pipeline, no tool call.
+Game-audio keeps existing acceptedcontact/kill/hurt cues, no new synthesis/audition.
+Unity-mcp-orchestrator/Essentials architecture/lifecycle/testing/performance/VFX
+references guide cachedresources/timing/disposal; no liveEditor/CLI/MCP assumed.
+Verification uses fresh280project+6distribution/21sourceAPI evidence. Systematic-
+debugging distinguished the initialincorrectrunner source list from gamefailure.
+Native/recording boundaries and InputSystemsubstitute remain explicitly separate.
+
 ## Iteration 6 publication verification
 
 Session-handoff used the real scaffold and unchangedvalidator result API; actual

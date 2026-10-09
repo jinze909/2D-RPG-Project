@@ -20,6 +20,8 @@ China package services. Preserve the specified editor version.
   to the actual clearing. SentinelTactics captures immutable role geometry shared
   by contact and warning. Read docs/game/SENTINEL_TACTICS.md; preserve original
   caster LOS, fixed targets, phase movement locks and snapshot cleanup on reset.
+- Iteration7 DamageReadout foundation precedes live cached damage labels; resume
+  its explicit checkpoint pendinglist and docs/game/DAMAGE_FEEDBACK.md.
 - `Gameplay/ClearingRules` is engine-independent timing/admission/reward logic;
   `ClearingRuntime` owns scene positions, contacts, input and the resource bridge.
   `ClearingVisuals`, `ClearingHud` and `ClearingAudio` own presentation. Runtime

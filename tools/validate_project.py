@@ -149,6 +149,8 @@ def validate(root: Path) -> dict:
           'actual pure C# progression/codec plus real Mono temporary-filesystem IO; no Unity engine'))
     check('sentinel_tactics_and_locked_footprints', lambda: behavior('run_enemy_checks.py',
           'actual pure C# enemy decisions, timing and immutable contact geometry; no Unity engine'))
+    check('damage_readout_rules', lambda: behavior('run_feedback_checks.py',
+          'actual pure C# loss formatting, glyphs and feedback lifetime; no Unity engine'))
     check('clearing_scene_contracts', lambda: contracts('run_scene_checks.py'))
     check('clearing_presentation_behavior', lambda: behavior('run_presentation_checks.py',
           'actual C# with recording component/audio boundaries; no native physics, UI layout or audible output'))

@@ -1,5 +1,16 @@
 # Development progress
 
+## Iteration 7 — bounded damage readout foundation
+
+Started clean/refreshedb8d55f0 from completed6receiptb514005; development branch
+rpg/iteration-007-damage-feedback. Choose actualdamage numbers to make repeated
+combat results visible without rewriting savedgrowth/tactics. Pureformatter,
+14glyphs and simulationlifetime implemented:9newchecks;280project+6distribution
+286pass;21production sources/86realAPIrefs/Inputsub compile. Cachedrenderer and
+Runtimecontact integration are pending at this independently verified checkpoint.
+No baselinebehavior bug invented; initialrunnerfixture source-list typo corrected
+before genuinechecks. Native acceptance remains optional/unrun.
+
 ## Iteration 6 — reviewed ordinary master integration
 
 Integrated checkpointc7d5ac3 and evidence-format correction0e9c6f6 were normally
