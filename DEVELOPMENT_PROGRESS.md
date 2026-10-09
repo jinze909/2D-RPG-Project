@@ -1,5 +1,17 @@
 # Development progress
 
+## Iteration 4 recovery checkpoint — 2026-10-08 (America/Los_Angeles)
+
+Resumed the interrupted fourth round at 53bd47e on
+`rpg/iteration-004-combat-reliability`. Actual inspection found no fourth-round
+commit or dirty code; only investigation files under /tmp survived. Restored six
+LFS objects and reran the original baseline: 134 project + 6 distribution checks
+passed. Unity API compilation: 16 sources/86 real references, substituted Input
+System. Native probe exited 1 before import due to missing valid license.
+PR #1/#2 remain draft/unmerged. New autonomous merge authority is reflected in
+AGENTS.md. Investigation and unfinished implementation are saved in
+docs/iterations/2026-10-08-iteration-004/checkpoint.md; no game fix is claimed yet.
+
 ## Iteration 1 — 2026-10-08 UTC
 
 Baseline: `26d29dbbf41e39d811f1d876ae45ddf22d11e50d`, `master`.

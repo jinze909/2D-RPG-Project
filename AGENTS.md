@@ -31,8 +31,10 @@ China package services. Preserve the specified editor version.
   explicitly reported as a substitute if its compiled assembly is absent.
 - Native-unverified iteration 2 stays on `rpg/iteration-002-clearing` / draft PR.
   Iteration 3 is stacked on that candidate at `rpg/iteration-003-clearing-polish`.
-  Fetch both before selecting work; do not recreate them. The user explicitly
-  reserved the merge decision for PR #1; do not merge it without new authorization.
+  Fetch both before selecting work; do not recreate them. The current user has
+  explicitly authorized autonomous review, ordinary PR merges and delivery,
+  superseding historical user-only merge restrictions. Assess real CI and risk;
+  keep native-unverified high-risk changes isolated until adequate evidence exists.
 - Warning progress/X motifs remain inside the original saved contact outline.
   Pooled hit/kill feedback uses simulation time and resets on retry/disable.
   HUD messages share the help edge slot and hide unavailable actions on pause/death.
@@ -54,6 +56,8 @@ China package services. Preserve the specified editor version.
 5. Recheck actual capabilities: compiler, editor/license, native tests, image
    tools, audio tools, service connections and credentials by name/presence only.
    Never print environment values, authentication files, private keys or licenses.
+6. Save and normally push a checkpoint after each independently verified stage.
+   Record unfinished work; resume that checkpoint after a quota interruption.
 
 ## Apply the skills to real work
 
