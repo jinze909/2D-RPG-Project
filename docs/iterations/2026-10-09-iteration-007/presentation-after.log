@@ -1,0 +1,71 @@
+Compiling 22 actual project C# files for recording-boundary presentation checks
+PASS beacon prompt is actionable during an active unlocked run
+PASS paused run hides disabled beacon interaction
+PASS dead run hides disabled beacon interaction
+PASS feedback and movement help share one unobstructive edge slot
+PASS actual HUD refresh fits narrow edge columns and hides terminal feedback
+PASS accepted contact produces one hit cue and repeated token produces none
+PASS missed expired and wall-rejected contacts never emit hit feedback
+PASS one burst contacting two targets emits one cue and two cached impacts
+PASS a later kill upgrades one action once even when another target also dies
+PASS kill confirmation survives hidden enemy and expires without allocation
+PASS telegraph charge and active motif differ inside the fixed contact outline
+PASS pause freezes impact state and resume lets the cached pulse expire
+PASS death and retry clear cached feedback and stop stale sounds
+PASS disabling encounter immediately clears warnings impacts strikes and audio
+PASS first refresh after disable cannot restore an old strike warning or impact
+PASS a fresh target takes no old player contact after disable and resume without input
+PASS an interrupted enemy active window cannot hit after disable and resume
+PASS disable preserves resources rewards cooldowns immunity and simulation time
+PASS disable keeps terminal movement locked and restores the prior pause time scale
+PASS pause retains the player action and its warning until simulation resumes
+PASS all same-tick burst contacts resolve before lethal enemy index 0
+PASS all same-tick burst contacts resolve before lethal enemy index 1
+PASS all same-tick burst contacts resolve before lethal enemy index 2
+PASS same-tick burst defeats suppress retaliation and open gate with active enemy index 0
+PASS same-tick burst defeats suppress retaliation and open gate with active enemy index 1
+PASS same-tick burst defeats suppress retaliation and open gate with active enemy index 2
+PASS actual E cannot bank a locked objective or an unlocked far beacon
+PASS actual near-beacon E banks thirty once and locks completed movement
+PASS failed completion preserves ledger and E retries the same reward exactly once
+PASS R after an unbanked completion continues without inventing saved rewards
+PASS upgrade keys cannot spend in active paused dead or unbanked states
+PASS Vitality main and keypad choices spend saved coins and activate next run only
+PASS Focus main and keypad choices spend saved coins and activate next run only
+PASS failed purchase preserves bank rank actor and audio until the same choice saves
+PASS loaded bonuses and repeated retries never stack or mutate the authoring template
+PASS terminal R cannot admit held-frame attacks or beacon input into the next encounter
+PASS protected progress permits clearing but never claims or writes a saved completion
+PASS full profile capacity preserves its ledger and permits an explicitly unbanked next run
+PASS all upgrade price tiers commit once and capped input never spends or plays success
+PASS HUD displays saved bank and next-run upgrade ranks during actual play
+PASS empty platform persistence path creates a read-only profile instead of relative files
+PASS banked completion HUD shows both next-run choices prices and rank cap
+PASS completion HUD limits result rectangles on short and narrow canvas boundaries
+PASS completion shop rectangles never overlap visible corner labels on short or ultrawide canvases
+PASS actual role configuration admits each distinct attack in FixedUpdate
+PASS Lancer locks diagonal aim and holds position through charge active and recovery
+PASS actual narrow rotated lane rejects side dodges and accepts one later contact
+PASS locked attack still requires current wall line of sight before contact
+PASS Seer retreats when crowded and casts a locked mark when retreat is obstructed
+PASS zero-distance Seer casts instead of retreating forever on an empty direction
+PASS tactical approach obeys awareness range and wall admission
+PASS warning center angle and charge dimensions use the same locked tactical footprint
+PASS a timing hitch skips new role damage and leaves recovery stationary
+PASS pause freezes locked role snapshots and resumes their same timing
+PASS disable death and retry clear tactical footprints without losing role assignment
+PASS new role defeats still resolve all burst targets before active retaliation
+PASS actual sentinel creation records distinct markers and role-sized four-border warnings
+PASS live role guidance shares the existing edge help slot and yields to active feedback
+PASS role guide advertises no unavailable actions in paused dead or completed results
+PASS actual accepted light and burst contacts show signed losses with matching feedback colors
+PASS lethal enemy numbers show actual remaining six or twenty-four HP instead of nominal damage
+PASS accepted player loss uses a minus sign and shared immunity admits one hurt readout
+PASS missed expired wall-rejected and repeated player contacts create no new damage readouts
+PASS multi-target readouts reuse separate slots without new objects textures or sprites
+PASS kill numbers retain captured origin then rise fade and expire on simulation time
+PASS pause freezes numeric position and opacity until simulation resumes
+PASS a new accepted hit replaces the same bounded target slot and clock
+PASS disable death retry and actual beacon completion clear all numeric snapshots
+PASS cached numeric pool rejects invalid input and disposal prevents resurrection
+RESULT 69 passed, 0 failed; actual project C# with recording boundaries, not native Unity.

@@ -1,5 +1,43 @@
 # Skills usage
 
+## Iteration 7 resumed integration and evidence
+
+Session-handoff reconciled the actual checkpoint, remote history and surviving
+interrupted files, generated a real chained scaffold and maintains persistent
+records. Verification-before-completion reran 290 project and six distribution
+groups, 22-source/86-reference compilation and exact foundation CI job steps.
+Systematic-debugging distinguishes expected pre-integration red cases from an
+existing game defect; the restored working files were not discarded or rewritten.
+
+Game-design completes accepted contact -> actual loss -> visual/audio feedback
+without altering inputs, MP/cooldowns or saved growth. Game-art and Unity's
+2d-pixel-perfect guidance retain the Built-in pipeline, PPU30, Point/Clamp/no mip,
+original hero and small outlined glyphs; no camera/package migration was needed.
+Game-audio retains accepted contact/kill/hurt deduplication and mute/cleanup,
+without generating new cues or claiming audition. Unity-mcp-orchestrator and the
+previously read Unity Essentials feature/build/lifecycle/performance guidance
+inform ownership, caching and disposal. Fresh callable-tool discovery found no
+live Unity Editor/MCP tool. Official versioned Sprite.Create and Texture2D.Apply
+documentation confirms FullRect construction and one-time CPU-copy release.
+Imagegen's applicability guidance was retained: this original code-native bitmap
+glyph task calls no image service. Eight local bundles remain real, licensed and
+checked; Skill access is distinct from Editor, CLI, native testing and rendering.
+
+## Iteration 7 — accepted damage feedback
+
+All8localSKILL.md rediscovered; unchanged guidance read earlier in this conversation
+is retained, relevant design/verification/handoff instructions reread. Session-
+handoff verified actual6receipt/Git/cleanbaseline and maintains checkpointrecords.
+Game-design selected a bounded accepted-contact readout closedloop. Game-art/
+Unitypixelprinciples preserve hero/PPU30/15palette and original cachedglyphart;
+imagegen applicability excludes this code-native bitmap pipeline, no tool call.
+Game-audio keeps existing acceptedcontact/kill/hurt cues, no new synthesis/audition.
+Unity-mcp-orchestrator/Essentials architecture/lifecycle/testing/performance/VFX
+references guide cachedresources/timing/disposal; no liveEditor/CLI/MCP assumed.
+Verification uses fresh280project+6distribution/21sourceAPI evidence. Systematic-
+debugging distinguished the initialincorrectrunner source list from gamefailure.
+Native/recording boundaries and InputSystemsubstitute remain explicitly separate.
+
 ## Iteration 6 publication verification
 
 Session-handoff used the real scaffold and unchangedvalidator result API; actual

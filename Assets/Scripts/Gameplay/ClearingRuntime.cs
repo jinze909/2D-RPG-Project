@@ -25,6 +25,7 @@ namespace Rpg.Gameplay
         private ClearingVisuals visuals;
         private ClearingHud hud;
         private ClearingAudio sound;
+        private ClearingDamageNumbers damageNumbers;
         private PlayerHealth health;
         private PlayerMana mana;
         private PlayerMovement movement;
@@ -132,6 +133,7 @@ namespace Rpg.Gameplay
             strike.gameObject.SetActive(false);
             hud = new ClearingHud(transform);
             sound = new ClearingAudio(gameObject);
+            damageNumbers = new ClearingDamageNumbers(transform);
             InitializeProgress(CreateProgress());
             ResetRun();
         }
@@ -338,6 +340,7 @@ namespace Rpg.Gameplay
                 EnemyView enemy = enemies[i];
                 SentinelState state = run.GetSentinel(i);
                 if (state.IsDead) continue;
+                float healthBefore = state.Health;
                 Vector2 difference = enemy.Body.position - PlayerPoint;
                 if (run.PlayerAttackActive && InStrike(difference) && ClearLine(PlayerPoint, enemy.Body.position) && run.TryHitSentinel(strikeId, i))
                 {
@@ -345,6 +348,9 @@ namespace Rpg.Gameplay
                     defeatedSentinel |= state.IsDead;
                     enemy.HurtUntil = (float)run.Time + .12f;
                     ShowImpact(enemy, state.IsDead, strikeKind == PlayerAttackKind.Burst);
+                    if (damageNumbers != null) damageNumbers.Show(i, healthBefore - state.Health,
+                        enemy.Body.position + new Vector2(0f, 1.7f),
+                        strikeKind == PlayerAttackKind.Burst ? ClearingPalette.CyanBright : ClearingPalette.Cream, run.Time);
                     if (state.IsDead)
                     {
                         enemy.Footprint = null;
@@ -403,7 +409,10 @@ namespace Rpg.Gameplay
                 if (state.AttackPhase == SentinelAttackPhase.Active && inside &&
                     ClearLine(lineOrigin, target) && run.TryResolveSentinelHit(i))
                 {
+                    float healthBefore = player.Stats.Health;
                     health.TakeDamage(ClearingRun.SentinelDamage);
+                    if (damageNumbers != null) damageNumbers.Show(ClearingRun.SentinelCount,
+                        healthBefore - player.Stats.Health, PlayerPoint + new Vector2(0f, 2.35f), ClearingPalette.Danger, run.Time);
                     sound.Hurt();
                     if (player.Stats.Health <= 0f)
                     {
@@ -453,6 +462,7 @@ namespace Rpg.Gameplay
 
         private void RefreshViews()
         {
+            if (damageNumbers != null) damageNumbers.Refresh(run.Time);
             bool active = run.PlayerAttackActive;
             strike.gameObject.SetActive(active);
             if (active)
@@ -591,6 +601,7 @@ namespace Rpg.Gameplay
 
         private void StopActors()
         {
+            if (damageNumbers != null) damageNumbers.Clear();
             movement.SetControlEnabled(false);
             playerBody.velocity = Vector2.zero;
             if (strike != null) strike.gameObject.SetActive(false);
@@ -606,6 +617,7 @@ namespace Rpg.Gameplay
 
         private void ResetRun()
         {
+            if (damageNumbers != null) damageNumbers.Clear();
             bool lostReward = run.IsComplete && progress != null && !progress.IsCompletionBanked(rewardId);
             if (paused) SetPaused(false);
             run.ResetRun();
@@ -653,6 +665,7 @@ namespace Rpg.Gameplay
 
         private void OnDisable()
         {
+            if (damageNumbers != null) damageNumbers.Clear();
             if (sound != null) sound.ResetFeedback();
             // A paused scene must never leave the next loaded scene frozen.
             if (paused)
@@ -681,6 +694,7 @@ namespace Rpg.Gameplay
 
         private void OnDestroy()
         {
+            if (damageNumbers != null) damageNumbers.Dispose();
             if (visuals != null) visuals.Dispose();
             if (sound != null) sound.Dispose();
         }

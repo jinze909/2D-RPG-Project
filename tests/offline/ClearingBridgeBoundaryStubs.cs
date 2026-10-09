@@ -118,9 +118,10 @@ namespace UnityEngine
     public enum TextureWrapMode { Clamp }
     public class Texture2D : Object
     {
+        public static int CreatedCount;
         public FilterMode filterMode;
         public TextureWrapMode wrapMode;
-        public Texture2D(int width, int height, TextureFormat format, bool mipChain) {}
+        public Texture2D(int width, int height, TextureFormat format, bool mipChain) { CreatedCount++; }
         public void SetPixel(int x, int y, Color color) {}
         public void SetPixels(Color[] colors) {}
         public void Apply() {}
@@ -128,8 +129,9 @@ namespace UnityEngine
     }
     public class Sprite : Object
     {
-        public static Sprite Create(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit) { return new Sprite(); }
-        public static Sprite Create(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit, uint extrude, SpriteMeshType meshType) { return new Sprite(); }
+        public static int CreatedCount;
+        public static Sprite Create(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit) { CreatedCount++; return new Sprite(); }
+        public static Sprite Create(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit, uint extrude, SpriteMeshType meshType) { CreatedCount++; return new Sprite(); }
     }
     public enum SpriteMeshType { Tight, FullRect }
     public class SpriteRenderer : Behaviour

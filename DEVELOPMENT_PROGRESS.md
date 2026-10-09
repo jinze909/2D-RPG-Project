@@ -1,5 +1,41 @@
 # Development progress
 
+## Iteration 7 — live accepted-damage feedback (resumed 2026-10-09 PDT)
+
+Reconciled GitHub with checkpoint 74e4494051e28e2128bf46a341f52b136cb51426:
+remote development HEAD matches, master remains b8d55f0, no unpushed commits.
+All five interrupted code/test files survived and were reviewed rather than rebuilt.
+Foundation CI 37959473088 completed successfully with all 12 job steps.
+
+ClearingRuntime now reports actual HP before minus HP after for accepted light,
+burst and sentinel contacts. Four fixed world labels share 14 outlined glyphs and
+28 renderers; latest contact replaces its slot, multiple enemies retain separate
+slots. Numbers rise and fade for 0.6 simulation seconds, freeze on pause, survive
+enemy body hiding, and clear on defeat/completion/retry/disable. Existing flashes,
+deduplicated hit/kill/hurt audio, costs, cooldowns, two-pass contacts, growth profile,
+hero assets and scene/package/settings remain. No hitstop or camera shake added.
+
+Fresh resumed checks: 290 project + 6 distribution = 296 passing groups; 69
+presentation groups include all old 59 and 10 new behavior groups. Before wiring,
+60 passed and 9 missing-feature groups failed; these were absent integrations,
+not a reported baseline bug. All 22 production sources compile against 86 real
+Unity 2022.3 API references; Input System alone uses the reviewed substitute.
+52 unique meta GUIDs, 145 serialized references, six LFS objects and eight licensed
+Skill bundles pass. Native import/play/render/input/audio/build remains unrun and
+optional. Review, exact implementation CI, PR/master merge and verified source
+ZIP publication are the remaining delivery work at this checkpoint.
+
+## Iteration 7 — bounded damage readout foundation
+
+Started clean/refreshedb8d55f0 from completed6receiptb514005; development branch
+rpg/iteration-007-damage-feedback. Choose actualdamage numbers to make repeated
+combat results visible without rewriting savedgrowth/tactics. Pureformatter,
+14glyphs and simulationlifetime implemented:9newchecks;280project+6distribution
+286pass;21production sources/86realAPIrefs/Inputsub compile. Cachedrenderer and
+Runtimecontact integration are pending at this independently verified checkpoint.
+No baselinebehavior bug invented; initialrunnerfixture source-list typo corrected
+before genuinechecks. Native acceptance remains optional/unrun.
+
 ## Iteration 6 — reviewed ordinary master integration
 
 Integrated checkpointc7d5ac3 and evidence-format correction0e9c6f6 were normally

@@ -87,3 +87,13 @@ admission and uses the same footprint for warnings and hits. Visuals/Hud add cac
 role silhouettes, constant-stroke warnings and edge counters. Existing progression
 and original hero/scene/package/settings remain. Real API compilation:20sources,
 86references, InputSystem substitute. Live native/editor evidence remains absent.
+
+## Iteration 7 accepted damage feedback update (2026-10-09 PDT)
+
+From master b8d55f0 and pushed foundation 74e4494, Runtime supplies actual
+accepted HP deltas to ClearingDamageNumbers. Four independent world slots share
+14 cached outlined glyphs/28 renderers, using simulation time and owner lifecycle.
+Death/completion/retry/disable clear transient labels; pause freezes them. Saves,
+combat inputs/costs/cooldowns/tactics and original hero/scene/package/settings
+remain. Fresh 290 project + 6 distribution groups and 22-source/86-reference API
+compilation pass; Input System remains a substitute, native rendering/play unrun.
