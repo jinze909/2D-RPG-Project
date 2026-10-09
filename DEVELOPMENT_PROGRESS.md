@@ -1,5 +1,21 @@
 # Development progress
 
+## Iteration 7 — reviewed ordinary master integration
+
+Implementation checkpoint 011d23659268342f453a34dd9054ce29a0a9b041 was safely
+pushed. Exact CI 37983507184 completed successfully with all 12 job steps and
+Artifact 11642675735. PR6 normally merged into master at
+3d00f7287f37f061b22699d85f566f324fba065e; merge tree equals the reviewed/tested
+implementation exactly. Foundation 74e4494, baseline b8d55f0 and all prior history
+remain recovery points. No force push, scene/package rewrite or save migration.
+
+290 project + 6 distribution = 296 checks pass; 22 production sources compile
+against 86 real Unity API references, Input System substituted. Chained handoff
+validates 100/100 with 12 file references and no secret/missing-file warnings.
+Final exact-source CI, ZIP/CRC/per-file SHA-256/source-byte/HTTPS download and
+publication completion resolve in the external iteration-007 delivery receipt.
+Native import/play/input/physics/render/audio/build remains unrun and optional.
+
 ## Iteration 7 — live accepted-damage feedback (resumed 2026-10-09 PDT)
 
 Reconciled GitHub with checkpoint 74e4494051e28e2128bf46a341f52b136cb51426:

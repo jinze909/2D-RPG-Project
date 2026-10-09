@@ -1,3 +1,12 @@
+# Seventh-round checkpoint status
+
+Foundation74e4494 and implementation011d236 are both safely pushed. Actual
+implementation CI37983507184/all12steps/Artifact11642675735 succeeded; PR6
+normally merged into master3d00f72, matching the reviewed implementation tree.
+Live feedback/tests and review are complete. Finish final clean-source CI and
+verified archive/HTTPS/receipt publication, then use the completed external receipt
+rather than the historical implementation pending list below.
+
 # Seventh-round implementation checkpoint
 
 Baseline master b8d55f07969574ed2f45bc756f4d063212c2b87b. Foundation

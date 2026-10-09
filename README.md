@@ -50,6 +50,12 @@ PNG 验证需要 Pillow。脚本从实际工程源码编译，所有程序集写
 在代码推送或手动触发后检查工程源码、资源和打包边界，并上传完整工程 ZIP 与报告。
 以实际 Actions 运行结果和 Artifact 为交付证据；标准 runner 尚不包含授权 Unity Editor。
 
+第七轮伤害反馈 [PR #6](https://github.com/jinze909/2D-RPG-Project/pull/6) 已普通合并。
+实际测试与合并证据见 [交付记录](docs/iterations/2026-10-09-iteration-007/publication.md)
+和 [接力文档](docs/iterations/2026-10-09-iteration-007/handoff.md)。最终源码、CI、
+完整工程 ZIP 与下载回验记录于独立
+[第七轮交付回执](https://raw.githubusercontent.com/jinze909/2D-RPG-Project/rpg-deliveries/iteration-007-delivery.json)。
+
 第六轮战术 PR #5 已普通合并；本轮测试与交付见
 [交付记录](docs/iterations/2026-10-09-iteration-006/publication.md)和
 [接力文档](docs/iterations/2026-10-09-iteration-006/handoff.md)。最终源码、CI 与

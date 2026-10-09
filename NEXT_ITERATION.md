@@ -1,17 +1,19 @@
 # Current continuation / next iteration
 
-Finish seventh-round delivery before starting another feature. Live damage numbers
-and 296 offline/distribution checks are implemented; see
- docs/iterations/2026-10-09-iteration-007/checkpoint.md and
- docs/game/DAMAGE_FEEDBACK.md. Remaining: independent review, pushed implementation
-checkpoint, exact CI and ordinary PR/master merge, then a clean-source ZIP with
-CRC/member SHA-256/source-byte and HTTPS download verification plus final handoff.
+First read docs/iterations/2026-10-09-iteration-007/handoff.md and publication.md,
+then the actual iteration-007-delivery.json on rpg-deliveries. PR6 normally merged
+into master 3d00f72 after 296 offline/distribution groups, 22-source real API compile,
+independent review and exact CI 37983507184/all 12 steps/Artifact11642675735.
+The external receipt resolves final source, CI, ZIP/hash/HTTPS and companion handoff.
+If it is absent or incomplete, finish that delivery before another feature.
 
-Foundation 74e4494 is safely pushed with successful CI 37959473088. The resumed
-working integration survived the quota interruption. Sixth source b8d55f0 and
-completed receipt b514005 remain recovery points. Preserve dirty work, all prior
-archives, saved growth, enemy tactics and original hero; never force push.
-Native acceptance is optional and unrun; do not repeat unchanged license probes or
-report recording boundaries as actual play. After delivery, prioritize native
-readability/balance evidence when supported or a coherent exploration/objective
-slice; do not rewrite working damage feedback, save or enemy role systems.
+When delivery is complete, prioritize native readability/balance if supported or
+a coherent exploration/objective slice. Numbers are newest-contact-per-actor;
+keep bounded glyph caches, simulation pause and interruption cleanup. Do not
+rebuild delivered save/growth, tactical roles, combat reliability or hero assets.
+Broader equipment/classes/story/world-state saves remain unimplemented.
+
+Foundation74e4494, implementation011d236, merge3d00f72 and previous source/archives
+remain recovery paths. Preserve dirty work/history/all archives; never force push
+or create an unasked worktree. Native acceptance is optional/unrun. Do not repeat
+unchanged license probes or call recording boundaries actual play.

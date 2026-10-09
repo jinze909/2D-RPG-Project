@@ -1,5 +1,15 @@
 # Known issues
 
+## Iteration 7 merged status — current
+
+PR6 is normally merged into master 3d00f72 after independent review and exact
+successful CI. Damage feedback is implemented; older seventh foundation/integration
+pending lists below are historical. Final source/ZIP/download/handoff identities
+and completion resolve in the external iteration-007 receipt. If absent/incomplete,
+resume that publication before new development. Native display readability,
+close-actor overlap, animation/physics/input/audio/balance/build remain unrun.
+No full equipment/class/story/world-save system or camera shake/hitstop is claimed.
+
 ## Iteration 7 integrated status — supersedes the foundation pending list
 
 Actual light/burst/player HP loss readouts, fixed pools and interruption cleanup

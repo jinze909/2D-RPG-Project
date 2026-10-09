@@ -35,8 +35,11 @@ Unity 2022.3 references, Input System substituted. 52 unique GUIDs/145references
 six LFS objects/two build scenes/eight licensed Skill bundles pass. Native import,
 EditMode/PlayMode, input/physics/render/audio/build remain unrun and optional.
 Independent integrated review found no actionable defect and reran 9+69 groups.
-Exact implementation CI, PR/master merge and verified ZIP publication are pending
-at this checkpoint; do not infer them from the successful foundation run.
+Implementation 011d23659268342f453a34dd9054ce29a0a9b041 is safely pushed;
+exact CI37983507184/all12steps/Artifact11642675735 succeeded. PR6 normally
+merged into master3d00f7287f37f061b22699d85f566f324fba065e; tree exactly equals
+reviewed implementation. Final source CI/verified ZIP/publication identities resolve
+in the independent iteration-007 receipt; do not infer publication from a local ZIP.
 
 ## Architecture Overview
 
@@ -105,12 +108,12 @@ intentional synthetic fixture; all six assertions passed, not a source ZIP check
 
 ## Immediate Next Steps
 
-1. Push this reviewed integration checkpoint and verify its exact SHA CI/artifact.
-2. Create/update the real PR, normally merge into master when checks/review pass,
-   then verify merge tree equals reviewed code and retain the recovery history.
-3. Commit final source handoff/merge evidence, check its exact CI, package clean
-   complete Unity source and verify every member/CRC/SHA-256/source byte.
-4. Publish ZIP and checksum on rpg-deliveries without replacing prior archives;
-   HTTPS download and rerun checks, then publish completed receipt/final handoff.
-5. Only after seventh delivery, consider native readability/balance when supported
-   or another coherent player-value slice; do not rebuild delivered save/tactics.
+1. Read the actual iteration-007 receipt/final handoff on rpg-deliveries. If missing
+   or incomplete, finish clean final-source CI, full ZIP/per-member/source/hash/CRC
+   verification, immutable HTTPS redownload and companion records before features.
+2. When complete, start from the verified remote master; inspect real dirty/unpushed
+   state, current records and all applicable Skill guidance, preserving all work.
+3. Prioritize native readability/balance when supported or a coherent exploration/
+   objective slice. Do not rebuild working damage feedback, save or enemy roles.
+4. Keep ordinary checkpoints, safe pushes, actual tests and archived deliverables;
+   native acceptance remains optional and cannot be claimed from offline checks.

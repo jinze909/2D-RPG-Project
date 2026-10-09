@@ -1,5 +1,15 @@
 # Skills usage
 
+## Iteration 7 review and publication verification
+
+Verification-before-completion checked actual implementation SHA CI, all 12 steps,
+artifact and real closed/merged PR6 before master integration; merge tree equals
+the independently reviewed 011d236 implementation. Session-handoff used the real
+scaffold and validator API: 100/100, 12 existing references, no secrets/placeholders.
+Source ZIP and HTTPS publication verification follows in the independent receipt
+with exact identities, rather than inferring completion from a planned download.
+No live Editor, native tests, image generation or sound audition is claimed.
+
 ## Iteration 7 resumed integration and evidence
 
 Session-handoff reconciled the actual checkpoint, remote history and surviving

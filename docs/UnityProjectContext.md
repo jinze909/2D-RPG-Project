@@ -97,3 +97,7 @@ Death/completion/retry/disable clear transient labels; pause freezes them. Saves
 combat inputs/costs/cooldowns/tactics and original hero/scene/package/settings
 remain. Fresh 290 project + 6 distribution groups and 22-source/86-reference API
 compilation pass; Input System remains a substitute, native rendering/play unrun.
+
+Implementation011d236 passed exact CI37983507184/all12steps; PR6 normally merged
+into master3d00f72 with tree equality to the reviewed implementation. Final source,
+CI/ZIP/download identities resolve in the independent iteration-007 receipt.
