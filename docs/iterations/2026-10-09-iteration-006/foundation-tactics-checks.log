@@ -1,0 +1,39 @@
+Compiling actual sentinel tactics and clearing rules; no Unity doubles
+PASS three spawn indices select three distinct fixed sentinel roles
+PASS warden attacks at melee boundary and approaches only within its sight range
+PASS Lancer commits at lance range and otherwise approaches within its longer sight range
+PASS seer retreats when crowded and casts throughout its intended spacing band
+PASS seer can still attack at close range when retreat movement is blocked
+PASS occluded enemies hold regardless of range or retreat availability
+PASS invalid distances and unknown roles fail closed without attacks or movement
+PASS default attack and legacy timing constants retain the original melee contract
+PASS three attack profiles expose readable windup and recovery budgets
+PASS unknown attack kind is rejected without starting or replacing a sentinel action
+PASS Sweep requires its full warning and expires after the bounded contact window
+PASS Sweep cannot be replaced by another profile during any committed phase
+PASS Sweep timing hitch skips contact instead of producing a delayed hit
+PASS Sweep pause by withholding simulation time preserves its pending warning
+PASS Lance requires its full warning and expires after the bounded contact window
+PASS Lance cannot be replaced by another profile during any committed phase
+PASS Lance timing hitch skips contact instead of producing a delayed hit
+PASS Lance pause by withholding simulation time preserves its pending warning
+PASS Sigil requires its full warning and expires after the bounded contact window
+PASS Sigil cannot be replaced by another profile during any committed phase
+PASS Sigil timing hitch skips contact instead of producing a delayed hit
+PASS Sigil pause by withholding simulation time preserves its pending warning
+PASS mixed roles share player immunity and consume blocked attacks only once
+PASS disable cancellation removes every role contact while preserving player cooldown and earned coins
+PASS player death freezes all role timers and rejects further admission or contacts
+PASS killing committed roles cancels retaliation and grants the unchanged unique clear reward
+PASS retry resets all role state and never aliases a previous attempt attack token
+PASS warden footprint stays on its warning origin and includes the fixed square boundary
+PASS Lancer horizontal warning hits its stationary forward strip and excludes targets outside either edge
+PASS Lancer vertical warning rotates the same stationary narrow contact strip
+PASS Lancer diagonal warning uses rotated containment rather than its axis-aligned bounding box
+PASS Lancer west and south aiming remain forward relative to the original warning
+PASS zero-distance Lancer aim has a finite downward fallback
+PASS finite extreme and subnormal Lancer aims normalize without overflow or a false zero fallback
+PASS seer pulse centers on the captured target and leaves the caster outside a distant mark
+PASS locked attack geometry cannot home after target or caster coordinates change
+PASS invalid geometry inputs are rejected for every role and nonfinite contacts never hit
+Sentinel tactics: 37 passed, 0 failed; pure production C#, no Unity stubs.

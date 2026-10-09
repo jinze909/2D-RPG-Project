@@ -3,6 +3,7 @@ using System;
 namespace Rpg.Gameplay
 {
     public enum PlayerAttackKind { Light, Burst }
+    public enum SentinelAttackKind { Sweep, Lance, Sigil }
     public enum SentinelAttackPhase { Ready, Telegraph, Active, Recovery, Dead }
 
     /// <summary>Read-only state for one sentinel; positions and collision stay in Unity.</summary>
@@ -11,6 +12,7 @@ namespace Rpg.Gameplay
         public float Health { get; private set; }
         public bool IsDead { get { return Health <= 0f; } }
         public SentinelAttackPhase AttackPhase { get; private set; }
+        public SentinelAttackKind AttackKind { get; private set; }
         public float PhaseProgress { get; private set; }
         public long AttackSequence { get; private set; }
 
@@ -23,16 +25,18 @@ namespace Rpg.Gameplay
         {
             Health = ClearingRun.SentinelMaxHealth;
             AttackPhase = SentinelAttackPhase.Ready;
+            AttackKind = SentinelAttackKind.Sweep;
             PhaseProgress = 0f;
             AttackStartedAt = 0d;
             AttackSequence = 0;
             HitResolved = false;
         }
 
-        internal void StartAttack(double time, long sequence)
+        internal void StartAttack(double time, long sequence, SentinelAttackKind kind)
         {
             AttackStartedAt = time;
             AttackSequence = sequence;
+            AttackKind = kind;
             HitResolved = false;
             SetPhase(SentinelAttackPhase.Telegraph, 0d);
         }
@@ -127,15 +131,18 @@ namespace Rpg.Gameplay
                 SentinelState sentinel = sentinels[i];
                 if (sentinel.IsDead || sentinel.AttackPhase == SentinelAttackPhase.Ready) continue;
                 double elapsed = Time - sentinel.AttackStartedAt;
-                double activeAt = TelegraphDuration;
-                double recoveryAt = activeAt + SentinelActiveDuration;
-                double readyAt = recoveryAt + SentinelRecoveryDuration;
+                double windup = WindupDuration(sentinel.AttackKind);
+                double active = ActiveDuration(sentinel.AttackKind);
+                double recovery = RecoveryDuration(sentinel.AttackKind);
+                double activeAt = windup;
+                double recoveryAt = activeAt + active;
+                double readyAt = recoveryAt + recovery;
                 if (elapsed < activeAt)
-                    sentinel.SetPhase(SentinelAttackPhase.Telegraph, elapsed / TelegraphDuration);
+                    sentinel.SetPhase(SentinelAttackPhase.Telegraph, elapsed / windup);
                 else if (elapsed < recoveryAt)
-                    sentinel.SetPhase(SentinelAttackPhase.Active, (elapsed - activeAt) / SentinelActiveDuration);
+                    sentinel.SetPhase(SentinelAttackPhase.Active, (elapsed - activeAt) / active);
                 else if (elapsed < readyAt)
-                    sentinel.SetPhase(SentinelAttackPhase.Recovery, (elapsed - recoveryAt) / SentinelRecoveryDuration);
+                    sentinel.SetPhase(SentinelAttackPhase.Recovery, (elapsed - recoveryAt) / recovery);
                 else
                     sentinel.SetPhase(SentinelAttackPhase.Ready, 0d);
             }
@@ -192,13 +199,46 @@ namespace Rpg.Gameplay
             return true;
         }
 
-        public bool BeginSentinelAttack(int sentinelId)
+        public bool BeginSentinelAttack(int sentinelId, SentinelAttackKind kind = SentinelAttackKind.Sweep)
         {
-            if (!Running || !ValidSentinel(sentinelId)) return false;
+            if (!Running || !ValidSentinel(sentinelId) || !ValidAttackKind(kind)) return false;
             SentinelState sentinel = sentinels[sentinelId];
             if (sentinel.IsDead || sentinel.AttackPhase != SentinelAttackPhase.Ready) return false;
-            sentinel.StartAttack(Time, ++nextActionId);
+            sentinel.StartAttack(Time, ++nextActionId, kind);
             return true;
+        }
+
+        public static float WindupDuration(SentinelAttackKind kind)
+        {
+            switch (kind)
+            {
+                case SentinelAttackKind.Sweep: return TelegraphDuration;
+                case SentinelAttackKind.Lance: return 0.8f;
+                case SentinelAttackKind.Sigil: return 1f;
+                default: throw new ArgumentOutOfRangeException("kind");
+            }
+        }
+
+        public static float ActiveDuration(SentinelAttackKind kind)
+        {
+            switch (kind)
+            {
+                case SentinelAttackKind.Sweep: return SentinelActiveDuration;
+                case SentinelAttackKind.Lance: return 0.16f;
+                case SentinelAttackKind.Sigil: return 0.18f;
+                default: throw new ArgumentOutOfRangeException("kind");
+            }
+        }
+
+        public static float RecoveryDuration(SentinelAttackKind kind)
+        {
+            switch (kind)
+            {
+                case SentinelAttackKind.Sweep: return SentinelRecoveryDuration;
+                case SentinelAttackKind.Lance: return 1f;
+                case SentinelAttackKind.Sigil: return 1f;
+                default: throw new ArgumentOutOfRangeException("kind");
+            }
         }
 
         /// <summary>
@@ -272,6 +312,10 @@ namespace Rpg.Gameplay
 
         private float Remaining(double until) { return (float)Math.Max(0d, until - Time); }
         private static bool ValidSentinel(int id) { return id >= 0 && id < SentinelCount; }
+        private static bool ValidAttackKind(SentinelAttackKind kind)
+        {
+            return kind == SentinelAttackKind.Sweep || kind == SentinelAttackKind.Lance || kind == SentinelAttackKind.Sigil;
+        }
         private static bool PositiveFinite(float value) { return value > 0f && !float.IsNaN(value) && !float.IsInfinity(value); }
         private static bool NonnegativeFinite(float value) { return value >= 0f && !float.IsNaN(value) && !float.IsInfinity(value); }
     }

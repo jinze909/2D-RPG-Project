@@ -1,5 +1,19 @@
 # Development progress
 
+## Iteration 6 — tactics foundation (2026-10-09 PDT)
+
+Started from clean/refreshed master d8c70488a010e1bb46c979a752d7ed5b1e662484
+on rpg/iteration-006-sentinel-tactics. The fifth delivery receipt f04d853 confirms
+completed source/CI/ZIP; no prior feature or checkpoint was lost/reimplemented.
+Chosen player value: make repeated clearing runs tactically distinct with Warden,
+stationary Lancer and Seer, while retaining saved rewards/upgrades and hero assets.
+Pure decision/locked-footprint helpers and role-specific rule timing are complete;
+Runtime/Visuals/Hud integration remains pending at this foundation checkpoint.
+256 project +6 distribution=262 checks pass;20 production sources compile against
+86 real Unity references, Input System substituted. New37 pure tactics and all
+legacy behavior pass. Native play/render/audio remain unrun and optional for merge.
+See docs/iterations/2026-10-09-iteration-006/checkpoint.md and SENTINEL_TACTICS.md.
+
 ## Iteration 5 resumed delivery — 2026-10-09
 
 Verified actual clean50d42ce checkout and zero unpushed commits. Both earlier

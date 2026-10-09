@@ -1,5 +1,26 @@
 # Skills usage
 
+## Iteration 6 — tactics foundation and integration scope
+
+Rediscovered all eight licensed local bundles. Session-handoff reconciled actual
+master/delivery/checkpoints and retained the fifth loop. Game-design selected
+three distinct threat/counter roles for replay value, documented in
+SENTINEL_TACTICS.md. Verification-before-completion independently reran262
+foundation/distribution checks and20-source/86-reference API compilation.
+Systematic-debugging distinguishes the isolated missing-feature API compile
+failure from an existing behavior defect; no baseline bug is invented.
+Game-art preserves hero/PPU30/palette/animation and plans cached pixel-aligned
+role silhouettes plus matching fixed warning borders. Game-audio retains existing
+accepted-contact/kill cues, with no new synthesis or audition. Imagegen applicability
+was read; this code-native primitive task requires no bitmap generation/edit call.
+Unity-mcp-orchestrator and Unity Essentials feature architecture/lifecycle/testing/
+performance/gameplay/AI/animation/VFX/UI references guide the integration. Unity UI/
+uGUI and 2d-pixel-perfect principles apply to the existing Built-in pipeline,
+cached Point art and overlay edge HUD, without a new package/camera migration.
+Guides readable does not imply live MCP/CLI or licensed native Editor; native
+play/physics/render/audio/build is unrun. Retained real2022.3 API refs are available;
+Input System compilation alone still uses the explicitly reported substitute.
+
 ## Fifth-round resumed publication — 2026-10-09
 
 Applied the same session-handoff scaffold/resume/validator workflow to the actual

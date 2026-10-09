@@ -16,6 +16,8 @@ China package services. Preserve the specified editor version.
   is never a save file. Iteration 5 adds engine-independent clearing progression
   and versioned local storage, result-screen purchases and next-run actor bonuses.
   Inventory, equipment and classes remain absent.
+- Iteration 6 adds pure SentinelTactics and role timing; the foundation checkpoint
+  precedes live Runtime/Visuals/Hud wiring. Resume its explicit unfinished list.
 - `Gameplay/ClearingRules` is engine-independent timing/admission/reward logic;
   `ClearingRuntime` owns scene positions, contacts, input and the resource bridge.
   `ClearingVisuals`, `ClearingHud` and `ClearingAudio` own presentation. Runtime
@@ -112,6 +114,7 @@ Use meaningful tests when changing behavior. Existing actual-source checks are:
 python3 tools/run_player_checks.py --project-root .
 python3 tools/run_resource_checks.py --project-root .
 python3 tools/run_progression_checks.py --project-root .
+python3 tools/run_enemy_checks.py --project-root .
 python3 tools/run_presentation_checks.py --project-root .
 python3 tools/run_art_checks.py --project-root .
 python3 tools/validate_project.py --root . --output /tmp/rpg-project-report.json

@@ -1,5 +1,15 @@
 # Known issues
 
+## Iteration 6 foundation — current unfinished list
+
+Pure tactics/timing/footprints are implemented and checked; actual encounter
+wiring, cached role warning/silhouette, HUD counters, integration evidence and
+GitHub/ZIP/handoff delivery remain outstanding at this checkpoint. The older
+fifth-round unfinished headings below are historical and already superseded.
+The sixth iteration does not add classes/equipment/story or change profile v1.
+Native physics/Animator/glyph/audio/balance acceptance remains unrun, optional
+for normal quality-gated merges under the latest user instruction.
+
 ## Current delivery policy and remaining work — 2026-10-09
 
 PR4 and PR1 are merged normally after review and verified candidate CI. Master
