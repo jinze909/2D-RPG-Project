@@ -198,3 +198,19 @@ Exact implementation CI run 37858757979 completed successfully, with all
 validation/packaging/upload steps and Artifact 11584913917 verified. See
 docs/iterations/2026-10-08-iteration-003/publication.md for PR #1 readiness and
 the final source/CI/ZIP receipt location. Neither draft has been merged to master.
+
+## New Codex window handoff — 2026-10-09 UTC
+
+At the user's request, created a session-handoff record at
+docs/iterations/2026-10-08-iteration-003/new-window-handoff.md and linked it from
+NEXT_ITERATION.md. Starting HEAD was 1bedd3296a31398db62dc27d07c466c125bd896e,
+with a clean working tree. Explicit fetch refreshed master and both candidate refs;
+the two PRs remain open/draft/unmerged. Exact game-source run 37858940651 was
+rechecked as completed/success. Its verified ZIP remains the 1bedd32 delivery;
+the added handoff documents do not change gameplay or that archive's provenance.
+
+Recorded the user's Personal/Student Pro account-login choice and correction that
+Student Pro cannot use ALF activation. No activation or interactive Hub endpoint
+was created. New Unity CLI and Unity MCP Workflow skills are now readable, updating
+the earlier conversation's visibility limitation; CLI is still absent from PATH
+and no Unity-specific MCP tools were found. Native acceptance remains pending.

@@ -70,3 +70,17 @@ The preview is exact C# RGBA data rendered offline into a contact sheet, not ima
 output or a Game View screenshot. Team work was reviewed against actual production
 diffs and independently rerun evidence before delivery; instructions alone are not
 reported as completed tools/actions.
+
+## New-window handoff — 2026-10-09 UTC
+
+Applied session-handoff's create scaffold, template, resume checklist and validator;
+saved the persistent new-window record linked from NEXT_ITERATION.md. This is a
+documentation handoff, not a new gameplay iteration or native verification run.
+The two installed plugin skills are now readable in this conversation:
+Unity unity-cli (plugins_6aa1c02597c081918e358d72f65bd772) and Unity Essentials
+unity-mcp-workflow (plugins_6a5bb1f60cec8191ad25c3c57abba544). Read both SKILL.md
+files and the CLI auth-license-cloud reference to record compatibility and login
+constraints. No CLI, MCP, Hub, license activation or Unity package install was
+executed. A fresh tool-name inventory found no Unity-specific callable tools.
+New windows must rediscover packages rather than repeat the old unreadable-skill
+conclusion or assume that documentation access proves a live Editor connection.

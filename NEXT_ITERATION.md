@@ -1,5 +1,11 @@
 # Next iteration
 
+For a new Codex window, first read
+[new-window handoff](docs/iterations/2026-10-08-iteration-003/new-window-handoff.md).
+It records exact delivered source/ZIP identities, the user's license-login choice,
+and the now-readable Unity plugin skills. Recheck the actual CLI, license and MCP
+connection; skill visibility alone does not establish native Editor readiness.
+
 1. Fetch latest master and all unmerged `rpg/iteration-*` work. Read iterations 2/3,
    PR #1 and its stacked polish PR, exact hosted CI and verified ZIP receipts.
    PR #1 merge remains the user's decision. Do not recreate combat, HUD, raster

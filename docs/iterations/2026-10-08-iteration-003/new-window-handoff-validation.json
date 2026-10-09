@@ -1,0 +1,20 @@
+{
+  "filepath": ".claude/handoffs/2026-10-09-002357-new-window-unity-validation.md",
+  "score": 100,
+  "rating": "Excellent - Ready for handoff",
+  "todos_clear": true,
+  "remaining_todos": [],
+  "todo_count": 0,
+  "required_complete": true,
+  "missing_required": [],
+  "missing_recommended": [],
+  "secrets_found": [],
+  "files_verified": 14,
+  "files_missing": [],
+  "persistent_path": "docs/iterations/2026-10-08-iteration-003/new-window-handoff.md",
+  "persistent_sha256": "8317406dd949aa4f65caf63ed2359eee64d06c97dedc17cfdf227d7bd0f2d33a",
+  "working_persistent_bytes_match": true,
+  "game_source_head": "1bedd3296a31398db62dc27d07c466c125bd896e",
+  "native_test_run_in_handoff_task": false,
+  "scope": "Handoff/documentation only; no gameplay edits."
+}
