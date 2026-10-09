@@ -1,5 +1,27 @@
 # Skills usage
 
+## Iteration 4 — resumed combat reliability
+
+Rediscovered all eight vendored bundles and their source/license manifest; read
+the applicable instructions and references. Actual applications:
+
+| Skill/plugin | Evidence and limits |
+| --- | --- |
+| session-handoff | Restored the full iterations 2/3 chain and staleness/resume checklist; verified actual post-quota Git, saved/pushed recovery checkpoint and unfinished list. The checker assumes .claude depth, so its docs-path missing-file report was checked against real repository files. |
+| systematic-debugging | Actual-source red tests traced hidden-but-live contacts/effect deadlines and an interleaved lethal-contact break; changed the two causes and reran original reproductions. |
+| verification-before-completion | Fresh 150 project + 6 distribution passes, real API compilation, reviewed diff, preserved red evidence and separate native-blocked status. Checkpoint CI uses its actual SHA, not the game implementation's future SHA. |
+| game-design | Made each multi-target action complete before retaliation regardless of enemy ordering; interrupt/resume retains earned progress and costs while requiring fresh telegraphs. |
+| game-art | Preserved original blonde hero, PPU30 and all ten hero PNG/meta hashes; reran raster/scene contracts. No image, animation or scene redesign. |
+| game-audio | Retained contact/kill deduplication and mute/reset behavior; exercised single kill/reward cues and absence of stale contact cues after disable. No audition or new synthesis claim. |
+| unity-mcp-orchestrator | Version-compatible component/state/verification guidance; checked real 2022.3 API references. No connected bridge, live editor operation or invented tool call. |
+| imagegen | Rediscovered its actual instructions/tool boundary; no bitmap task was required for these state fixes, so image generation and paid CLI were not invoked. |
+| Unity | Read unity-cli/integration compatibility guidance and checked actual binary/tool availability. Editor version and Mono/Roslyn are available; CLI/Pipeline/MCP are not. Pipeline's Unity 6 requirement excludes this project. |
+| Unity Essentials | Applied MCP Workflow, Project Onboarding (docs/UnityProjectContext.md), Bug Investigation evidence/hypothesis/state guidance and Build Validation foundations/checklists. One isolated native license probe failed before import; strongest available evidence is offline execution plus real API-reference compile. |
+
+Managed cloud runtime status/network guidance was also used. No package, license,
+login, version, paid model or automation configuration was changed. Reading a
+skill is not reported as an installed Unity service or native validation.
+
 ## Iteration 1 — 2026-10-08
 
 All eight installed RPG SKILL.md files were read in full, together with the required
@@ -47,3 +69,40 @@ hash-verified and portable; no skill replacements were required.
 Separate managed cloud runtime guidance was used for status/network policy. It is
 not bundled into this project. Team parallel work was reconciled through actual
 diffs and final tests; agent reports alone were not used as verification evidence.
+
+## Iteration 3 — 2026-10-08: clearing presentation polish
+
+Rediscovered and read all eight vendored SKILL.md files and necessary resume,
+root-cause, pixel-animation/character-frame and Unity test/UI references. All 65
+licensed skill files retain verified provenance/hashes; no capability was assumed
+from a skill's name. Existing runtime policy guidance was separately read.
+
+| Skill | Actual use and concrete limits |
+| --- | --- |
+| session-handoff | Reconciled master 2e8c154, PR #1 de06143, cleanup records and explicit no-merge instruction; maintained five root records, acceptance contract and persistent iteration-3 handoff. |
+| systematic-debugging | Reproduced HUD instructions in disabled states and feedback-region overlap using real Refresh/constructor values; traced accepted-contact missing confirmation; implemented focused fixes and before/after fixtures. New-FX baseline failures are not counted as existing bugs. |
+| verification-before-completion | Fresh baseline/current source checks, API-reference compilation, GUID/LFS/license evidence and actual hosted-run/job/artifact inspection. ZIP is checked after publication; no native gameplay claim. |
+| game-design | Completed one readable combat-presentation improvement: visible windup/active phase, contact/kill/reward confirmation and edge HUD; preserved timings, damage, controls, gate/retry and rejected scope expansion into unrelated systems. |
+| game-art | Authored shared 15-color PPU30 raster art in ClearingPalette/PixelArt/Visuals, with quiet ground, consistent stone/moss sentinel, wall and beacon silhouettes. Inspected exact-source pixel preview; 9 raster checks plus 10 original hero-file hashes. No native rendering acceptance. |
+| game-audio | Added two cached original synthesized contact/kill cues, suppressed multi-target/repeated spam, allowed a single later kill upgrade and stopped stale output on retry/disable. Recorded audio-call checks pass; no sound audition was possible. |
+| unity-mcp-orchestrator | Applied compatible Sprite.Create/FullRect/Point and Canvas/component/cache lifecycle guidance; checked official Unity 2022.3 Sprite bindings and compiled all 16 sources against real engine/uGUI references. Input System remains a boundary substitute; no live Unity MCP or licensed native editor. |
+| imagegen | Read image/identity/pixel workflow. This round extends the project's existing original code-native raster pipeline, so a bitmap-generation/edit call was not applicable. Built-in imagegen was available but not invoked; no Aseprite/PixelLab service was connected. |
+
+The preview is exact C# RGBA data rendered offline into a contact sheet, not imagegen
+output or a Game View screenshot. Team work was reviewed against actual production
+diffs and independently rerun evidence before delivery; instructions alone are not
+reported as completed tools/actions.
+
+## New-window handoff — 2026-10-09 UTC
+
+Applied session-handoff's create scaffold, template, resume checklist and validator;
+saved the persistent new-window record linked from NEXT_ITERATION.md. This is a
+documentation handoff, not a new gameplay iteration or native verification run.
+The two installed plugin skills are now readable in this conversation:
+Unity unity-cli (plugins_6aa1c02597c081918e358d72f65bd772) and Unity Essentials
+unity-mcp-workflow (plugins_6a5bb1f60cec8191ad25c3c57abba544). Read both SKILL.md
+files and the CLI auth-license-cloud reference to record compatibility and login
+constraints. No CLI, MCP, Hub, license activation or Unity package install was
+executed. A fresh tool-name inventory found no Unity-specific callable tools.
+New windows must rediscover packages rather than repeat the old unreadable-skill
+conclusion or assume that documentation access proves a live Editor connection.

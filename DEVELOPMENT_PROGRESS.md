@@ -1,5 +1,47 @@
 # Development progress
 
+## Iteration 4 combat reliability — 2026-10-08 (America/Los_Angeles)
+
+Continued the interrupted work from checkpoint b1fac682bda6da227dbf25e22fced7ad39088d2d.
+Two actual-source defects were reproduced and corrected:
+
+- Disable only hid strike/warnings/impacts while the rule action and effect
+  deadlines survived. The next refresh/physics tick resurrected them and could
+  damage a new target without new input. CancelTransientActions invalidates
+  current player/enemy contacts; OnDisable clears pulse/hurt deadlines. HP, MP,
+  enemy health, coins, clock, cooldowns and immunity remain unchanged. Normal
+  pause still freezes attacks/effects; terminal movement remains locked.
+- Player contacts and retaliation shared one enemy loop. A low-index lethal
+  enemy stopped a burst before later targets received the admitted hit. Separate
+  passes now resolve the whole player action before remaining enemy contacts.
+  Three lethal-attacker index permutations agree; same-tick killed enemies do
+  not retaliate, rewards/gate/cues remain once-only.
+
+Red reproduction: 17 presentation checks passed, six failed before correction.
+Fresh final project validation: 14 movement + 40 resource + 9 input/animation +
+36 pure rules + 15 scene contracts + 26 presentation + 10 raster/hero = 150 pass,
+zero fail; six distribution tests also pass (156 total). API compilation passes
+for 16 sources against 86 real Unity 2022.3.53f1 references, Input substituted.
+No scenes, hero resources, packages or settings were modified. Independent source
+review and fresh focused re-execution found no new regression. Native import,
+physics, rendering, audio/playtest and platform build remain blocked/unrun.
+
+Baseline checkpoint push CI succeeded at run 37883493542. New game source needs
+its own exact-commit CI after the next push. Candidate integration, source ZIP
+publication and final session handoff remain pending at this stage.
+
+## Iteration 4 recovery checkpoint — 2026-10-08 (America/Los_Angeles)
+
+Resumed the interrupted fourth round at 53bd47e on
+`rpg/iteration-004-combat-reliability`. Actual inspection found no fourth-round
+commit or dirty code; only investigation files under /tmp survived. Restored six
+LFS objects and reran the original baseline: 134 project + 6 distribution checks
+passed. Unity API compilation: 16 sources/86 real references, substituted Input
+System. Native probe exited 1 before import due to missing valid license.
+PR #1/#2 remain draft/unmerged. New autonomous merge authority is reflected in
+AGENTS.md. Investigation and unfinished implementation are saved in
+docs/iterations/2026-10-08-iteration-004/checkpoint.md; no game fix is claimed yet.
+
 ## Iteration 1 — 2026-10-08 UTC
 
 Baseline: `26d29dbbf41e39d811f1d876ae45ddf22d11e50d`, `master`.
@@ -138,3 +180,79 @@ and current hosted CI receipts are included in the session's delivered manifest.
   passed. Native Unity acceptance remains pending as previously recorded.
 - All eight skill bundles still retain license/provenance metadata with updated
   local adaptation hashes. PR #1 remains a draft candidate, not a merged game.
+
+## Iteration 3 — 2026-10-08: clearing presentation polish
+
+Starting candidate: `de0614399bb878ae182f90f81074359824e5057b` on PR #1.
+Fresh master: `2e8c154f219256454ad981d6ebf11fdea5865d7d`. Explicitly fetched the
+candidate ref (the cloud's original fetch configuration covered master only),
+then selected `rpg/iteration-003-clearing-polish` without changing either baseline.
+PR #1 remains open/draft/unmerged; the user retains its merge decision.
+
+Cleanup regression: candidate 116 retained checks and master 48 checks passed.
+Exact hosted runs were independently read: master [37855895204](https://github.com/jinze909/2D-RPG-Project/actions/runs/37855895204)
+and candidate [37855964779](https://github.com/jinze909/2D-RPG-Project/actions/runs/37855964779)
+both succeeded through validation, ZIP packaging and artifact upload. Removed
+checks were not presented as still present. No cleanup regression was found.
+
+Selected one complete improvement: combat feedback and coherent clearing art,
+with HUD safety, rather than unrelated professions/inventory/save systems.
+
+- Added a shared 15-color palette and bounded deterministic managed raster
+  builders. Ground, stepping paths, stone walls, moss/stone sentinels, plinth,
+  crystal and rune now share PPU30/Point/no-mipmap art with explicit FullRect.
+  Native textures/sprites are generated once, cached and disposed; original ten
+  hero PNG/import files retain their exact candidate-baseline hashes.
+- Preserved fixed warning boundaries and added phase-progress fill plus an X
+  during the real contact window. Pooled hit/kill pulses survive hidden enemies
+  briefly, freeze on pause and clear on death/retry/disable. Distinct contact/kill
+  cues suppress repeated/multi-target spam; later kills can upgrade once.
+- Fixed confirmed HUD defects: unavailable beacon instructions on pause/death
+  and temporary feedback extending into the lower central combat region.
+  Feedback now replaces help in its edge slot and terminal states hide stale text.
+- Rules, damage/cooldowns, mana, rewards, scene/collider dimensions, actor anchors,
+  hero animations and gate completion conditions were not rewritten.
+
+Final local verification: 14 movement + 40 resource/lifecycle + 32 pure combat
+rules + 9 input/animation contracts + 15 scene/geometry + 14 presentation behavior
++ 9 managed-raster behavior + 1 original-hero hash check + 6 distribution = 140
+passing checks. Asset/GUID/build/package/LFS/skill integrity checks additionally
+passed. All 16 production C# files compile against 86 real installed Unity
+2022.3.53f1 engine/Editor/.NET/uGUI references; Input System is still substituted.
+
+Regression evidence: the same presentation fixture on retained de06143 yields
+2 passes / 12 failures, including reproduced HUD/action and contact-audio gaps.
+New FX expectations also fail there because those features did not exist;
+these are not described as twelve preexisting bugs. Raster mutation checks catch
+removed size guards and colors outside the exact palette. An inspected contact
+sheet contains exact production C# pixels, not a native screenshot.
+
+A fresh editor probe again fails with `No valid Unity Editor license found`.
+No native import/compile, EditMode/PlayMode, real physics, hardware input,
+render/layout/font acceptance, sound audition, playthrough or platform build was
+executed. Original gait/foot drift and new art/audio quality require that review.
+Publication receipts, exact final SHA, hosted CI and verified ZIP follow in the
+iteration directory / delivery manifest after actual publication.
+
+Implementation normally pushed as `4ca71ef52d4918256ddf8e824a23911c0c37de4d`.
+Actual stacked draft PR #2: https://github.com/jinze909/2D-RPG-Project/pull/2.
+Exact implementation CI run 37858757979 completed successfully, with all
+validation/packaging/upload steps and Artifact 11584913917 verified. See
+docs/iterations/2026-10-08-iteration-003/publication.md for PR #1 readiness and
+the final source/CI/ZIP receipt location. Neither draft has been merged to master.
+
+## New Codex window handoff — 2026-10-09 UTC
+
+At the user's request, created a session-handoff record at
+docs/iterations/2026-10-08-iteration-003/new-window-handoff.md and linked it from
+NEXT_ITERATION.md. Starting HEAD was 1bedd3296a31398db62dc27d07c466c125bd896e,
+with a clean working tree. Explicit fetch refreshed master and both candidate refs;
+the two PRs remain open/draft/unmerged. Exact game-source run 37858940651 was
+rechecked as completed/success. Its verified ZIP remains the 1bedd32 delivery;
+the added handoff documents do not change gameplay or that archive's provenance.
+
+Recorded the user's Personal/Student Pro account-login choice and correction that
+Student Pro cannot use ALF activation. No activation or interactive Hub endpoint
+was created. New Unity CLI and Unity MCP Workflow skills are now readable, updating
+the earlier conversation's visibility limitation; CLI is still absent from PATH
+and no Unity-specific MCP tools were found. Native acceptance remains pending.

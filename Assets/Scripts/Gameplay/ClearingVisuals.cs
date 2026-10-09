@@ -1,14 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Rpg.Gameplay
 {
-    // Code-native blockout art at the existing hero's 30-pixel unit scale.
-    // These shapes are gameplay-readable placeholders, not final character art.
+    // Original code-native raster art at the established 30-pixel world unit scale.
+    // Pixel structure is deterministic; native playback and art acceptance remain separate.
     internal sealed class ClearingVisuals
     {
         private readonly Transform root;
         private readonly Sprite pixel;
         private readonly Texture2D texture;
+        private readonly Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
+        private readonly List<Texture2D> textures = new List<Texture2D>();
         internal GameObject Gate { get; private set; }
         internal SpriteRenderer Beacon { get; private set; }
         internal static readonly Vector2 BeaconPosition = new Vector2(0f, 3.35f);
@@ -24,7 +27,7 @@ namespace Rpg.Gameplay
             texture.filterMode = FilterMode.Point;
             texture.SetPixel(0, 0, Color.white);
             texture.Apply();
-            pixel = Sprite.Create(texture, new Rect(0, 0, 1, 1), new Vector2(.5f, .5f), 1f);
+            pixel = Sprite.Create(texture, new Rect(0, 0, 1, 1), new Vector2(.5f, .5f), 1f, 0, SpriteMeshType.FullRect);
             pixel.name = "Clearing shared square";
         }
 
@@ -43,31 +46,53 @@ namespace Rpg.Gameplay
             return renderer;
         }
 
+        private SpriteRenderer Art(string name, Transform parent, Vector2 position, string key,
+            System.Func<ClearingRaster> build, Vector2 pivot, int order, bool actorLayer = false)
+        {
+            Sprite sprite;
+            if (!sprites.TryGetValue(key, out sprite))
+            {
+                ClearingRaster raster = build();
+                Texture2D image = new Texture2D(raster.Width, raster.Height, TextureFormat.RGBA32, false);
+                image.name = "Clearing raster " + key;
+                image.filterMode = FilterMode.Point;
+                image.wrapMode = TextureWrapMode.Clamp;
+                image.SetPixels(raster.Pixels);
+                // FullRect avoids implicit tight-mesh/outline work; actor colliders are separate.
+                // Create while pixels remain readable, then upload and release the CPU copy.
+                sprite = Sprite.Create(image, new Rect(0, 0, raster.Width, raster.Height), pivot, 30f, 0, SpriteMeshType.FullRect);
+                image.Apply(false, true);
+                sprite.name = "Clearing sprite " + key;
+                textures.Add(image);
+                sprites.Add(key, sprite);
+            }
+            GameObject item = new GameObject(name);
+            item.transform.SetParent(parent, false);
+            item.transform.localPosition = new Vector3(position.x, position.y, 0f);
+            SpriteRenderer renderer = item.AddComponent<SpriteRenderer>();
+            renderer.sprite = sprite;
+            renderer.sortingLayerName = actorLayer ? "Player" : "Default";
+            renderer.sortingOrder = order;
+            return renderer;
+        }
+
         private void Wall(string name, Vector2 position, Vector2 size)
         {
             GameObject item = new GameObject(name);
             item.transform.SetParent(root, false);
             item.transform.localPosition = position;
             item.AddComponent<BoxCollider2D>().size = size;
-            Block("Stone", item.transform, Vector2.zero, size, new Color(.22f, .29f, .29f));
-            Block("Lit edge", item.transform, new Vector2(0, size.y / 2f - .06f),
-                new Vector2(size.x, .12f), new Color(.4f, .46f, .4f), -9);
+            int width = Mathf.RoundToInt(size.x * 30f);
+            int height = Mathf.RoundToInt(size.y * 30f);
+            Art("Chipped stone courses", item.transform, Vector2.zero, "wall-" + width + "x" + height,
+                () => ClearingPixelArt.RasterWall(width, height), new Vector2(.5f, .5f), -10);
         }
 
         internal void BuildWorld()
         {
-            Block("Moss ground", root, Vector2.zero, new Vector2(14.6f, 8.6f), new Color(.12f, .21f, .18f), -30);
-            Block("South path", root, new Vector2(0, -2.75f), new Vector2(1.6f, 2.2f), new Color(.29f, .3f, .22f), -29);
-            Block("Beacon path", root, new Vector2(0, 2.95f), new Vector2(1.6f, 2.3f), new Color(.29f, .3f, .22f), -29);
-            // Deterministic sparse ground detail, leaving the central combat silhouettes clear.
-            for (int i = 0; i < 64; i++)
-            {
-                float x = ((i * 37) % 390 - 195) / 30f;
-                float y = ((i * 53) % 210 - 105) / 30f;
-                if (Mathf.Abs(x) < 1f || y > 2f) continue;
-                Block("Grass tuft " + i, root, new Vector2(x, y), new Vector2(.13f, .067f),
-                    new Color(.19f, .29f, .22f), -28);
-            }
+            Art("Moss ground", root, Vector2.zero, "ground", () => ClearingPixelArt.RasterGround(438, 258), new Vector2(.5f, .5f), -30);
+            Art("South stepping stones", root, new Vector2(0, -2.75f), "south-path", () => ClearingPixelArt.RasterPath(48, 66), new Vector2(.5f, .5f), -29);
+            Art("Beacon stepping stones", root, new Vector2(0, 2.95f), "north-path", () => ClearingPixelArt.RasterPath(48, 69), new Vector2(.5f, .5f), -29);
             // Corners overlap: there is no route around the gate partition or outer bounds.
             Wall("West boundary", new Vector2(-7.2f, 0), new Vector2(.5f, 9.1f));
             Wall("East boundary", new Vector2(7.2f, 0), new Vector2(.5f, 9.1f));
@@ -80,15 +105,14 @@ namespace Rpg.Gameplay
             Gate.transform.localPosition = new Vector3(0f, 2.3f, 0f);
             Gate.AddComponent<BoxCollider2D>().size = new Vector2(3.1f, .4f);
             for (int i = 0; i < 9; i++)
-                Block("Seal bar " + i, Gate.transform, new Vector2(-1.4f + i * .35f, 0f),
-                    new Vector2(.12f, .45f), new Color(.77f, .51f, .28f), -8);
+                Art("Seal rune " + i, Gate.transform, new Vector2(-1.4f + i * .35f, 0f), "rune",
+                    ClearingPixelArt.RasterRune, new Vector2(.5f, .5f), -8);
             Block("Seal rail", Gate.transform, Vector2.zero, new Vector2(3.1f, .09f),
-                new Color(.9f, .69f, .34f), -7);
-            Block("Beacon plinth", root, BeaconPosition + new Vector2(0, -.14f), new Vector2(.8f, .35f),
-                new Color(.4f, .48f, .4f), -6);
-            Beacon = Block("Beacon crystal", root, BeaconPosition + new Vector2(0, .2f), new Vector2(.36f, .36f),
-                new Color(.45f, .47f, .4f), -5);
-            Beacon.transform.localRotation = Quaternion.Euler(0, 0, 45);
+                ClearingPalette.WithAlpha(ClearingPalette.AmberBright, .7f), -7);
+            Art("Beacon carved plinth", root, BeaconPosition + new Vector2(0, -.14f), "plinth",
+                ClearingPixelArt.RasterPlinth, new Vector2(.5f, .5f), -6);
+            Beacon = Art("Beacon faceted crystal", root, BeaconPosition + new Vector2(0, .2f), "crystal",
+                ClearingPixelArt.RasterCrystal, new Vector2(.5f, 0f), -5);
         }
 
         internal GameObject CreateSentinel(int id, Vector2 position, out SpriteRenderer eye,
@@ -98,22 +122,20 @@ namespace Rpg.Gameplay
             enemy.transform.SetParent(root, false);
             enemy.transform.position = position;
             enemy.layer = 2; // Physical collisions remain enabled; wall raycasts use Default only.
-            Color stone = new Color(.41f, .48f, .43f);
-            Color moss = new Color(.28f, .41f, .3f);
-            Block("Feet", enemy.transform, new Vector2(0, .067f), new Vector2(.7f, .13f), stone, 1, true);
-            Block("Body", enemy.transform, new Vector2(0, .45f), new Vector2(.6f, .8f), stone, 2, true);
-            Block("Shoulders", enemy.transform, new Vector2(0, .75f), new Vector2(1f, .25f), moss, 3, true);
-            Block("Head", enemy.transform, new Vector2(0, 1.04f), new Vector2(.5f, .5f), moss, 4, true);
+            Block("Sentinel grounded shadow", enemy.transform, new Vector2(0, .017f), new Vector2(.9f, .133f),
+                ClearingPalette.WithAlpha(ClearingPalette.Ink, .75f), -4);
+            Art("Chipped moss sentinel", enemy.transform, Vector2.zero, "sentinel",
+                ClearingPixelArt.RasterSentinel, new Vector2(.5f, 0f), 2, true);
             eye = Block("Warning eye", enemy.transform, new Vector2(0, 1.08f), new Vector2(.267f, .067f),
-                new Color(.98f, .79f, .39f), 5, true);
+                ClearingPalette.AmberBright, 5, true);
             Block("Health background", enemy.transform, new Vector2(0, 1.5f), new Vector2(.72f, .067f),
-                new Color(.14f, .13f, .13f), 6, true);
+                ClearingPalette.Ink, 6, true);
             healthFill = Block("Health", enemy.transform, new Vector2(0, 1.5f), new Vector2(.72f, .067f),
-                new Color(.76f, .48f, .32f), 7, true);
+                ClearingPalette.Amber, 7, true);
             GameObject mark = new GameObject("Attack warning footprint");
             mark.transform.SetParent(enemy.transform, false);
             warning = mark.transform;
-            Color warningColor = new Color(1f, .49f, .23f, .8f);
+            Color warningColor = ClearingPalette.WithAlpha(ClearingPalette.AmberBright, .85f);
             Block("North warning", warning, new Vector2(0, .95f), new Vector2(1.9f, .067f), warningColor, -2);
             Block("South warning", warning, new Vector2(0, -.95f), new Vector2(1.9f, .067f), warningColor, -2);
             Block("West warning", warning, new Vector2(-.95f, 0), new Vector2(.067f, 1.9f), warningColor, -2);
@@ -124,6 +146,10 @@ namespace Rpg.Gameplay
 
         internal void Dispose()
         {
+            foreach (Sprite sprite in sprites.Values) Object.Destroy(sprite);
+            foreach (Texture2D image in textures) Object.Destroy(image);
+            sprites.Clear();
+            textures.Clear();
             Object.Destroy(pixel);
             Object.Destroy(texture);
         }

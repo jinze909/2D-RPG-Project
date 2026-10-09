@@ -146,6 +146,10 @@ def validate(root: Path) -> dict:
     check('input_and_animation_contracts', lambda: contracts('run_input_animation_checks.py'))
     check('clearing_combat_rules', lambda: behavior('run_gameplay_checks.py', 'actual pure C# rules; no Unity engine'))
     check('clearing_scene_contracts', lambda: contracts('run_scene_checks.py'))
+    check('clearing_presentation_behavior', lambda: behavior('run_presentation_checks.py',
+          'actual C# with recording component/audio boundaries; no native physics, UI layout or audible output'))
+    check('clearing_pixel_art', lambda: behavior('run_art_checks.py',
+          'actual managed C# pixel arrays and original asset hashes; no native rendering'))
     try:
         base_sha = subprocess.check_output(['git', '-C', str(root), 'rev-parse', 'HEAD'], text=True).strip()
     except subprocess.CalledProcessError:

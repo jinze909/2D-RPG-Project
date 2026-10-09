@@ -31,6 +31,8 @@ namespace Rpg.Gameplay
         private bool paused;
         private float timeScaleBeforePause;
         private bool gateWasOpened;
+        private long lastHitAudioActionId;
+        private long lastKillAudioActionId;
         private string feedback = "Defeat the three sentinels. Step out of orange warnings.";
         private float feedbackUntil = 7f;
         private float nextHudAt;
@@ -47,6 +49,15 @@ namespace Rpg.Gameplay
             internal bool[] ActorLayers;
             internal Vector2 AttackCenter;
             internal float HurtUntil;
+            internal SpriteRenderer WarningFill;
+            internal SpriteRenderer WarningCrossA;
+            internal SpriteRenderer WarningCrossB;
+            internal Transform Impact;
+            internal SpriteRenderer[] ImpactSprites;
+            internal double ImpactStartedAt;
+            internal double ImpactUntil;
+            internal bool ImpactWasKill;
+            internal Color ImpactColor;
         }
 
         private void Start()
@@ -94,6 +105,7 @@ namespace Rpg.Gameplay
                 enemy.Body.constraints = RigidbodyConstraints2D.FreezeRotation;
                 enemy.Body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
                 enemy.Body.interpolation = RigidbodyInterpolation2D.Interpolate;
+                PreparePresentation(enemy, i);
                 // Cache once; keep local body/head/UI order inside one actor's pixel-depth slot.
                 enemy.Renderers = enemy.Object.GetComponentsInChildren<SpriteRenderer>();
                 enemy.LocalOrders = new int[enemy.Renderers.Length];
@@ -106,7 +118,7 @@ namespace Rpg.Gameplay
                 enemies[i] = enemy;
             }
             strike = visuals.Block("Directional player strike", transform, Vector2.zero, Vector2.one,
-                new Color(1f, .86f, .52f, .5f), 30000, true);
+                ClearingPalette.WithAlpha(ClearingPalette.AmberBright, .5f), 30000, true);
             strike.gameObject.SetActive(false);
             hud = new ClearingHud(transform);
             sound = new ClearingAudio(gameObject);
@@ -168,6 +180,34 @@ namespace Rpg.Gameplay
             sound.Attack(kind == PlayerAttackKind.Burst);
         }
 
+        private void PreparePresentation(EnemyView enemy, int index)
+        {
+            // All feedback renderers are allocated once. The existing four-border
+            // warning remains the fixed 1.9-unit contact outline throughout a swing.
+            enemy.WarningFill = visuals.Block("Telegraph charge", enemy.Warning, Vector2.zero,
+                Vector2.one, ClearingPalette.WithAlpha(ClearingPalette.Amber, .15f), -3);
+            enemy.WarningCrossA = visuals.Block("Active cross A", enemy.Warning, Vector2.zero,
+                new Vector2(1.3f, 2f / 30f), ClearingPalette.Cream, -1);
+            enemy.WarningCrossB = visuals.Block("Active cross B", enemy.Warning, Vector2.zero,
+                new Vector2(1.3f, 2f / 30f), ClearingPalette.Cream, -1);
+            enemy.WarningCrossA.transform.localRotation = Quaternion.Euler(0f, 0f, 45f);
+            enemy.WarningCrossB.transform.localRotation = Quaternion.Euler(0f, 0f, 135f);
+            enemy.WarningCrossA.gameObject.SetActive(false);
+            enemy.WarningCrossB.gameObject.SetActive(false);
+
+            GameObject impact = new GameObject("Reusable sentinel impact " + (index + 1));
+            impact.transform.SetParent(transform, false);
+            enemy.Impact = impact.transform;
+            enemy.ImpactSprites = new SpriteRenderer[3];
+            enemy.ImpactSprites[0] = visuals.Block("Impact center", enemy.Impact, Vector2.zero,
+                new Vector2(4f / 30f, 4f / 30f), ClearingPalette.Cream, 30003, true);
+            enemy.ImpactSprites[1] = visuals.Block("Impact horizontal", enemy.Impact, Vector2.zero,
+                new Vector2(20f / 30f, 2f / 30f), ClearingPalette.Cream, 30002, true);
+            enemy.ImpactSprites[2] = visuals.Block("Impact vertical", enemy.Impact, Vector2.zero,
+                new Vector2(2f / 30f, 20f / 30f), ClearingPalette.Cream, 30002, true);
+            impact.SetActive(false);
+        }
+
         private void FixedUpdate()
         {
             if (run == null) return;
@@ -176,6 +216,11 @@ namespace Rpg.Gameplay
             run.Advance(Time.fixedDeltaTime);
             player.Stats.Mana = Mathf.Min(player.Stats.MaxMana,
                 player.Stats.Mana + ClearingRun.ManaRegenerationRate * Time.fixedDeltaTime);
+            bool contactedSentinel = false;
+            bool defeatedSentinel = false;
+            // Resolve this player's admitted action against every target before
+            // enemy contacts can end the run. A lethal enemy's array index must
+            // not decide how many targets the same burst reaches on this tick.
             for (int i = 0; i < enemies.Length; i++)
             {
                 EnemyView enemy = enemies[i];
@@ -184,14 +229,24 @@ namespace Rpg.Gameplay
                 Vector2 difference = enemy.Body.position - PlayerPoint;
                 if (run.PlayerAttackActive && InStrike(difference) && ClearLine(PlayerPoint, enemy.Body.position) && run.TryHitSentinel(strikeId, i))
                 {
+                    contactedSentinel = true;
+                    defeatedSentinel |= state.IsDead;
                     enemy.HurtUntil = (float)run.Time + .12f;
+                    ShowImpact(enemy, state.IsDead, strikeKind == PlayerAttackKind.Burst);
                     if (state.IsDead)
                     {
                         enemy.Object.SetActive(false);
-                        Feedback("Sentinel defeated. " + run.DefeatedCount + "/3 seals broken.", 2f);
+                        Feedback("Sentinel defeated. " + run.DefeatedCount + "/3 seals broken. +" +
+                            ClearingRun.CoinsPerSentinel + " coins.", 2f);
                         continue;
                     }
                 }
+            }
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                EnemyView enemy = enemies[i];
+                SentinelState state = run.GetSentinel(i);
+                if (state.IsDead) continue;
                 Vector2 toPlayer = PlayerPoint - enemy.Body.position;
                 bool clear = ClearLine(enemy.Body.position, PlayerPoint);
                 if (state.AttackPhase == SentinelAttackPhase.Ready && clear && toPlayer.magnitude <= .85f)
@@ -214,6 +269,22 @@ namespace Rpg.Gameplay
                         StopActors();
                         break;
                     }
+                }
+            }
+            // Several targets in one burst share a cue. A later kill can upgrade an
+            // earlier contact cue once; repeated contacts cannot create audio spam.
+            if (contactedSentinel && !run.IsDead)
+            {
+                if (defeatedSentinel && lastKillAudioActionId != strikeId)
+                {
+                    sound.Hit(true, strikeKind == PlayerAttackKind.Burst);
+                    lastKillAudioActionId = strikeId;
+                    lastHitAudioActionId = strikeId;
+                }
+                else if (lastHitAudioActionId != strikeId)
+                {
+                    sound.Hit(false, strikeKind == PlayerAttackKind.Burst);
+                    lastHitAudioActionId = strikeId;
                 }
             }
             if (run.GateUnlocked && !gateWasOpened)
@@ -249,11 +320,14 @@ namespace Rpg.Gameplay
                 strike.transform.position = new Vector3(location.x, location.y, 0f);
                 strike.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(strikeDirection.y, strikeDirection.x) * Mathf.Rad2Deg);
                 strike.transform.localScale = strikeKind == PlayerAttackKind.Light ? new Vector3(1.25f, 1.1f, 1) : new Vector3(2.8f, 2f, 1);
-                strike.color = strikeKind == PlayerAttackKind.Light ? new Color(1f, .86f, .52f, .35f) : new Color(.47f, .87f, 1f, .4f);
+                strike.color = ClearingPalette.WithAlpha(strikeKind == PlayerAttackKind.Light ?
+                    ClearingPalette.AmberBright : ClearingPalette.CyanBright, .35f);
             }
             playerRenderer.color = run.PlayerInvulnerabilityRemaining > 0f ? new Color(1f, .67f, .67f, .65f) : Color.white;
             playerRenderer.sortingOrder = ActorDepth(PlayerPoint.y) + 8;
-            visuals.Beacon.color = run.GateUnlocked ? new Color(.56f, .95f, .9f) : new Color(.45f, .47f, .4f);
+            // The beacon raster already contains the palette; avoid multiplying its
+            // cyan/cream pixels by another colored tint when the objective unlocks.
+            visuals.Beacon.color = run.GateUnlocked ? Color.white : new Color(.5f, .58f, .54f);
             for (int i = 0; i < enemies.Length; i++)
             {
                 EnemyView enemy = enemies[i];
@@ -261,14 +335,62 @@ namespace Rpg.Gameplay
                 int depth = ActorDepth(enemy.Body.position.y);
                 for (int j = 0; j < enemy.Renderers.Length; j++)
                     if (enemy.ActorLayers[j]) enemy.Renderers[j].sortingOrder = depth + enemy.LocalOrders[j];
-                bool warning = state.AttackPhase == SentinelAttackPhase.Telegraph || state.AttackPhase == SentinelAttackPhase.Active;
-                enemy.Warning.gameObject.SetActive(warning && !state.IsDead && !run.IsDead && !run.IsComplete);
-                if (warning) enemy.Warning.position = enemy.AttackCenter;
-                enemy.Eye.color = run.Time < enemy.HurtUntil ? Color.white : warning ? new Color(1f, .36f, .15f) : new Color(.98f, .79f, .39f);
+                RefreshWarning(enemy, state);
+                RefreshImpact(enemy);
+                enemy.Eye.color = run.Time < enemy.HurtUntil ? ClearingPalette.Cream :
+                    state.AttackPhase == SentinelAttackPhase.Active ? ClearingPalette.Cream :
+                    state.AttackPhase == SentinelAttackPhase.Telegraph ? ClearingPalette.Danger : ClearingPalette.AmberBright;
+                enemy.Health.color = run.Time < enemy.HurtUntil ? ClearingPalette.Cream : ClearingPalette.Amber;
                 float ratio = state.Health / ClearingRun.SentinelMaxHealth;
                 enemy.Health.transform.localScale = new Vector3(.72f * ratio, .067f, 1f);
                 enemy.Health.transform.localPosition = new Vector3((ratio - 1f) * .36f, 1.5f, 0f);
             }
+        }
+
+        private void RefreshWarning(EnemyView enemy, SentinelState state)
+        {
+            bool active = state.AttackPhase == SentinelAttackPhase.Active;
+            bool warning = state.AttackPhase == SentinelAttackPhase.Telegraph || active;
+            enemy.Warning.gameObject.SetActive(warning && !state.IsDead && !run.IsDead && !run.IsComplete);
+            if (!warning) return;
+            enemy.Warning.position = enemy.AttackCenter;
+            // Only the inner charge grows. The outer damage boundary never moves,
+            // shrinks or expands; an active X adds a non-color timing cue.
+            float progress = active ? 1f : Mathf.Clamp01(state.PhaseProgress);
+            float fill = 1.9f * progress;
+            enemy.WarningFill.transform.localScale = new Vector3(fill, fill, 1f);
+            enemy.WarningFill.color = ClearingPalette.WithAlpha(active ? ClearingPalette.Danger : ClearingPalette.Amber,
+                active ? .32f : .08f + .14f * progress);
+            enemy.WarningCrossA.gameObject.SetActive(active);
+            enemy.WarningCrossB.gameObject.SetActive(active);
+        }
+
+        private void ShowImpact(EnemyView enemy, bool isKill, bool isBurst)
+        {
+            enemy.ImpactStartedAt = run.Time;
+            enemy.ImpactUntil = run.Time + (isKill ? .3f : .12f);
+            enemy.ImpactWasKill = isKill;
+            enemy.ImpactColor = isKill ? ClearingPalette.AmberBright :
+                isBurst ? ClearingPalette.CyanBright : ClearingPalette.Cream;
+            Vector2 point = enemy.Body.position + new Vector2(0f, .7f);
+            // This root is independent of the defeated actor so the confirmation
+            // survives its collider/body being immediately removed from play.
+            enemy.Impact.position = new Vector3(point.x, point.y, 0f);
+            enemy.Impact.localRotation = Quaternion.Euler(0f, 0f, isKill || isBurst ? 45f : 0f);
+            enemy.Impact.gameObject.SetActive(true);
+            RefreshImpact(enemy);
+        }
+
+        private void RefreshImpact(EnemyView enemy)
+        {
+            bool visible = run.Time < enemy.ImpactUntil && !run.IsDead && !run.IsComplete;
+            enemy.Impact.gameObject.SetActive(visible);
+            if (!visible) return;
+            float progress = (float)((run.Time - enemy.ImpactStartedAt) / (enemy.ImpactUntil - enemy.ImpactStartedAt));
+            float scale = enemy.ImpactWasKill ? 1f + .6f * progress : .75f + .25f * progress;
+            enemy.Impact.localScale = new Vector3(scale, scale, 1f);
+            Color color = ClearingPalette.WithAlpha(enemy.ImpactColor, 1f - progress);
+            foreach (SpriteRenderer renderer in enemy.ImpactSprites) renderer.color = color;
         }
 
         private static int ActorDepth(float footY)
@@ -321,8 +443,14 @@ namespace Rpg.Gameplay
         {
             movement.SetControlEnabled(false);
             playerBody.velocity = Vector2.zero;
+            if (strike != null) strike.gameObject.SetActive(false);
             foreach (EnemyView enemy in enemies)
-                if (enemy != null) enemy.Body.velocity = Vector2.zero;
+            {
+                if (enemy == null) continue;
+                enemy.Body.velocity = Vector2.zero;
+                if (enemy.Warning != null) enemy.Warning.gameObject.SetActive(false);
+                if (enemy.Impact != null) enemy.Impact.gameObject.SetActive(false);
+            }
         }
 
         private void ResetRun()
@@ -337,6 +465,9 @@ namespace Rpg.Gameplay
             movement.SetControlEnabled(true);
             playerRenderer.color = Color.white;
             gateWasOpened = false;
+            lastHitAudioActionId = 0;
+            lastKillAudioActionId = 0;
+            sound.ResetFeedback();
             visuals.Gate.SetActive(true);
             strike.gameObject.SetActive(false);
             strikeId = 0;
@@ -347,6 +478,12 @@ namespace Rpg.Gameplay
                 enemy.Body.position = enemySpawns[i];
                 enemy.Body.velocity = Vector2.zero;
                 enemy.HurtUntil = 0f;
+                enemy.ImpactStartedAt = 0d;
+                enemy.ImpactUntil = 0d;
+                enemy.ImpactWasKill = false;
+                enemy.Impact.gameObject.SetActive(false);
+                enemy.WarningCrossA.gameObject.SetActive(false);
+                enemy.WarningCrossB.gameObject.SetActive(false);
                 enemy.Warning.gameObject.SetActive(false);
             }
             Feedback("Defeat the three sentinels. Step out of orange warnings.", 7f);
@@ -354,6 +491,7 @@ namespace Rpg.Gameplay
 
         private void OnDisable()
         {
+            if (sound != null) sound.ResetFeedback();
             // A paused scene must never leave the next loaded scene frozen.
             if (paused)
             {
@@ -362,6 +500,18 @@ namespace Rpg.Gameplay
             }
             if (movement != null && run != null)
             {
+                // Hiding objects alone lets RefreshViews/FixedUpdate resurrect
+                // their saved contacts and pulses after this component returns.
+                run.CancelTransientActions();
+                strikeId = 0;
+                foreach (EnemyView enemy in enemies)
+                {
+                    if (enemy == null) continue;
+                    enemy.HurtUntil = 0f;
+                    enemy.ImpactStartedAt = 0d;
+                    enemy.ImpactUntil = 0d;
+                    enemy.ImpactWasKill = false;
+                }
                 StopActors();
                 movement.SetControlEnabled(!run.IsDead && !run.IsComplete);
             }

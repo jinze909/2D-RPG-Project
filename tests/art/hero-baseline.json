@@ -1,0 +1,15 @@
+{
+  "commit": "de0614399bb878ae182f90f81074359824e5057b",
+  "files_sha256": {
+    "Assets/Actions/Acts/ViolaMoves.png": "0d8b43d47fdc8a2f83909b41faccaf1fb87eaf83e553da42b7666a6b5e066976",
+    "Assets/Actions/Acts/ViolaMoves.png.meta": "0952b944a5c00d103883be243c08a7ad282e0d27a4fc6dad507733d016e14e6a",
+    "Assets/Actions/Acts/Walk_Down.png": "2a6c8f9367115928a76324d7a8e15280eeb374c8fb3f48fd5eb9e248f3fa5261",
+    "Assets/Actions/Acts/Walk_Down.png.meta": "34b8123ab1a5b6a41486a7d1c2b6479eeb2829ca1ce40feb0f6508d7426801a3",
+    "Assets/Actions/Acts/Walk_Left.png": "e3ca86e18d96735b34d746d09726006ec9b1d7bbfcbfb11e87945b2c04a42ff6",
+    "Assets/Actions/Acts/Walk_Left.png.meta": "767053234191d32979e13fb42160daee22e6265584b4387eaabc060940612ced",
+    "Assets/Actions/Acts/Walk_Right.png": "73b25472b6cd3920e210d22df9332e5151af918e6ab7bb40c98091b45c7e8625",
+    "Assets/Actions/Acts/Walk_Right.png.meta": "e210c3214fcba6fc3afb1ebb7d0c916f6e7718efe1dd6a6fa4a557c0f796f857",
+    "Assets/Actions/Acts/Walk_Up.png": "a1a7cf6c91dd4fb2242322f8396ba2ef1eda7769dbd0404dab52176dccdbc76e",
+    "Assets/Actions/Acts/Walk_Up.png.meta": "d306e0fd9b032f9e57f90846d7e8d9ae8a7f643a2c78d4b18b646830f2f8f747"
+  }
+}

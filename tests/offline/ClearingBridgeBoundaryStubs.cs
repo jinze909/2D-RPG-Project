@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-// Signature-only boundaries for compiling every production script. The player
-// behavior fixtures inject components explicitly. Clearing scene construction is
-// never run with these doubles: transforms, queries, rendering and audio are inert.
-// Passing this compiler is not evidence of native Unity scene/gameplay behavior.
+// Minimal recording boundaries for compiling production scripts. Explicit
+// component attachment lets presentation fixtures inspect values written by real
+// project C#; no Awake/Start/Update is scheduled, no transform/layout is resolved,
+// and physics, rendering and audio output remain inert. Player fixtures still
+// inject components explicitly. Passing these tests is not native Unity evidence.
 namespace UnityEngine
 {
     public class DefaultExecutionOrder : Attribute { public DefaultExecutionOrder(int order) {} }
@@ -23,19 +24,40 @@ namespace UnityEngine
     public class Behaviour : Component { public bool enabled = true; }
     public class GameObject : Object
     {
+        private readonly Dictionary<Type, Component> components = new Dictionary<Type, Component>();
         public Transform transform;
         public int layer;
-        public GameObject(string name, params Type[] components) { this.name = name; }
-        public T AddComponent<T>() where T : Component { return default(T); }
-        public T GetComponent<T>() { return default(T); }
+        public bool activeSelf = true;
+        public static int CreatedCount;
+        public GameObject(string name, params Type[] types)
+        {
+            this.name = name;
+            CreatedCount++;
+            transform = Array.IndexOf(types, typeof(RectTransform)) >= 0 ? new RectTransform() : new Transform();
+            Attach(transform);
+            foreach (Type type in types) if (type != typeof(RectTransform)) Attach((Component)Activator.CreateInstance(type));
+        }
+        private Component Attach(Component component)
+        {
+            component.gameObject = this;
+            component.transform = transform;
+            component.Components = new Dictionary<Type, object>();
+            components[component.GetType()] = component;
+            var graphic = component as UnityEngine.UI.Graphic;
+            if (graphic != null) graphic.rectTransform = transform as RectTransform;
+            return component;
+        }
+        public T AddComponent<T>() where T : Component { return (T)Attach((Component)Activator.CreateInstance(typeof(T))); }
+        public T GetComponent<T>() { Component value; return components.TryGetValue(typeof(T), out value) ? (T)(object)value : default(T); }
         public T[] GetComponentsInChildren<T>() { return new T[0]; }
-        public void SetActive(bool value) {}
+        public void SetActive(bool value) { activeSelf = value; }
     }
     public class Transform : Component
     {
         public Vector3 position, localPosition, localScale;
         public Quaternion rotation, localRotation;
-        public void SetParent(Transform parent, bool worldPositionStays) {}
+        public Transform parent;
+        public void SetParent(Transform parent, bool worldPositionStays) { this.parent = parent; }
     }
     public class RectTransform : Transform
     {
@@ -81,17 +103,23 @@ namespace UnityEngine
     }
     public enum TextureFormat { RGBA32 }
     public enum FilterMode { Point }
+    public enum TextureWrapMode { Clamp }
     public class Texture2D : Object
     {
         public FilterMode filterMode;
+        public TextureWrapMode wrapMode;
         public Texture2D(int width, int height, TextureFormat format, bool mipChain) {}
         public void SetPixel(int x, int y, Color color) {}
+        public void SetPixels(Color[] colors) {}
         public void Apply() {}
+        public void Apply(bool updateMipmaps, bool makeNoLongerReadable) {}
     }
     public class Sprite : Object
     {
-        public static Sprite Create(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit) { return null; }
+        public static Sprite Create(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit) { return new Sprite(); }
+        public static Sprite Create(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit, uint extrude, SpriteMeshType meshType) { return new Sprite(); }
     }
+    public enum SpriteMeshType { Tight, FullRect }
     public class SpriteRenderer : Behaviour
     {
         public Sprite sprite;
@@ -107,7 +135,9 @@ namespace UnityEngine
     public struct RaycastHit2D { public Collider2D collider; }
     public static class Physics2D
     {
-        public static RaycastHit2D Linecast(Vector2 start, Vector2 end, int layerMask) { return default(RaycastHit2D); }
+        // Explicit fixture response, not a geometric query or physics simulation.
+        public static Collider2D LinecastResponse;
+        public static RaycastHit2D Linecast(Vector2 start, Vector2 end, int layerMask) { return new RaycastHit2D { collider = LinecastResponse }; }
     }
     public class Camera : Behaviour
     {
@@ -153,14 +183,17 @@ namespace UnityEngine
     }
     public class AudioClip : Object
     {
-        public static AudioClip Create(string name, int lengthSamples, int channels, int frequency, bool stream) { return null; }
+        public static AudioClip Create(string name, int lengthSamples, int channels, int frequency, bool stream) { return new AudioClip { name = name }; }
         public bool SetData(float[] samples, int offsetSamples) { return false; }
     }
     public class AudioSource : Behaviour
     {
         public bool playOnAwake, mute;
         public float spatialBlend, volume, pitch;
-        public void PlayOneShot(AudioClip clip) {}
+        public readonly List<AudioClip> OneShots = new List<AudioClip>();
+        public int StopRequests;
+        public void PlayOneShot(AudioClip clip) { OneShots.Add(clip); }
+        public void Stop() { StopRequests++; }
     }
     public class Font : Object {}
     public enum TextAnchor { UpperLeft, UpperRight, LowerLeft, LowerRight, MiddleCenter }
