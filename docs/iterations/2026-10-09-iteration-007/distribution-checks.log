@@ -1,0 +1,18 @@
+.fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+.....
+----------------------------------------------------------------------
+Ran 6 tests in 0.136s
+
+OK
+{
+  "project": "2D-RPG-Project",
+  "unity": "2022.3.53f1",
+  "commit": null,
+  "working_tree_has_local_changes": null,
+  "native_unity_validation": false,
+  "file_count": 118,
+  "zip": "/tmp/rpg-distribution-check-lrnjddle/project.zip",
+  "bytes": 153154,
+  "sha256": "e90ef02bf640ed8f16352216eef251a133bcaca32c79bc5420cc9fdae8c697cf"
+}

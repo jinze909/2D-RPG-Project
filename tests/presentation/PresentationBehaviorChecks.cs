@@ -879,6 +879,204 @@ public static class PresentationBehaviorChecks
         });
     }
 
+    private sealed class DamageFixture
+    {
+        internal readonly RuntimeFixture F = new RuntimeFixture();
+        internal readonly ClearingDamageNumbers Numbers;
+        internal DamageFixture()
+        {
+            if (Field(F.Runtime, "damageNumbers") == null) throw new Exception("Runtime damage-number integration absent");
+            Numbers = new ClearingDamageNumbers(F.Runtime.transform);
+            Set(F.Runtime, "damageNumbers", Numbers);
+        }
+        internal object Slot(int index) { return Get<Array>(Numbers, "slots").GetValue(index); }
+        internal Transform Root(int index) { return Get<Transform>(Slot(index), "Root"); }
+        internal string Text(int index) { return Get<string>(Slot(index), "Text"); }
+        internal float Amount(int index) { return Get<float>(Slot(index), "Amount"); }
+        internal void AssertCleared()
+        {
+            for (int i = 0; i < 4; i++) Expect(!Root(i).gameObject.activeSelf && string.IsNullOrEmpty(Text(i)) && Near(Amount(i), 0f),
+                "terminal/interruption retained damage snapshot in slot " + i);
+        }
+    }
+
+    private static void SetupSentinelLoss(ClearingRun run, int target, PlayerAttackKind kind)
+    {
+        long token;
+        Expect(run.BeginPlayerAttack(kind, 12f, out token) && run.TryHitSentinel(token, target), "capped-damage setup rejected");
+        run.Advance(kind == PlayerAttackKind.Light ? ClearingRun.LightCooldown : ClearingRun.BurstCooldown);
+    }
+
+    private static void AddDamageNumberChecks(Action<string, Action> test)
+    {
+        test("actual accepted light and burst contacts show signed losses with matching feedback colors", () =>
+        {
+            foreach (bool burst in new[] { false, true })
+            {
+                var p = new DamageFixture();
+                if (burst) p.F.Burst(); else p.F.Light();
+                p.F.Tick(); p.F.Refresh();
+                float expected = burst ? 30f : 18f; Color color = burst ? ClearingPalette.CyanBright : ClearingPalette.Cream;
+                Color shown = Get<Color>(p.Slot(0), "Color");
+                Expect(p.Root(0).gameObject.activeSelf && Near(p.Amount(0), expected) && p.Text(0) == (burst ? "-30" : "-18"),
+                    "accepted contact has no exact signed numeric feedback");
+                Expect(Near(shown.r, color.r) && Near(shown.g, color.g) && Near(shown.b, color.b),
+                    "attack kind and numeric feedback colors disagree");
+                Expect(p.Root(0).parent == p.F.Runtime.transform && Get<Vector2>(p.Slot(0), "Origin") == new Vector2(0f, 1.1f),
+                    "enemy readout is attached to the actor or not anchored above the captured hit body");
+            }
+        });
+        test("lethal enemy numbers show actual remaining six or twenty-four HP instead of nominal damage", () =>
+        {
+            foreach (bool burst in new[] { false, true })
+            {
+                var p = new DamageFixture(); SetupSentinelLoss(p.F.Run, 0, PlayerAttackKind.Burst);
+                if (!burst) SetupSentinelLoss(p.F.Run, 0, PlayerAttackKind.Light);
+                float remaining = p.F.Run.GetSentinel(0).Health;
+                if (burst) p.F.Burst(); else p.F.Light();
+                p.F.Tick(); p.F.Refresh();
+                Expect(p.F.Run.GetSentinel(0).IsDead && !Get<GameObject>(p.F.Enemies[0], "Object").activeSelf,
+                    "clamped readout setup did not actually defeat the actor");
+                Expect(Near(remaining, burst ? 24f : 6f) && Near(p.Amount(0), remaining)
+                    && p.Text(0) == (burst ? "-24" : "-6") && p.Root(0).gameObject.activeSelf,
+                    "lethal feedback inflated damage or disappeared with the hidden enemy");
+            }
+        });
+        test("accepted player loss uses a minus sign and shared immunity admits one hurt readout", () =>
+        {
+            var p = new DamageFixture();
+            for (int id = 0; id < 2; id++)
+            {
+                p.F.Position(id, new Vector2(10f + id, 0f)); Set(p.F.Enemies[id], "AttackCenter", Vector2.zero);
+                Expect(p.F.Run.BeginSentinelAttack(id), "hurt feedback setup rejected");
+            }
+            p.F.Run.Advance(ClearingRun.TelegraphDuration - Time.fixedDeltaTime * .5f); p.F.Tick(); p.F.Refresh();
+            Color color = Get<Color>(p.Slot(3), "Color");
+            Expect(Near(p.F.Stats.Health, 8f) && p.Text(3) == "-2" && Near(p.Amount(3), 2f)
+                && p.Root(3).gameObject.activeSelf && Near(color.r, ClearingPalette.Danger.r),
+                "accepted hurt lacks signed danger feedback or multiple simultaneous swings bypassed immunity");
+            Expect(Get<Vector2>(p.Slot(3), "Origin") == new Vector2(0f, 2.35f), "player hurt readout was not anchored above the captured player point");
+            double started = Get<double>(p.Slot(3), "StartedAt"); p.F.Tick(); p.F.Refresh();
+            Expect(Near(p.F.Stats.Health, 8f) && Get<double>(p.Slot(3), "StartedAt") == started,
+                "repeated or immunity-rejected enemy swing replaced the accepted hurt readout");
+            var fatal = new DamageFixture(); fatal.F.Stats.Health = 1f; fatal.F.Position(0, new Vector2(10f, 0f));
+            Set(fatal.F.Enemies[0], "AttackCenter", Vector2.zero); Expect(fatal.F.Run.BeginSentinelAttack(0), "fatal setup rejected");
+            fatal.F.Run.Advance(ClearingRun.TelegraphDuration - Time.fixedDeltaTime * .5f); fatal.F.Tick(); fatal.F.Refresh();
+            Expect(fatal.F.Run.IsDead && Near(fatal.F.Stats.Health, 0f), "fatal hurt did not synchronize death"); fatal.AssertCleared();
+        });
+        test("missed expired wall-rejected and repeated player contacts create no new damage readouts", () =>
+        {
+            foreach (int rejection in new[] { 0, 1, 2 })
+            {
+                var p = new DamageFixture();
+                if (rejection == 0) p.F.Position(0, new Vector2(4f, 0f));
+                p.F.Light(); if (rejection == 1) p.F.Run.Advance(.3f);
+                if (rejection == 2) Physics2D.LinecastResponse = new BoxCollider2D();
+                try { p.F.Tick(); p.F.Refresh(); p.AssertCleared(); }
+                finally { Physics2D.LinecastResponse = null; }
+            }
+            var accepted = new DamageFixture(); accepted.F.Light(); accepted.F.Tick(); accepted.F.Refresh();
+            double started = Get<double>(accepted.Slot(0), "StartedAt"); float amount = accepted.Amount(0);
+            accepted.F.Tick(); accepted.F.Refresh();
+            Expect(Get<double>(accepted.Slot(0), "StartedAt") == started && Near(accepted.Amount(0), amount)
+                && Near(accepted.F.Run.GetSentinel(0).Health, 36f), "one attack token refreshed or duplicated its readout");
+        });
+        test("multi-target readouts reuse separate slots without new objects textures or sprites", () =>
+        {
+            var p = new DamageFixture(); p.F.Position(1, new Vector2(.2f, -.6f));
+            int objects = GameObject.CreatedCount, textures = Texture2D.CreatedCount, sprites = Sprite.CreatedCount;
+            object slot0 = p.Slot(0), slot1 = p.Slot(1); var glyphs = Get<Sprite[]>(p.Numbers, "glyphSprites");
+            p.F.Burst(); p.F.Tick(); p.F.Refresh(); p.F.Tick(); p.F.Refresh();
+            Expect(p.Text(0) == "-30" && p.Text(1) == "-30" && p.Root(0).gameObject.activeSelf && p.Root(1).gameObject.activeSelf
+                && !p.Root(2).gameObject.activeSelf && !p.Root(3).gameObject.activeSelf,
+                "one burst did not produce two distinct bounded target labels");
+            Expect(object.ReferenceEquals(slot0, p.Slot(0)) && object.ReferenceEquals(slot1, p.Slot(1))
+                && object.ReferenceEquals(glyphs, Get<Sprite[]>(p.Numbers, "glyphSprites"))
+                && GameObject.CreatedCount == objects && Texture2D.CreatedCount == textures && Sprite.CreatedCount == sprites,
+                "accepted/repeated hits replaced slots or allocated presentation resources after construction");
+        });
+        test("kill numbers retain captured origin then rise fade and expire on simulation time", () =>
+        {
+            var p = new DamageFixture(); LowerToLastHit(p.F.Run, 0); p.F.Light(); p.F.Tick(); p.F.Refresh();
+            Vector2 origin = Get<Vector2>(p.Slot(0), "Origin"); p.F.Position(0, new Vector2(10f, 10f));
+            p.F.Run.Advance(.15f); p.F.Refresh();
+            SpriteRenderer[] renderers = Get<SpriteRenderer[]>(p.Slot(0), "Renderers");
+            Expect(p.Root(0).gameObject.activeSelf && Near(p.Root(0).position.x, origin.x)
+                && Near(p.Root(0).position.y, origin.y + .35f * .25f)
+                && Near(renderers[0].color.a, .84375f),
+                "kill readout followed the hidden body or used incorrect rise/fade timing");
+            p.F.Run.Advance(.46f); p.F.Refresh();
+            Expect(!p.Root(0).gameObject.activeSelf && string.IsNullOrEmpty(p.Text(0)), "expired damage number stayed visible");
+        });
+        test("pause freezes numeric position and opacity until simulation resumes", () =>
+        {
+            var p = new DamageFixture(); p.F.Light(); p.F.Tick(); p.F.Refresh(); p.F.Run.Advance(.1f); p.F.Refresh();
+            Vector2 position = p.Root(0).position; float alpha = Get<SpriteRenderer[]>(p.Slot(0), "Renderers")[0].color.a;
+            double time = p.F.Run.Time; Invoke(p.F.Runtime, "SetPaused", true); Time.unscaledTime += 50f;
+            for (int tick = 0; tick < 8; tick++) { p.F.Tick(); p.F.Refresh(); }
+            Expect(p.F.Run.Time == time && p.Root(0).gameObject.activeSelf && (Vector2)p.Root(0).position == position
+                && Near(Get<SpriteRenderer[]>(p.Slot(0), "Renderers")[0].color.a, alpha), "pause advanced or erased an active numeric readout");
+            Invoke(p.F.Runtime, "SetPaused", false); p.F.Run.Advance(.6f); p.F.Refresh();
+            Expect(!p.Root(0).gameObject.activeSelf, "resumed simulation retained the expired readout");
+        });
+        test("a new accepted hit replaces the same bounded target slot and clock", () =>
+        {
+            var p = new DamageFixture(); p.F.Light(); p.F.Tick(); p.F.Refresh();
+            object slot = p.Slot(0); Transform root = p.Root(0); SpriteRenderer[] renderers = Get<SpriteRenderer[]>(slot, "Renderers");
+            double started = Get<double>(slot, "StartedAt"); p.F.Run.Advance(ClearingRun.LightCooldown);
+            int objects = GameObject.CreatedCount, textures = Texture2D.CreatedCount, sprites = Sprite.CreatedCount;
+            p.F.Burst(); p.F.Tick(); p.F.Refresh();
+            Expect(object.ReferenceEquals(slot, p.Slot(0)) && object.ReferenceEquals(root, p.Root(0))
+                && object.ReferenceEquals(renderers, Get<SpriteRenderer[]>(slot, "Renderers"))
+                && p.Text(0) == "-30" && Get<double>(slot, "StartedAt") > started
+                && GameObject.CreatedCount == objects && Texture2D.CreatedCount == textures && Sprite.CreatedCount == sprites,
+                "later accepted hit accumulated resources or failed to replace the target snapshot");
+        });
+        test("disable death retry and actual beacon completion clear all numeric snapshots", () =>
+        {
+            foreach (int ending in new[] { 0, 1, 2 })
+            {
+                var p = new DamageFixture(); p.F.Light(); p.F.Tick(); p.F.Refresh();
+                Expect(p.Root(0).gameObject.activeSelf, "cleanup setup has no accepted readout");
+                if (ending == 0) Invoke(p.F.Runtime, "OnDisable");
+                if (ending == 1) { p.F.Stats.Health = 0f; p.F.Tick(); }
+                if (ending == 2) Invoke(p.F.Runtime, "ResetRun");
+                p.F.Refresh(); p.AssertCleared();
+            }
+            var completed = new DamageFixture();
+            for (int id = 0; id < 2; id++)
+            {
+                LowerToLastHit(completed.F.Run, id); SetupSentinelLoss(completed.F.Run, id, PlayerAttackKind.Light);
+            }
+            LowerToLastHit(completed.F.Run, 2); completed.F.Position(2, new Vector2(0f, -.6f));
+            completed.F.Light(); completed.F.Tick(); completed.F.Refresh();
+            Expect(completed.F.Run.GateUnlocked && completed.Root(2).gameObject.activeSelf, "completion setup lacks a final kill readout");
+            Set(completed.F.Runtime, "hud", new ClearingHud(completed.F.Runtime.transform));
+            completed.F.Body.position = ClearingVisuals.BeaconPosition - ClearingVisuals.PlayerFootOffset;
+            Input.SetPressed(KeyCode.E);
+            try { Invoke(completed.F.Runtime, "Update"); }
+            finally { Input.ClearPressed(); }
+            Expect(completed.F.Run.IsComplete, "actual E beacon did not complete the terminal cleanup fixture"); completed.AssertCleared();
+        });
+        test("cached numeric pool rejects invalid input and disposal prevents resurrection", () =>
+        {
+            var numbers = new ClearingDamageNumbers(new GameObject("Independent numeric pool").transform);
+            numbers.Show(0, 18f, Vector2.zero, ClearingPalette.Cream, 0d);
+            object slot = Get<Array>(numbers, "slots").GetValue(0);
+            numbers.Show(-1, 30f, Vector2.zero, ClearingPalette.Cream, 0d);
+            numbers.Show(4, 30f, Vector2.zero, ClearingPalette.Cream, 0d);
+            foreach (float amount in new[] { 0f, -1f, float.NaN, float.PositiveInfinity }) numbers.Show(0, amount, Vector2.zero, ClearingPalette.Cream, 0d);
+            numbers.Show(0, 30f, new Vector2(float.NaN, 0f), ClearingPalette.Cream, 0d);
+            numbers.Show(0, 30f, Vector2.zero, ClearingPalette.Cream, double.NaN);
+            Expect(Get<string>(slot, "Text") == "-18" && Near(Get<float>(slot, "Amount"), 18f), "invalid feedback request overwrote the valid bounded snapshot");
+            Sprite[] sprites = Get<Sprite[]>(numbers, "glyphSprites"); Texture2D[] textures = Get<Texture2D[]>(numbers, "glyphTextures");
+            numbers.Dispose(); numbers.Dispose(); numbers.Show(0, 30f, Vector2.zero, ClearingPalette.Cream, 0d); numbers.Refresh(0d);
+            Expect(!Get<Transform>(slot, "Root").gameObject.activeSelf, "disposed pool resurrected its numeric root");
+            foreach (Sprite sprite in sprites) Expect(sprite == null || sprite.Destroyed, "dispose did not request cached glyph sprite destruction");
+            foreach (Texture2D texture in textures) Expect(texture == null || texture.Destroyed, "dispose did not request cached glyph texture destruction");
+        });
+    }
+
     private static int Main()
     {
         int passed = 0, failed = 0;
@@ -1260,6 +1458,7 @@ public static class PresentationBehaviorChecks
         }
         AddProgressionChecks(test);
         AddTacticsChecks(test);
+        AddDamageNumberChecks(test);
         Console.WriteLine("RESULT " + passed + " passed, " + failed + " failed; actual project C# with recording boundaries, not native Unity.");
         return failed == 0 ? 0 : 1;
     }

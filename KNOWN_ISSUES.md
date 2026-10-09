@@ -1,5 +1,22 @@
 # Known issues
 
+## Iteration 7 integrated status — supersedes the foundation pending list
+
+Actual light/burst/player HP loss readouts, fixed pools and interruption cleanup
+are implemented and covered by 296 passing offline/distribution groups and real
+Unity API-reference compilation. Numeric labels are newest-contact-per-actor,
+not an accumulating damage history. Integer damage is exact; future fractions
+round to two decimals, below 0.01 shows -<0.01 and above 999 shows -999+.
+Fatal player numbers clear immediately with the terminal cleanup policy.
+
+Native readability at gameplay resolution, overlapping nearby actors, fractional
+pixel movement, actual physics/input/animation/audio and platform build remain
+unrun. Point filtering/PPU30 and high effect sorting order are source evidence,
+not a claim of pixel-perfect native rendering. No licensed probe was repeated.
+Independent review, implementation CI/merge and final ZIP/download/handoff
+publication remain outstanding until the iteration-007 delivery receipt confirms
+completion. Broader RPG systems and previous native evidence gaps are retained.
+
 ## Iteration 7 foundation — current unfinished list
 
 Pure damage readout helper exists; cachedworldlabels/actualcontact integration,

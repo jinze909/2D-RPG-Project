@@ -30,3 +30,25 @@ recording-boundary checks for deltas/cappedkills/rejections/multi-target/lock/pa
 cleanup/cache/replacement; existing combat/resource/progression/scene/input/hero
 checks remain. Native visualreadability, actualphysics/input/audio/play/build are
 unrun, optional for merging. Readable guides do not establish liveEditor/MCP.
+
+## Runtime integration and compatible APIs
+
+ClearingRuntime captures HP before each accepted contact and supplies the delta
+only after damage resolves. Renderer roots are owned by Runtime, independently
+of enemy body visibility. Sorting order 30004 in the existing Player layer sits
+above actor depth and impact effects. Clear runs before run-clock reset and on
+all terminal/interruption paths; Dispose requests root/sprite/texture destruction.
+A fatal player's number clears immediately with defeat feedback. Existing J/Space
+and K input, K's six MP cost and established cooldowns remain authoritative.
+
+Checked official Unity 2022.3 references:
+- https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Sprite.Create.html
+  supplies the FullRect overload with texture, rect, pivot and PPU.
+- https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Texture2D.Apply.html
+  confirms Apply(false, true) uploads without mip rebuilding and releases the CPU
+  copy after cached glyph construction. No per-contact texture upload occurs.
+
+Native display fitting, close-actor overlap and fractional-pixel animation remain
+unrun. The small original glyphs and Point filtering do not prove native pixel
+perfectness. API-reference compilation and recording-boundary behavior are
+explicitly separate from Unity import, actual physics, rendering or audition.
