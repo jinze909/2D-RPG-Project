@@ -1,0 +1,42 @@
+{
+  "source_commit": "3f3fbd41d2c6a4d3536001c817ae88a1489ebd21",
+  "working_tree_clean": true,
+  "tracked_json_count": 53,
+  "json_errors": [],
+  "protected_baseline_files": 113,
+  "protected_files_changed": [],
+  "asset_meta_count": 52,
+  "unique_meta_guid_count": 52,
+  "lfs_objects": [
+    [
+      ".agents/skills/imagegen/assets/imagegen.png",
+      1711,
+      true
+    ],
+    [
+      "Assets/Actions/Acts/ViolaMoves.png",
+      12323,
+      true
+    ],
+    [
+      "Assets/Actions/Acts/Walk_Down.png",
+      9104,
+      true
+    ],
+    [
+      "Assets/Actions/Acts/Walk_Left.png",
+      9163,
+      true
+    ],
+    [
+      "Assets/Actions/Acts/Walk_Right.png",
+      9205,
+      true
+    ],
+    [
+      "Assets/Actions/Acts/Walk_Up.png",
+      9589,
+      true
+    ]
+  ]
+}

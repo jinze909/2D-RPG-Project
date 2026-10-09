@@ -1,0 +1,19 @@
+{
+  "verified": true,
+  "commit": "3f3fbd41d2c6a4d3536001c817ae88a1489ebd21",
+  "unity": "2022.3.53f1",
+  "zip": "/workspace/rpg-iteration-007-download-check/2D-RPG-Project-iteration-007-3f3fbd4.zip",
+  "zip_bytes": 620039,
+  "zip_sha256": "f923d9b5472cd6adcbaa222fdab5ab6693d2b24a7a6b325e53111f315e43ee4c",
+  "source_file_count": 320,
+  "zip_member_count": 321,
+  "asset_meta_count": 52,
+  "compared_source_bytes": 1616440,
+  "file_manifest_sha256": "d6e1e6a2844ffa0f77b257189758173927881c426a003ac0d6d19bca5ead7b08",
+  "crc": "passed",
+  "exact_file_set": "passed",
+  "source_bytes_and_member_sha256": "passed",
+  "lfs_pointers": "none",
+  "cache_or_credential_members": "none",
+  "native_unity_validation": false
+}

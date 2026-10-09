@@ -1,0 +1,21 @@
+{
+  "verified": true,
+  "downloads": [
+    {
+      "url": "https://raw.githubusercontent.com/jinze909/2D-RPG-Project/9dce61bdb991140139185c133a1010b655de8485/2D-RPG-Project-iteration-007-3f3fbd4.zip",
+      "final_url": "https://raw.githubusercontent.com/jinze909/2D-RPG-Project/9dce61bdb991140139185c133a1010b655de8485/2D-RPG-Project-iteration-007-3f3fbd4.zip",
+      "http_status": 200,
+      "bytes": 620039,
+      "sha256": "f923d9b5472cd6adcbaa222fdab5ab6693d2b24a7a6b325e53111f315e43ee4c",
+      "published_bytes_equal_local": true
+    },
+    {
+      "url": "https://raw.githubusercontent.com/jinze909/2D-RPG-Project/9dce61bdb991140139185c133a1010b655de8485/2D-RPG-Project-iteration-007-3f3fbd4.zip.sha256",
+      "final_url": "https://raw.githubusercontent.com/jinze909/2D-RPG-Project/9dce61bdb991140139185c133a1010b655de8485/2D-RPG-Project-iteration-007-3f3fbd4.zip.sha256",
+      "http_status": 200,
+      "bytes": 107,
+      "sha256": "974f1fdcecdce7aca9a474e61856ed363befa66c53bf48e307b7838da28d3af9",
+      "published_bytes_equal_local": true
+    }
+  ]
+}

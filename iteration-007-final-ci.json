@@ -1,0 +1,232 @@
+{
+  "source_sha": "3f3fbd41d2c6a4d3536001c817ae88a1489ebd21",
+  "runs": [
+    {
+      "id": 37983850037,
+      "sha": "3f3fbd41d2c6a4d3536001c817ae88a1489ebd21",
+      "branch": "rpg/iteration-007-damage-feedback",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37983850037"
+    },
+    {
+      "id": 37983844774,
+      "sha": "3f3fbd41d2c6a4d3536001c817ae88a1489ebd21",
+      "branch": "master",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/37983844774"
+    }
+  ],
+  "master_jobs": [
+    {
+      "id": 114000774517,
+      "name": "validate-and-package",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 37983844774,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Check out the complete Unity project",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Set up Python",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Install signed distribution compiler packages and image verifier",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Validate actual project sources and resource references",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Verify project packaging boundaries",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Package the complete project without Unity caches",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Upload project ZIP and verification report",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Publish the real download entry",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Post Set up Python",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17
+        },
+        {
+          "name": "Post Check out the complete Unity project",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19
+        }
+      ]
+    }
+  ],
+  "development_jobs": [
+    {
+      "id": 114000791021,
+      "name": "validate-and-package",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 37983850037,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Check out the complete Unity project",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Set up Python",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Install signed distribution compiler packages and image verifier",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Validate actual project sources and resource references",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Verify project packaging boundaries",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Package the complete project without Unity caches",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Upload project ZIP and verification report",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Publish the real download entry",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Post Set up Python",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17
+        },
+        {
+          "name": "Post Check out the complete Unity project",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19
+        }
+      ]
+    }
+  ],
+  "master_artifacts": [
+    {
+      "id": 11642711264,
+      "name": "unity-project-3f3fbd41d2c6a4d3536001c817ae88a1489ebd21",
+      "size_in_bytes": 559560,
+      "url": "https://api.github.com/repos/jinze909/2D-RPG-Project/actions/artifacts/11642711264",
+      "archive_download_url": "https://api.github.com/repos/jinze909/2D-RPG-Project/actions/artifacts/11642711264/zip",
+      "expired": false,
+      "created_at": "2026-10-09T19:59:24Z",
+      "expires_at": "2026-11-08T19:59:23Z",
+      "updated_at": "2026-10-09T19:59:24Z",
+      "digest": "sha256:5198ac0bee9b731a60364151893b1f0c0765098f66b8d07f68be644895982363",
+      "workflow_run": {
+        "id": 37983844774,
+        "repository_id": 943325134,
+        "head_repository_id": 943325134,
+        "head_branch": "master",
+        "head_sha": "3f3fbd41d2c6a4d3536001c817ae88a1489ebd21"
+      }
+    }
+  ],
+  "development_artifacts": [
+    {
+      "id": 11642262592,
+      "name": "unity-project-3f3fbd41d2c6a4d3536001c817ae88a1489ebd21",
+      "size_in_bytes": 559562,
+      "url": "https://api.github.com/repos/jinze909/2D-RPG-Project/actions/artifacts/11642262592",
+      "archive_download_url": "https://api.github.com/repos/jinze909/2D-RPG-Project/actions/artifacts/11642262592/zip",
+      "expired": false,
+      "created_at": "2026-10-09T19:59:16Z",
+      "expires_at": "2026-11-08T19:59:15Z",
+      "updated_at": "2026-10-09T19:59:16Z",
+      "digest": "sha256:7b7b7c126c437124b396cdd37333a654ac2a69872261a557edf0eb3e69f43f89",
+      "workflow_run": {
+        "id": 37983850037,
+        "repository_id": 943325134,
+        "head_repository_id": 943325134,
+        "head_branch": "rpg/iteration-007-damage-feedback",
+        "head_sha": "3f3fbd41d2c6a4d3536001c817ae88a1489ebd21"
+      }
+    }
+  ],
+  "native_unity_validation": false
+}
