@@ -52,3 +52,13 @@ Native Unity 2022.3.53f1 import, input, wall collision, visual/glyph readability
 audition and balancing remain unrun in this environment and optional for merging.
 When available: sidestep a locked lance, move out of a captured sigil, corner the
 Seer, cross-check diagonal warning/contact edges and complete/retry the saved loop.
+
+## Versioned API references
+
+Unity 2022.3 [Rigidbody2D.MovePosition](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Rigidbody2D.MovePosition.html)
+confirms short moves on physics ticks and subsequent collider response. This
+change retains the existing body contract rather than introducing a dash/teleport.
+[Physics2D.Linecast](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Physics2D.Linecast.html)
+provides layer-filtered LOS including origin-inside-collider hits; scene actors
+remain on Ignore Raycast and walls on Default. Recording tests verify requested
+endpoints/masks only; real wall response remains a native acceptance item.

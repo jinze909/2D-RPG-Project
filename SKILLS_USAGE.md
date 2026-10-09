@@ -1,5 +1,23 @@
 # Skills usage
 
+## Iteration 6 — actual integration and regression evidence
+
+Game-design/Essentials gameplay+AI guidance now execute through real FixedUpdate:
+stationary locked Lancer lane and Seer spacing/locked mark, including blocked or
+zero-direction retreat fallback. Game-art and Unity pixel/UI/uGUI guidance produce
+cached role silhouettes and constant-stroke role borders using existing art/PPU;
+help hints share the actual edge slot. Game-audio's deduplication and interruption
+principles retain accepted hurt/contact/kill cues; no audition/new sound is claimed.
+Systematic-debugging traced the sole full-suite failure to the obsolete square-only
+source regex. Migrated its admission-inside-warning guarantee into pure behavioral
+coverage; new feature-gap red evidence is distinguished from a preexisting bug.
+Verification-before-completion uses fresh complete suites, actual Unity API compile,
+independent source review and exact checkpoint CI. Read versioned official2022.3
+MovePosition/Linecast docs; no unreviewed downloaded code was executed. Session-
+handoff scaffold/validator and persistent records provide continuity; imagegen
+not called because no new bitmap task exists. Native MCP/CLI/play/render/audio
+remain unavailable/unrun; plugin Skill access alone is not execution evidence.
+
 ## Iteration 6 — tactics foundation and integration scope
 
 Rediscovered all eight licensed local bundles. Session-handoff reconciled actual

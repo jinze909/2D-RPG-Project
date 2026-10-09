@@ -1,5 +1,16 @@
 # Known issues
 
+## Iteration 6 integrated encounter — supersedes foundation pending list
+
+Three distinct roles, runtime contacts/movement, cached warning/silhouette and
+edge hints are implemented. Offline behavior/API/resource checks supply evidence;
+real Unity collision/LOS, text glyph fitting, rendered diagonal pixel strokes,
+input/audio and gameplay balance are still unrun. The Seer's retreat probe is a
+wall line query, not a native collider sweep; wall-corner movement needs actual play.
+PR/merge, final exact-source CI, ZIP/download and final handoff publication remain
+outstanding until confirmed in iteration-006's independent delivery receipt.
+No profile migration, new equipment/class/story/world-save system is implemented.
+
 ## Iteration 6 foundation — current unfinished list
 
 Pure tactics/timing/footprints are implemented and checked; actual encounter

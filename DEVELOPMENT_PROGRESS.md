@@ -1,5 +1,31 @@
 # Development progress
 
+## Iteration 6 — live tactical encounter integration
+
+Fresh final integration evidence:271 project +6 distribution=277 passing checks:
+movement14,resources40,input/animation9,combat36,progression51,tactics38,scene14,
+presentation59,raster/hero10. Scene's old square-regex case moved into real pure
+behavior without reducing the overall guarantee/count. All20production sources
+compile against86actual UnityAPI refs, with InputSystem substitute. Six LFS objects,
+50uniqueGUIDs/145references, two build scenes and65Skill files are intact.
+GitHub PR/merge/final source ZIP publication follows this verified second checkpoint.
+
+Foundation a5dabecdfe80e7a8ffc154a188ea28cd1f2ba72f was safely pushed; exact
+CI37955083123 completed successfully with all12 steps. Runtime now explicitly
+wires Warden/Lancer/Seer to actual spawn indices. FixedUpdate admits/snapshots
+role attacks, approaches/retreats with LOS and stops during committed phases.
+Crowded Seer casts when its retreat probe is blocked, including zero-direction
+fallback. Warning and contact share locked geometry and original-caster LOS;
+pause freezes it and defeat/completion/disable/retry clear it. Existing player
+inputs/mana/cooldowns, two-pass multi-target contacts and saved growth remain.
+Visuals cache distinct crest/spear/rune silhouettes and role-sized warning borders
+with constant stroke. HUD counter hints stay in the existing edge slot and yield
+to feedback/result. No original hero images/animations, scene or save schema changed.
+Actual-method feature red:45pass14absent-feature gaps; integrated59pass0fail.
+Fullvalidator found one obsolete all-square source-regex check, migrated to a
+pure standing-target/admitted-footprint property rather than dropping its guarantee.
+Independent source review found no material defect. Native acceptance is unrun.
+
 ## Iteration 6 — tactics foundation (2026-10-09 PDT)
 
 Started from clean/refreshed master d8c70488a010e1bb46c979a752d7ed5b1e662484

@@ -57,7 +57,14 @@ namespace UnityEngine
         public Vector3 position, localPosition, localScale;
         public Quaternion rotation, localRotation;
         public Transform parent;
-        public void SetParent(Transform parent, bool worldPositionStays) { this.parent = parent; }
+        // Record authored hierarchy only; do not resolve matrices or world pose.
+        public readonly List<Transform> Children = new List<Transform>();
+        public void SetParent(Transform parent, bool worldPositionStays)
+        {
+            if (this.parent != null) this.parent.Children.Remove(this);
+            this.parent = parent;
+            if (parent != null) parent.Children.Add(this);
+        }
     }
     public class RectTransform : Transform
     {
@@ -86,7 +93,12 @@ namespace UnityEngine
         public static Vector3 zero { get { return new Vector3(0, 0, 0); } }
         public static Vector3 one { get { return new Vector3(1, 1, 1); } }
     }
-    public struct Quaternion { public static Quaternion Euler(float x, float y, float z) { return default(Quaternion); } }
+    public struct Quaternion
+    {
+        // Retain the requested Euler arguments, not quaternion or transform math.
+        public float RecordedEulerZ;
+        public static Quaternion Euler(float x, float y, float z) { return new Quaternion { RecordedEulerZ = z }; }
+    }
     public struct Color
     {
         public float r, g, b, a;
@@ -137,7 +149,11 @@ namespace UnityEngine
     {
         // Explicit fixture response, not a geometric query or physics simulation.
         public static Collider2D LinecastResponse;
-        public static RaycastHit2D Linecast(Vector2 start, Vector2 end, int layerMask) { return new RaycastHit2D { collider = LinecastResponse }; }
+        public static Func<Vector2, Vector2, int, Collider2D> LinecastQuery;
+        public static RaycastHit2D Linecast(Vector2 start, Vector2 end, int layerMask)
+        {
+            return new RaycastHit2D { collider = LinecastQuery == null ? LinecastResponse : LinecastQuery(start, end, layerMask) };
+        }
     }
     public class Camera : Behaviour
     {

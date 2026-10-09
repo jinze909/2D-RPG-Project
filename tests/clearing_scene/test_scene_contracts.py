@@ -340,28 +340,6 @@ class ClearingSceneContracts(unittest.TestCase):
         self.assertIn("health.DebugDamageEnabled = false;", self.runtime,
                       "The legacy debug key must not silently kill the player inside the shipped encounter")
 
-    def test_enemy_attack_trigger_is_inside_its_warning_footprint(self):
-        fixed = method_body(self.runtime, "FixedUpdate")
-        start_condition = re.search(r"if\s*\([^\n]*toPlayer\.magnitude\s*<=?\s*" + NUMBER
-                                    + r"\)\s*\{\s*if\s*\(run\.BeginSentinelAttack", fixed)
-        self.assertIsNotNone(start_condition)
-        trigger_range = float(start_condition[1])
-        contact = re.search(r"Mathf\.Abs\(contact\.x\)\s*<=\s*" + NUMBER
-                            + r"\s*&&\s*Mathf\.Abs\(contact\.y\)\s*<=\s*" + NUMBER, fixed)
-        self.assertIsNotNone(contact)
-        half_x, half_y = map(float, contact.groups())
-        self.assertGreater(trigger_range, 0)
-        self.assertLessEqual(trigger_range, min(half_x, half_y),
-                             "A stationary player can trigger swings outside the damage footprint")
-        warning_edges = {}
-        for mark in re.finditer(r'Block\("(North|South|West|East) warning", warning,\s*' + VECTOR, self.visuals):
-            warning_edges[mark[1]] = tuple(map(float, mark.groups()[1:]))
-        self.assertEqual(set(warning_edges), {"North", "South", "West", "East"})
-        self.assertAlmostEqual(half_y, warning_edges["North"][1])
-        self.assertAlmostEqual(-half_y, warning_edges["South"][1])
-        self.assertAlmostEqual(-half_x, warning_edges["West"][0])
-        self.assertAlmostEqual(half_x, warning_edges["East"][0])
-
     def test_strike_visible_rectangle_matches_directional_contact(self):
         contact = method_body(self.runtime, "InStrike")
         branches = re.findall(r"forward\s*>=\s*" + NUMBER + r"\s*&&\s*forward\s*<=\s*" + NUMBER

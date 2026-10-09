@@ -109,6 +109,35 @@ internal static class SentinelTacticsChecks
                     Decision(kind, distance, SentinelDecision.Hold, false, false);
                 }
         });
+        Check("every admitted attack contains its standing target across cardinal and diagonal approaches", delegate {
+            float diagonal = (float)(1d / Math.Sqrt(2d));
+            float[,] directions = {
+                { 1f, 0f }, { -1f, 0f }, { 0f, 1f }, { 0f, -1f },
+                { diagonal, diagonal }, { -diagonal, diagonal },
+                { diagonal, -diagonal }, { -diagonal, -diagonal }
+            };
+            float[] distances = new float[56];
+            for (int i = 0; i <= 48; i++) distances[i] = i * .125f;
+            float[] boundaries = { .85f, 2.2f, 2.8f, 3.4f, 3.7f, 5f, 6f };
+            Array.Copy(boundaries, 0, distances, 49, boundaries.Length);
+            foreach (SentinelAttackKind kind in Kinds)
+            {
+                int admitted = 0;
+                foreach (bool canRetreat in new[] { true, false })
+                    foreach (float distance in distances)
+                        for (int direction = 0; direction < directions.GetLength(0); direction++)
+                        {
+                            if (SentinelTactics.ChooseAction(kind, distance, true, canRetreat) != SentinelDecision.Attack) continue;
+                            float targetX = 2f + directions[direction, 0] * distance;
+                            float targetY = -3f + directions[direction, 1] * distance;
+                            SentinelFootprint shape = Footprint(kind, 2f, -3f, targetX, targetY);
+                            Require(shape.Contains(targetX, targetY),
+                                    kind + " admitted target outside warning at distance=" + distance + " direction=" + direction);
+                            admitted++;
+                        }
+                Require(admitted > 0, "no admitted attacks exercised for " + kind);
+            }
+        });
         Check("invalid distances and unknown roles fail closed without attacks or movement", delegate {
             foreach (SentinelAttackKind kind in Kinds)
                 foreach (float distance in new[] { -.001f, float.NaN, float.PositiveInfinity, float.NegativeInfinity })

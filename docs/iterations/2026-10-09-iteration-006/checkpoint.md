@@ -26,3 +26,13 @@ Thorn Forest exists here, so those imported reports are not invented as regressi
 Remaining: runtime movement/admission/contacts, cached role silhouettes and warning
 geometry, edge counter guide, actual-method regression evidence, second checkpoint,
 review/PR/CI/ordinary master merge, final source ZIP/download and validated handoff.
+
+## Integrated stage — supersedes foundation unfinished list
+
+Runtime/Visuals/Hud now implement the roles and counters. Fresh final271project
++6distribution=277pass;20-source/86-reference APIcompile passed with InputSystem
+substitute.38puretactics,59actual-method presentation,14scene cases retain the
+old square-trigger guarantee through a pure standing-target footprint property.
+Independent code review found no actionable defects; handoff validates100/100.
+Foundation a5dabec CI37955083123 all12steps passed. Secondcheckpoint saves this
+verified integrated slice. PR/CI/mastermerge/finalZIPdownload remain next.

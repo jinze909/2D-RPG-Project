@@ -40,7 +40,7 @@ namespace Rpg.Gameplay
         private bool gateWasOpened;
         private long lastHitAudioActionId;
         private long lastKillAudioActionId;
-        private string feedback = "Defeat the three sentinels. Step out of orange warnings.";
+        private string feedback = "Defeat the sentinels. Sidestep spear lanes; leave rune marks.";
         private float feedbackUntil = 7f;
         private float nextHudAt;
 
@@ -55,6 +55,8 @@ namespace Rpg.Gameplay
             internal int[] LocalOrders;
             internal bool[] ActorLayers;
             internal Vector2 AttackCenter;
+            internal SentinelAttackKind Kind;
+            internal SentinelFootprint Footprint;
             internal float HurtUntil;
             internal SpriteRenderer WarningFill;
             internal SpriteRenderer WarningCrossA;
@@ -112,6 +114,7 @@ namespace Rpg.Gameplay
                 enemy.Body.constraints = RigidbodyConstraints2D.FreezeRotation;
                 enemy.Body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
                 enemy.Body.interpolation = RigidbodyInterpolation2D.Interpolate;
+                ConfigureSentinelRole(enemy, i);
                 PreparePresentation(enemy, i);
                 // Cache once; keep local body/head/UI order inside one actor's pixel-depth slot.
                 enemy.Renderers = enemy.Object.GetComponentsInChildren<SpriteRenderer>();
@@ -284,10 +287,15 @@ namespace Rpg.Gameplay
             sound.Attack(kind == PlayerAttackKind.Burst);
         }
 
+        private void ConfigureSentinelRole(EnemyView enemy, int index)
+        {
+            enemy.Kind = SentinelTactics.RoleForIndex(index);
+        }
+
         private void PreparePresentation(EnemyView enemy, int index)
         {
             // All feedback renderers are allocated once. The existing four-border
-            // warning remains the fixed 1.9-unit contact outline throughout a swing.
+            // warning uses the role-sized fixed contact outline throughout an attack.
             enemy.WarningFill = visuals.Block("Telegraph charge", enemy.Warning, Vector2.zero,
                 Vector2.one, ClearingPalette.WithAlpha(ClearingPalette.Amber, .15f), -3);
             enemy.WarningCrossA = visuals.Block("Active cross A", enemy.Warning, Vector2.zero,
@@ -339,6 +347,9 @@ namespace Rpg.Gameplay
                     ShowImpact(enemy, state.IsDead, strikeKind == PlayerAttackKind.Burst);
                     if (state.IsDead)
                     {
+                        enemy.Footprint = null;
+                        enemy.Body.velocity = Vector2.zero;
+                        enemy.Warning.gameObject.SetActive(false);
                         enemy.Object.SetActive(false);
                         Feedback("Sentinel defeated. " + run.DefeatedCount + "/3 seals broken. +" +
                             ClearingRun.CoinsPerSentinel + " coins.", 2f);
@@ -351,19 +362,46 @@ namespace Rpg.Gameplay
                 EnemyView enemy = enemies[i];
                 SentinelState state = run.GetSentinel(i);
                 if (state.IsDead) continue;
-                Vector2 toPlayer = PlayerPoint - enemy.Body.position;
-                bool clear = ClearLine(enemy.Body.position, PlayerPoint);
-                if (state.AttackPhase == SentinelAttackPhase.Ready && clear && toPlayer.magnitude <= .85f)
+                Vector2 target = PlayerPoint;
+                Vector2 origin = enemy.Body.position;
+                Vector2 toPlayer = target - origin;
+                bool clear = ClearLine(origin, target);
+                SentinelDecision decision = SentinelDecision.Hold;
+                if (state.AttackPhase == SentinelAttackPhase.Ready)
                 {
-                    if (run.BeginSentinelAttack(i)) enemy.AttackCenter = enemy.Body.position;
+                    enemy.Footprint = null;
+                    bool canRetreat = toPlayer.sqrMagnitude > .0001f;
+                    if (enemy.Kind == SentinelAttackKind.Sigil && toPlayer.magnitude < 2.2f && canRetreat)
+                        canRetreat = ClearLine(origin, origin - toPlayer.normalized * .55f);
+                    decision = SentinelTactics.ChooseAction(enemy.Kind, toPlayer.magnitude, clear, canRetreat);
+                    if (decision == SentinelDecision.Attack)
+                    {
+                        SentinelFootprint footprint = SentinelTactics.CreateFootprint(enemy.Kind,
+                            origin.x, origin.y, target.x, target.y);
+                        if (footprint != null && run.BeginSentinelAttack(i, enemy.Kind))
+                        {
+                            enemy.Footprint = footprint;
+                            enemy.AttackCenter = new Vector2(footprint.CenterX, footprint.CenterY);
+                        }
+                    }
                 }
-                if (state.AttackPhase == SentinelAttackPhase.Ready && clear && toPlayer.magnitude < 3.7f)
-                    enemy.Body.MovePosition(enemy.Body.position + toPlayer.normalized * (1.1f * Time.fixedDeltaTime));
+                // Never slide through telegraph/active/recovery or after admission.
+                if (state.AttackPhase == SentinelAttackPhase.Ready &&
+                    (decision == SentinelDecision.Approach || decision == SentinelDecision.Retreat))
+                {
+                    Vector2 direction = decision == SentinelDecision.Retreat ? -toPlayer.normalized : toPlayer.normalized;
+                    enemy.Body.MovePosition(origin + direction * (1.1f * Time.fixedDeltaTime));
+                }
                 else enemy.Body.velocity = Vector2.zero;
-                // The warning is a stationary square; collision uses that same saved footprint.
-                Vector2 contact = PlayerPoint - enemy.AttackCenter;
-                if (state.AttackPhase == SentinelAttackPhase.Active && Mathf.Abs(contact.x) <= .95f && Mathf.Abs(contact.y) <= .95f &&
-                    ClearLine(enemy.AttackCenter, PlayerPoint) && run.TryResolveSentinelHit(i))
+                // Warning and contact use the same immutable snapshot, including
+                // the original LOS origin for a remotely placed sigil.
+                SentinelFootprint snapshot = enemy.Footprint;
+                Vector2 contact = target - enemy.AttackCenter;
+                bool inside = snapshot != null ? snapshot.Contains(target.x, target.y) :
+                    Mathf.Abs(contact.x) <= .95f && Mathf.Abs(contact.y) <= .95f;
+                Vector2 lineOrigin = snapshot != null ? new Vector2(snapshot.OriginX, snapshot.OriginY) : enemy.AttackCenter;
+                if (state.AttackPhase == SentinelAttackPhase.Active && inside &&
+                    ClearLine(lineOrigin, target) && run.TryResolveSentinelHit(i))
                 {
                     health.TakeDamage(ClearingRun.SentinelDamage);
                     sound.Hurt();
@@ -443,7 +481,8 @@ namespace Rpg.Gameplay
                 RefreshImpact(enemy);
                 enemy.Eye.color = run.Time < enemy.HurtUntil ? ClearingPalette.Cream :
                     state.AttackPhase == SentinelAttackPhase.Active ? ClearingPalette.Cream :
-                    state.AttackPhase == SentinelAttackPhase.Telegraph ? ClearingPalette.Danger : ClearingPalette.AmberBright;
+                    state.AttackPhase == SentinelAttackPhase.Telegraph ? ClearingPalette.Danger :
+                    enemy.Kind == SentinelAttackKind.Sigil ? ClearingPalette.CyanBright : ClearingPalette.AmberBright;
                 enemy.Health.color = run.Time < enemy.HurtUntil ? ClearingPalette.Cream : ClearingPalette.Amber;
                 float ratio = state.Health / ClearingRun.SentinelMaxHealth;
                 enemy.Health.transform.localScale = new Vector3(.72f * ratio, .067f, 1f);
@@ -457,12 +496,19 @@ namespace Rpg.Gameplay
             bool warning = state.AttackPhase == SentinelAttackPhase.Telegraph || active;
             enemy.Warning.gameObject.SetActive(warning && !state.IsDead && !run.IsDead && !run.IsComplete);
             if (!warning) return;
-            enemy.Warning.position = enemy.AttackCenter;
+            SentinelFootprint snapshot = enemy.Footprint;
+            enemy.Warning.position = snapshot != null ? new Vector2(snapshot.CenterX, snapshot.CenterY) : enemy.AttackCenter;
+            enemy.Warning.rotation = Quaternion.Euler(0f, 0f, snapshot != null ? snapshot.AngleDegrees : 0f);
+            enemy.Warning.localScale = Vector3.one;
             // Only the inner charge grows. The outer damage boundary never moves,
             // shrinks or expands; an active X adds a non-color timing cue.
             float progress = active ? 1f : Mathf.Clamp01(state.PhaseProgress);
-            float fill = 1.9f * progress;
-            enemy.WarningFill.transform.localScale = new Vector3(fill, fill, 1f);
+            float width = snapshot != null ? snapshot.Width : 1.9f;
+            float height = snapshot != null ? snapshot.Height : 1.9f;
+            enemy.WarningFill.transform.localScale = new Vector3(width * progress, height * progress, 1f);
+            float crossLength = enemy.Kind == SentinelAttackKind.Sweep ? 1.3f : .68f * Mathf.Min(width, height);
+            enemy.WarningCrossA.transform.localScale = new Vector3(crossLength, 2f / 30f, 1f);
+            enemy.WarningCrossB.transform.localScale = new Vector3(crossLength, 2f / 30f, 1f);
             enemy.WarningFill.color = ClearingPalette.WithAlpha(active ? ClearingPalette.Danger : ClearingPalette.Amber,
                 active ? .32f : .08f + .14f * progress);
             enemy.WarningCrossA.gameObject.SetActive(active);
@@ -552,6 +598,7 @@ namespace Rpg.Gameplay
             {
                 if (enemy == null) continue;
                 enemy.Body.velocity = Vector2.zero;
+                enemy.Footprint = null;
                 if (enemy.Warning != null) enemy.Warning.gameObject.SetActive(false);
                 if (enemy.Impact != null) enemy.Impact.gameObject.SetActive(false);
             }
@@ -591,6 +638,7 @@ namespace Rpg.Gameplay
                 enemy.Body.position = enemySpawns[i];
                 enemy.Body.velocity = Vector2.zero;
                 enemy.HurtUntil = 0f;
+                enemy.Footprint = null;
                 enemy.ImpactStartedAt = 0d;
                 enemy.ImpactUntil = 0d;
                 enemy.ImpactWasKill = false;
@@ -600,7 +648,7 @@ namespace Rpg.Gameplay
                 enemy.Warning.gameObject.SetActive(false);
             }
             Feedback(lostReward ? "Previous run coins were not saved. Defeat the three sentinels." :
-                "Defeat the three sentinels. Step out of orange warnings.", 7f);
+                "Defeat the sentinels. Sidestep spear lanes; leave rune marks.", 7f);
         }
 
         private void OnDisable()

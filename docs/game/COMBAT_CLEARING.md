@@ -1,4 +1,4 @@
-# Combat Clearing — iterations 2/3 candidate
+# Combat Clearing — current master and iteration 6 tactics
 
 Open `Assets/Scenes/CombatClearing.unity` in international Unity 2022.3.53f1.
 It is the candidate's first build scene; SampleScene remains available unchanged.
@@ -10,21 +10,27 @@ remain pending because the cloud editor has no valid license.
 
 Move with WASD, arrows, left stick or D-pad. Clear three moss sentinels, cross the
 opened north seal and press E near the beacon. Each defeated sentinel awards
-10 run-local coins exactly once. No persistent economy/save or equipment is claimed.
+10 run-local coins exactly once. E at the completed beacon saves all 30 coins;
+1/2 (including keypad) buys bounded HP/MP upgrades on the result screen and R
+applies them next run. See CLEARING_PROGRESSION.md for failures and save protection.
+Equipment/world-state saves are absent.
 
 | Action | Control | Rule |
 | --- | --- | --- |
 | Light strike | J / Space | 18 damage, 0.45 s cooldown, no mana |
 | Mana burst | K | 30 damage, 6 MP, 1.2 s cooldown |
 | Beacon | E | Nearby, alive, all three sentinels defeated |
-| Retry | R | After defeat/completion; resources, enemies, gate and cooldowns reset |
+| Upgrades | 1 / 2 or keypad | After completion/banking; +2 max HP/MP per rank next run |
+| Retry | R | After defeat/completion; reset encounter; preserve bank/ranks |
 | Pause | Esc | Combat/mana regeneration freeze; resume clears cached motion |
 | Mute | M | Synthesized feedback cues |
 
-Mana regenerates at 0.8 MP/s during an active run. Sentinels have 54 HP and deal
-2 damage after a 0.65 s stationary orange square warning. The contact window is
-0.12 s, recovery 0.7 s and shared player immunity 0.55 s. Warning and damage use
-the same saved footprint. Walls obstruct damage. A player action hits each enemy
+Mana regenerates at 0.8 MP/s during an active run. All sentinels have 54 HP and
+deal 2 damage with shared player immunity of 0.55 s. Iteration 6 gives the three
+spawns distinct roles: Warden square sweep, stationary Lancer forward lane, and
+Seer spacing/target-locked sigil. Role timing, movement and counters are specified
+in [SENTINEL_TACTICS.md](SENTINEL_TACTICS.md). Warning and damage use
+the same immutable saved footprint. Walls obstruct damage. A player action hits each enemy
 at most once; aim is fixed for that action while locomotion remains responsive.
 Each physics tick resolves all admitted player contacts before the surviving
 sentinels' contacts. A lethal sentinel's index does not truncate a multi-target
@@ -40,13 +46,13 @@ blockout. Six original synthesized cues are cached once and mixed quietly with
 three pitch variants; accepted contact and kills now have distinct confirmation.
 Neither their sound quality nor native visual consistency has been accepted yet.
 
-The orange warning keeps the original fixed damage outline while its interior
+The orange warning keeps each attack's fixed damage outline while its interior
 fills over the windup. During the active window an X motif distinguishes it from
 charging. Hit pulses last 0.12 seconds and kill pulses 0.3 seconds, including after
 the enemy body hides. All feedback is preallocated and follows simulation time:
 pause freezes it, retry/disable clears it. A multi-target action emits at most one
-hit cue and one later kill upgrade. Damage, timings, rewards and gate rules are
-unchanged. HUD messages replace the bottom-right help text rather than occupying
+hit cue and one later kill upgrade. Player damage/costs, rewards and gate rules remain unchanged; the new enemy
+roles have distinct windup/contact/recovery times. HUD messages replace the bottom-right help text rather than occupying
 the central combat band; unavailable actions/help hide on pause, defeat or victory.
 
 ## Architecture and state ownership
@@ -72,7 +78,7 @@ The older `jinze909/rpg-by-ai` reference was inspected at
 and threat-readable HUD ideas informed this implementation. Its OnGUI architecture,
 assets, save data and unfinished north-arrow candidates were not transplanted.
 
-## Required native acceptance before merge
+## Optional native acceptance when tooling is available
 
 1. Import all packages with no console errors in licensed international 2022.3.53f1.
 2. Check all movement directions, quick turns, direction+attack on one frame,
@@ -91,4 +97,5 @@ assets, save data and unfinished north-arrow candidates were not transplanted.
    playthrough and appropriate native EditMode/PlayMode/platform build checks.
 
 Offline compilation/rules/geometry checks cannot establish any of these native
-acceptance results. The candidate remains isolated until that evidence exists.
+acceptance results. The latest user instruction permits ordinary reviewed merges
+with sufficient available test/CI evidence; native checks remain explicitly unrun.

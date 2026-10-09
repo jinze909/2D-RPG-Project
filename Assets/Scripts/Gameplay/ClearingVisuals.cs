@@ -118,6 +118,7 @@ namespace Rpg.Gameplay
         internal GameObject CreateSentinel(int id, Vector2 position, out SpriteRenderer eye,
             out SpriteRenderer healthFill, out Transform warning)
         {
+            SentinelAttackKind kind = SentinelTactics.RoleForIndex(id);
             GameObject enemy = new GameObject("Moss sentinel " + (id + 1));
             enemy.transform.SetParent(root, false);
             enemy.transform.position = position;
@@ -126,8 +127,10 @@ namespace Rpg.Gameplay
                 ClearingPalette.WithAlpha(ClearingPalette.Ink, .75f), -4);
             Art("Chipped moss sentinel", enemy.transform, Vector2.zero, "sentinel",
                 ClearingPixelArt.RasterSentinel, new Vector2(.5f, 0f), 2, true);
+            CreateRoleMarker(enemy.transform, kind);
+            Color readyColor = kind == SentinelAttackKind.Sigil ? ClearingPalette.CyanBright : ClearingPalette.AmberBright;
             eye = Block("Warning eye", enemy.transform, new Vector2(0, 1.08f), new Vector2(.267f, .067f),
-                ClearingPalette.AmberBright, 5, true);
+                readyColor, 5, true);
             Block("Health background", enemy.transform, new Vector2(0, 1.5f), new Vector2(.72f, .067f),
                 ClearingPalette.Ink, 6, true);
             healthFill = Block("Health", enemy.transform, new Vector2(0, 1.5f), new Vector2(.72f, .067f),
@@ -135,13 +138,61 @@ namespace Rpg.Gameplay
             GameObject mark = new GameObject("Attack warning footprint");
             mark.transform.SetParent(enemy.transform, false);
             warning = mark.transform;
-            Color warningColor = ClearingPalette.WithAlpha(ClearingPalette.AmberBright, .85f);
-            Block("North warning", warning, new Vector2(0, .95f), new Vector2(1.9f, .067f), warningColor, -2);
-            Block("South warning", warning, new Vector2(0, -.95f), new Vector2(1.9f, .067f), warningColor, -2);
-            Block("West warning", warning, new Vector2(-.95f, 0), new Vector2(.067f, 1.9f), warningColor, -2);
-            Block("East warning", warning, new Vector2(.95f, 0), new Vector2(.067f, 1.9f), warningColor, -2);
+            // Runtime positions/rotates this unit-scale root using the same locked
+            // footprint as contact checks. Stroke thickness stays constant for every role.
+            SentinelFootprint footprint = SentinelTactics.CreateFootprint(kind, 0f, 0f, 1f, 0f);
+            Color warningColor = ClearingPalette.WithAlpha(readyColor, .85f);
+            Block("North warning", warning, new Vector2(0, footprint.Height * .5f), new Vector2(footprint.Width, .067f), warningColor, -2);
+            Block("South warning", warning, new Vector2(0, -footprint.Height * .5f), new Vector2(footprint.Width, .067f), warningColor, -2);
+            Block("West warning", warning, new Vector2(-footprint.Width * .5f, 0), new Vector2(.067f, footprint.Height), warningColor, -2);
+            Block("East warning", warning, new Vector2(footprint.Width * .5f, 0), new Vector2(.067f, footprint.Height), warningColor, -2);
             mark.SetActive(false);
             return enemy;
+        }
+
+        private void CreateRoleMarker(Transform actor, SentinelAttackKind kind)
+        {
+            // Original shared raster stays intact. Cached, pixel-sized silhouettes
+            // identify tactics without relying on hue and stay below the health bar.
+            const float unit = 1f / 30f;
+            if (kind == SentinelAttackKind.Sweep)
+            {
+                Block("Warden crest", actor, new Vector2(-18f * unit, 23f * unit), new Vector2(10f * unit, 13f * unit),
+                    ClearingPalette.Ink, 4, true);
+                Block("Warden shield face", actor, new Vector2(-18f * unit, 23f * unit), new Vector2(6f * unit, 9f * unit),
+                    ClearingPalette.StoneLight, 5, true);
+                Block("Warden crest upright", actor, new Vector2(-18f * unit, 23f * unit), new Vector2(2f * unit, 6f * unit),
+                    ClearingPalette.AmberBright, 6, true);
+                Block("Warden crest crossbar", actor, new Vector2(-18f * unit, 23f * unit), new Vector2(6f * unit, 2f * unit),
+                    ClearingPalette.AmberBright, 6, true);
+            }
+            else if (kind == SentinelAttackKind.Lance)
+            {
+                Block("Lancer side spear", actor, new Vector2(20f * unit, 20f * unit), new Vector2(2f * unit, 34f * unit),
+                    ClearingPalette.Ink, 4, true);
+                Block("Lancer spear shaft", actor, new Vector2(20f * unit, 20f * unit), new Vector2(unit, 32f * unit),
+                    ClearingPalette.StoneLight, 5, true);
+                Block("Lancer spear shoulder", actor, new Vector2(20f * unit, 37f * unit), new Vector2(6f * unit, 2f * unit),
+                    ClearingPalette.AmberBright, 5, true);
+                Block("Lancer spear point", actor, new Vector2(20f * unit, 39f * unit), new Vector2(2f * unit, 4f * unit),
+                    ClearingPalette.Cream, 5, true);
+            }
+            else
+            {
+                Block("Seer rune", actor, new Vector2(-20f * unit, 35f * unit), new Vector2(2f * unit, 2f * unit),
+                    ClearingPalette.CyanBright, 5, true);
+                Block("Seer rune base", actor, new Vector2(-20f * unit, 23f * unit), new Vector2(2f * unit, 2f * unit),
+                    ClearingPalette.CyanBright, 5, true);
+                for (int side = -1; side <= 1; side += 2)
+                {
+                    Block("Seer rune upper " + side, actor, new Vector2((-20f + side * 2f) * unit, 33f * unit),
+                        new Vector2(2f * unit, 2f * unit), ClearingPalette.CyanBright, 5, true);
+                    Block("Seer rune lower " + side, actor, new Vector2((-20f + side * 2f) * unit, 25f * unit),
+                        new Vector2(2f * unit, 2f * unit), ClearingPalette.CyanBright, 5, true);
+                    Block("Seer rune side " + side, actor, new Vector2((-20f + side * 4f) * unit, 29f * unit),
+                        new Vector2(2f * unit, 6f * unit), ClearingPalette.CyanBright, 5, true);
+                }
+            }
         }
 
         internal void Dispose()

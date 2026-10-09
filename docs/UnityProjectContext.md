@@ -78,3 +78,12 @@ Latest user makes native acceptance optional for ordinary merging. PR4 merged
 (a20cb5a) and PR1 merged into master(cb2d6fc) after exact green candidate CI and
 cumulative review. Prior draft/master statements are historical. The actual
 feature tree equals tested50d42ce; native/tooling limitations still apply.
+
+## Iteration 6 tactical encounter update (2026-10-09 local)
+
+From master d8c7048, immutable SentinelTactics supplies three distinct roles and
+contact snapshots; Runtime explicitly assigns them at startup, controls spacing/
+admission and uses the same footprint for warnings and hits. Visuals/Hud add cached
+role silhouettes, constant-stroke warnings and edge counters. Existing progression
+and original hero/scene/package/settings remain. Real API compilation:20sources,
+86references, InputSystem substitute. Live native/editor evidence remains absent.

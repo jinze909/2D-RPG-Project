@@ -16,8 +16,10 @@ China package services. Preserve the specified editor version.
   is never a save file. Iteration 5 adds engine-independent clearing progression
   and versioned local storage, result-screen purchases and next-run actor bonuses.
   Inventory, equipment and classes remain absent.
-- Iteration 6 adds pure SentinelTactics and role timing; the foundation checkpoint
-  precedes live Runtime/Visuals/Hud wiring. Resume its explicit unfinished list.
+- Iteration 6 wires Warden sweep, stationary Lancer lane and Seer spacing/sigil
+  to the actual clearing. SentinelTactics captures immutable role geometry shared
+  by contact and warning. Read docs/game/SENTINEL_TACTICS.md; preserve original
+  caster LOS, fixed targets, phase movement locks and snapshot cleanup on reset.
 - `Gameplay/ClearingRules` is engine-independent timing/admission/reward logic;
   `ClearingRuntime` owns scene positions, contacts, input and the resource bridge.
   `ClearingVisuals`, `ClearingHud` and `ClearingAudio` own presentation. Runtime
