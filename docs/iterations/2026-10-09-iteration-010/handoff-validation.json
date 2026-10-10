@@ -42,6 +42,11 @@
       "label": "independent review",
       "target": "independent-review.md",
       "exists": true
+    },
+    {
+      "label": "publication evidence",
+      "target": "publication.md",
+      "exists": true
     }
   ]
 }

@@ -26,7 +26,7 @@ expires that notice. Real first red-to-green replay is 105/3 → 108/0 at safely
 API-reference compilation is 26 sources/86 real assemblies (Input substitute),
 and exact checkpoint CI38030799993 passed all 12 steps/artifact11661429449.
 Independent review adds one real paused/dead Recovery instruction failure; focused
-patch passes independent 109/0 replay; permanent expanded123/0 and full379+6=385/API26/86 pass. Independent final123/19/APIreview finds no remaining blocker within scope. Final PR/CI/source archive remain publication work. Cached mark/halo geometry and
+patch passes independent 109/0 replay; permanent expanded123/0 and full379+6=385/API26/86 pass. Independent final123/19/APIreview finds no remaining blocker within scope. PR9 normally mergeda61fada after exact reviewed-headCI3803143135112/12; final exact-sourceCI/archive identities resolve externally after publication. Cached mark/halo geometry and
 audio call counts stay code-level evidence, never native visibility or audition.
 
 ## Optional native acceptance, when a licensed Editor becomes available

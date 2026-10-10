@@ -1,35 +1,35 @@
 # Current continuation / next iteration
 
-## Current tenth continuation — finish publication, then next player value
+## First verify tenth receipt, then choose the next coherent improvement
 
-Read [the tenth handoff](docs/iterations/2026-10-09-iteration-010/handoff.md), then
-verify actual branch/HEAD/dirty/unpushed/PR/CI and external receipt. Ninthba4cd1d,
-firstac3aa87 and code-complete36567e8 are recovery paths. Scoped Guardian feedback
-is implemented and tested:385groups/API26/86/independent123presentation+19Boss,
-handoff100. Do not reimplement it or infer native acceptance from these checks.
+Read [the tenth handoff](docs/iterations/2026-10-09-iteration-010/handoff.md) and
+[publication evidence](docs/iterations/2026-10-09-iteration-010/publication.md).
+Compare actual branch/HEAD/dirty/unpushed/PR/CI with the external tenth receipt and
+final-handoff on rpg-deliveries. PR #9 normally merged reviewed7481f5b at a61fada;
+exact CI38031431351/job114153017263 passes12/12, artifact11661974248 exists. Expected
+parents/tree equality and clean fast-forward were verified. Scoped feedback,
+385 checks/API26/86/independent123presentation+19Boss and handoff100 are complete.
 
-1. Code checkpoint36567e8 CI38031110628/job114152067191 passes all12 steps with
-   artifact11661564119. Inspect exact final source CI and uploaded artifacts; review and
-   normally merge the complete PR to master. Ordinary autonomous merge is already
-   authorized; native checks optional. Never force push or overwrite dirty work.
-2. Publish exact final source and CI; package complete Assets/Packages/ProjectSettings
-   and .meta with real LFS, excluding caches. Verify CRC, every member SHA-256,
-   source bytes and immutable HTTPS; publish receipt/finalhandoff/validation using
-   confirmed noreply identity. Preserve all22existing ZIP/checksum paths/history.
-3. If external tenth receipt is already complete on next resume, verify identities
-   and move forward. Source records cannot embed their own finalSHA/archivehash;
-   the immutable receipt resolves those exact identities after publication.
+1. Resolve final exact source CI and complete Unity ZIP/CRC/member SHA-256/source
+   bytes/LFS/immutable HTTPS/receipt identities in iteration-010-delivery.json.
+   If any publication step is missing, finish it first using confirmed noreply
+   identity. Preserve all22earlier ZIP/checksum paths and all source/delivery history.
+2. If receipt already confirms delivery, verify it and move forward; do not repeat
+   tenth fixes, unchanged checks or packaging simply to start another iteration.
+   The source handoff precedes its own finalSHA/archive, so external identities are
+   authoritative. Never force push or overwrite uncommitted work.
+3. Most useful optional native evidence is a full clearing/Boss playthrough with
+   real input/physics, low-resource entry, locked warning/recovery, phase threshold
+   beside supplies, pause/expiry, mute, death/retry and saved beacon completion.
+   Record input/animation/render/audio and human difficulty separately. Do not
+   repeat license/Editor/MCP probes if the known environment has not changed.
 
-Most useful optional native acceptance: full clearing/Boss encounter with real
-keyboard/controller/full/partial input; low-resource entry, locked warning/contact,
-phase threshold beside supplies, Recovery mark, pause/expiry, mute/cue, death/retry,
-beacon save and next-run upgrades. Record input/physics/animation/render/audio and
-human difficulty separately. No unchanged license/MCP probe should be repeated.
-If native tooling stays unavailable, choose one small exploration or NPC narrative
-objective tied to the clearing that closes an entry/action/result/reward loop.
-Preserve108HP/2damage/timings until evidence supports tuning. Full forest/archery/
-quests/classes/equipment/worldsave remain absent future work. Historical visual
-complaints are references, not new confirmed bugs.
+If native tooling stays unavailable, select one small exploration or NPC narrative
+objective tied to the clearing, closing entry/action/result/reward. Preserve108HP/
+2damage/timing until evidence supports tuning. Full forest/archery/full quests/
+classes/equipment/world save remain absent future work; historical visual complaints
+are references, not new confirmed bugs. Implemented code/tests/CI do not establish
+native readability, animation smoothness, audio mix, player difficulty or feel.
 
 ## Historical ninth continuation — superseded by current tenth task
 

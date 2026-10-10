@@ -63,8 +63,13 @@ J/空格攻击，K 法力爆发；击败三守卫后 E 唤醒中央祭坛 Boss�
 阶段脉冲及一次音效。暂停冻结，停用/结束/重试清理；108 HP、伤害、时序和奖励
 保持原值。385 项离线/打包检查通过，含 123 项实际方法表现回归，26 份脚本
 Unity API 引用编译通过（Input System 替身）；独立代码审查未发现本轮阻塞问题。
-检查点 `ac3aa87`、`36567e8` 的 CI 均 12/12 通过；最终 PR、源码 CI 与
-完整 ZIP 交付尚待核实。见 [第十轮接力](docs/iterations/2026-10-09-iteration-010/handoff.md)。
+检查点 `ac3aa87`、`36567e8` 及审查提交 `7481f5b` 的 CI 均 12/12 通过；
+[PR #9](https://github.com/jinze909/2D-RPG-Project/pull/9) 已普通合并为 `a61fada`，
+合并父提交与代码树一致性已核实。见 [第十轮接力](docs/iterations/2026-10-09-iteration-010/handoff.md)
+及 [合并证据](docs/iterations/2026-10-09-iteration-010/publication.md)。最终源码 CI、
+完整 ZIP、哈希和下载回验以发布后的独立
+[第十轮交付回执](https://raw.githubusercontent.com/jinze909/2D-RPG-Project/rpg-deliveries/iteration-010-delivery.json)
+为准；这份源码记录不预先宣称 ZIP 上传完成。
 难度、视觉可读性、动画与音效体验 **尚未进行 Unity 原生验收**；模拟不等于试玩。
 注册源已改为 `packages.unity.com`，未升级任何锁定包版本。云端缺少有效 Unity
 许可证，尚未完成原生导入、真实碰撞、Animator 视觉或游戏试玩；离线检查不代替它们。

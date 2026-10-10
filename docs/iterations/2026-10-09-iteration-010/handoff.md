@@ -1,4 +1,4 @@
-# Handoff: Iteration 10 verified Guardian feedback, publication pending
+# Handoff: Iteration 10 reviewed Guardian feedback merged to master
 
 ## Session Metadata
 
@@ -25,8 +25,13 @@ still advising strike; fix passes109/0 and permanent expanded123/0. Fresh full
 379 project +6 distribution =385 checks/API26/86 and independent123presentation/
 19Boss/APIreview pass. No remaining blocker found within scope. Code checkpoint
 36567e8 saves final source/fixtures; exactCI38031110628/job11415206719112/12 passes,
-nonexpired artifact11661564119 exists. Final PR/master/sourceCI/fullZIP/HTTPS and
-external receipt remain publication work. Native tests and player playtests unrun.
+nonexpired artifact11661564119 exists. Reviewed documentation/source7481f5bb7db81ba5a3659631ff1fee1b3af85584 exact
+CI38031431351/job114153017263 passes12/12, artifact11661974248 exists. PR #9 normally
+merged it at a61fada379d250a4e8d55d851863025367fa3fbd; fetched parents ba4cd1d +7481f5b
+and exact tree equality are verified. Local development checkout fast-forwarded
+cleanly to actual master merge. Merged-masterCI38031515174/job114153259081 passes
+all12 steps; nonexpiredartifact11661899444 exists. Final sourceCI/fullZIP/HTTPS/external receipt
+identities resolve externally after this final source record is published. Native tests and player playtests unrun.
 
 ## Architecture Overview
 
@@ -79,9 +84,11 @@ Do not repeat an unchanged license or Editor connection probe.
 
 ## Immediate Next Steps
 
-Verify latest branch/HEAD/dirty/unpushed and exact final documentation-source CI
-and artifact. Review complete PR and normally merge to master; bind exact delivered
-source with its CI. Package full Unity source with Assets/Packages/ProjectSettings/
+First compare actual Git/PR/CI and the external iteration-010-delivery receipt and
+final-handoff. The focused code, tests, independent review and ordinary PR9 merge
+are complete; do not redo them. Resolve final exact sourceCI/archive/download
+identities there. If publication is missing, bind exact source with CI and package
+full Unity source with Assets/Packages/ProjectSettings/
 .meta/real LFS and no Library/Temp/Logs/credentials. Verify CRC/every member SHA-256/
 source bytes/immutable HTTPS and publish independent receipt/final-handoff/validation.
 If later receipt already confirms completion, verify identities then move forward
@@ -122,11 +129,12 @@ are unrun: **尚未进行 Unity 原生验收**. No remaining blocker found in bo
 Python/Pillow/Git/LFS, retained Unity Mono/Roslyn/API refs, GitHub connector and
 Actions work. System mono is not on PATH; runners discover retained tools. No
 connected licensed Editor/MCP/native operation, new third-party code or credential
-values/license contents. Root and agents finish CI/PR/master/archive publication.
+values/license contents. Root and agents finish final-source CI/archive/receipt publication.
 
 ## Related Resources
 
 [Boss contract](../../game/BOSS_ENCOUNTER.md), [evidence/native protocol](evidence-and-native-protocol.md),
 [bounded simulation review](bounded-balance-review.md), [validation provenance](validation-provenance.md),
-[independent review](independent-review.md), five current root records and receipts.
+[independent review](independent-review.md), [publication evidence](publication.md),
+five current root records and receipts.
 Full source ZIP is not a native player build. Final delivery identities are external.

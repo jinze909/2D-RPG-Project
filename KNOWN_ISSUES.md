@@ -1,26 +1,28 @@
 # Known issues
 
-## Current evidence categories — verified iteration 10 gameplay
+## Current evidence categories — iteration 10 merged gameplay
 
 This section is authoritative. Older “No Boss”, unmerged PR and pending ninth
 statements retain checkpoint history and do not describe current functionality.
+PR #9 normally merged reviewed7481f5b at a61fada after exact CI12/12; both merge
+parents and equality to the reviewed source tree were verified after fetch.
 
 | Category | Actual status |
 | --- | --- |
-| Implemented and actual-code tested | Ninth complete Boss/growth/supply/damage loop; tenth state-aware objective, simulation-time supply-coexisting phase notice, cached recovery/phase shapes and once-per-attempt cue. Fresh 379 project + 6 distribution =385 checks, including123presentation/19Boss/17scene; five static envelopes pass. API26scripts/86realUnityrefs passes with Input System substitute. |
-| Validated in real Unity Editor | None reported this session. API-reference compilation is not Editor import/compile/tests or play. |
-| Confirmed and corrected | Original105/3 →108/0 resolves Recovery dodge wording, masked phase notice and paused expiry. Independent108/1 →109/0 corrects paused/dead Recovery instruction. Permanent expanded123/0 plus independent123/19/API checks pass. |
-| Confirmed but unfixed production defects | None found in the bounded reviewed tenth scope. This is not a claim that all native gameplay is bug-free. |
-| Experience awaiting native acceptance | **尚未进行 Unity 原生验收**: Boss difficulty/reaction demands, locked-warning/marker/halo readability, font/layout/pixel alignment, actual input/collision/Animator, sound output/mix and player build. Static/offline/simulated results establish none of these experiences. |
-| Absent future features | Full classes, inventory/equipment, full quest/story/NPC dialogue, world/mid-fight saves, complete forest and archery gameplay. These are not current confirmed bugs or fixed features. |
-| Publication still pending | Final source CI, reviewed normal PR/master merge, exact-source full Unity ZIP, CRC/member SHA-256/source-byte/LFS/immutable HTTPS and external final receipt. Ninth source/delivery remains complete. |
+| Implemented and actual-code tested | Complete Boss/growth/supply/damage loop; tenth state-aware objective, simulation-time supply-coexisting phase notice, cached recovery/phase shapes and once-per-attempt cue. Fresh379 project +6 distribution =385 checks, including123 presentation/19 Boss/17 scene; five static envelopes pass. API26 scripts/86 real Unity references passes with Input substitute; reviewed-head CI38031431351 all12 steps succeeds. |
+| Validated in real Unity Editor | None reported this session. API-reference compilation is not native Editor import/compile/tests or play. |
+| Confirmed and corrected | Original105/3→108/0 resolves Recovery dodge wording, masked phase notice and paused expiry. Independent108/1→109/0 corrects paused/dead Recovery instruction. Permanent expanded123/0 and independent123/19/API checks pass. |
+| Confirmed but unfixed production defects | None found in the bounded reviewed tenth scope. This does not claim all native gameplay is bug-free. |
+| Experience awaiting native acceptance | **尚未进行 Unity 原生验收**: Boss difficulty/reaction demands, locked warning/marker/halo readability, font/layout/pixel alignment, actual input/collision/Animator, sound output/mix and player build. Static/offline/simulated results establish none of these experiences. |
+| Absent future features | Full classes, inventory/equipment, full quest/story/NPC dialogue, world/mid-fight saves, complete forest and archery gameplay. These are future content, not confirmed current bugs or fixed features. |
+| Final delivery identity | Final exact-source CI, full Unity ZIP/CRC/member SHA-256/source-byte/LFS/immutable HTTPS and receipt/final-handoff resolve externally in the tenth rpg-deliveries receipt after publication. This source record precedes its own final commit/archive and does not infer success; verify the actual receipt on resume. |
 
-The profile saves only bounded clearing coins/upgrades. Boss retains108HP/2damage,
-all original phase timings, no extra currency or awakening heal/refill. Recovery
-marker identifies an attack opportunity, not invulnerability against other hazards.
-Original walking slice/pivot limits need visual review. Historical sliding/leg/
-directional deformation/UI reports remain unverified experience references rather
-than newly confirmed defects; absent forest/archery/fullquests are not regressions.
+Profile saves only bounded clearing coins/upgrades. Boss retains108HP/2damage,
+original timing, no extra currency or awakening heal/refill. Recovery marker
+identifies an opportunity, not invulnerability against other hazards. Original
+walking slice/pivot limits need visual review. Historical sliding/leg/directional
+shape/UI reports remain unverified experience references; absent forest/archery/
+full quests are not current regressions.
 
 ## Historical iteration 9 delivered gameplay and evidence limits
 

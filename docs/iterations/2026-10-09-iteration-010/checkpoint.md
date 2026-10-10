@@ -1,4 +1,4 @@
-# Iteration 10 initial verified checkpoint
+# Historical iteration 10 code checkpoints — reviewed and merged later
 
 Baseline ba4cd1d; first implementation checkpoint ac3aa87 safely pushed on
 rpg/iteration-010-guardian-polish. Original three actual-method failures replay as
@@ -19,5 +19,5 @@ history. No native tests/player playtest/audio audition or difficulty acceptance
 objective correction and 18 expanded permanent regressions:123/0. Fresh full
 379 project +6 distribution =385 checks and API26/86 pass; independent123/19/API
 review has no remaining blocker in scope. Exact CI38031110628/job114152067191
-passes12/12 steps; nonexpired artifact11661564119 exists. Final documentation
-source CI/PR/master/source ZIP/HTTPS/receipt are publication work.
+passes12/12 steps; nonexpired artifact11661564119 exists. Reviewed documentation head7481f5b and PR9 ordinary mergea61fada are now complete;
+see publication.md. Final exact-source CI/source ZIP/HTTPS/receipt resolve externally.

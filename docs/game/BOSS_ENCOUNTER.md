@@ -26,8 +26,10 @@ presentation groups. Full379project+6distribution=385checks/API26sources86realre
 found within this scope. Numeric stats/timing/input/costs/rewards/v1save are unchanged.
 Native readability/difficulty/audio/feel are **尚未进行 Unity 原生验收**. See
 [tenth evidence/native protocol](../iterations/2026-10-09-iteration-010/evidence-and-native-protocol.md)
-and the archived bounded simulation review. Final sourceCI/PR/ZIP publication
-identity resolves in the external tenth receipt after verified publication.
+and the archived bounded simulation review. PR #9 normally merged reviewed7481f5b
+at a61fada after exact CI38031431351 all12 steps; fetched parents/tree match the
+reviewed source. Final exact source CI/ZIP/download identity resolves in the
+external tenth receipt after publication; no native result is inferred.
 
 ## Complete encounter
 

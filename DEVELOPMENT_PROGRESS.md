@@ -1,8 +1,11 @@
 # Development progress
 
-## Iteration 10 — verified evidence-based Guardian feedback
+## Iteration 10 — reviewed Guardian feedback merged to master
 
-2026-10-09 PDT. Continued completed ninth `ba4cd1d` on the ordinary isolated branch
+2026-10-09 PDT. PR9 normally merged reviewed7481f5b at a61fada after exact12-step
+CI and independent review; Merged-master CI38031515174/job114153259081 also passes all12 steps; nonexpired artifact11661899444 exists.
+
+Continued completed ninth `ba4cd1d` on the ordinary isolated branch
 `rpg/iteration-010-guardian-polish`. Quota resume retained only the regression
 fixture; no lost production work was fabricated or overwritten. Actual red replay
 105 pass / 3 fail reproduced Recovery dodge wording, supply-masked half-health
@@ -39,10 +42,18 @@ Input System reviewed substitute. LFSfsck/diffcheck pass. Independent reviewer
 reran123presentation/19Boss/API26/86 and found no remaining blocker within scope.
 Generated/finalized chained handoff validates100/100 withsixexistingreferences.
 Code-complete checkpoint `36567e8` saves the inactive fix and expanded regressions.
-Code checkpoint `36567e8` exact CI38031110628/job114152067191 passed all 12 steps; nonexpired artifact11661564119 is present.
-Reports explicitly record tested working tree based onac3aa87; final immutable CI
-must bind publication source. PR/master/finalCI/fullZIP/HTTPS/receipt verification
-remain publication work, not assumed complete from local tests.
+Its exact CI38031110628/job114152067191 passes12/12; artifact11661564119 exists.
+Documentation checkpoint7481f5bb7db81ba5a3659631ff1fee1b3af85584 is safely pushed;
+exact CI38031431351/job114153017263 passes12/12, nonexpired artifact11661974248.
+[PR #9](https://github.com/jinze909/2D-RPG-Project/pull/9) normally merged that exact
+reviewed head at a61fada379d250a4e8d55d851863025367fa3fbd. Root fetched and verified
+expected parents ba4cd1d +7481f5b and exact merge-tree equality, then fast-forwarded
+the clean local development checkout to the actual master merge. No force push.
+Archived reports honestly identify the tested working tree based onac3aa87; the
+reviewed published source CI now binds that implementation. Final documentation
+source CI and complete ZIP CRC/member SHA/source bytes/LFS/immutable HTTPS/receipt
+identities resolve externally after publication. No future archive success is
+asserted by this source document; verify actual tenth receipt before continuing.
 
 Native import/EditMode/PlayMode/input/physics/Animator/render/layout/audio/build
 and actual player difficulty/feel are unrun: **尚未进行 Unity 原生验收**. No unchanged

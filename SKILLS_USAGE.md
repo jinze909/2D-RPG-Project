@@ -2,6 +2,12 @@
 
 ## Iteration 10 — actual continuity, debugging, feedback and verification
 
+Session-handoff and verification also preserve the actual normal PR9 merge, exact
+reviewed-head CI38031431351/job11415301726312/12/artifact11661974248 and fetched
+parent/tree equality. Merged-masterCI38031515174/job114153259081 also passes12steps
+with artifact11661899444 verified. Final archive/download identity resolves externally, never
+inferred from a planned URL or readable plugin Skill.
+
 All eight local SKILL.md files were rediscovered and read completely; applicable
 handoff/resume/root-cause/verification references support this exact continuation.
 Reading guidance is distinct from connected services and native execution.
@@ -10,7 +16,7 @@ Reading guidance is distinct from connected services and native execution.
 | --- | --- |
 | session-handoff | Reconciled ninthba4cd1d, actual tenth branch and surviving fixture; used real scaffold, corrected archived predecessor, updated allfive root records. Identical working handoff validates100/100 withsixfile references; archived Markdown links checked. |
 | systematic-debugging | Actual105/3 reproduction traced Recovery wording/context priority/unscaled expiry, then108/0green. Independent108/1 revealed paused/dead strike instruction; focused109/0 and expanded123/0 verify correction. No human difficulty defect is invented. |
-| verification-before-completion | Fresh379project+sixdistribution=385checks;five static envelopes,26-source/86-real-reference compiler(Inputsub),LFSfsck/diffcheck and independent123presentation/19Boss/API review. Exact ac3aa87 and36567e8 CI each pass12 steps with artifacts11661429449/11661564119 verified; final exact-source CI/PR/archive evidence remains publication work. |
+| verification-before-completion | Fresh379project+sixdistribution=385checks;five static envelopes,26-source/86-real-reference compiler(Inputsub),LFSfsck/diffcheck and independent123presentation/19Boss/API review. Exact ac3aa87/36567e8/reviewed7481f5b CI all pass12 steps with artifacts verified. PR9 normally merged a61fada; fetched parents and tree equality checked. Final source/archive/HTTPS identities resolve externally after publication. |
 | game-design | Preserved complete encounter/resources/30coinv1growth/allstats/timing; truthful dodge/strike/unavailable information and threshold notice coexist with supply action. Bounded perfect-contact model is recorded as simulation, not player balance. |
 | game-art | Three cached noncolor Recovery chevron parts/fourcaptured-anchor .5sphasehalo strokes reuse Point/shared15palette/1⁄30-unitgeometry. Ownership/reset/pause tests preserve33Bossbodypieces,footcollider and originalblondehero; no native visibility/pixel-perfect acceptance. |
 | game-audio | One cached original .24s520→130Hz phase cue triggers once after surviving threshold, preserves mute/.18volume/variation/reset and destroys seventhclip. Recording cue/lifecycle checks pass; no audition or mix acceptance. |

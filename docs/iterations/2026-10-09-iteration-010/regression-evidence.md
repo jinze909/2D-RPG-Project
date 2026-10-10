@@ -1,7 +1,7 @@
 # Iteration 10 actual regression evidence
 
 Actual production C# with recording boundaries; not native Unity. These are exact
-last-line excerpts from real session logs. Earlier red results are historical,
+last-line excerpts from real session logs (trailing whitespace normalized). Earlier red results are historical,
 not remaining defects. Full commands/count provenance is in validation-provenance.
 
 ## Resumed three-defect red
@@ -17,7 +17,7 @@ PASS guardian disposal destroys four owned roots without destroying shared art o
 FAIL guardian recovery objective advertises a safe strike opportunity: recovery still tells the player to dodge a harmless expired footprint: moss guardian  hp 108/108
 phase 1: sidestep the locked lane
 FAIL guardian threshold notice preserves nearby supply action in the same edge label: contextual rune interaction masks the new phase notice: mp full - rune saved for later
-FAIL guardian phase notice survives a hundred seconds of paused wall time: paused wall time silently expired phase notice: 
+FAIL guardian phase notice survives a hundred seconds of paused wall time: paused wall time silently expired phase notice:
 RESULT 105 passed, 3 failed; actual project C# with recording boundaries, not native Unity.
 ```
 

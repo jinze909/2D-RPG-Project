@@ -1,24 +1,24 @@
 # RPG development instructions
 
-## Iteration 10 verified Guardian feedback — publication pending
+## Iteration 10 reviewed ordinary master integration
 
-Resume `rpg/iteration-010-guardian-polish`; ninth source `ba4cd1d`, tested first
-checkpoint `ac3aa87` and code-complete checkpoint `36567e8` are recovery paths.
-The quota interruption retained tests only; production fixes were newly authored
-and actually verified. Recovery now says strike, half-health announcement coexists
-with supply context and uses four seconds of run.Time, and paused/dead objective
-shows PAUSED/DEFEATED. Cached recovery chevron/phase halo and one cached cue are
-integrated. No HP/damage/timing/geometry/resource/reward/schema/hero changes.
-Fresh 379 project + 6 distribution = 385 checks pass, including 123 presentation
-(retaining the original 105), 19 pure Boss and 17 scene groups. Five static asset/
-version/build/LFS/Skill envelopes also pass. API compile exits 0 for 26 production
-sources/86 real Unity 2022.3/Editor/uGUI refs, Input System substituted. Independent
-123/19/API review finds no remaining blocker within scope; handoff validates100.
-Exact ac3aa87 CI38030799993/job114151148852 passed12steps/artifact11661429449.
-Code checkpoint `36567e8` exact CI38031110628/job114152067191 passed all 12 steps; nonexpired artifact11661564119 is present.
-Final source CI/PR/master/ZIP/HTTPS receipt are pending verification.
-Read the actual external tenth receipt after publication before declaring delivery
-complete or starting unrelated work. Native tests and player playtests are unrun.
+[PR #9](https://github.com/jinze909/2D-RPG-Project/pull/9) normally merged reviewed
+head 7481f5b at a61fada. Exact implementation CI38031431351/job114153017263 passed
+all 12 steps; nonexpired artifact11661974248 exists. Root fetched and verified both
+merge parents (ninth ba4cd1d + reviewed7481f5b), exact merge-tree equality and clean
+local fast-forward to the actual merge. No force push; all recovery history remains.
+Merged-master CI38031515174/job114153259081 also passes all12 steps; nonexpired artifact11661899444 exists.
+The Guardian HUD/notice/marks/cue fixes and 18 additional permanent regressions are
+implemented: 385 project/distribution groups, API26/86 with Input substitute and
+independent123presentation/19Boss/API review pass. Five static integrity envelopes
+also pass; chained handoff validates100/100. No remaining blocker found in scope.
+Preserve108HP/2damage/all timing/contact/costs/supplies/30coin-v1/hero contracts.
+Final exact source CI, complete ZIP/CRC/member SHA/source bytes/LFS/immutable HTTPS
+and receipt identities resolve externally in iteration-010-delivery.json plus
+final-handoff/validation on rpg-deliveries after source publication. Verify that
+actual receipt first; if complete do not redo tenth code or packaging, and if
+missing finish publication before new development. No archive success is assumed
+by this source record. Native Editor tests/play and real player playtests are unrun.
 
 ## Evidence and player-value rules — current user instruction, 2026-10-09 PDT
 
@@ -45,7 +45,7 @@ complete or starting unrelated work. Native tests and player playtests are unrun
   Ordinary reviewed/tested CI-green PR/master merges are authorized; native checks
   are optional. Never force push or overwrite uncommitted work.
 
-## Iteration 9 reviewed master integration
+## Historical iteration 9 reviewed master integration
 
 PR8 normally merged reviewed/testedb4046999e1ec766f9550bbbc667b8e554e9b9228 at
 134e09dc75fef799aa0f3ed4e7dabe1470c86364. ExactCI38015650991/job114105188884 passed
