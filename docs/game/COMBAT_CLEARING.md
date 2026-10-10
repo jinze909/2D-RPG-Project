@@ -1,4 +1,4 @@
-# Combat Clearing — current master and iteration 6 tactics
+# Combat Clearing — integrated ninth-round Guardian
 
 Open `Assets/Scenes/CombatClearing.unity` in international Unity 2022.3.53f1.
 It is the candidate's first build scene; SampleScene remains available unchanged.
@@ -8,8 +8,10 @@ remain pending because the cloud editor has no valid license.
 
 ## Implemented loop and controls
 
-Move with WASD, arrows, left stick or D-pad. Clear three moss sentinels, cross the
-opened north seal and press E near the beacon. Each defeated sentinel awards
+Move with WASD, arrows, left stick or D-pad. Clear three moss sentinels, approach
+the central altar and press E to awaken the Guardian. Kill it, cross the opened
+north seal and press E near the beacon. See BOSS_ENCOUNTER.md for locked patterns,
+half-health timing and entry/resource contracts. Each defeated sentinel awards
 10 run-local coins exactly once. E at the completed beacon saves all 30 coins;
 1/2 (including keypad) buys bounded HP/MP upgrades on the result screen and R
 applies them next run. See CLEARING_PROGRESSION.md for failures and save protection.
@@ -19,7 +21,9 @@ Equipment/world-state saves are absent.
 | --- | --- | --- |
 | Light strike | J / Space | 18 damage, 0.45 s cooldown, no mana |
 | Mana burst | K | 30 damage, 6 MP, 1.2 s cooldown |
-| Beacon | E | Nearby, alive, all three sentinels defeated |
+| Altar | E | Within .8 foot-units, clear wall LOS, all three guards dead; awaken once |
+| Beacon | E | Nearby, alive, all three guards and Guardian defeated |
+| Supply | E | Nearby discovered reserve; beacon/altar take priority |
 | Upgrades | 1 / 2 or keypad | After completion/banking; +2 max HP/MP per rank next run |
 | Retry | R | After defeat/completion; reset encounter; preserve bank/ranks |
 | Pause | Esc | Combat/mana regeneration freeze; resume clears cached motion |
@@ -33,7 +37,7 @@ in [SENTINEL_TACTICS.md](SENTINEL_TACTICS.md). Warning and damage use
 the same immutable saved footprint. Walls obstruct damage. A player action hits each enemy
 at most once; aim is fixed for that action while locomotion remains responsive.
 Each physics tick resolves all admitted player contacts before the surviving
-sentinels' contacts. A lethal sentinel's index does not truncate a multi-target
+sentinels' and Guardian's contacts. A lethal sentinel's index does not truncate a multi-target
 burst, and a sentinel killed on that tick cannot retaliate.
 
 The blonde Viola sheets/controller and PPU30 are preserved. Death now holds an
@@ -85,7 +89,7 @@ assets, save data and unfinished north-arrow candidates were not transplanted.
    walking while attacking, analog partial speed and stop/restart. Review the
    existing walk slice height/center-pivot drift and final duplicated frame.
 3. Press against all four boundaries and both partition joins; the sealed beacon
-   region must be unreachable until all three sentinels die. Verify real colliders,
+   region must be unreachable until all three sentinels and the Guardian die. Verify real colliders,
    foot alignment, no tunneling, and opening/re-closing on retry.
 4. Check sentinel chase, warnings, one contact per attack, shared immunity,
    wall-blocked strikes, mana exhaustion/regeneration, pause/resume and rapid inputs.

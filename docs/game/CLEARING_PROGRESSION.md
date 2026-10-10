@@ -6,6 +6,13 @@ repeatable growth loop: defeat three sentinels, restore the beacon with E, bank
 the next run with it. Killing enemies alone, dying or abandoning the run never
 banks coins. This is a progression profile, not a full world/position save.
 
+Ninth live Runtime opts into a post-guard Guardian: altar E after three guards,
+Boss defeat opens the same gate, then beacon E banks the same30coins. Awakening,
+Boss damage/death and reserve use never create an extra reward or deposit; only
+beacon completion does. The isolated domain's default guard-only constructor
+remains for compatibility. Profile version, prices and all ledger arithmetic stay
+unchanged; no migration, inventory or mid-encounter/world-state save is introduced.
+
 ## Player choices
 
 | Upgrade | Effect per rank | Maximum | Prices for ranks 1 / 2 / 3 |

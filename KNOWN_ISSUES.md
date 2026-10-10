@@ -1,5 +1,24 @@
 # Known issues
 
+## Iteration 9 integrated encounter — current limits
+
+Boss Runtime/altar/contact/HP/phase/cached-art/fifth-loss-slot/HUD/cue/reward
+bridge is complete;367offline/distribution checks and26-source realAPI-reference
+compile pass. Independent review found no blocking defect. Foundationf8cebaa CI
+passed all12steps. ImplementationPR/finalCI/sourceZIP/download/receipt publication
+is pending here; complete that work before claiming ninth delivery.
+
+Native Unity input/physics/collider response/Animator/pixel alignment/actual font
+layout/audio audition/balance/playerbuild remain optional/unrun. Recording tests
+and authored-geometry inspection do not establish native acceptance. The Guardian
+uses candidate108HP/2damage and phase1/phase2 timing; no balance playtest is claimed.
+Awakening is manually triggered only after three guards; no mid-encounter save or
+extra Boss currency exists. Profilev1 remains30coins/run and its schema unchanged.
+Full classes/equipment/NPC/story/worldsave remain absent. Historical gait-frame/
+pivot limits and absent forest/archery/fullquests remain; no nonexistent visual
+regression or native fix is asserted. This current section supersedes older
+'No Boss' and historical foundation-only descriptions below.
+
 ## Iteration 8 reviewed master integration — current
 
 Execution access is restored; foundation 2c99ecf and exact green CI37995620781

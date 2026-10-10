@@ -71,15 +71,16 @@ public static class PresentationBehaviorChecks
     private sealed class RuntimeFixture
     {
         internal readonly ClearingRuntime Runtime = new ClearingRuntime();
-        internal readonly ClearingRun Run = new ClearingRun();
+        internal readonly ClearingRun Run;
         internal readonly PlayerStats Stats = new PlayerStats { Health = 10f, MaxHealth = 10f, Mana = 12f, MaxMana = 12f };
         internal readonly Player Player = new Player();
         internal readonly Rigidbody2D Body = new Rigidbody2D { position = -ClearingVisuals.PlayerFootOffset };
         internal readonly ClearingAudio Sound = new ClearingAudio(new GameObject("Recorded audio"));
         internal readonly object[] Enemies = new object[ClearingRun.SentinelCount];
         internal AudioSource Audio { get { return Get<AudioSource>(Sound, "source"); } }
-        internal RuntimeFixture()
+        internal RuntimeFixture(bool requiresBoss = false)
         {
+            Run = new ClearingRun(requiresBoss);
             Runtime.gameObject = new GameObject("Runtime");
             Runtime.transform = Runtime.gameObject.transform;
             Physics2D.LinecastResponse = null;
@@ -105,6 +106,7 @@ public static class PresentationBehaviorChecks
             Set(Runtime, "health", health); Set(Runtime, "mana", mana); Set(Runtime, "playerBody", Body);
             Set(Runtime, "animator", animator); Set(Runtime, "playerRenderer", Renderer("Player"));
             Set(Runtime, "strike", Renderer("Strike")); Set(Runtime, "visuals", visuals); Set(Runtime, "sound", Sound);
+            if (requiresBoss) Set(Runtime, "bossVisuals", new ClearingBossVisuals(Runtime.transform, visuals));
             Type enemyType = typeof(ClearingRuntime).GetNestedType("EnemyView", BindingFlags.NonPublic);
             Array runtimeEnemies = Get<Array>(Runtime, "enemies");
             for (int i = 0; i < Enemies.Length; i++)
@@ -167,7 +169,7 @@ public static class PresentationBehaviorChecks
 
     private sealed class ProgressFixture
     {
-        internal readonly RuntimeFixture F = new RuntimeFixture();
+        internal readonly RuntimeFixture F;
         internal readonly PlayerStats Template;
         internal readonly ClearingHud Hud;
         internal readonly RecordedProgressStore Store;
@@ -176,8 +178,9 @@ public static class PresentationBehaviorChecks
         internal string RewardId { get { return Get<string>(F.Runtime, "rewardId"); } }
         internal string Terminal { get { return Get<Text>(Hud, "terminal").text; } }
         internal ProgressFixture(ClearingProgressData data = null, bool writable = true,
-            ProgressLoadKind kind = ProgressLoadKind.New)
+            ProgressLoadKind kind = ProgressLoadKind.New, bool requiresBoss = false)
         {
+            F = new RuntimeFixture(requiresBoss);
             Input.ClearPressed();
             // Exercise the actual actor-owned clone, never substitute a saved
             // authoring asset or hide template mutations behind a fake Player.
@@ -236,9 +239,9 @@ public static class PresentationBehaviorChecks
         string notice = "", bool paused = false)
     {
         var method = typeof(ClearingHud).GetMethod("Refresh", BindingFlags.Instance | BindingFlags.NonPublic);
-        if (method == null || method.GetParameters().Length != 10)
+        if (method == null || method.GetParameters().Length != 11)
             throw new Exception("Progression HUD Refresh signature absent");
-        method.Invoke(f.Hud, new object[] { f.Stats, f.Run, paused, false, true, "", progress, rewardId, notice, "" });
+        method.Invoke(f.Hud, new object[] { f.Stats, f.Run, paused, false, true, "", progress, rewardId, notice, "", "" });
     }
 
     private static string HudText(ClearingHud hud)
@@ -1399,6 +1402,535 @@ public static class PresentationBehaviorChecks
         });
     }
 
+    // These checks drive the production input/contact/lifecycle bridge. The
+    // offline boundaries record its calls; they do not emulate native physics,
+    // render the guardian, or certify that a Game View playthrough succeeded.
+    private sealed class BossFixture
+    {
+        internal readonly ProgressFixture P = new ProgressFixture(requiresBoss: true);
+        internal RuntimeFixture F { get { return P.F; } }
+        internal ClearingBossState Boss { get { return F.Run.Boss; } }
+        internal ClearingBossVisuals Props { get { return Get<ClearingBossVisuals>(F.Runtime, "bossVisuals"); } }
+        internal readonly ClearingDamageNumbers Numbers;
+        internal readonly ClearingSupplyVisuals SuppliesView;
+        internal ClearingSupplies Supplies { get { return Get<ClearingSupplies>(F.Runtime, "supplies"); } }
+        internal BossFixture()
+        {
+            Numbers = new ClearingDamageNumbers(F.Runtime.transform);
+            Set(F.Runtime, "damageNumbers", Numbers);
+            SuppliesView = new ClearingSupplyVisuals(F.Runtime.transform, Get<ClearingVisuals>(F.Runtime, "visuals"));
+            Set(F.Runtime, "supplyVisuals", SuppliesView);
+        }
+        internal void Feet(Vector2 point) { F.Body.position = point - ClearingVisuals.PlayerFootOffset; }
+        internal void Altar() { Feet(ClearingBossVisuals.AltarPosition); }
+        internal void Awaken()
+        {
+            P.Unlock(); Altar(); P.Update(KeyCode.E);
+            Expect(Boss.IsAwake && !F.Run.GateUnlocked, "real altar E did not awaken the sealed guardian");
+        }
+        internal void StrikePosition(float distance = .7f)
+        {
+            // Preserve normal facing admission: the fixture supplies the current
+            // movement snapshot, then StartAttack reads its public FacingDirection.
+            Set(Get<PlayerMovement>(F.Runtime, "movement"), "<FacingDirection>k__BackingField", Vector2.down);
+            Feet(Props.Position + Vector2.up * distance);
+        }
+        internal void BeginWarning(SentinelAttackKind kind = SentinelAttackKind.Lance)
+        {
+            if (Boss.NextAttackKind != kind)
+            {
+                Feet(Props.Position + new Vector2(0f, -2f)); F.Tick();
+                Expect(Boss.AttackPhase == SentinelAttackPhase.Telegraph, "attack rotation setup did not telegraph");
+                F.Run.Advance(Boss.WindupDuration + Boss.ActiveDuration + Boss.RecoveryDuration + .01f);
+            }
+            Feet(Props.Position + new Vector2(0f, -2f)); F.Tick();
+            Expect(Boss.AttackPhase == SentinelAttackPhase.Telegraph && Boss.AttackKind == kind,
+                "actual FixedUpdate did not start the selected guardian pattern");
+        }
+        internal void EnterActive()
+        {
+            F.Run.Advance(Boss.WindupDuration - Time.fixedDeltaTime * .5f); F.Tick();
+            Expect(Boss.AttackPhase == SentinelAttackPhase.Active, "actual guardian contact tick did not enter active phase");
+        }
+        internal object Slot(int index) { return Get<Array>(Numbers, "slots").GetValue(index); }
+        internal Transform NumberRoot(int index) { return Get<Transform>(Slot(index), "Root"); }
+        internal void DomainHit(PlayerAttackKind kind)
+        {
+            long token;
+            Expect(F.Run.BeginPlayerAttack(kind, 12f, out token) && F.Run.TryHitBoss(token),
+                "guardian precondition damage setup rejected");
+            F.Run.Advance(kind == PlayerAttackKind.Light ? ClearingRun.LightCooldown : ClearingRun.BurstCooldown);
+        }
+        internal void Defeat()
+        {
+            if (!Boss.IsAwake) Awaken();
+            while (!Boss.IsDead) DomainHit(PlayerAttackKind.Light);
+            F.Tick(); F.Refresh();
+            Expect(F.Run.GateUnlocked, "defeated guardian did not release the seal");
+        }
+        internal void Complete()
+        {
+            Defeat(); Feet(ClearingVisuals.BeaconPosition); P.Update(KeyCode.E);
+            Expect(F.Run.IsComplete, "actual beacon E did not finish the guardian run");
+        }
+    }
+
+    private static void AddBossChecks(Action<string, Action> test)
+    {
+        test("guardian prerequisite keeps the live gate and ledger sealed after all three guards", () =>
+        {
+            var b = new BossFixture(); b.P.Unlock(); b.F.Tick(); b.F.Refresh();
+            Expect(b.F.Run.RequiresBoss && !b.F.Run.GateUnlocked && !b.Boss.IsAwake
+                && Near(b.Boss.Health, ClearingBossState.MaxHealth) && b.F.Run.RewardCoins == 30,
+                "three guards bypassed the mandatory guardian or changed existing run coins");
+            Expect(Get<ClearingVisuals>(b.F.Runtime, "visuals").Gate.activeSelf, "live gate opened before guardian defeat");
+            b.Feet(ClearingVisuals.BeaconPosition); b.P.Update(KeyCode.E);
+            Expect(!b.F.Run.IsComplete && b.P.Store.Attempts == 0 && b.P.Progress.Data.BankCoins == 0,
+                "unfinished guardian run banked a beacon reward");
+            b.StrikePosition(); b.P.Update(KeyCode.K); b.F.Tick();
+            Expect(Near(b.Boss.Health, ClearingBossState.MaxHealth) && !b.NumberRoot(4).gameObject.activeSelf,
+                "dormant guardian accepted a player contact/readout");
+        });
+        test("actual altar E requires all guards actor foot radius live state and current Default wall LOS", () =>
+        {
+            foreach (int rejection in new[] { 0, 1, 2, 3, 4 })
+            {
+                var b = new BossFixture(); if (rejection != 0) b.P.Unlock(); b.Altar();
+                if (rejection == 1) b.Feet(ClearingBossVisuals.AltarPosition + new Vector2(.81f, 0f));
+                if (rejection == 2) Invoke(b.F.Runtime, "SetPaused", true);
+                if (rejection == 3) b.P.Stats.Health = 0f;
+                if (rejection == 4) Physics2D.LinecastResponse = new BoxCollider2D();
+                int cues = b.F.Audio.OneShots.Count;
+                try { b.P.Update(KeyCode.E); }
+                finally { Physics2D.LinecastResponse = null; }
+                Expect(!b.Boss.IsAwake && b.P.Store.Attempts == 0 && b.F.Audio.OneShots.Count == cues,
+                    "disabled altar interaction admitted guardian or cue for state " + rejection);
+            }
+            var accepted = new BossFixture(); accepted.P.Unlock();
+            accepted.Feet(ClearingBossVisuals.AltarPosition + new Vector2(.79f, 0f)); bool observed = false;
+            Physics2D.LinecastQuery = (from, to, mask) =>
+            {
+                if (to == ClearingBossVisuals.AltarPosition)
+                {
+                    Expect(from == accepted.F.Body.position + ClearingVisuals.PlayerFootOffset && mask == 1,
+                        "altar visibility used sprite center or a wrong wall layer"); observed = true;
+                }
+                return null;
+            };
+            try { accepted.P.Update(KeyCode.E); }
+            finally { Physics2D.LinecastQuery = null; }
+            Expect(observed && accepted.Boss.IsAwake && accepted.P.Store.Attempts == 0,
+                "clear in-radius actor-foot E did not awaken guardian without banking");
+        });
+        test("E plus K awakening cancels old contacts while preserving paid mana cooldown and supply charges", () =>
+        {
+            var b = new BossFixture(); b.P.Unlock(); b.P.Stats.Health = 5f;
+            b.Feet(SupplyFixture.Point(0)); b.P.Update(KeyCode.E);
+            Expect(b.Supplies.IsClaimed(0), "awakening supply setup did not consume herbs");
+            b.Altar(); b.P.Update(KeyCode.K, KeyCode.E); b.F.Tick(); b.F.Refresh();
+            Expect(b.Boss.IsAwake && Near(b.Boss.Health, ClearingBossState.MaxHealth)
+                && !b.F.Run.PlayerAttackActive && Near(b.P.Stats.Mana, 6f + ClearingRun.ManaRegenerationRate * Time.fixedDeltaTime)
+                && b.F.Run.BurstCooldownRemaining > 1f && b.Supplies.IsClaimed(0),
+                "activation replayed pre-awakening contact, refunded burst, reset resources or restocked herbs");
+            int cues = b.F.Audio.OneShots.Count; b.P.Update(KeyCode.E); b.P.Update(KeyCode.E);
+            Expect(b.Boss.IsAwake && Near(b.Boss.Health, ClearingBossState.MaxHealth)
+                && b.F.Audio.OneShots.Count == cues && b.P.Store.Attempts == 0,
+                "repeated altar E restarted guardian or duplicated awakening/reward audio");
+        });
+        test("actual guardian J and K show once-only eighteen and thirty loss in an independent fifth slot", () =>
+        {
+            foreach (bool burst in new[] { false, true })
+            {
+                var b = new BossFixture(); b.Awaken(); b.BeginWarning(); b.StrikePosition();
+                int objects = GameObject.CreatedCount, textures = Texture2D.CreatedCount, sprites = Sprite.CreatedCount;
+                int cues = b.F.Audio.OneShots.Count; b.P.Update(burst ? KeyCode.K : KeyCode.J); b.F.Tick(); b.F.Refresh();
+                float amount = burst ? 30f : 18f;
+                Expect(Near(b.Boss.Health, ClearingBossState.MaxHealth - amount) && b.NumberRoot(4).gameObject.activeSelf
+                    && Near(Get<float>(b.Slot(4), "Amount"), amount) && Get<string>(b.Slot(4), "Text") == (burst ? "-30" : "-18"),
+                    "accepted guardian hit omitted exact actual-loss feedback in its own target slot");
+                Expect(!b.NumberRoot(3).gameObject.activeSelf && Get<Array>(b.Numbers, "slots").Length == 5,
+                    "guardian feedback overwrote the established player slot or has an unbounded pool");
+                double started = Get<double>(b.Slot(4), "StartedAt"); b.F.Tick(); b.F.Refresh();
+                Expect(Near(b.Boss.Health, ClearingBossState.MaxHealth - amount)
+                    && Get<double>(b.Slot(4), "StartedAt") == started && b.F.Audio.OneShots.Count == cues + 2,
+                    "repeated contact duplicated damage, refreshed its readout or spammed contact audio");
+                Expect(GameObject.CreatedCount == objects && Texture2D.CreatedCount == textures && Sprite.CreatedCount == sprites,
+                    "guardian contact/feedback allocated new objects or rasters");
+            }
+        });
+        test("live exploration rune funds one actual guardian burst without early rewards or duplicate charges", () =>
+        {
+            var b = new BossFixture(); b.Awaken(); b.P.Stats.Mana = 0f;
+            b.Feet(SupplyFixture.Point(1)); b.P.Update(KeyCode.E);
+            Expect(b.Supplies.IsClaimed(1) && Near(b.P.Stats.Mana, ClearingRun.BurstManaCost)
+                && b.P.Store.Attempts == 0, "guardian detour did not restore exactly one burst of actor-owned mana");
+            b.BeginWarning(); b.StrikePosition(); b.P.Update(KeyCode.K); b.F.Tick();
+            Expect(Near(b.Boss.Health, ClearingBossState.MaxHealth - ClearingRun.BurstDamage)
+                && b.F.Run.BurstCooldownRemaining > 1f && b.P.Stats.Mana < .1f && b.P.Progress.Data.BankCoins == 0,
+                "rune-funded guardian K missed its real damage/cost/cooldown or banked an unfinished reward");
+            long token = Get<long>(b.F.Run, "currentPlayerActionId"); b.P.Update(KeyCode.K);
+            b.Feet(SupplyFixture.Point(1)); b.P.Update(KeyCode.E);
+            Expect(Get<long>(b.F.Run, "currentPlayerActionId") == token && b.P.Stats.Mana < .1f
+                && Near(b.Boss.Health, ClearingBossState.MaxHealth - ClearingRun.BurstDamage),
+                "held burst input or spent rune admitted a duplicate guardian action");
+            b.P.AssertTemplate();
+        });
+        test("lethal guardian feedback clamps overkill and survives removal of its body", () =>
+        {
+            foreach (bool burst in new[] { false, true })
+            {
+                var b = new BossFixture(); b.Awaken();
+                if (burst) { b.DomainHit(PlayerAttackKind.Burst); b.DomainHit(PlayerAttackKind.Burst); b.DomainHit(PlayerAttackKind.Burst); }
+                else { b.DomainHit(PlayerAttackKind.Burst); for (int hit = 0; hit < 4; hit++) b.DomainHit(PlayerAttackKind.Light); }
+                float remaining = b.Boss.Health;
+                Expect(Near(remaining, burst ? 18f : 6f), "guardian overkill setup did not retain actual final HP");
+                b.StrikePosition(); b.P.Update(burst ? KeyCode.K : KeyCode.J); b.F.Tick(); b.F.Refresh();
+                Expect(b.Boss.IsDead && b.F.Run.GateUnlocked && !b.Props.Body.gameObject.activeSelf
+                    && b.NumberRoot(4).gameObject.activeSelf && Near(Get<float>(b.Slot(4), "Amount"), remaining)
+                    && Get<string>(b.Slot(4), "Text") == (burst ? "-18" : "-6"), "guardian kill feedback inflated nominal damage or vanished with its actor");
+                b.P.AssertTemplate();
+            }
+        });
+        test("phase two never shortens an already captured guardian warning and affects the next pattern", () =>
+        {
+            var b = new BossFixture(); b.Awaken();
+            b.DomainHit(PlayerAttackKind.Light); b.DomainHit(PlayerAttackKind.Light); b.BeginWarning();
+            float windup = b.Boss.WindupDuration, recovery = b.Boss.RecoveryDuration;
+            SentinelFootprint footprint = b.Boss.AttackFootprint;
+            b.DomainHit(PlayerAttackKind.Burst);
+            Expect(b.Boss.Enraged && Near(b.Boss.WindupDuration, windup) && Near(b.Boss.RecoveryDuration, recovery)
+                && object.ReferenceEquals(footprint, b.Boss.AttackFootprint), "half-health shortened an in-flight captured warning");
+            b.Feet(b.Props.Position + new Vector2(5f, 0f));
+            b.F.Run.Advance(windup + b.Boss.ActiveDuration + recovery); b.F.Tick();
+            Expect(b.Boss.AttackKind == SentinelAttackKind.Sigil && b.Boss.AttackPhase == SentinelAttackPhase.Telegraph
+                && b.Boss.WindupDuration < windup && b.Boss.RecoveryDuration < recovery,
+                "next phase-two pattern did not alternate or adopt its explicitly captured faster cadence");
+        });
+        test("locked guardian lance rejects side dodges wall-blocked contacts and admits one later actual hurt", () =>
+        {
+            var b = new BossFixture(); b.Awaken(); b.BeginWarning(); var locked = b.Boss.AttackFootprint;
+            Vector2 center = new Vector2(locked.CenterX, locked.CenterY);
+            b.Feet(center + new Vector2(.46f, 0f)); int cues = b.F.Audio.OneShots.Count; b.EnterActive(); b.F.Refresh();
+            Expect(Near(b.P.Stats.Health, 10f) && b.F.Audio.OneShots.Count == cues, "side dodge inside no contact lane still received hurt");
+            b.Feet(center); Physics2D.LinecastResponse = new BoxCollider2D();
+            try { b.F.Tick(); }
+            finally { Physics2D.LinecastResponse = null; }
+            Expect(Near(b.P.Stats.Health, 10f), "wall-blocked guardian swing damaged the actor");
+            b.F.Tick(); b.F.Refresh();
+            Expect(Near(b.P.Stats.Health, 10f - ClearingBossState.Damage) && b.F.Audio.OneShots.Count == cues + 1
+                && b.NumberRoot(3).gameObject.activeSelf && Near(Get<float>(b.Slot(3), "Amount"), ClearingBossState.Damage)
+                && object.ReferenceEquals(locked, b.Boss.AttackFootprint), "later visible in-lane contact did not apply exactly one hurt/readout");
+            double started = Get<double>(b.Slot(3), "StartedAt"); b.F.Tick(); b.F.Refresh();
+            Expect(Near(b.P.Stats.Health, 10f - ClearingBossState.Damage) && Get<double>(b.Slot(3), "StartedAt") == started
+                && b.F.Audio.OneShots.Count == cues + 1, "one guardian swing repeated its accepted hurt");
+        });
+        test("guardian sigil stays on its captured foot point and requires original-origin wall visibility", () =>
+        {
+            var b = new BossFixture(); b.Awaken(); b.BeginWarning(SentinelAttackKind.Sigil);
+            var locked = b.Boss.AttackFootprint; Vector2 center = new Vector2(locked.CenterX, locked.CenterY);
+            b.Feet(center + new Vector2(.91f, 0f)); b.EnterActive();
+            Expect(Near(b.P.Stats.Health, 10f) && object.ReferenceEquals(locked, b.Boss.AttackFootprint),
+                "sigil followed a dodge or hit outside the locked mark");
+            b.Feet(center); bool recorded = false;
+            Physics2D.LinecastQuery = (from, to, mask) =>
+            {
+                if (to == center) { recorded = true; Expect(from == new Vector2(locked.OriginX, locked.OriginY) && mask == 1,
+                    "sigil LOS used its remote mark instead of guardian admission origin"); }
+                return new BoxCollider2D();
+            };
+            try { b.F.Tick(); }
+            finally { Physics2D.LinecastQuery = null; }
+            Expect(recorded && Near(b.P.Stats.Health, 10f), "remote sigil bypassed current origin-to-player wall visibility");
+            b.F.Tick(); Expect(Near(b.P.Stats.Health, 10f - ClearingBossState.Damage), "unblocked in-mark contact was consumed by rejected LOS");
+        });
+        test("guardian runtime obeys shared immunity and consumes rejected active swings without feedback", () =>
+        {
+            var b = new BossFixture(); b.Awaken(); b.BeginWarning();
+            Set(b.F.Run, "playerInvulnerableUntil", b.F.Run.Time + 2d);
+            int cues = b.F.Audio.OneShots.Count; b.EnterActive(); b.F.Refresh();
+            Expect(Near(b.P.Stats.Health, 10f) && b.F.Audio.OneShots.Count == cues && !b.NumberRoot(3).gameObject.activeSelf,
+                "guardian bypassed the existing player-immunity clock or emitted rejected hurt feedback");
+            Set(b.F.Run, "playerInvulnerableUntil", 0d); b.F.Tick();
+            Expect(Near(b.P.Stats.Health, 10f), "immunity-rejected guardian swing became a later duplicate contact");
+        });
+        test("a skipped guardian active interval cannot cause a delayed invisible hit", () =>
+        {
+            foreach (SentinelAttackKind kind in new[] { SentinelAttackKind.Lance, SentinelAttackKind.Sigil })
+            {
+                var b = new BossFixture(); b.Awaken(); b.BeginWarning(kind); int cues = b.F.Audio.OneShots.Count;
+                b.F.Run.Advance(b.Boss.WindupDuration + b.Boss.ActiveDuration + .04f); b.F.Tick(); b.F.Refresh();
+                Expect(b.Boss.AttackPhase == SentinelAttackPhase.Recovery && Near(b.P.Stats.Health, 10f)
+                    && b.F.Audio.OneShots.Count == cues && !b.NumberRoot(3).gameObject.activeSelf,
+                    "timing hitch applied a delayed guardian hit or advertised hurt");
+            }
+        });
+        test("guardian closes distance only while ready with LOS then holds every committed phase", () =>
+        {
+            var b = new BossFixture(); b.Awaken(); b.Feet(b.Props.Position + new Vector2(5f, 0f));
+            Vector2 original = b.Props.Position; Physics2D.LinecastResponse = new BoxCollider2D();
+            try { b.F.Tick(); }
+            finally { Physics2D.LinecastResponse = null; }
+            Expect(b.Props.Position == original && b.Boss.AttackPhase == SentinelAttackPhase.Ready,
+                "guardian approached or admitted an unseen target through a wall");
+            b.F.Tick(); Expect(b.Props.Position.x > original.x && b.Boss.AttackPhase == SentinelAttackPhase.Ready,
+                "ready guardian never closes the gap to a visible out-of-pattern-range player");
+            b.BeginWarning(); Vector2 admitted = b.Props.Position;
+            b.Feet(admitted + new Vector2(5f, 0f));
+            b.F.Tick(); Expect(b.Props.Position == admitted && b.Props.Body.velocity == Vector2.zero,
+                "guardian chased after locking its telegraph");
+            b.F.Run.Advance(b.Boss.WindupDuration); b.F.Tick();
+            Expect(b.Boss.AttackPhase == SentinelAttackPhase.Active && b.Props.Position == admitted,
+                "guardian moved its body during locked active contact");
+            b.F.Run.Advance(b.Boss.ActiveDuration); b.F.Tick();
+            Expect(b.Boss.AttackPhase == SentinelAttackPhase.Recovery && b.Props.Position == admitted,
+                "guardian refunded stationary recovery to pursue the dodged player");
+        });
+        test("pause freezes guardian warning health numeric feedback and cached hierarchy until resume", () =>
+        {
+            var b = new BossFixture(); b.Awaken(); b.BeginWarning(); b.StrikePosition();
+            b.P.Update(KeyCode.J); b.F.Tick(); b.F.Refresh();
+            double time = b.F.Run.Time; float progress = b.Boss.PhaseProgress, hp = b.Boss.Health;
+            var footprint = b.Boss.AttackFootprint; Vector3 number = b.NumberRoot(4).position;
+            int objects = GameObject.CreatedCount, textures = Texture2D.CreatedCount, sprites = Sprite.CreatedCount;
+            Invoke(b.F.Runtime, "SetPaused", true); Time.unscaledTime += 100f;
+            for (int tick = 0; tick < 12; tick++) { b.P.Update(KeyCode.J, KeyCode.K, KeyCode.E); b.F.Tick(); b.F.Refresh(); }
+            Expect(b.F.Run.Time == time && Near(b.Boss.Health, hp) && Near(b.Boss.PhaseProgress, progress)
+                && object.ReferenceEquals(footprint, b.Boss.AttackFootprint)
+                && Near(b.NumberRoot(4).position.y, number.y) && b.NumberRoot(4).gameObject.activeSelf,
+                "paused guardian advanced damage, target snapshot or presentation lifetime");
+            Expect(GameObject.CreatedCount == objects && Texture2D.CreatedCount == textures && Sprite.CreatedCount == sprites,
+                "guardian pause/refresh allocated objects or rasters");
+            Invoke(b.F.Runtime, "SetPaused", false); b.F.Tick();
+            Expect(b.F.Run.Time > time && object.ReferenceEquals(footprint, b.Boss.AttackFootprint), "resume lost the committed guardian warning");
+        });
+        test("disable retains guardian health awakening and supplies but cancels old contacts until original ready deadline", () =>
+        {
+            var b = new BossFixture(); b.P.Stats.Health = 5f; b.Feet(SupplyFixture.Point(0)); b.P.Update(KeyCode.E);
+            b.Awaken(); b.BeginWarning(); b.DomainHit(PlayerAttackKind.Light);
+            float hp = b.Boss.Health; double time = b.F.Run.Time;
+            float deadline = b.Boss.WindupDuration + b.Boss.ActiveDuration + b.Boss.RecoveryDuration;
+            long sequence = b.Boss.AttackSequence; int cues = b.F.Audio.OneShots.Count;
+            Invoke(b.F.Runtime, "OnDisable"); b.F.Refresh();
+            Expect(b.Boss.IsAwake && Near(b.Boss.Health, hp) && b.Supplies.IsClaimed(0) && b.F.Run.Time == time
+                && b.Boss.AttackFootprint == null && b.Boss.AttackPhase == SentinelAttackPhase.Recovery
+                && !b.NumberRoot(4).gameObject.activeSelf, "disable erased earned guardian/supply progress or retained old contact/readout");
+            b.F.Run.Advance(.1f); b.F.Tick();
+            Expect(b.Boss.AttackSequence == sequence && Near(b.P.Stats.Health, 9f) && b.F.Audio.OneShots.Count == cues,
+                "resume refunded guardian recovery or applied an interrupted invisible contact");
+            b.F.Run.Advance(deadline); b.Feet(b.Props.Position + new Vector2(0f, -2f)); b.F.Tick();
+            Expect(b.Boss.AttackSequence > sequence && b.Boss.AttackPhase == SentinelAttackPhase.Telegraph,
+                "guardian never admitted a fresh visible warning after retained recovery completed");
+        });
+        test("actual death R starts a new dormant guardian attempt and restocks resources without held-frame awakening", () =>
+        {
+            var b = new BossFixture(); b.P.Stats.Health = 5f; b.Feet(SupplyFixture.Point(0)); b.P.Update(KeyCode.E);
+            b.Awaken(); b.DomainHit(PlayerAttackKind.Burst); string id = b.P.RewardId;
+            b.P.Stats.Health = 0f; b.P.Update(); b.P.Update(KeyCode.R, KeyCode.E, KeyCode.J, KeyCode.K); b.F.Refresh();
+            Expect(!b.Boss.IsAwake && !b.Boss.IsDead && Near(b.Boss.Health, ClearingBossState.MaxHealth)
+                && b.Boss.AttackPhase == SentinelAttackPhase.Ready && b.Boss.AttackFootprint == null
+                && !b.F.Run.IsDead && !b.F.Run.PlayerAttackActive && !b.F.Run.GateUnlocked && b.F.Run.DefeatedCount == 0
+                && b.P.RewardId != id && !b.Supplies.IsClaimed(0) && !b.Supplies.IsDiscovered(0)
+                && Near(b.P.Stats.Health, 10f) && Near(b.P.Stats.Mana, 12f) && b.P.Store.Attempts == 0,
+                "R retained guardian damage/charges, leaked result input or invented unfinished rewards");
+            for (int slot = 0; slot < 5; slot++) Expect(!b.NumberRoot(slot).gameObject.activeSelf, "retry retained pooled damage in slot " + slot);
+            b.P.AssertTemplate();
+        });
+        test("same-tick player guardian kill resolves before active retaliation and opens seal without banking", () =>
+        {
+            var b = new BossFixture(); b.Awaken();
+            b.DomainHit(PlayerAttackKind.Burst); b.DomainHit(PlayerAttackKind.Burst); b.DomainHit(PlayerAttackKind.Burst);
+            b.BeginWarning();
+            b.F.Run.Advance(b.Boss.WindupDuration - Time.fixedDeltaTime * .5f);
+            // Coincident actor feet lie within both the committed lane and burst,
+            // so the test cannot pass merely because retaliation was out of range.
+            b.Feet(b.Props.Position + new Vector2(0f, -.2f));
+            Set(Get<PlayerMovement>(b.F.Runtime, "movement"), "<FacingDirection>k__BackingField", Vector2.up);
+            b.P.Stats.Health = ClearingBossState.Damage; int writes = b.P.Store.Writes;
+            b.P.Update(KeyCode.K); b.F.Tick(); b.F.Refresh();
+            Expect(b.Boss.IsDead && b.F.Run.GateUnlocked && !b.F.Run.IsDead && Near(b.P.Stats.Health, ClearingBossState.Damage)
+                && !Get<ClearingVisuals>(b.F.Runtime, "visuals").Gate.activeSelf && b.F.Run.RewardCoins == 30
+                && b.P.Store.Writes == writes && b.P.Progress.Data.BankCoins == 0 && !b.F.Run.IsComplete,
+                "guardian retaliated after lethal player contact, failed to release seal or banked before beacon");
+            int cues = b.F.Audio.OneShots.Count; b.F.Tick(); b.F.Refresh();
+            Expect(b.F.Audio.OneShots.Count == cues && b.P.Store.Writes == writes, "repeated kill tick replayed reward/audio");
+        });
+        test("guardian victory banks only at actual beacon once and upgrades activate on the next dormant run", () =>
+        {
+            var b = new BossFixture(); b.Complete(); int cues = b.F.Audio.OneShots.Count;
+            Expect(b.P.Store.Writes == 1 && b.P.Progress.Data.BankCoins == 30 && b.P.Progress.Data.ClearedRuns == 1
+                && !b.F.ControlsEnabled, "complete guardian encounter did not bank the existing thirty-coin reward exactly once");
+            b.P.Update(KeyCode.E); b.P.Update(KeyCode.E);
+            Expect(b.P.Store.Writes == 1 && b.F.Audio.OneShots.Count == cues, "completed guardian E duplicated reward");
+            b.P.Update(KeyCode.Alpha1);
+            Expect(b.P.Progress.Data.VitalityRank == 1 && b.P.Progress.Data.BankCoins == 0 && Near(b.P.Stats.MaxHealth, 10f),
+                "guardian reward shop bypassed next-run-only growth");
+            b.P.Update(KeyCode.R);
+            Expect(!b.Boss.IsAwake && Near(b.P.Stats.Health, 12f) && Near(b.P.Stats.MaxHealth, 12f)
+                && b.P.Store.Writes == 2, "saved guardian growth did not activate once on a genuine new run");
+            b.P.AssertTemplate();
+        });
+        test("failed guardian reward save remains unbanked until completed E retries the same identity", () =>
+        {
+            var b = new BossFixture(); b.P.Store.AcceptWrites = false; b.Complete(); string id = b.P.RewardId;
+            Expect(b.F.Run.IsComplete && b.P.Store.Writes == 0 && b.P.Progress.Data.BankCoins == 0
+                && b.P.Progress.SaveFailed && b.P.Terminal.ToLowerInvariant().Contains("not saved"),
+                "guardian completion advertised a refused storage transaction as saved");
+            b.Feet(SupplyFixture.Point(0)); b.P.Stats.Health = 5f; b.P.Update(KeyCode.E);
+            Expect(!b.Supplies.IsClaimed(0) && Near(b.P.Stats.Health, 5f) && b.P.Store.Writes == 0,
+                "completed guardian E diverted save retry to a supply");
+            b.P.Store.AcceptWrites = true; b.P.Update(KeyCode.E); b.P.Update(KeyCode.E);
+            Expect(b.P.Store.Writes == 1 && b.P.Progress.Data.BankCoins == 30 && b.P.RewardId == id
+                && b.P.Progress.IsCompletionBanked(id), "guardian storage recovery lost or duplicated same-attempt reward");
+        });
+        test("guardian objective and E hint remain truthful in corner HUD and disappear while unavailable", () =>
+        {
+            foreach (float width in new[] { 620f, 960f, 1280f })
+            {
+                var b = new BossFixture(); ((RectTransform)Get<Transform>(b.P.Hud, "root")).rect = new Rect(0, 0, width, 540);
+                b.P.Unlock(); b.Altar(); b.P.Update();
+                string objective = Get<Text>(b.P.Hud, "objective").text.ToLowerInvariant();
+                string message = Get<Text>(b.P.Hud, "message").text.ToLowerInvariant();
+                Expect((objective.Contains("guardian") || objective.Contains("boss")) && message.Contains("e")
+                    && (message.Contains("awaken") || message.Contains("altar")), "dormant objective still claims a three-guard gate unlock");
+                Rect hint = RecordedLabelRect(Get<Text>(b.P.Hud, "message"), new Vector2(width, 540f));
+                Expect(hint.y + hint.height <= 81f && hint.x >= 0f && hint.x + hint.width <= width,
+                    "guardian prompt moved over combat view or outside the edge column");
+                b.P.Update(KeyCode.E); b.P.Update(); objective = Get<Text>(b.P.Hud, "objective").text.ToLowerInvariant();
+                Expect(objective.Contains("108") && !objective.Contains("press e"), "awake HUD omitted actual guardian HP or retained activation action");
+                b.P.Update(KeyCode.Escape); Expect(Get<Text>(b.P.Hud, "message").text == ""
+                    && Get<Text>(b.P.Hud, "help").text == "", "paused guardian advertises disabled actions");
+                b.P.Stats.Health = 0f; b.P.Update(); Expect(Get<Text>(b.P.Hud, "message").text == ""
+                    && b.P.Terminal.Contains("DEFEATED"), "dead guardian run retained live action hints");
+            }
+        });
+        test("guardian constructor caches pixel-aligned crown art without private rasters or altar collisions", () =>
+        {
+            var shared = new ClearingVisuals(new GameObject("Guardian shared-art fixture").transform);
+            int textures = Texture2D.CreatedCount, sprites = Sprite.CreatedCount;
+            var props = new ClearingBossVisuals(new GameObject("Guardian art fixture").transform, shared);
+            try
+            {
+                Expect(Texture2D.CreatedCount == textures && Sprite.CreatedCount == sprites,
+                    "guardian constructor duplicated the shared Point square raster");
+                SpriteRenderer[] pieces = Get<SpriteRenderer[]>(props, "bodyPieces");
+                Expect(pieces.Length == 33 && Get<SpriteRenderer[]>(props, "phaseMarks").Length == 2
+                    && Get<SpriteRenderer[]>(props, "warningBorder").Length == 4
+                    && Get<SpriteRenderer[]>(props, "impactPieces").Length == 4,
+                    "guardian art/warning/impact cache lost its bounded authored shape");
+                Sprite common = Get<Sprite>(shared, "pixel");
+                foreach (SpriteRenderer piece in pieces)
+                {
+                    Expect(object.ReferenceEquals(piece.sprite, common), "guardian piece does not reuse common pixel ownership");
+                    foreach (float dimension in new[] { piece.transform.localScale.x, piece.transform.localScale.y,
+                        piece.transform.localPosition.x, piece.transform.localPosition.y })
+                        Expect(Math.Abs(dimension * 30f - Math.Round(dimension * 30f)) < .001f,
+                            "guardian silhouette uses subpixel authored geometry");
+                }
+                NoSupplyColliders(Get<GameObject>(props, "altar").transform);
+                Expect(!props.Body.simulated && !Get<BoxCollider2D>(props, "collider").enabled
+                    && !props.Body.gameObject.activeSelf && props.Position == ClearingBossVisuals.SpawnPosition,
+                    "dormant guardian already obstructs the clearing or has a mismatched spawn point");
+            }
+            finally { props.Dispose(); shared.Dispose(); }
+        });
+        test("guardian visible four-border warning exactly matches locked lane and mark contact geometry", () =>
+        {
+            foreach (SentinelAttackKind kind in new[] { SentinelAttackKind.Lance, SentinelAttackKind.Sigil })
+            {
+                var b = new BossFixture(); b.Awaken(); b.BeginWarning(kind); b.F.Run.Advance(.2f); b.F.Refresh();
+                SentinelFootprint footprint = b.Boss.AttackFootprint;
+                Transform warning = Get<Transform>(b.Props, "warning");
+                SpriteRenderer[] border = Get<SpriteRenderer[]>(b.Props, "warningBorder");
+                SpriteRenderer fill = Get<SpriteRenderer>(b.Props, "warningFill");
+                Expect(warning.gameObject.activeSelf && (Vector2)warning.position == new Vector2(footprint.CenterX, footprint.CenterY)
+                    && Near(warning.rotation.RecordedEulerZ, footprint.AngleDegrees)
+                    && Near(warning.localScale.x, 1f) && Near(warning.localScale.y, 1f),
+                    "guardian warning root is detached from authoritative immutable contact pose");
+                for (int side = 0; side < border.Length; side++)
+                {
+                    bool horizontal = side < 2; float sign = side % 2 == 0 ? 1f : -1f;
+                    Transform edge = border[side].transform;
+                    Expect(Near(edge.localPosition.x, horizontal ? 0f : footprint.Width * .5f * sign)
+                        && Near(edge.localPosition.y, horizontal ? footprint.Height * .5f * sign : 0f)
+                        && Near(edge.localScale.x, horizontal ? footprint.Width : 2f / 30f)
+                        && Near(edge.localScale.y, horizontal ? 2f / 30f : footprint.Height),
+                        "guardian border " + side + " disagrees with locked contact rectangle");
+                }
+                Expect(Near(fill.transform.localScale.x, footprint.Width * b.Boss.PhaseProgress)
+                    && Near(fill.transform.localScale.y, footprint.Height * b.Boss.PhaseProgress)
+                    && !Get<SpriteRenderer>(b.Props, "warningCrossA").gameObject.activeSelf,
+                    "telegraph did not grow its interior charge independently of the static edge");
+                b.Feet(new Vector2(7f, -3f)); b.F.Refresh();
+                Expect(object.ReferenceEquals(footprint, b.Boss.AttackFootprint)
+                    && (Vector2)warning.position == new Vector2(footprint.CenterX, footprint.CenterY), "warning followed player dodge");
+                b.F.Run.Advance(b.Boss.WindupDuration - .2f); b.F.Refresh();
+                Expect(b.Boss.AttackPhase == SentinelAttackPhase.Active && Near(fill.transform.localScale.x, footprint.Width)
+                    && Near(fill.transform.localScale.y, footprint.Height), "active warning does not fill its exact contact bounds");
+                foreach (string name in new[] { "warningCrossA", "warningCrossB" })
+                {
+                    SpriteRenderer cross = Get<SpriteRenderer>(b.Props, name);
+                    Expect(cross.gameObject.activeSelf && cross.transform.localScale.x <= Math.Min(footprint.Width, footprint.Height),
+                        "guardian active non-color motif exceeds the narrowest locked contact dimension");
+                }
+            }
+        });
+        test("guardian pose health bar and phase notches reflect actual state without transforming its collider", () =>
+        {
+            var b = new BossFixture(); b.Awaken(); b.BeginWarning(); b.F.Refresh();
+            Transform art = Get<Transform>(b.Props, "art"); BoxCollider2D collider = Get<BoxCollider2D>(b.Props, "collider");
+            Expect(b.Props.Body.simulated && collider.enabled && Near(art.localPosition.y, -2f / 30f)
+                && collider.size == new Vector2(1.2f, .6f), "guardian anticipation moved/scaled physical foot bounds or lacks two-pixel pose");
+            b.DomainHit(PlayerAttackKind.Burst); b.DomainHit(PlayerAttackKind.Burst); b.F.Refresh();
+            SpriteRenderer health = Get<SpriteRenderer>(b.Props, "health");
+            float ratio = b.Boss.Health / ClearingBossState.MaxHealth;
+            Expect(b.Boss.Enraged && Near(health.transform.localScale.x, 50f / 30f * ratio)
+                && Near(health.transform.localPosition.x - health.transform.localScale.x * .5f, -25f / 30f)
+                && collider.size == new Vector2(1.2f, .6f), "phase-two actual HP fill drifted its anchored edge or distorted collider");
+            foreach (SpriteRenderer mark in Get<SpriteRenderer[]>(b.Props, "phaseMarks"))
+                Expect(mark.gameObject.activeSelf, "phase-two guardian lacks its persistent non-color two-notch cue");
+            int objects = GameObject.CreatedCount;
+            for (int frame = 0; frame < 25; frame++) b.F.Refresh();
+            Expect(GameObject.CreatedCount == objects, "guardian state refresh created replacement art or components");
+        });
+        test("guardian independent hit confirmation freezes on pause and clears on disable death retry and expiry", () =>
+        {
+            var b = new BossFixture(); b.Awaken(); b.BeginWarning(); b.StrikePosition();
+            b.P.Update(KeyCode.J); b.F.Tick(); b.F.Refresh();
+            Transform impact = Get<Transform>(b.Props, "impact");
+            Expect(impact.gameObject.activeSelf && impact.parent == b.F.Runtime.transform,
+                "accepted guardian contact has no independent owned impact root");
+            SpriteRenderer piece = Get<SpriteRenderer[]>(b.Props, "impactPieces")[0];
+            float alpha = piece.color.a, offset = piece.transform.localPosition.y;
+            Invoke(b.F.Runtime, "SetPaused", true); Time.unscaledTime += 100f;
+            for (int frame = 0; frame < 8; frame++) { b.F.Tick(); b.P.Update(); }
+            Expect(impact.gameObject.activeSelf && Near(piece.color.a, alpha) && Near(piece.transform.localPosition.y, offset),
+                "pause advanced guardian impact opacity or geometry");
+            Invoke(b.F.Runtime, "SetPaused", false); b.F.Run.Advance(.13f); b.F.Refresh();
+            Expect(!impact.gameObject.activeSelf, "expired guardian impact retained a stale visible frame");
+            b.Props.ShowImpact(false, false, b.F.Run.Time); Invoke(b.F.Runtime, "OnDisable"); b.F.Refresh();
+            Expect(!impact.gameObject.activeSelf && !Get<Transform>(b.Props, "warning").gameObject.activeSelf,
+                "disable retained or resurrected guardian impact/warning");
+            b.Props.ShowImpact(false, false, b.F.Run.Time); b.P.Stats.Health = 0f; b.P.Update();
+            Expect(!impact.gameObject.activeSelf, "player defeat retained guardian confirmation over the result");
+            b.P.Update(KeyCode.R); b.F.Refresh();
+            Expect(!impact.gameObject.activeSelf && !b.Boss.IsAwake, "new run retained guardian impact or awakening");
+        });
+        test("guardian disposal destroys four owned roots without destroying shared art or resurrecting feedback", () =>
+        {
+            var b = new BossFixture(); b.Awaken(); b.BeginWarning();
+            GameObject actor = b.Props.Body.gameObject, altar = Get<GameObject>(b.Props, "altar");
+            GameObject warning = Get<Transform>(b.Props, "warning").gameObject, impact = Get<Transform>(b.Props, "impact").gameObject;
+            var shared = Get<ClearingVisuals>(b.F.Runtime, "visuals"); Sprite pixel = Get<Sprite>(shared, "pixel");
+            Texture2D texture = Get<Texture2D>(shared, "texture");
+            int objects = GameObject.CreatedCount, textures = Texture2D.CreatedCount, sprites = Sprite.CreatedCount;
+            b.Props.Dispose(); b.Props.Dispose(); b.Props.ShowImpact(true, true, b.F.Run.Time); b.Props.Refresh(b.F.Run);
+            Expect(actor.Destroyed && altar.Destroyed && warning.Destroyed && impact.Destroyed && !pixel.Destroyed && !texture.Destroyed
+                && !warning.activeSelf && !impact.activeSelf && GameObject.CreatedCount == objects
+                && Texture2D.CreatedCount == textures && Sprite.CreatedCount == sprites,
+                "guardian disposal leaked roots, destroyed common art or allowed post-disposal resurrection");
+        });
+    }
+
     private static int Main()
     {
         int passed = 0, failed = 0;
@@ -1782,6 +2314,7 @@ public static class PresentationBehaviorChecks
         AddTacticsChecks(test);
         AddDamageNumberChecks(test);
         AddSupplyChecks(test);
+        AddBossChecks(test);
         Console.WriteLine("RESULT " + passed + " passed, " + failed + " failed; actual project C# with recording boundaries, not native Unity.");
         return failed == 0 ? 0 : 1;
     }

@@ -1,5 +1,48 @@
 # Development progress
 
+## Iteration 9 — integrated and independently reviewed Boss encounter
+
+2026-10-09 PDT. Verified clean remote84177cd and completed eighth receipt879693b,
+then isolated rpg/iteration-009-moss-guardian without losing prior/user work.
+Pure checkpointf8cebaaae527c9805a137110c57b60ea505605cb is safely pushed;
+CI38015115905/job114103550693 passed all12steps and artifact11655694949 exists.
+The original baseline validator passed316groups; foundation pure19Boss/36combat/
+38tactics/51progression all passed without Unity doubles.
+
+Actual live clearing now closes the Boss loop: three tactical guards ->E within
+.8 foot-units/clear wall LOS at central altar(0,-.7) -> Guardian at(0,.6) -> kill
+108HP Boss -> open existing north seal -> beacon E -> existing30coins saved ->
+next-run upgrade/R. Awakening retains HP/MP/reserve charges/paid cooldowns/attempt
+ID and invalidates old attack contacts. Alternating locked4.2x.9lane /1.8square
+captured-foot sigil deal2HP with shared immunity. Half-health phase2 changes only
+future admitted attacks; immutable timing/geometry, ready-only approach, caster
+LOS, player-first lethal contacts and hitch/disable cancellation are authoritative.
+
+New cached crowned moss/stone silhouette, nonblocking ready/sealed/spent altar,
+warning outline/fill/activeX, HP/phase indicators and independent hit/kill pulses
+reuse existing Point square/palette with1/30world-unit geometry. Fifth damage
+slot displays actual Boss HP loss; player slot3 is preserved. Existing accepted
+attack/hurt/hit/kill cues and mute remain; HUD uses existing screen-edge columns.
+No original hero/animation/scene/package/save-schema/balance migration is changed.
+
+Fresh final local361project +6distribution =367groups pass: movement14/resources40/
+input-animation9/combat36/progression51/tactics38/Boss19/readout9/supply13/scene17/
+presentation105/art10. Old81presentation and15scene groups are retained.
+26production scripts compile against86real2022.3engine/Editor/uGUI refs, with
+Input System explicitly substituted.56unique metaGUIDs/145serializedreferences/
+6materialized LFS objects/8Skills with65files pass. Independent reviewer reran
+Boss19/presentation105/scene17 with no blocking production defect. Two new fixture
+failures were traced to expected awakening cue count and test stepping beyond
+the retained ready deadline; corrected fixture sequences pass, not claimed gamebugs.
+Root captured production constructor/Refresh geometry for an offline visual
+inspection; that preview is not a native Game View. Native import/input/physics/
+Animator/render/audio/balance/playerbuild remains optional and unrun.
+
+Implementation checkpoint, exact CI/reviewed normalPR merge and finalsource
+publication follow. Complete source ZIP CRC/memberSHA/sourcebytes/LFS/HTTPS plus
+external delivery receipt/finalhandoff still must be verified before closing.
+Recovery baseline84177cd/foundationf8cebaa and all older archives remain.
+
 ## Iteration 8 — reviewed ordinary master integration
 
 Implementation 30588a2829d934854cd78487e3e4a4076fd6e2a0 was safely pushed; exact CI37996558184

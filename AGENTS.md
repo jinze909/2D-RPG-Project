@@ -1,15 +1,25 @@
 # RPG development instructions
 
-The user authorizes game development, commits, normal pushes to master,
-and source-project deliveries. Preserve accepted designs, existing user work,
-working systems, save compatibility, and the original blonde hero identity.
-Use international Unity **2022.3.53f1** and pixel art; do not use China Unity or
-China package services. Preserve the specified editor version.
+## Iteration 9 integrated Moss Guardian — publication in progress
+
+Eighth delivery is complete at source84177cd / receipt879693b. Ninth foundation
+f8cebaa is safely pushed; exact CI38015115905 passed all12steps. Live Runtime now
+requires three guards -> central altar E ->108HP two-pattern/two-phase Guardian
+-> north seal -> beacon E -> existing30coin saved growth. Read the complete
+BOSS_ENCOUNTER contract and ninth handoff. Default isolated ClearingRun callers
+retain the legacy three-guard API; live Start explicitly opts in.
+Fresh361project +6distribution =367checks pass;26production sources compile
+against86real Unity2022.3engine/Editor/uGUI references, Input System substituted.
+Independent actual-method/pure/scene review found no blocking issue. Cached Boss
+art/telegraphs, HP/phase edge HUD, fifth actual-loss slot, accepted cue reuse and
+pause/disable/retry/resource/reward lifecycle are integrated. PR/finalCI/ZIP/HTTPS
+publication remains to be completed after the implementation checkpoint.
+Preserve v1/30coins, player-first contacts, reserves and original blonde hero.
 
 ## Current architecture and clearing contract
 
 - `SampleScene` retains the original player prototype. `CombatClearing` is the
-  new, isolated candidate build entry: three sentinels, combat, a sealed beacon
+  new, isolated candidate build entry: three sentinels, a post-guard Guardian, combat, a sealed beacon
   region, completion/retry and compact Canvas HUD. Its native acceptance is pending.
 - `Player` clones the authoring `PlayerStats` in Awake. Health and mana resolve
   that same actor-owned snapshot. New session/retry fills valid maxima; the template
@@ -21,7 +31,7 @@ China package services. Preserve the specified editor version.
   by contact and warning. Read docs/game/SENTINEL_TACTICS.md; preserve original
   caster LOS, fixed targets, phase movement locks and snapshot cleanup on reset.
 - Iteration 7 DamageReadout formats accepted HP loss; ClearingDamageNumbers owns
-  four fixed labels and cached glyphs. Runtime feeds accepted before/after deltas.
+  five fixed labels and cached glyphs (Boss extends slot4). Runtime feeds accepted before/after deltas.
   Preserve simulation-time pause, fixed hit origins, kill visibility and cleanup
   on defeat/completion/retry/disable. Read docs/game/DAMAGE_FEEDBACK.md.
 - Iteration 8 ClearingSupplies owns two optional attempt-local discoveries/charges.
@@ -69,7 +79,7 @@ China package services. Preserve the specified editor version.
   Preserve these contracts and original hero hashes; do not change hit geometry
   merely to align with decoration or claim native rendering from offline rasters.
 
-## Current iteration 8 reviewed master integration
+## Historical iteration 8 reviewed master integration
 
 PR7 normally merged reviewed/tested30588a2 into masterba41be1; merge tree equals
 implementation exactly. ExactCI37996558184 passed all12steps/artifact11647800082.

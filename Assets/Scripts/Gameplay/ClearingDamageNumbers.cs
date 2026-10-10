@@ -17,7 +17,8 @@ namespace Rpg.Gameplay
             internal Color Color;
         }
 
-        private readonly Slot[] slots = new Slot[4];
+        // Existing sentinel 0..2 and player 3 indexes stay stable; Boss owns slot 4.
+        private readonly Slot[] slots = new Slot[5];
         private readonly Sprite[] glyphSprites = new Sprite[DamageReadout.Symbols.Length];
         private readonly Texture2D[] glyphTextures = new Texture2D[DamageReadout.Symbols.Length];
         private bool disposed;

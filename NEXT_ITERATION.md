@@ -1,5 +1,23 @@
 # Current continuation / next iteration
 
+## Current ninth-round continuation — publish verified integration
+
+First inspect actual branch/HEAD/dirty/unpushed/PR state and immutable ninth
+receipt. Boss integration and367checks/26-sourceAPIcompile are complete; do not
+restart or duplicate them. Foundationf8cebaa and exactCI38015115905 are published.
+Safely commit/push reviewed integration, verify its exact CI, normally merge the
+complete PR, then publish final source/handoff with exact CI. Generate full Unity
+ZIP and verify CRC/memberSHA/sourcebytes/materializedLFS/immutable HTTPS; preserve
+all18older ZIP/checksum paths. Finish external receipt/final-handoff verification.
+
+After ninth delivery is verified, prioritize a licensed optional Boss playthrough
+for actual collision/input/telegraph readability/audio and difficulty if available.
+If native tooling is unchanged, do not repeat license probes. A useful next code
+iteration could add a modest distinct exploration objective or simple NPC narrative
+that complements this complete encounter; choose from actual current sources.
+Preserve threeguards ->altarE ->Guardian ->beacon30coin contract, v1ledger,
+original hero, supply charges, fixed contacts and all previously delivered work.
+
 ## Current priority — resolve final eighth delivery, then new player value
 
 PR7 normally merged verified exploration supplies atba41be1; implementation

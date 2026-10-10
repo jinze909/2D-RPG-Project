@@ -29,6 +29,8 @@ namespace Rpg.Gameplay
         private readonly ClearingSupplies supplies = new ClearingSupplies();
         private readonly string[] supplyNotices = new string[ClearingSupplies.Count];
         private ClearingSupplyVisuals supplyVisuals;
+        private ClearingBossVisuals bossVisuals;
+        private bool bossWasEnraged;
         private PlayerHealth health;
         private PlayerMana mana;
         private PlayerMovement movement;
@@ -104,10 +106,11 @@ namespace Rpg.Gameplay
             }
             playerBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             playerBody.interpolation = RigidbodyInterpolation2D.Interpolate;
-            run = new ClearingRun();
+            run = new ClearingRun(true);
             visuals = new ClearingVisuals(transform);
             visuals.BuildWorld();
             supplyVisuals = new ClearingSupplyVisuals(transform, visuals);
+            bossVisuals = new ClearingBossVisuals(transform, visuals);
             for (int i = 0; i < enemies.Length; i++)
             {
                 EnemyView enemy = new EnemyView();
@@ -222,14 +225,19 @@ namespace Rpg.Gameplay
                                 if (BankCompletion() != ProgressActionResult.Saved) sound.Reward();
                                 Feedback("The beacon is restored. The clearing is safe.", 5f);
                             }
-                            else Feedback("Defeat all three sentinels to break the seal.", 2f);
+                            else Feedback(run.RequiresBoss ? "Defeat the sentinels and the Guardian to break the seal." :
+                                "Defeat all three sentinels to break the seal.", 2f);
                         }
+                        else if (NearBossAltar && run.RequiresBoss && !run.Boss.IsAwake) TryAwakenBoss();
                         else
                         {
                             int nearby = NearbySupply();
                             if (nearby >= 0) TryUseSupply(nearby);
                             else Feedback(run.GateUnlocked ? "Move closer to the north beacon." :
-                                "Defeat all three sentinels to break the seal.", 2f);
+                                run.RequiresBoss && run.DefeatedCount == ClearingRun.SentinelCount ?
+                                (run.Boss.IsAwake ? "Defeat the Guardian. Sidestep lanes; leave rune marks." :
+                                "The central altar is ready. Approach it and press E to awaken the Guardian.") :
+                                "Defeat all three sentinels to awaken the altar.", 2f);
                         }
                     }
                 }
@@ -240,8 +248,41 @@ namespace Rpg.Gameplay
             {
                 nextHudAt = Time.unscaledTime + .05f;
                 hud.Refresh(player.Stats, run, paused, sound.Muted, NearBeacon,
-                    Time.unscaledTime < feedbackUntil ? feedback : "", progress, rewardId, progressNotice, SupplyHint());
+                    Time.unscaledTime < feedbackUntil ? feedback : "", progress, rewardId, progressNotice, SupplyHint(), BossHint());
             }
+        }
+
+        private bool NearBossAltar
+        {
+            get
+            {
+                return run != null && run.RequiresBoss && Vector2.Distance(PlayerPoint,
+                    ClearingBossVisuals.AltarPosition) <= .8f && ClearLine(PlayerPoint, ClearingBossVisuals.AltarPosition);
+            }
+        }
+
+        private void TryAwakenBoss()
+        {
+            if (!SuppliesPlayable || !NearBossAltar || !run.RequiresBoss || run.Boss.IsAwake) return;
+            if (!run.TryAwakenBoss())
+            {
+                Feedback("Defeat all three sentinels before awakening the central altar.", 2f);
+                return;
+            }
+            // Entry is a new combat stage, not a new run. Preserve HP/MP, spent
+            // reserves, costs and cooldowns; invalidate the pre-entry attack token.
+            strikeId = 0;
+            strike.gameObject.SetActive(false);
+            if (bossVisuals != null) { bossVisuals.Reset(); bossVisuals.Refresh(run); }
+            sound.Attack(true);
+            Feedback("Moss Guardian awakened. Sidestep the lane; leave the rune mark. Strike during recovery.", 5f);
+        }
+
+        private string BossHint()
+        {
+            if (!SuppliesPlayable || !run.RequiresBoss || run.Boss.IsAwake || !NearBossAltar) return "";
+            return run.DefeatedCount == ClearingRun.SentinelCount ?
+                "E - awaken Moss Guardian (HP/MP and supplies retained)" : "Altar sealed - defeat all three sentinels";
         }
 
         private static Vector2 SupplyPoint(int index)
@@ -478,9 +519,39 @@ namespace Rpg.Gameplay
                         enemy.Body.velocity = Vector2.zero;
                         enemy.Warning.gameObject.SetActive(false);
                         enemy.Object.SetActive(false);
-                        Feedback("Sentinel defeated. " + run.DefeatedCount + "/3 seals broken. +" +
-                            ClearingRun.CoinsPerSentinel + " coins.", 2f);
+                        Feedback(run.RequiresBoss && run.DefeatedCount == ClearingRun.SentinelCount ?
+                            "Three sentinels defeated. E at the central altar awakens the Guardian." :
+                            "Sentinel defeated. " + run.DefeatedCount + "/3 seals broken. +" +
+                            ClearingRun.CoinsPerSentinel + " coins.", 3f);
                         continue;
+                    }
+                }
+            }
+            // The Guardian belongs to the same player-first contact pass. Its
+            // lethal contact must never occur before this admitted player's hit.
+            if (run.RequiresBoss && run.Boss.IsAwake && !run.Boss.IsDead && bossVisuals != null)
+            {
+                Vector2 point = bossVisuals.Position;
+                float healthBefore = run.Boss.Health;
+                if (run.PlayerAttackActive && InStrike(point - PlayerPoint) && ClearLine(PlayerPoint, point) &&
+                    run.TryHitBoss(strikeId))
+                {
+                    contactedSentinel = true;
+                    defeatedSentinel |= run.Boss.IsDead;
+                    bossVisuals.ShowImpact(run.Boss.IsDead, strikeKind == PlayerAttackKind.Burst, run.Time);
+                    if (damageNumbers != null) damageNumbers.Show(ClearingRun.SentinelCount + 1,
+                        healthBefore - run.Boss.Health, point + new Vector2(0f, 2f),
+                        strikeKind == PlayerAttackKind.Burst ? ClearingPalette.CyanBright : ClearingPalette.Cream, run.Time);
+                    if (run.Boss.IsDead)
+                    {
+                        bossVisuals.Body.velocity = Vector2.zero;
+                        bossVisuals.Refresh(run);
+                        Feedback("Guardian defeated. The seal opens; E at the north beacon banks the run reward.", 6f);
+                    }
+                    else if (run.Boss.Enraged && !bossWasEnraged)
+                    {
+                        bossWasEnraged = true;
+                        Feedback("Guardian phase 2: faster warnings. Current marks keep their original timing.", 4f);
                     }
                 }
             }
@@ -543,6 +614,7 @@ namespace Rpg.Gameplay
                     }
                 }
             }
+            if (!run.IsDead) UpdateBossCombat();
             // Several targets in one burst share a cue. A later kill can upgrade an
             // earlier contact cue once; repeated contacts cannot create audio spam.
             if (contactedSentinel && !run.IsDead)
@@ -568,6 +640,41 @@ namespace Rpg.Gameplay
             }
         }
 
+        private void UpdateBossCombat()
+        {
+            if (!run.RequiresBoss || bossVisuals == null || !run.Boss.IsAwake || run.Boss.IsDead) return;
+            ClearingBossState boss = run.Boss;
+            Vector2 origin = bossVisuals.Position;
+            Vector2 target = PlayerPoint;
+            Vector2 difference = target - origin;
+            bool clear = ClearLine(origin, target);
+            if (boss.AttackPhase == SentinelAttackPhase.Ready && clear)
+            {
+                if (difference.magnitude <= BossTactics.RangeForKind(boss.NextAttackKind))
+                {
+                    if (run.TryBeginBossAttack(origin.x, origin.y, target.x, target.y, true))
+                        sound.Attack(boss.AttackKind == SentinelAttackKind.Sigil);
+                }
+                else
+                    bossVisuals.Body.MovePosition(origin + difference.normalized * Time.fixedDeltaTime);
+            }
+            if (boss.AttackPhase != SentinelAttackPhase.Ready || !clear) bossVisuals.Body.velocity = Vector2.zero;
+            SentinelFootprint snapshot = boss.AttackFootprint;
+            if (boss.AttackPhase != SentinelAttackPhase.Active || snapshot == null ||
+                !snapshot.Contains(target.x, target.y) ||
+                !ClearLine(new Vector2(snapshot.OriginX, snapshot.OriginY), target) || !run.TryResolveBossHit()) return;
+            float healthBefore = player.Stats.Health;
+            health.TakeDamage(ClearingBossState.Damage);
+            if (damageNumbers != null) damageNumbers.Show(ClearingRun.SentinelCount,
+                healthBefore - player.Stats.Health, target + new Vector2(0f, 2.35f), ClearingPalette.Danger, run.Time);
+            sound.Hurt();
+            if (player.Stats.Health <= 0f)
+            {
+                run.NotifyPlayerDeath();
+                StopActors();
+            }
+        }
+
         private bool InStrike(Vector2 difference)
         {
             float forward = Vector2.Dot(difference, strikeDirection);
@@ -585,6 +692,7 @@ namespace Rpg.Gameplay
         {
             if (damageNumbers != null) damageNumbers.Refresh(run.Time);
             if (supplyVisuals != null) supplyVisuals.Refresh(supplies, run.Time);
+            if (bossVisuals != null) bossVisuals.Refresh(run);
             bool active = run.PlayerAttackActive;
             strike.gameObject.SetActive(active);
             if (active)
@@ -725,6 +833,7 @@ namespace Rpg.Gameplay
         {
             if (damageNumbers != null) damageNumbers.Clear();
             if (supplyVisuals != null) supplyVisuals.Clear();
+            if (bossVisuals != null) { bossVisuals.Clear(); bossVisuals.Body.velocity = Vector2.zero; }
             movement.SetControlEnabled(false);
             playerBody.velocity = Vector2.zero;
             if (strike != null) strike.gameObject.SetActive(false);
@@ -747,6 +856,8 @@ namespace Rpg.Gameplay
             bool lostReward = run.IsComplete && progress != null && !progress.IsCompletionBanked(rewardId);
             if (paused) SetPaused(false);
             run.ResetRun();
+            bossWasEnraged = false;
+            if (bossVisuals != null) bossVisuals.Reset();
             rewardId = Guid.NewGuid().ToString("N");
             if (progress != null)
             {
@@ -794,6 +905,7 @@ namespace Rpg.Gameplay
             if (damageNumbers != null) damageNumbers.Clear();
             if (supplyVisuals != null) supplyVisuals.Clear();
             if (sound != null) sound.ResetFeedback();
+            if (bossVisuals != null) { bossVisuals.Clear(); bossVisuals.Body.simulated = false; }
             // A paused scene must never leave the next loaded scene frozen.
             if (paused)
             {
@@ -823,6 +935,7 @@ namespace Rpg.Gameplay
         {
             if (damageNumbers != null) damageNumbers.Dispose();
             if (supplyVisuals != null) supplyVisuals.Dispose();
+            if (bossVisuals != null) bossVisuals.Dispose();
             if (visuals != null) visuals.Dispose();
             if (sound != null) sound.Dispose();
         }
