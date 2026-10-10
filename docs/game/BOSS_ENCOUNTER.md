@@ -1,8 +1,33 @@
-# Moss Guardian — ninth-round encounter contract
+# Moss Guardian — encounter contract
 
-Runtime/presentation integration and independent review are complete; PR8 normally
-merged at134e09d after exact implementationCI38015650991passed12steps. Actual clearing opts into requiredBoss;
-default ClearingRun supports existing isolated three-sentinel callers.
+## Tenth-round verified state and phase feedback
+
+Ready identifies the next pattern; Telegraph gives dodge/leave-mark instructions;
+Active identifies the lane/rune as active and says keep clear; Recovery says strike
+now. Pause/death retains Boss HP/phase but says PAUSED/DEFEATED. Boss counterattack
+instructions are suppressed while paused/defeated; skills/context hide as before.
+Crossing half health while Boss survives admits one four-second run.Time phase
+notice, one cached .24-second cue and independent .5-second captured-anchor halo.
+Notice coexists with supply context in the existing lower edge label; no extra HUD
+panel/collider/footprint is added. Pause freezes notice/halo time. Expiry, defeat,
+Boss kill/completion, disable and true retry clear relevant transients; disable
+retains the threshold latch and spent resources, while genuine retry rearms it.
+
+Three cached chevron pieces reflect only live Recovery, independent of color.
+Four cached halo strokes expand in integer pixels using the shared Point square;
+allfive Boss-owned roots dispose without destroying shared art. Original33body
+parts/collider/footpoint/warninggeometry remain. Marker indicates an opening,
+not immunity to unrelated hazards. Seventhcachedclip respects existingmute/.18
+volume/variation/reset and disposal. Visual pieces and clips are cached at construction, rather than created per frame.
+
+Actual105/3→108/0 and independent108/1→109/0 are permanently covered in123/0
+presentation groups. Full379project+6distribution=385checks/API26sources86realrefs
+(Inputsub)/independent123presentation19BossAPIreview pass; no remaining blocker
+found within this scope. Numeric stats/timing/input/costs/rewards/v1save are unchanged.
+Native readability/difficulty/audio/feel are **尚未进行 Unity 原生验收**. See
+[tenth evidence/native protocol](../iterations/2026-10-09-iteration-010/evidence-and-native-protocol.md)
+and the archived bounded simulation review. Final sourceCI/PR/ZIP publication
+identity resolves in the external tenth receipt after verified publication.
 
 ## Complete encounter
 

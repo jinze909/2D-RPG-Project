@@ -1,0 +1,24 @@
+ACTUAL RULES ONLY, no Unity doubles. Clear LOS; stationary foot(0,-1)/boss(0,0); every player strike hits; simulated repeated presses; 20ms step; 20maxMP regeneration mirror. Guard removal is setup. Fixed-tick human/physics equivalence is not claimed.
+stationary|light|bossFirst=False|entryHP=10|entryMP=20|seconds=2.30|outcome=boss-dead|bossHP=0|light=6|burst=0|warnings=1|contacts=1|remainingHP=8|remainingMP=20.00
+stationary|burst|bossFirst=False|entryHP=10|entryMP=20|seconds=5.02|outcome=boss-dead|bossHP=0|light=0|burst=4|warnings=3|contacts=2|remainingHP=6|remainingMP=0.02
+stationary|mixed|bossFirst=False|entryHP=10|entryMP=20|seconds=1.58|outcome=boss-dead|bossHP=0|light=4|burst=2|warnings=1|contacts=1|remainingHP=8|remainingMP=9.10
+stationary|recovery-light|bossFirst=False|entryHP=10|entryMP=20|seconds=5.18|outcome=boss-dead|bossHP=0|light=6|burst=0|warnings=3|contacts=3|remainingHP=4|remainingMP=20.00
+stationary|light|bossFirst=True|entryHP=10|entryMP=20|seconds=2.30|outcome=boss-dead|bossHP=0|light=6|burst=0|warnings=1|contacts=1|remainingHP=8|remainingMP=20.00
+stationary|burst|bossFirst=True|entryHP=10|entryMP=20|seconds=5.02|outcome=boss-dead|bossHP=0|light=0|burst=4|warnings=3|contacts=2|remainingHP=6|remainingMP=0.02
+stationary|mixed|bossFirst=True|entryHP=10|entryMP=20|seconds=1.58|outcome=boss-dead|bossHP=0|light=4|burst=2|warnings=1|contacts=1|remainingHP=8|remainingMP=9.10
+stationary|recovery-light|bossFirst=True|entryHP=10|entryMP=20|seconds=5.18|outcome=boss-dead|bossHP=0|light=6|burst=0|warnings=3|contacts=3|remainingHP=4|remainingMP=20.00
+stationary|light|bossFirst=True|entryHP=2|entryMP=0|seconds=1.02|outcome=player-dead|bossHP=54|light=3|burst=0|warnings=1|contacts=1|remainingHP=0|remainingMP=0.82
+stationary|light|bossFirst=True|entryHP=4|entryMP=0|seconds=2.30|outcome=boss-dead|bossHP=0|light=6|burst=0|warnings=1|contacts=1|remainingHP=2|remainingMP=1.84
+stationary|light|bossFirst=True|entryHP=6|entryMP=0|seconds=2.30|outcome=boss-dead|bossHP=0|light=6|burst=0|warnings=1|contacts=1|remainingHP=4|remainingMP=1.84
+recovery-capacity|light|phase=1|duration=1.15|lightAdmissions=3|burstAdmissions=0|prospectiveDamage=54|MPSpent=0
+recovery-capacity|burst|phase=1|duration=1.15|lightAdmissions=0|burstAdmissions=1|prospectiveDamage=30|MPSpent=6
+recovery-capacity|mixed|phase=1|duration=1.15|lightAdmissions=3|burstAdmissions=1|prospectiveDamage=84|MPSpent=6
+recovery-capacity|light|phase=2|duration=0.9|lightAdmissions=2|burstAdmissions=0|prospectiveDamage=36|MPSpent=0
+recovery-capacity|burst|phase=2|duration=0.9|lightAdmissions=0|burstAdmissions=1|prospectiveDamage=30|MPSpent=6
+recovery-capacity|mixed|phase=2|duration=0.9|lightAdmissions=2|burstAdmissions=1|prospectiveDamage=66|MPSpent=6
+footprint-escape|Lance|inputMagnitude=1|seconds20ms=0.12|normalWarning=1|phase2Warning=.8
+footprint-escape|Sigil|inputMagnitude=1|seconds20ms=0.24|normalWarning=1|phase2Warning=.8
+footprint-escape|Lance|inputMagnitude=0.5|seconds20ms=0.24|normalWarning=1|phase2Warning=.8
+footprint-escape|Sigil|inputMagnitude=0.5|seconds20ms=0.46|normalWarning=1|phase2Warning=.8
+footprint-escape|Lance|inputMagnitude=0.25|seconds20ms=0.46|normalWarning=1|phase2Warning=.8
+footprint-escape|Sigil|inputMagnitude=0.25|seconds20ms=0.92|normalWarning=1|phase2Warning=.8
