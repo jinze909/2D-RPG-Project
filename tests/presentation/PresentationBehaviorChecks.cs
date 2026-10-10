@@ -239,9 +239,13 @@ public static class PresentationBehaviorChecks
         string notice = "", bool paused = false)
     {
         var method = typeof(ClearingHud).GetMethod("Refresh", BindingFlags.Instance | BindingFlags.NonPublic);
-        if (method == null || method.GetParameters().Length != 11)
+        if (method == null || method.GetParameters().Length < 11 || method.GetParameters().Length > 12)
             throw new Exception("Progression HUD Refresh signature absent");
-        method.Invoke(f.Hud, new object[] { f.Stats, f.Run, paused, false, true, "", progress, rewardId, notice, "", "" });
+        var args = new object[method.GetParameters().Length];
+        object[] existing = { f.Stats, f.Run, paused, false, true, "", progress, rewardId, notice, "", "" };
+        Array.Copy(existing, args, existing.Length);
+        if (args.Length == 12) args[11] = "";
+        method.Invoke(f.Hud, args);
     }
 
     private static string HudText(ClearingHud hud)
@@ -1931,6 +1935,48 @@ public static class PresentationBehaviorChecks
         });
     }
 
+    private static BossFixture ThresholdFixture(bool nearSupply = false)
+    {
+        var b = new BossFixture(); b.Awaken(); b.BeginWarning();
+        b.DomainHit(PlayerAttackKind.Light); b.DomainHit(PlayerAttackKind.Light);
+        Expect(Near(b.Boss.Health, 72f), "threshold setup lost original Boss HP or light damage");
+        if (nearSupply) b.Props.Body.position = SupplyFixture.Point(1);
+        b.StrikePosition(); b.P.Update(KeyCode.J); b.F.Tick(); b.P.Update();
+        Expect(Near(b.Boss.Health, 54f) && b.Boss.Enraged, "actual J did not enter phase two at exactly half health");
+        return b;
+    }
+
+    private static void AddBossPolishChecks(Action<string, Action> test)
+    {
+        test("guardian recovery objective advertises a safe strike opportunity", () =>
+        {
+            var b = new BossFixture(); b.Awaken(); b.BeginWarning();
+            b.F.Run.Advance(b.Boss.WindupDuration + b.Boss.ActiveDuration + .03f); b.F.Tick(); b.P.Update();
+            Expect(b.Boss.AttackPhase == SentinelAttackPhase.Recovery, "recovery HUD setup entered another attack");
+            string objective = Get<Text>(b.P.Hud, "objective").text.ToLowerInvariant();
+            Expect(objective.Contains("strike") && !objective.Contains("sidestep") && !objective.Contains("leave"),
+                "recovery still tells the player to dodge a harmless expired footprint: " + objective);
+        });
+        test("guardian threshold notice preserves nearby supply action in the same edge label", () =>
+        {
+            var b = ThresholdFixture(true);
+            string message = Get<Text>(b.P.Hud, "message").text.ToLowerInvariant();
+            Expect(message.Contains("phase 2") && message.Contains("e") && message.Contains("rune"),
+                "contextual rune interaction masks the new phase notice: " + message);
+        });
+        test("guardian phase notice survives a hundred seconds of paused wall time", () =>
+        {
+            var b = ThresholdFixture();
+            double time = b.F.Run.Time; Invoke(b.F.Runtime, "SetPaused", true);
+            Time.unscaledTime += 100f;
+            for (int frame = 0; frame < 8; frame++) { b.P.Update(); b.F.Tick(); }
+            Expect(b.F.Run.Time == time && Get<Text>(b.P.Hud, "message").text == "", "paused phase notice stayed playable or advanced simulation");
+            Invoke(b.F.Runtime, "SetPaused", false); b.P.Update();
+            string message = Get<Text>(b.P.Hud, "message").text.ToLowerInvariant();
+            Expect(message.Contains("phase 2"), "paused wall time silently expired phase notice: " + message);
+        });
+    }
+
     private static int Main()
     {
         int passed = 0, failed = 0;
@@ -2315,6 +2361,7 @@ public static class PresentationBehaviorChecks
         AddDamageNumberChecks(test);
         AddSupplyChecks(test);
         AddBossChecks(test);
+        AddBossPolishChecks(test);
         Console.WriteLine("RESULT " + passed + " passed, " + failed + " failed; actual project C# with recording boundaries, not native Unity.");
         return failed == 0 ? 0 : 1;
     }

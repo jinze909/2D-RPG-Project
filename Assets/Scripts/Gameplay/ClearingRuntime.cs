@@ -31,6 +31,8 @@ namespace Rpg.Gameplay
         private ClearingSupplyVisuals supplyVisuals;
         private ClearingBossVisuals bossVisuals;
         private bool bossWasEnraged;
+        private string bossPhaseNotice = "";
+        private double bossPhaseNoticeUntil = double.NaN;
         private PlayerHealth health;
         private PlayerMana mana;
         private PlayerMovement movement;
@@ -248,7 +250,8 @@ namespace Rpg.Gameplay
             {
                 nextHudAt = Time.unscaledTime + .05f;
                 hud.Refresh(player.Stats, run, paused, sound.Muted, NearBeacon,
-                    Time.unscaledTime < feedbackUntil ? feedback : "", progress, rewardId, progressNotice, SupplyHint(), BossHint());
+                    Time.unscaledTime < feedbackUntil ? feedback : "", progress, rewardId, progressNotice,
+                    SupplyHint(), BossHint(), BossPhaseNotice());
             }
         }
 
@@ -283,6 +286,18 @@ namespace Rpg.Gameplay
             if (!SuppliesPlayable || !run.RequiresBoss || run.Boss.IsAwake || !NearBossAltar) return "";
             return run.DefeatedCount == ClearingRun.SentinelCount ?
                 "E - awaken Moss Guardian (HP/MP and supplies retained)" : "Altar sealed - defeat all three sentinels";
+        }
+
+        private string BossPhaseNotice()
+        {
+            return SuppliesPlayable && run.RequiresBoss && run.Boss.IsAwake && !run.Boss.IsDead &&
+                run.Time < bossPhaseNoticeUntil ? bossPhaseNotice : "";
+        }
+
+        private void ClearBossPhaseNotice()
+        {
+            bossPhaseNotice = "";
+            bossPhaseNoticeUntil = double.NaN;
         }
 
         private static Vector2 SupplyPoint(int index)
@@ -544,6 +559,7 @@ namespace Rpg.Gameplay
                         strikeKind == PlayerAttackKind.Burst ? ClearingPalette.CyanBright : ClearingPalette.Cream, run.Time);
                     if (run.Boss.IsDead)
                     {
+                        ClearBossPhaseNotice();
                         bossVisuals.Body.velocity = Vector2.zero;
                         bossVisuals.Refresh(run);
                         Feedback("Guardian defeated. The seal opens; E at the north beacon banks the run reward.", 6f);
@@ -551,7 +567,13 @@ namespace Rpg.Gameplay
                     else if (run.Boss.Enraged && !bossWasEnraged)
                     {
                         bossWasEnraged = true;
-                        Feedback("Guardian phase 2: faster warnings. Current marks keep their original timing.", 4f);
+                        // This priority notice owns a simulation-time lifetime. Context
+                        // actions can coexist with it, and paused wall time cannot erase it.
+                        bossPhaseNotice = "PHASE 2 - next warnings faster";
+                        bossPhaseNoticeUntil = run.Time + 4d;
+                        bossVisuals.ShowPhaseChange(run.Time);
+                        sound.BossPhase();
+                        nextHudAt = 0f;
                     }
                 }
             }
@@ -831,6 +853,7 @@ namespace Rpg.Gameplay
 
         private void StopActors()
         {
+            ClearBossPhaseNotice();
             if (damageNumbers != null) damageNumbers.Clear();
             if (supplyVisuals != null) supplyVisuals.Clear();
             if (bossVisuals != null) { bossVisuals.Clear(); bossVisuals.Body.velocity = Vector2.zero; }
@@ -857,6 +880,7 @@ namespace Rpg.Gameplay
             if (paused) SetPaused(false);
             run.ResetRun();
             bossWasEnraged = false;
+            ClearBossPhaseNotice();
             if (bossVisuals != null) bossVisuals.Reset();
             rewardId = Guid.NewGuid().ToString("N");
             if (progress != null)
@@ -902,6 +926,7 @@ namespace Rpg.Gameplay
 
         private void OnDisable()
         {
+            ClearBossPhaseNotice();
             if (damageNumbers != null) damageNumbers.Clear();
             if (supplyVisuals != null) supplyVisuals.Clear();
             if (sound != null) sound.ResetFeedback();

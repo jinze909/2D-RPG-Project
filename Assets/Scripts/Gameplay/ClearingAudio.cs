@@ -13,6 +13,7 @@ namespace Rpg.Gameplay
         private readonly AudioClip unlock;
         private readonly AudioClip impact;
         private readonly AudioClip defeat;
+        private readonly AudioClip bossPhase;
         private int variation;
         internal bool Muted { get { return source.mute; } }
 
@@ -28,6 +29,7 @@ namespace Rpg.Gameplay
             unlock = Tone("Clearing reward", .32f, 440f, 880f);
             impact = Tone("Clearing contact", .06f, 260f, 95f);
             defeat = Tone("Clearing sentinel defeat", .18f, 220f, 520f);
+            bossPhase = Tone("Clearing Guardian phase 2", .24f, 520f, 130f);
         }
 
         private static AudioClip Tone(string name, float seconds, float start, float end)
@@ -51,6 +53,7 @@ namespace Rpg.Gameplay
         internal void Attack(bool isBurst) { Play(isBurst ? burst : light); }
         internal void Hurt() { Play(hurt); }
         internal void Reward() { Play(unlock); }
+        internal void BossPhase() { Play(bossPhase); }
         internal void Hit(bool isKill, bool isBurst) { Play(isKill ? defeat : impact, isBurst ? 1.12f : 1f); }
         internal void ResetFeedback()
         {
@@ -71,6 +74,7 @@ namespace Rpg.Gameplay
             Object.Destroy(unlock);
             Object.Destroy(impact);
             Object.Destroy(defeat);
+            Object.Destroy(bossPhase);
         }
     }
 }
