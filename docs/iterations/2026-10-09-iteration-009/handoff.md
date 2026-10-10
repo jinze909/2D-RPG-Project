@@ -10,7 +10,7 @@ once source publication and ZIP verification are complete.
 
 ## Handoff Chain
 
-Continues from [eighth completed handoff](../iteration-008/handoff.md) and completed
+Continues from [eighth completed handoff](../2026-10-09-iteration-008/handoff.md) and completed
 rpg-deliveries receipt879693b. The scaffold's initial automatic lookup did not find
 the archived docs chain; the explicit link above restores continuity. Supersedes
 ninth foundation pending lists, preserves all earlier source/archive history.
