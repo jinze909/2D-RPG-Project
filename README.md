@@ -1,14 +1,15 @@
 # 2D RPG Project
 
 Unity **2022.3.53f1 国际版**的像素 RPG。当前 `master` 中的
-`Assets/Scenes/CombatClearing.unity` 实现战斗、三个敌人、任务封锁与解锁、紧凑 HUD、
+`Assets/Scenes/CombatClearing.unity` 实现三个战术守卫、祭坛 Boss、战斗、封锁与解锁、紧凑 HUD、
 胜败重试与持久成长。原玩家原型 `Assets/Scenes/SampleScene.unity` 仍然保留。
 工程尚未通过原生试玩，也尚未实现完整世界与剧情。
 项目按实际完成的闭环持续扩展，保留原有金发主角。
 
 在 Unity Hub 安装指定版本，克隆后运行 `git lfs pull` 取得真实人物图片，再用
 Unity 打开工程及 CombatClearing。WASD/方向键、模拟左摇杆或 D-Pad 移动；
-J/空格攻击，K 法力爆发，E 激活北侧信标，胜败后 R 重试，Esc 暂停，M 静音。
+J/空格攻击，K 法力爆发；击败三守卫后 E 唤醒中央祭坛 Boss，击败后 E 激活
+北侧信标；附近 E 使用补给。胜败后 R 重试，Esc 暂停，M 静音。
 手柄已改为直接向量绑定，但尚未执行真实设备测试。P 仅保留在 SampleScene 的
 伤害调试中；新关卡关闭该输入。玩法合同与原生验收见
 [Combat Clearing](docs/game/COMBAT_CLEARING.md)。
@@ -43,6 +44,15 @@ J/空格攻击，K 法力爆发，E 激活北侧信标，胜败后 R 重试，Es
 [PR #7](https://github.com/jinze909/2D-RPG-Project/pull/7) 已普通合入 master，
 实现 CI 已通过；最终源码 CI、完整 ZIP 和下载回验见独立
 [第八轮交付回执](https://raw.githubusercontent.com/jinze909/2D-RPG-Project/rpg-deliveries/iteration-008-delivery.json)。原生试玩未执行。
+第九轮加入可完成的苔石守护者遭遇：击败三守卫后靠近中央祭坛按 E，
+唤醒 108 HP Boss。侧移躲开锁定长枪，离开脚下符文；半血后后续攻击加快，
+已有预警保留原时序。Boss 死亡才开北侧封锁，信标仍保存原有 30 金币。
+唤醒不回血、不补蓝、不重置补给。新增缓存像素轮廓、实际扣血数字槽、
+血量/阶段边缘提示，保留已有输入、伤害反馈、音效与成长。367 项离线/打包检查
+及 26 份生产脚本 Unity API 引用编译通过（Input System 替身）；原生验收未执行。
+详见 [Boss 遭遇合同](docs/game/BOSS_ENCOUNTER.md) 和
+[第九轮接力文档](docs/iterations/2026-10-09-iteration-009/handoff.md)。
+提交、PR、最终 CI 和 ZIP 交付核验待本轮发布收尾，不能从离线结果推断试玩通过。
 注册源已改为 `packages.unity.com`，未升级任何锁定包版本。云端缺少有效 Unity
 许可证，尚未完成原生导入、真实碰撞、Animator 视觉或游戏试玩；离线检查不代替它们。
 

@@ -1,7 +1,7 @@
 # Moss Guardian — ninth-round encounter contract
 
-At this foundation checkpoint only pure rules are verified; Runtime/presentation
-integration and delivery remain pending. Actual clearing opts into requiredBoss;
+Runtime/presentation integration and independent review are complete; GitHub/ZIP
+publication follows the verified implementation checkpoint. Actual clearing opts into requiredBoss;
 default ClearingRun supports existing isolated three-sentinel callers.
 
 ## Complete encounter
@@ -31,13 +31,21 @@ contacts/snapshot but retains original ready deadline, health and next pattern.
 
 ## Presentation and validation boundary
 
-Plan cached original wide crowned moss/stone silhouettes and nonblocking altar,
+Implemented cached original wide crowned moss/stone silhouettes and nonblocking altar,
 shared palette/Point square with1/30world-unit geometry, authoritative constant
 warning outline/fill/activeX, hurt/killpulse and fixed fifth actual-loss label.
 Retain player slot3 and Boss slot4; use existing edge HUD for HP/phase/counter.
 Mute/accepted one-shot deduplication/disposal remain. No per-frame object creation.
 No new player bitmap, animation controller, scene or package rewrite is needed.
-Pure and actual-method checks, real2022.3APIcompile, full regression/CI and source
-ZIP must precede completion; recording boundaries do not prove native gameplay.
+Fresh361project +6distribution =367checks pass;105presentation groups retain81
+earlier groups,17scene groups retain15, and19pureBoss groups verify admission/
+geometry/timing/gate/interrupts.26production scripts compile against86real2022.3
+engine/Editor/uGUI references with Input System substituted. An independent reviewer
+reran Boss19/presentation105/scene17 and found no blocking defect. Recorded cached
+production geometry was visually inspected offline, not in native Game View.
+Exact implementation/master CI and full sourceZIP must precede completion;
+recording boundaries do not prove native gameplay.
 Native physics,deviceinput,render/Animator,glyphs,audio,balance/build are optional
-and unrun. Versioned MovePosition/Linecast docs inform existing bridge contracts.
+and unrun. Official2022.3 [MovePosition](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Rigidbody2D.MovePosition.html)
+and [Linecast](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Physics2D.Linecast.html)
+documentation informs fixed-step movement, original-caster LOS and wall-layer filtering.

@@ -1,15 +1,22 @@
 # Current continuation / next iteration
 
-## Current ninth-round work — resume the Boss checkpoint
+## Current ninth-round continuation — publish verified integration
 
-First inspect actual branch/HEAD/dirty files and ninth CI; preserve ongoing work.
-Finish the central altar E ->108HPtwo-patternGuardian ->sealopen ->beacon30coin
-save/retry/upgrades loop. Supplies/HP/MP retain attempt state on awakening/disable;
-newrunR resets. Resolve all player contacts includingBoss before retaliation.
-Use captured phase timing/geometry, fixed fifth damage slot and edge HUD. Complete
-actual-method/pure/meta/LFS/scene/animation/API regressions, review, CI and ordinary
-PR/mastermerge, then verified full sourceZIP/immutableHTTPS and chained handoff.
-Do not start another unrelated system before ninth delivery completes.
+First inspect actual branch/HEAD/dirty/unpushed/PR state and immutable ninth
+receipt. Boss integration and367checks/26-sourceAPIcompile are complete; do not
+restart or duplicate them. Foundationf8cebaa and exactCI38015115905 are published.
+Safely commit/push reviewed integration, verify its exact CI, normally merge the
+complete PR, then publish final source/handoff with exact CI. Generate full Unity
+ZIP and verify CRC/memberSHA/sourcebytes/materializedLFS/immutable HTTPS; preserve
+all18older ZIP/checksum paths. Finish external receipt/final-handoff verification.
+
+After ninth delivery is verified, prioritize a licensed optional Boss playthrough
+for actual collision/input/telegraph readability/audio and difficulty if available.
+If native tooling is unchanged, do not repeat license probes. A useful next code
+iteration could add a modest distinct exploration objective or simple NPC narrative
+that complements this complete encounter; choose from actual current sources.
+Preserve threeguards ->altarE ->Guardian ->beacon30coin contract, v1ledger,
+original hero, supply charges, fixed contacts and all previously delivered work.
 
 ## Current priority — resolve final eighth delivery, then new player value
 

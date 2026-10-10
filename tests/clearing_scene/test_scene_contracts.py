@@ -291,6 +291,46 @@ class ClearingSceneContracts(unittest.TestCase):
                     self.assertGreater(math.hypot(dx, dy), radius,
                                        "Supply interaction disk reaches a sealed wall or gate")
 
+    def test_real_scene_runtime_boots_the_boss_required_encounter(self):
+        # The serialized bootstrap is checked above. Inspect its actual Start,
+        # rather than treating a helper's default opt-out as live scene admission.
+        start = method_body(self.runtime, "Start")
+        self.assertIn("run = new ClearingRun(true);", start,
+                      "The shipped scene still instantiates the three-guard-only helper path")
+        self.assertIn("bossVisuals = new ClearingBossVisuals(transform, visuals);", start,
+                      "The boss-required run has no owned actor/altar/locked warning presentation")
+        reset = method_body(self.runtime, "ResetRun")
+        self.assertIn("bossVisuals.Reset();", reset,
+                      "A genuine retry retains the previous guardian's physical pose or feedback")
+        update = method_body(self.runtime, "Update")
+        self.assertLess(update.index("NearBeacon"), update.index("TryAwakenBoss();"),
+                        "Guardian entry steals existing beacon interaction/save priority")
+
+    def test_guardian_altar_and_spawn_are_accessible_inside_the_closed_encounter(self):
+        boss = (PROJECT_ROOT / "Assets/Scripts/Gameplay/ClearingBossVisuals.cs").read_text()
+        altar = vector_constant(boss, "AltarPosition")
+        spawn = vector_constant(boss, "SpawnPosition")
+        size = re.search(r"collider\.size\s*=\s*" + VECTOR, self.runtime)
+        self.assertIsNotNone(size)
+        footprint = (float(size[1]) / 2, float(size[2]) / 2)
+        closed = [*self.walls, self.gate]
+        visited, escaped = reachable(closed, self.spawn, footprint)
+        self.assertFalse(escaped)
+        for name, point in (("altar", altar), ("guardian foot spawn", spawn)):
+            with self.subTest(point=name):
+                self.assertIn((round(point[0] / .1), round(point[1] / .1)), visited,
+                              "The required encounter point sits across its own closed gate")
+        admission = method_body(self.runtime, "NearBossAltar") if re.search(
+            r"\bNearBossAltar\s*\([^)]*\)", self.runtime) else self.runtime
+        radius = re.search(r"Vector2\.Distance\(PlayerPoint,\s*ClearingBossVisuals\.AltarPosition\)\s*<=\s*" + NUMBER,
+                           admission)
+        self.assertIsNotNone(radius, "Read the actual actor-foot altar use radius")
+        for x, y, half_x, half_y in closed:
+            dx = max(abs(altar[0] - x) - half_x - footprint[0], 0)
+            dy = max(abs(altar[1] - y) - half_y - footprint[1], 0)
+            self.assertGreater(math.hypot(dx, dy), float(radius[1]),
+                               "Guardian altar use disk reaches a sealed wall or beacon partition")
+
     def test_hero_raster_feet_and_north_camera_envelope_match_play_space(self):
         # Use actual scene/animation sprite references, not an assumed frame size.
         references = set(re.findall(r"(?:m_Sprite:|value:) \{fileID: (-?\d+), guid: ([0-9a-f]{32}), type: 3\}", self.scene))

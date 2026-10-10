@@ -47,6 +47,8 @@ namespace UnityEngine
     public partial class Rigidbody2D : Component
     {
         public Vector2 position, velocity;
+        // Record production admission only; this boundary never simulates physics.
+        public bool simulated = true;
         public int MoveRequests;
         public readonly List<Vector2> Targets = new List<Vector2>();
         public void MovePosition(Vector2 target)

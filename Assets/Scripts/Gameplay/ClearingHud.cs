@@ -65,7 +65,7 @@ namespace Rpg.Gameplay
         }
 
         internal void Refresh(PlayerStats stats, ClearingRun run, bool paused, bool muted, bool nearBeacon, string feedback,
-            ClearingProgress progress = null, string rewardId = "", string progressNotice = "", string supplyHint = "")
+            ClearingProgress progress = null, string rewardId = "", string progressNotice = "", string supplyHint = "", string bossHint = "")
         {
             // Keep two edge columns from intersecting on square/narrow viewports.
             float width = ((RectTransform)root).rect.width;
@@ -94,6 +94,11 @@ namespace Rpg.Gameplay
                 else if (progress.LoadKind == ProgressLoadKind.Recovered) resources.text += "\nEarlier backup recovered";
             }
             objective.text = run.IsComplete ? "CLEARING RESTORED" : run.GateUnlocked ? "Gate open: approach the north beacon" :
+                run.RequiresBoss && run.Boss.IsAwake ? string.Format("MOSS GUARDIAN  HP {0:0.#}/{1:0.#}\nPhase {2}: {3}",
+                    run.Boss.Health, ClearingBossState.MaxHealth, run.Boss.Enraged ? 2 : 1,
+                    (run.Boss.AttackPhase == SentinelAttackPhase.Ready ? run.Boss.NextAttackKind : run.Boss.AttackKind) == SentinelAttackKind.Sigil ?
+                    "leave the marked ground" : "sidestep the locked lane") :
+                run.RequiresBoss && run.DefeatedCount == ClearingRun.SentinelCount ? "SENTINELS CLEARED - SEAL HOLDS\nAwaken the Guardian at the central altar" :
                 string.Format("RESTORE THE BEACON\nSentinels defeated: {0}/{1}", run.DefeatedCount, ClearingRun.SentinelCount);
             string light = run.LightCooldownRemaining > 0 ? run.LightCooldownRemaining.ToString("0.0") + "s" : "ready";
             string burst = run.BurstCooldownRemaining > 0 ? run.BurstCooldownRemaining.ToString("0.0") + "s" :
@@ -102,7 +107,7 @@ namespace Rpg.Gameplay
             bool playable = !paused && !run.IsDead && !run.IsComplete;
             skills.text = playable ? "J / Space: light [" + light + "]\nK: burst 6 MP [" + burst + "]" : "";
             message.text = !playable ? "" : nearBeacon && run.GateUnlocked ? "E - restore the beacon" :
-                !string.IsNullOrEmpty(supplyHint) ? supplyHint : feedback;
+                !string.IsNullOrEmpty(bossHint) ? bossHint : !string.IsNullOrEmpty(supplyHint) ? supplyHint : feedback;
             help.text = !playable || !string.IsNullOrEmpty(message.text) ? "" : MovementGuide(narrow);
             terminal.text = paused ? "PAUSED\nEsc - resume" : run.IsDead ? "DEFEATED\nR - retry the clearing" :
                 run.IsComplete ? "BEACON RESTORED\n" + run.RewardCoins + " coins earned this run\nR - play again" : "";

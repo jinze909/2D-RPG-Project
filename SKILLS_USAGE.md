@@ -1,24 +1,27 @@
 # Skills usage
 
-## Iteration 9 — continuity, design and pure Boss checkpoint
+## Iteration 9 — actual integrated encounter and validation
 
-Rediscovered all eight licensed local bundles; applicable full instructions read.
-Session-handoff verified actual eighth completed receipt/Git and staleness/resume
-checklist; root records/checkpoint preserve a new ninth branch. Verification-before-
-completion reran baseline316 and pureBoss19/combat36/tactics38/progression51.
-Game-design completes a chosen final-encounter loop and preserves v1 currency;
-game-art guides cached distinctive crown/wide moss silhouette, unchanged hero,
-30PPU geometry/sharedpalette; game-audio guides accepted-stage/contact cue reuse
-without audition. These presentation integrations are pending at this checkpoint.
-Systematic-debugging distinguishes expected new-feature red tests from baseline
-defects; no baseline bug is invented. Unity-mcp-orchestrator /UnityEssentials
-feature/build architecture,lifecycle,testing,performance,evidence/safety guides
-inform shared state and strongest practical validation. Unity2d-pixel-perfect
-was read; Built-in/currentPoint geometry retained, no Unity6package/camera migration.
-Imagegen applicability was read: established deterministic code-native primitives
-are appropriate; no bitmap generation/edit tool call was needed or claimed.
-PluginsSkills readable is not an Editor/MCP/CLI connection. No native tests/play,
-real physics/device/Animator/render/audio or playerbuild is claimed.
+All eight licensed local SKILL.md bundles were rediscovered and applicable full
+instructions read. Reading guidance is distinguished from connected tools.
+
+| Skill | Actual application |
+| --- | --- |
+| session-handoff | Verified clean eighth source84177cd/complete receipt879693b and live branch/history before ordinary isolation; generated the actual scaffold, explicitly continues the eighth docs handoff, maintains all five root records and records checkpoint/publication work. |
+| systematic-debugging | Traced two new test failures: awakening legitimately emits its existing cue, and a recovery fixture stepped past the ready deadline. Corrected fixture sequences preserve production contracts; no baseline defect is invented. |
+| verification-before-completion | Fresh361project/sixdistribution,26-source/86-real-reference compiler,145serializedreferences/56meta/6LFS/eightSkills checks; independent Boss19/presentation105/scene17 review; exact foundationCI all12steps/artifact. Further implementation/master CI and archive evidence must be read after publication. |
+| game-design | Three guards -> voluntary altarE -> two-phase alternating Guardian -> northbeacon -> saved30coins -> upgrade/retry closes missing capstone, preserves save-v1 arithmetic and resource decisions; sidestep locked lane/leave captured rune/strike recovery. |
+| game-art | Authored cached33-piece crowned wide moss/stone Boss and nonblocking altar; shared15palette/Point square in1/30world geometry, fixed warnings/HP/phase/impact. Inspected an offline production-geometry preview and preserved blonde hero/controller/scenes; no native render claim. |
+| game-audio | Actual awakening/warnings/accepted Boss hit/kill/player-hurt reuse existing cached cues, deduplicate contacts and preserve mute/interruption. Recording cue checks pass; no audio asset generation or audition claimed. |
+| unity-mcp-orchestrator | Unity2022.3-compatible ownership, fixed contact/LOS, Rigidbody2D lifecycle and immutable timing; actual26-source API compile. Versioned official MovePosition/Linecast guidance informs bridge. No connected Editor/MCP/CLI/native execution. |
+| imagegen | Read applicability; code-native primitive art is appropriate for current renderer. No bitmap generation/edit call needed, no fake image tool invocation. |
+
+Unity Essentials feature/build guides and architecture/lifecycle/testing/performance/
+evidence foundations plus gameplay/AI specializations informed implementation and
+review. Unity2d-pixel-perfect retained Built-in/Point/current scales without Unity6
+camera/package migration; UI/uGUI guide review supported reused edge columns.
+Plugin Skills readable does not imply native Editor/MCP/CLI connectivity. Native
+import, actual deviceinput/physics/Animator/layout/audio/balance/build are unrun.
 
 ## Iteration 8 publication verification
 
