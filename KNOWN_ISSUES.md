@@ -1,5 +1,15 @@
 # Known issues
 
+## Iteration 9 current checkpoint — foundation only
+
+Pure Boss rules are implemented and targeted19/36/38/51checks pass. This is not
+yet an integrated Boss delivery. Runtime/altar/HUD/visuals/contact/reward bridge,
+full regression/review/CI and sourceZIP/download/handoff remain pending here.
+Profile v1 remains30coins/run; no migration or additional currency is introduced.
+Native Unity input/physics/animation/pixel/layout/audio/balance/playerbuild remains
+optional/unrun. Existing gait frame/pivot and absent forest/archery/fullquest limits
+remain; no historical visual defect is claimed fixed through code-only checks.
+
 ## Iteration 8 reviewed master integration — current
 
 Execution access is restored; foundation 2c99ecf and exact green CI37995620781

@@ -22,9 +22,10 @@ def main() -> int:
                         default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
     root = args.project_root.resolve()
-    source = root / "Assets/Scripts/Gameplay/ClearingRules.cs"
+    sources = [root / "Assets/Scripts/Gameplay" / name for name in (
+        "ClearingRules.cs", "ClearingBoss.cs", "SentinelTactics.cs")]
     fixture = Path(__file__).resolve().parents[1] / "tests/gameplay/ClearingRulesChecks.cs"
-    if not source.is_file() or not fixture.is_file():
+    if not all(source.is_file() for source in sources) or not fixture.is_file():
         print("Clearing rules source or behavior fixture missing", file=sys.stderr)
         return 2
     try:
@@ -35,7 +36,7 @@ def main() -> int:
     with tempfile.TemporaryDirectory(prefix="rpg-clearing-checks-") as directory:
         output = Path(directory) / "checks.exe"
         print("Compiling actual clearing rules and deterministic tests without Unity doubles", flush=True)
-        result = subprocess.run([*compiler, "-nologo", "-out:" + str(output), str(source), str(fixture)],
+        result = subprocess.run([*compiler, "-nologo", "-out:" + str(output), *map(str, sources), str(fixture)],
                                 check=False, timeout=120)
         if result.returncode:
             return result.returncode

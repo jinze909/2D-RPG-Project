@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Compile and check actual sentinel tactics and clearing rules with Mono.
+"""Execute actual boss rules and locked attack geometry without Unity or doubles.
 
-These deterministic C# checks execute production timing, admission and locked
-footprint geometry without Unity doubles. They do not validate native movement,
-wall collision, warning rendering, input, audio, animation or playable balance.
+These pure C# checks validate domain admission, timing, contacts and completion.
+Native movement, physics, input, animation, audio and playability are not covered.
 """
 from __future__ import annotations
 
@@ -24,19 +23,19 @@ def main() -> int:
     root = args.project_root.resolve()
     sources = [root / "Assets/Scripts/Gameplay" / name for name in (
         "ClearingRules.cs", "ClearingBoss.cs", "SentinelTactics.cs")]
-    fixture = Path(__file__).resolve().parents[1] / "tests/enemies/SentinelTacticsChecks.cs"
+    fixture = Path(__file__).resolve().parents[1] / "tests/boss/ClearingBossChecks.cs"
     missing = [str(path) for path in [*sources, fixture] if not path.is_file()]
     if missing:
-        print("Sentinel source or fixture missing: " + ", ".join(missing), file=sys.stderr)
+        print("Boss source or fixture missing: " + ", ".join(missing), file=sys.stderr)
         return 2
     try:
         mono, compiler = discover_tools()
     except RuntimeError as error:
         print(str(error), file=sys.stderr)
         return 2
-    with tempfile.TemporaryDirectory(prefix="rpg-enemy-checks-") as directory:
+    with tempfile.TemporaryDirectory(prefix="rpg-boss-checks-") as directory:
         output = Path(directory) / "checks.exe"
-        print("Compiling actual sentinel tactics and clearing rules; no Unity doubles", flush=True)
+        print("Compiling actual boss and clearing rules; no Unity doubles", flush=True)
         result = subprocess.run([*compiler, "-nologo", "-out:" + str(output),
                                  *map(str, sources), str(fixture)], check=False, timeout=120)
         if result.returncode:
@@ -44,7 +43,7 @@ def main() -> int:
         try:
             return subprocess.run([mono, str(output)], check=False, timeout=120).returncode
         except subprocess.TimeoutExpired:
-            print("Enemy checks timed out after 120 seconds", file=sys.stderr)
+            print("Boss checks timed out after 120 seconds", file=sys.stderr)
             return 124
 
 

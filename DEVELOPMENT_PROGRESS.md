@@ -1,5 +1,22 @@
 # Development progress
 
+## Iteration 9 — verified Boss foundation
+
+Verified clean remote master84177cd and complete eighth receipt879693b before
+isolating rpg/iteration-009-moss-guardian. No prior work or unpublished user edits
+were lost. Boss domain adds explicit post-guard awakening,108HP, alternating
+4.2x.9 lane /1.8-square captured-foot sigil,2damage, half-health phase2, immutable
+admitted timing, shared player immunity and once-per-action actualHP loss.
+The required-Boss opt-in seals the gate until it dies; final beacon still banks
+30coins through unchanged v1 progression. Default domain callers retain their
+three-guard contract. Disable cancels footprint/contact while retaining original
+ready deadline, health and mode; genuine retry resets dormant state.
+Fresh targeted pure checks:19Boss +36combat +38tactics +51progression pass; no
+Unity doubles in these suites. Original baseline full validator passed316groups.
+Runtime/presentation/meaningful integration tests, full final checks, independent
+review/CI, ordinary master merge, sourceZIP and HTTPS verification are pending.
+Native validation remains optional/unrun. Foundation publication follows this record.
+
 ## Iteration 8 — reviewed ordinary master integration
 
 Implementation 30588a2829d934854cd78487e3e4a4076fd6e2a0 was safely pushed; exact CI37996558184

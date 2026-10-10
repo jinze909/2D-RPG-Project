@@ -24,7 +24,7 @@ def main() -> int:
     args = parser.parse_args()
     root = args.project_root.resolve()
     sources = [root / "Assets/Scripts/Gameplay" / name for name in (
-        "ClearingRules.cs", "ClearingProgress.cs", "ClearingProgressCodec.cs",
+        "ClearingRules.cs", "ClearingBoss.cs", "SentinelTactics.cs", "ClearingProgress.cs", "ClearingProgressCodec.cs",
         "FileClearingProgressStore.cs")]
     fixture = Path(__file__).resolve().parents[1] / "tests/progression/ProgressionChecks.cs"
     missing = [str(path) for path in [*sources, fixture] if not path.is_file()]

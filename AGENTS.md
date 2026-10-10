@@ -1,5 +1,16 @@
 # RPG development instructions
 
+## Iteration 9 Boss foundation — integration in progress
+
+Eighth delivery is complete at source84177cd / receipt879693b; do not redo it.
+This round uses rpg/iteration-009-moss-guardian. ClearingRun defaults to the legacy
+isolated three-guard contract; live Runtime explicitly opts into a required Boss.
+Pure Guardian state/entry, alternating locked lane and sigil, captured half-health
+timing, shared immunity and retained interrupt recovery are implemented. Runtime,
+cached visuals/HUD, actual-method tests, final review/CI/ZIP are not yet delivered
+at this foundation checkpoint. Read docs/game/BOSS_ENCOUNTER.md.
+Preserve profile v1 /30coins, player-first contacts, reserves and original hero.
+
 The user authorizes game development, commits, normal pushes to master,
 and source-project deliveries. Preserve accepted designs, existing user work,
 working systems, save compatibility, and the original blonde hero identity.

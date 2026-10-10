@@ -1,5 +1,16 @@
 # Current continuation / next iteration
 
+## Current ninth-round work — resume the Boss checkpoint
+
+First inspect actual branch/HEAD/dirty files and ninth CI; preserve ongoing work.
+Finish the central altar E ->108HPtwo-patternGuardian ->sealopen ->beacon30coin
+save/retry/upgrades loop. Supplies/HP/MP retain attempt state on awakening/disable;
+newrunR resets. Resolve all player contacts includingBoss before retaliation.
+Use captured phase timing/geometry, fixed fifth damage slot and edge HUD. Complete
+actual-method/pure/meta/LFS/scene/animation/API regressions, review, CI and ordinary
+PR/mastermerge, then verified full sourceZIP/immutableHTTPS and chained handoff.
+Do not start another unrelated system before ninth delivery completes.
+
 ## Current priority — resolve final eighth delivery, then new player value
 
 PR7 normally merged verified exploration supplies atba41be1; implementation

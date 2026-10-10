@@ -1,5 +1,25 @@
 # Skills usage
 
+## Iteration 9 — continuity, design and pure Boss checkpoint
+
+Rediscovered all eight licensed local bundles; applicable full instructions read.
+Session-handoff verified actual eighth completed receipt/Git and staleness/resume
+checklist; root records/checkpoint preserve a new ninth branch. Verification-before-
+completion reran baseline316 and pureBoss19/combat36/tactics38/progression51.
+Game-design completes a chosen final-encounter loop and preserves v1 currency;
+game-art guides cached distinctive crown/wide moss silhouette, unchanged hero,
+30PPU geometry/sharedpalette; game-audio guides accepted-stage/contact cue reuse
+without audition. These presentation integrations are pending at this checkpoint.
+Systematic-debugging distinguishes expected new-feature red tests from baseline
+defects; no baseline bug is invented. Unity-mcp-orchestrator /UnityEssentials
+feature/build architecture,lifecycle,testing,performance,evidence/safety guides
+inform shared state and strongest practical validation. Unity2d-pixel-perfect
+was read; Built-in/currentPoint geometry retained, no Unity6package/camera migration.
+Imagegen applicability was read: established deterministic code-native primitives
+are appropriate; no bitmap generation/edit tool call was needed or claimed.
+PluginsSkills readable is not an Editor/MCP/CLI connection. No native tests/play,
+real physics/device/Animator/render/audio or playerbuild is claimed.
+
 ## Iteration 8 publication verification
 
 Session-handoff scaffold/resume/validator and persistent records preserve the

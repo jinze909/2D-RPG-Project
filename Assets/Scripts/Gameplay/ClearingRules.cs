@@ -88,6 +88,7 @@ namespace Rpg.Gameplay
 
         private readonly SentinelState[] sentinels = new SentinelState[SentinelCount];
         private readonly bool[] playerHitTargets = new bool[SentinelCount];
+        private bool playerHitBoss;
         private long nextActionId;
         private long currentPlayerActionId;
         private PlayerAttackKind currentPlayerAttackKind;
@@ -101,7 +102,9 @@ namespace Rpg.Gameplay
         public bool IsComplete { get; private set; }
         public int DefeatedCount { get; private set; }
         public int RewardCoins { get; private set; }
-        public bool GateUnlocked { get { return DefeatedCount == SentinelCount; } }
+        public bool RequiresBoss { get; private set; }
+        public ClearingBossState Boss { get; private set; }
+        public bool GateUnlocked { get { return DefeatedCount == SentinelCount && (!RequiresBoss || Boss.IsDead); } }
         public float LightCooldownRemaining { get { return Remaining(nextLightAt); } }
         public float BurstCooldownRemaining { get { return Remaining(nextBurstAt); } }
         public float PlayerInvulnerabilityRemaining { get { return Remaining(playerInvulnerableUntil); } }
@@ -109,8 +112,10 @@ namespace Rpg.Gameplay
 
         private bool Running { get { return !IsDead && !IsComplete; } }
 
-        public ClearingRun()
+        public ClearingRun(bool requiresBoss = false)
         {
+            RequiresBoss = requiresBoss;
+            Boss = new ClearingBossState();
             for (int i = 0; i < SentinelCount; i++) sentinels[i] = new SentinelState();
             ResetRun();
         }
@@ -146,6 +151,7 @@ namespace Rpg.Gameplay
                 else
                     sentinel.SetPhase(SentinelAttackPhase.Ready, 0d);
             }
+            Boss.Advance(Time);
         }
 
         public bool CanPlayerAttack(PlayerAttackKind kind, float availableMana)
@@ -169,6 +175,7 @@ namespace Rpg.Gameplay
             currentPlayerActionId = attackId;
             currentPlayerAttackKind = kind;
             Array.Clear(playerHitTargets, 0, playerHitTargets.Length);
+            playerHitBoss = false;
             if (kind == PlayerAttackKind.Light)
             {
                 nextLightAt = Time + LightCooldown;
@@ -205,6 +212,51 @@ namespace Rpg.Gameplay
             SentinelState sentinel = sentinels[sentinelId];
             if (sentinel.IsDead || sentinel.AttackPhase != SentinelAttackPhase.Ready) return false;
             sentinel.StartAttack(Time, ++nextActionId, kind);
+            return true;
+        }
+
+        /// <summary>Explicit E interaction after all guards fall; active player contacts end without refund.</summary>
+        public bool TryAwakenBoss()
+        {
+            if (!Running || !RequiresBoss || DefeatedCount != SentinelCount || Boss.IsAwake || Boss.IsDead) return false;
+            CancelActions();
+            Boss.Awaken();
+            return true;
+        }
+
+        /// <summary>Caller supplies current foot positions and wall LOS. Geometry is immutable after admission.</summary>
+        public bool TryBeginBossAttack(float originX, float originY, float targetX, float targetY, bool clear)
+        {
+            if (!Running || !RequiresBoss || !Boss.IsAwake || Boss.IsDead
+                || Boss.AttackPhase != SentinelAttackPhase.Ready || !clear
+                || !SentinelTactics.Finite(originX) || !SentinelTactics.Finite(originY)
+                || !SentinelTactics.Finite(targetX) || !SentinelTactics.Finite(targetY)) return false;
+            double dx = (double)targetX - originX, dy = (double)targetY - originY;
+            double range = BossTactics.RangeForKind(Boss.NextAttackKind);
+            if (dx * dx + dy * dy > range * range) return false;
+            SentinelFootprint footprint = BossTactics.CreateFootprint(Boss.NextAttackKind, originX, originY, targetX, targetY);
+            if (footprint == null) return false;
+            Boss.StartAttack(Time, ++nextActionId, footprint);
+            return true;
+        }
+
+        public bool TryHitBoss(long attackId)
+        {
+            if (!RequiresBoss || !Boss.IsAwake || Boss.IsDead || !PlayerAttackActive
+                || attackId != currentPlayerActionId || playerHitBoss) return false;
+            playerHitBoss = true;
+            Boss.ApplyDamage(currentPlayerAttackKind == PlayerAttackKind.Light ? LightDamage : BurstDamage);
+            return true;
+        }
+
+        /// <summary>Uses the same player immunity authority as guards; caller first checks the captured footprint and LOS.</summary>
+        public bool TryResolveBossHit()
+        {
+            if (!Running || !RequiresBoss || !Boss.IsAwake || Boss.IsDead
+                || Boss.AttackPhase != SentinelAttackPhase.Active || Boss.HitResolved) return false;
+            Boss.HitResolved = true;
+            if (Time < playerInvulnerableUntil) return false;
+            playerInvulnerableUntil = Time + PlayerInvulnerabilityDuration;
             return true;
         }
 
@@ -298,7 +350,9 @@ namespace Rpg.Gameplay
             playerAttackExpiresAt = 0d;
             currentPlayerAttackKind = PlayerAttackKind.Light;
             Array.Clear(playerHitTargets, 0, playerHitTargets.Length);
+            playerHitBoss = false;
             for (int i = 0; i < SentinelCount; i++) sentinels[i].Reset();
+            Boss.Reset();
             // nextActionId is intentionally retained so pre-retry contact tokens
             // cannot match a newly created attack in the next run.
         }
@@ -308,6 +362,7 @@ namespace Rpg.Gameplay
             currentPlayerActionId = 0;
             playerAttackExpiresAt = Time;
             for (int i = 0; i < SentinelCount; i++) sentinels[i].CancelAttack();
+            Boss.CancelAttack();
         }
 
         private float Remaining(double until) { return (float)Math.Max(0d, until - Time); }
