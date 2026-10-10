@@ -19,6 +19,7 @@ namespace Rpg.Gameplay
         private readonly int[] bodyOrders;
         private readonly SpriteRenderer eye;
         private readonly SpriteRenderer[] phaseMarks;
+        private readonly SpriteRenderer[] recoveryMarks;
         private readonly SpriteRenderer health;
         private readonly SpriteRenderer healthBackground;
         private readonly GameObject altar;
@@ -32,6 +33,10 @@ namespace Rpg.Gameplay
         private readonly SpriteRenderer warningCrossB;
         private readonly Transform impact;
         private readonly SpriteRenderer[] impactPieces;
+        private readonly Transform phaseHalo;
+        private readonly SpriteRenderer[] phaseHaloPieces;
+        private double phaseHaloStartedAt = double.NaN;
+        private double phaseHaloUntil = double.NaN;
         private double impactStartedAt = double.NaN;
         private double impactUntil = double.NaN;
         private double hurtUntil = double.NaN;
@@ -109,6 +114,14 @@ namespace Rpg.Gameplay
                 Part(visuals, "Guardian enraged left notch", art, -9, 43, 2, 4, ClearingPalette.Cream, 7, true),
                 Part(visuals, "Guardian enraged right notch", art, 9, 43, 2, 4, ClearingPalette.Cream, 7, true)
             };
+            // A stepped downward chevron identifies the opening without relying on hue.
+            // It never changes the actor pose, contact box or locked attack footprint.
+            recoveryMarks = new[]
+            {
+                Part(visuals, "Guardian recovery chevron left", art, -3, 35, 4, 2, ClearingPalette.Cream, 8, true),
+                Part(visuals, "Guardian recovery chevron right", art, 3, 35, 4, 2, ClearingPalette.Cream, 8, true),
+                Part(visuals, "Guardian recovery chevron point", art, 0, 33, 4, 2, ClearingPalette.Cream, 8, true)
+            };
             healthBackground = Part(visuals, "Guardian health background", actor.transform, 0, 72, 50, 2,
                 ClearingPalette.Ink, 8, true);
             health = Part(visuals, "Guardian health", actor.transform, 0, 72, 50, 2, ClearingPalette.Amber, 9, true);
@@ -159,6 +172,19 @@ namespace Rpg.Gameplay
                     horizontal ? 0f : 11f * sign, horizontal ? 11f * sign : 0f,
                     horizontal ? 14f : 2f, horizontal ? 2f : 14f,
                     ClearingPalette.Cream, 30003, true);
+            }
+            GameObject phaseObject = new GameObject("Guardian independent phase change");
+            phaseObject.transform.SetParent(parent, false);
+            phaseHalo = phaseObject.transform;
+            phaseHaloPieces = new SpriteRenderer[4];
+            for (int side = 0; side < phaseHaloPieces.Length; side++)
+            {
+                bool horizontal = side < 2;
+                float sign = side % 2 == 0 ? 1f : -1f;
+                phaseHaloPieces[side] = Part(visuals, "Guardian phase stroke " + side, phaseHalo,
+                    horizontal ? 0f : 18f * sign, horizontal ? 18f * sign : 0f,
+                    horizontal ? 10f : 2f, horizontal ? 2f : 10f,
+                    ClearingPalette.Cream, 30002, true);
             }
             Reset();
         }
@@ -213,6 +239,11 @@ namespace Rpg.Gameplay
                     phaseMarks[i].gameObject.SetActive(boss.Enraged);
                     phaseMarks[i].sortingOrder = depth + 7;
                 }
+                for (int i = 0; i < recoveryMarks.Length; i++)
+                {
+                    recoveryMarks[i].gameObject.SetActive(boss.AttackPhase == SentinelAttackPhase.Recovery);
+                    recoveryMarks[i].sortingOrder = depth + 8;
+                }
                 float ratio = Mathf.Clamp01(boss.Health / ClearingBossState.MaxHealth);
                 health.transform.localScale = new Vector3(50f * Pixel * ratio, 2f * Pixel, 1f);
                 health.transform.localPosition = new Vector3((ratio - 1f) * 25f * Pixel, 72f * Pixel, 0f);
@@ -220,8 +251,14 @@ namespace Rpg.Gameplay
                 health.sortingOrder = depth + 9;
                 healthBackground.sortingOrder = depth + 8;
             }
+            else
+            {
+                for (int i = 0; i < recoveryMarks.Length; i++) recoveryMarks[i].gameObject.SetActive(false);
+                phaseHaloStartedAt = phaseHaloUntil = double.NaN;
+            }
             RefreshWarning(boss, live);
             RefreshImpact(run.Time, !run.IsDead && !run.IsComplete);
+            RefreshPhaseHalo(run.Time, live);
         }
 
         private void RefreshWarning(ClearingBossState boss, bool live)
@@ -290,16 +327,47 @@ namespace Rpg.Gameplay
             }
         }
 
+        internal void ShowPhaseChange(double simulationTime)
+        {
+            if (disposed || !Finite(simulationTime) || simulationTime < 0d) return;
+            phaseHaloStartedAt = simulationTime;
+            phaseHaloUntil = simulationTime + .5d;
+            Vector2 point = Position + new Vector2(0f, 1f);
+            phaseHalo.position = new Vector3(point.x, point.y, 0f);
+            RefreshPhaseHalo(simulationTime, true);
+        }
+
+        private void RefreshPhaseHalo(double simulationTime, bool live)
+        {
+            bool visible = live && Finite(simulationTime) && Finite(phaseHaloStartedAt) &&
+                simulationTime >= phaseHaloStartedAt && simulationTime < phaseHaloUntil;
+            phaseHalo.gameObject.SetActive(visible);
+            if (!visible) return;
+            float progress = Mathf.Clamp01((float)((simulationTime - phaseHaloStartedAt) / (phaseHaloUntil - phaseHaloStartedAt)));
+            float radius = 18f + (float)Math.Floor(progress * 12f);
+            for (int side = 0; side < phaseHaloPieces.Length; side++)
+            {
+                bool horizontal = side < 2;
+                float sign = side % 2 == 0 ? 1f : -1f;
+                phaseHaloPieces[side].transform.localPosition = new Vector3(horizontal ? 0f : radius * sign * Pixel,
+                    horizontal ? radius * sign * Pixel : 0f, 0f);
+                phaseHaloPieces[side].color = ClearingPalette.WithAlpha(ClearingPalette.Cream, 1f - progress);
+            }
+        }
+
         internal void Clear()
         {
             if (disposed) return;
             Body.velocity = Vector2.zero;
             Body.simulated = false;
             impactStartedAt = impactUntil = hurtUntil = double.NaN;
+            phaseHaloStartedAt = phaseHaloUntil = double.NaN;
             warning.gameObject.SetActive(false);
             impact.gameObject.SetActive(false);
+            phaseHalo.gameObject.SetActive(false);
             art.localPosition = Vector3.zero;
             for (int i = 0; i < bodyPieces.Length; i++) bodyPieces[i].color = bodyColors[i];
+            for (int i = 0; i < recoveryMarks.Length; i++) recoveryMarks[i].gameObject.SetActive(false);
         }
 
         internal void Reset()
@@ -329,6 +397,7 @@ namespace Rpg.Gameplay
             UnityEngine.Object.Destroy(altar);
             UnityEngine.Object.Destroy(warning.gameObject);
             UnityEngine.Object.Destroy(impact.gameObject);
+            UnityEngine.Object.Destroy(phaseHalo.gameObject);
             // The common sprite/texture remain owned by ClearingVisuals.
             disposed = true;
         }

@@ -1,0 +1,47 @@
+{
+  "filepath": "docs/iterations/2026-10-09-iteration-010/handoff.md",
+  "score": 100,
+  "rating": "Excellent - Ready for handoff",
+  "todos_clear": true,
+  "remaining_todos": [],
+  "todo_count": 0,
+  "required_complete": true,
+  "missing_required": [],
+  "missing_recommended": [],
+  "secrets_found": [],
+  "files_verified": 6,
+  "files_missing": [],
+  "validated_source": "Generated identical working copy at required .claude/handoffs depth; archived docs handoff matches byte-for-byte.",
+  "archived_markdown_links": [
+    {
+      "label": "ninth completed handoff",
+      "target": "../2026-10-09-iteration-009/handoff.md",
+      "exists": true
+    },
+    {
+      "label": "Boss contract",
+      "target": "../../game/BOSS_ENCOUNTER.md",
+      "exists": true
+    },
+    {
+      "label": "evidence/native protocol",
+      "target": "evidence-and-native-protocol.md",
+      "exists": true
+    },
+    {
+      "label": "bounded simulation review",
+      "target": "bounded-balance-review.md",
+      "exists": true
+    },
+    {
+      "label": "validation provenance",
+      "target": "validation-provenance.md",
+      "exists": true
+    },
+    {
+      "label": "independent review",
+      "target": "independent-review.md",
+      "exists": true
+    }
+  ]
+}

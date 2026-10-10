@@ -1,5 +1,50 @@
 # RPG development instructions
 
+## Iteration 10 verified Guardian feedback — publication pending
+
+Resume `rpg/iteration-010-guardian-polish`; ninth source `ba4cd1d`, tested first
+checkpoint `ac3aa87` and code-complete checkpoint `36567e8` are recovery paths.
+The quota interruption retained tests only; production fixes were newly authored
+and actually verified. Recovery now says strike, half-health announcement coexists
+with supply context and uses four seconds of run.Time, and paused/dead objective
+shows PAUSED/DEFEATED. Cached recovery chevron/phase halo and one cached cue are
+integrated. No HP/damage/timing/geometry/resource/reward/schema/hero changes.
+Fresh 379 project + 6 distribution = 385 checks pass, including 123 presentation
+(retaining the original 105), 19 pure Boss and 17 scene groups. Five static asset/
+version/build/LFS/Skill envelopes also pass. API compile exits 0 for 26 production
+sources/86 real Unity 2022.3/Editor/uGUI refs, Input System substituted. Independent
+123/19/API review finds no remaining blocker within scope; handoff validates100.
+Exact ac3aa87 CI38030799993/job114151148852 passed12steps/artifact11661429449.
+Code checkpoint `36567e8` exact CI38031110628/job114152067191 passed all 12 steps; nonexpired artifact11661564119 is present.
+Final source CI/PR/master/ZIP/HTTPS receipt are pending verification.
+Read the actual external tenth receipt after publication before declaring delivery
+complete or starting unrelated work. Native tests and player playtests are unrun.
+
+## Evidence and player-value rules — current user instruction, 2026-10-09 PDT
+
+- Separate static source/asset analysis, offline actual-C# logic with recording
+  boundaries, controlled simulation, Unity native tests and real player playtests.
+  Passing offline checks never establishes difficulty, animation smoothness,
+  visual clarity or game feel. Label unrun experience as **尚未进行 Unity 原生验收**.
+- Check Boss state/contact/warning/phase/death/pause/retry/system integration first.
+  Tune HP, damage or speed only when evidence supports that change; deterministic
+  optimal-hit estimates are not a player difficulty measurement.
+- Historical animation/UI/forest/archery/quest reports are experience references,
+  not confirmed current defects. Inspect actual source/Scene/Prefab/Animator/assets
+  before listing a defect. Full forest, archery and full quests are absent here;
+  never claim their bugs fixed. Preserve regressions for already-fixed code.
+- Do not repeat license/Editor/MCP probes when the known environment is unchanged.
+  Plugin availability, Skill readability, CLI availability, Editor connectivity,
+  native validation and player acceptance are distinct facts.
+- Finish one valuable player loop. If no evidenced defect can be addressed, choose
+  coherent exploration/interaction/content from actual current code; do not modify
+  sound systems or stats merely to increase iteration count.
+- Current KNOWN_ISSUES/NEXT_ITERATION categories must distinguish implemented and
+  code-tested, native-validated, native-unrun experience, confirmed-unfixed defects,
+  and absent future features. Current top sections supersede all historical lists.
+  Ordinary reviewed/tested CI-green PR/master merges are authorized; native checks
+  are optional. Never force push or overwrite uncommitted work.
+
 ## Iteration 9 reviewed master integration
 
 PR8 normally merged reviewed/testedb4046999e1ec766f9550bbbc667b8e554e9b9228 at
@@ -183,12 +228,12 @@ python3 -m unittest discover -s tests -p 'test_distribution.py'
 The offline C# runners use system Mono, or discover a retained Unity installation.
 RPG_MONO and RPG_CSC/RPG_MCS can select tools. Boundary doubles do not reproduce
 native physics, the real Input System, Animator rendering or Game View. Native
-import, tests and gameplay remain required when the environment supports them.
+import, tests and gameplay are valuable optional checks when the environment supports them.
 Never reduce checks, fabricate counts or treat a zero-test run as success.
 
 ## Delivery and CI
 
-Maintain all four root records with changes, real results, baseline/commit evidence,
+Maintain all five root records with changes, real results, baseline/commit evidence,
 remaining issues and a next priority. Update KNOWN_ISSUES rather than repeat a
 completed fix merely to produce a commit. Complete and save tested work within the
 available time; isolate incomplete or high-risk changes with their evidence.

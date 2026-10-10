@@ -27,6 +27,7 @@ public static class PresentationBehaviorChecks
     }
     private static void Expect(bool condition, string message) { if (!condition) throw new Exception(message); }
     private static bool Near(float a, float b) { return Math.Abs(a - b) < .0001f; }
+    private static bool Near(Vector3 a, Vector3 b) { return Near(a.x, b.x) && Near(a.y, b.y) && Near(a.z, b.z); }
 
     private static ClearingRun UnlockedRun()
     {
@@ -239,9 +240,9 @@ public static class PresentationBehaviorChecks
         string notice = "", bool paused = false)
     {
         var method = typeof(ClearingHud).GetMethod("Refresh", BindingFlags.Instance | BindingFlags.NonPublic);
-        if (method == null || method.GetParameters().Length != 11)
+        if (method == null || method.GetParameters().Length != 12)
             throw new Exception("Progression HUD Refresh signature absent");
-        method.Invoke(f.Hud, new object[] { f.Stats, f.Run, paused, false, true, "", progress, rewardId, notice, "", "" });
+        method.Invoke(f.Hud, new object[] { f.Stats, f.Run, paused, false, true, "", progress, rewardId, notice, "", "", "" });
     }
 
     private static string HudText(ClearingHud hud)
@@ -1915,19 +1916,338 @@ public static class PresentationBehaviorChecks
             b.P.Update(KeyCode.R); b.F.Refresh();
             Expect(!impact.gameObject.activeSelf && !b.Boss.IsAwake, "new run retained guardian impact or awakening");
         });
-        test("guardian disposal destroys four owned roots without destroying shared art or resurrecting feedback", () =>
+        test("guardian disposal destroys five owned roots without destroying shared art or resurrecting feedback", () =>
         {
             var b = new BossFixture(); b.Awaken(); b.BeginWarning();
             GameObject actor = b.Props.Body.gameObject, altar = Get<GameObject>(b.Props, "altar");
             GameObject warning = Get<Transform>(b.Props, "warning").gameObject, impact = Get<Transform>(b.Props, "impact").gameObject;
+            GameObject halo = Get<Transform>(b.Props, "phaseHalo").gameObject;
             var shared = Get<ClearingVisuals>(b.F.Runtime, "visuals"); Sprite pixel = Get<Sprite>(shared, "pixel");
             Texture2D texture = Get<Texture2D>(shared, "texture");
             int objects = GameObject.CreatedCount, textures = Texture2D.CreatedCount, sprites = Sprite.CreatedCount;
-            b.Props.Dispose(); b.Props.Dispose(); b.Props.ShowImpact(true, true, b.F.Run.Time); b.Props.Refresh(b.F.Run);
-            Expect(actor.Destroyed && altar.Destroyed && warning.Destroyed && impact.Destroyed && !pixel.Destroyed && !texture.Destroyed
-                && !warning.activeSelf && !impact.activeSelf && GameObject.CreatedCount == objects
+            b.Props.ShowPhaseChange(b.F.Run.Time);
+            b.Props.Dispose(); b.Props.Dispose(); b.Props.ShowImpact(true, true, b.F.Run.Time);
+            b.Props.ShowPhaseChange(b.F.Run.Time); b.Props.Refresh(b.F.Run);
+            Expect(actor.Destroyed && altar.Destroyed && warning.Destroyed && impact.Destroyed && halo.Destroyed && !pixel.Destroyed && !texture.Destroyed
+                && !warning.activeSelf && !impact.activeSelf && !halo.activeSelf && GameObject.CreatedCount == objects
                 && Texture2D.CreatedCount == textures && Sprite.CreatedCount == sprites,
                 "guardian disposal leaked roots, destroyed common art or allowed post-disposal resurrection");
+        });
+    }
+
+    private static void CrossGuardianThreshold(BossFixture b, bool nearSupply = false,
+        PlayerAttackKind kind = PlayerAttackKind.Light)
+    {
+        b.Awaken(); b.BeginWarning();
+        b.DomainHit(PlayerAttackKind.Light); b.DomainHit(PlayerAttackKind.Light);
+        Expect(Near(b.Boss.Health, 72f), "threshold setup lost original Boss HP or light damage");
+        if (nearSupply) b.Props.Body.position = SupplyFixture.Point(1);
+        b.StrikePosition(); b.P.Update(kind == PlayerAttackKind.Burst ? KeyCode.K : KeyCode.J); b.F.Tick(); b.P.Update();
+        float amount = kind == PlayerAttackKind.Burst ? ClearingRun.BurstDamage : ClearingRun.LightDamage;
+        Expect(Near(b.Boss.Health, 72f - amount) && b.Boss.Enraged, "actual accepted input did not enter phase two at half health");
+    }
+
+    private static BossFixture ThresholdFixture(bool nearSupply = false)
+    {
+        var b = new BossFixture(); CrossGuardianThreshold(b, nearSupply);
+        return b;
+    }
+
+    private static int GuardianPhaseCues(BossFixture b)
+    {
+        int count = 0;
+        foreach (AudioClip clip in b.F.Audio.OneShots)
+            if (clip.name == "Clearing Guardian phase 2") count++;
+        return count;
+    }
+
+    private static void ExpectRecoveryMarks(BossFixture b, bool visible)
+    {
+        foreach (SpriteRenderer mark in Get<SpriteRenderer[]>(b.Props, "recoveryMarks"))
+            Expect(mark.gameObject.activeSelf == visible, "recovery opening mark disagrees with the actual harmless recovery state");
+    }
+
+    private static void AddBossPolishChecks(Action<string, Action> test)
+    {
+        test("guardian recovery objective identifies the actual counterattack opening", () =>
+        {
+            foreach (SentinelAttackKind kind in new[] { SentinelAttackKind.Lance, SentinelAttackKind.Sigil })
+            {
+                var b = new BossFixture(); b.Awaken(); b.BeginWarning(kind);
+                b.F.Run.Advance(b.Boss.WindupDuration + b.Boss.ActiveDuration + .03f); b.F.Tick(); b.P.Update();
+                Expect(b.Boss.AttackPhase == SentinelAttackPhase.Recovery, "recovery HUD setup entered another attack");
+                string objective = Get<Text>(b.P.Hud, "objective").text.ToLowerInvariant();
+                Expect(objective.Contains("strike") && !objective.Contains("sidestep") && !objective.Contains("leave"),
+                    "recovery still tells the player to dodge a harmless expired footprint: " + objective);
+            }
+        });
+        test("guardian threshold notice preserves nearby supply action in the same edge label", () =>
+        {
+            var b = ThresholdFixture(true);
+            string message = Get<Text>(b.P.Hud, "message").text.ToLowerInvariant();
+            Expect(message.Contains("phase 2") && message.Contains("e") && message.Contains("rune"),
+                "contextual rune interaction masks the new phase notice: " + message);
+        });
+        test("paused recovery objective retains guardian state without advertising an unavailable strike", () =>
+        {
+            var b = new BossFixture(); b.Awaken(); b.BeginWarning();
+            b.F.Run.Advance(b.Boss.WindupDuration + b.Boss.ActiveDuration + .03f); b.F.Tick(); b.P.Update(KeyCode.Escape);
+            string objective = Get<Text>(b.P.Hud, "objective").text.ToLowerInvariant();
+            Expect(b.Boss.AttackPhase == SentinelAttackPhase.Recovery && objective.Contains("108") && objective.Contains("phase 1")
+                && objective.Contains("paused") && !objective.Contains("strike") && !objective.Contains("sidestep")
+                && Get<Text>(b.P.Hud, "skills").text == "", "paused recovery still advertises a disabled combat action: " + objective);
+        });
+        test("defeated recovery objective retains guardian state without advertising an unavailable strike", () =>
+        {
+            var b = new BossFixture(); b.Awaken(); b.BeginWarning();
+            b.F.Run.Advance(b.Boss.WindupDuration + b.Boss.ActiveDuration + .03f); b.F.Tick(); b.P.Stats.Health = 0f; b.P.Update();
+            string objective = Get<Text>(b.P.Hud, "objective").text.ToLowerInvariant();
+            Expect(b.F.Run.IsDead && objective.Contains("108") && objective.Contains("phase 1") && objective.Contains("defeated")
+                && !objective.Contains("strike") && !objective.Contains("sidestep") && Get<Text>(b.P.Hud, "skills").text == "",
+                "defeated recovery still advertises a disabled combat action: " + objective);
+        });
+        test("guardian phase notice survives a hundred seconds of paused wall time", () =>
+        {
+            var b = ThresholdFixture();
+            double time = b.F.Run.Time; Invoke(b.F.Runtime, "SetPaused", true);
+            Time.unscaledTime += 100f;
+            for (int frame = 0; frame < 8; frame++) { b.P.Update(); b.F.Tick(); }
+            Expect(b.F.Run.Time == time && Get<Text>(b.P.Hud, "message").text == "", "paused phase notice stayed playable or advanced simulation");
+            Invoke(b.F.Runtime, "SetPaused", false); b.P.Update();
+            string message = Get<Text>(b.P.Hud, "message").text.ToLowerInvariant();
+            Expect(message.Contains("phase 2"), "paused wall time silently expired phase notice: " + message);
+        });
+        test("guardian ready warning and active objectives describe the actual committed pattern", () =>
+        {
+            foreach (SentinelAttackKind kind in new[] { SentinelAttackKind.Lance, SentinelAttackKind.Sigil })
+            {
+                var b = new BossFixture(); b.Awaken();
+                if (kind == SentinelAttackKind.Sigil)
+                {
+                    b.BeginWarning();
+                    b.F.Run.Advance(b.Boss.WindupDuration + b.Boss.ActiveDuration + b.Boss.RecoveryDuration + .01f);
+                }
+                b.P.Update();
+                string objective = Get<Text>(b.P.Hud, "objective").text.ToLowerInvariant();
+                Expect(b.Boss.AttackPhase == SentinelAttackPhase.Ready && objective.Contains("preparing")
+                    && !objective.Contains("active") && !objective.Contains("strike"), "ready HUD falsely describes an active attack");
+                b.BeginWarning(kind); b.P.Update(); objective = Get<Text>(b.P.Hud, "objective").text.ToLowerInvariant();
+                Expect(objective.Contains(kind == SentinelAttackKind.Lance ? "sidestep" : "leave")
+                    && !objective.Contains("strike"), "warning HUD omitted its committed pattern's dodge instruction");
+                b.EnterActive(); b.P.Update(); objective = Get<Text>(b.P.Hud, "objective").text.ToLowerInvariant();
+                Expect(objective.Contains("active") && objective.Contains("keep clear") && !objective.Contains("strike"),
+                    "active HUD advertises a recovery opening before contact finishes");
+            }
+        });
+        test("actual J and K threshold feedback preserves damage mana costs cooldowns and captured warning timing", () =>
+        {
+            foreach (PlayerAttackKind kind in new[] { PlayerAttackKind.Light, PlayerAttackKind.Burst })
+            {
+                var b = new BossFixture(); b.Awaken(); b.BeginWarning();
+                b.DomainHit(PlayerAttackKind.Light); b.DomainHit(PlayerAttackKind.Light);
+                var footprint = b.Boss.AttackFootprint; long sequence = b.Boss.AttackSequence;
+                float windup = b.Boss.WindupDuration, active = b.Boss.ActiveDuration, recovery = b.Boss.RecoveryDuration;
+                b.StrikePosition(); b.P.Stats.Mana = 6f;
+                b.P.Update(kind == PlayerAttackKind.Burst ? KeyCode.K : KeyCode.J);
+                Expect(Near(b.P.Stats.Mana, kind == PlayerAttackKind.Burst ? 0f : 6f)
+                    && Near(kind == PlayerAttackKind.Burst ? b.F.Run.BurstCooldownRemaining : b.F.Run.LightCooldownRemaining,
+                        kind == PlayerAttackKind.Burst ? 1.2f : .45f), "phase polish changed the admitted input's cost or cooldown");
+                b.F.Tick(); b.P.Update();
+                float amount = kind == PlayerAttackKind.Burst ? 30f : 18f;
+                Expect(Near(b.Boss.Health, 72f - amount) && b.Boss.Enraged && Near(Get<float>(b.Slot(4), "Amount"), amount)
+                    && GuardianPhaseCues(b) == 1 && Get<Transform>(b.Props, "phaseHalo").gameObject.activeSelf,
+                    "accepted threshold input lost actual HP loss, numeric feedback or its once-only phase event");
+                Expect(object.ReferenceEquals(footprint, b.Boss.AttackFootprint) && b.Boss.AttackSequence == sequence
+                    && Near(windup, 1f) && Near(active, .16f) && Near(recovery, 1.15f)
+                    && Near(b.Boss.WindupDuration, windup) && Near(b.Boss.ActiveDuration, active) && Near(b.Boss.RecoveryDuration, recovery),
+                    "phase feedback mutated the current immutable contact or the original phase-one durations");
+                b.P.AssertTemplate();
+            }
+        });
+        test("rejected mana range and wall contacts cannot emit a guardian phase event", () =>
+        {
+            for (int rejection = 0; rejection < 3; rejection++)
+            {
+                var b = new BossFixture(); b.Awaken(); b.BeginWarning();
+                b.DomainHit(PlayerAttackKind.Light); b.DomainHit(PlayerAttackKind.Light); b.StrikePosition();
+                if (rejection == 0) b.P.Stats.Mana = 0f;
+                if (rejection == 1) b.StrikePosition(4f);
+                if (rejection == 2) Physics2D.LinecastResponse = new BoxCollider2D();
+                try { b.P.Update(rejection == 0 ? KeyCode.K : KeyCode.J); b.F.Tick(); b.P.Update(); }
+                finally { Physics2D.LinecastResponse = null; }
+                Expect(Near(b.Boss.Health, 72f) && !b.Boss.Enraged && GuardianPhaseCues(b) == 0
+                    && !Get<Transform>(b.Props, "phaseHalo").gameObject.activeSelf
+                    && !Get<Text>(b.P.Hud, "message").text.ToLowerInvariant().Contains("phase 2"),
+                    "rejected contact fabricated the half-health transition");
+            }
+        });
+        test("later accepted hits cannot replay or extend the guardian phase event", () =>
+        {
+            var b = ThresholdFixture(); double deadline = Get<double>(b.F.Runtime, "bossPhaseNoticeUntil");
+            double haloStarted = Get<double>(b.Props, "phaseHaloStartedAt");
+            b.F.Tick(); b.P.Update();
+            b.F.Run.Advance(.46f); b.StrikePosition(); b.P.Update(KeyCode.J); b.F.Tick(); b.P.Update();
+            Expect(Near(b.Boss.Health, 36f) && GuardianPhaseCues(b) == 1
+                && Get<double>(b.F.Runtime, "bossPhaseNoticeUntil") == deadline
+                && Get<double>(b.Props, "phaseHaloStartedAt") == haloStarted,
+                "ongoing phase-two hits replayed the transition or renewed its lifetime");
+        });
+        test("phase notice expires after simulation time rather than wall time or HUD refreshes", () =>
+        {
+            var b = ThresholdFixture(); double deadline = Get<double>(b.F.Runtime, "bossPhaseNoticeUntil");
+            Time.unscaledTime += 100f;
+            for (int frame = 0; frame < 30; frame++) b.P.Update();
+            Expect(Get<Text>(b.P.Hud, "message").text.ToLowerInvariant().Contains("phase 2"),
+                "rendered refreshes or wall time expired the notice without advancing the encounter");
+            b.F.Run.Advance((float)(deadline - b.F.Run.Time - .01d)); b.P.Update();
+            Expect(Get<Text>(b.P.Hud, "message").text.ToLowerInvariant().Contains("phase 2"), "notice expired before its simulation deadline");
+            b.F.Run.Advance(.02f); b.P.Update();
+            Expect(!Get<Text>(b.P.Hud, "message").text.ToLowerInvariant().Contains("phase 2") && GuardianPhaseCues(b) == 1,
+                "elapsed simulation retained or replayed the phase notice");
+        });
+        test("actual supply E remains usable during a phase notice and does not bank or renew it", () =>
+        {
+            var b = ThresholdFixture(true); double deadline = Get<double>(b.F.Runtime, "bossPhaseNoticeUntil");
+            string id = b.P.RewardId; float hp = b.Boss.Health; b.P.Stats.Mana = 3f;
+            b.P.Update(); Expect(Get<Text>(b.P.Hud, "message").text.ToLowerInvariant().Contains("rune"), "phase notice suppressed the current supply action");
+            b.P.Update(KeyCode.E);
+            Expect(b.Supplies.IsClaimed(1) && Near(b.P.Stats.Mana, 9f) && Near(b.Boss.Health, hp)
+                && b.P.RewardId == id && b.P.Store.Writes == 0 && !b.F.Run.GateUnlocked
+                && Get<double>(b.F.Runtime, "bossPhaseNoticeUntil") == deadline && GuardianPhaseCues(b) == 1,
+                "supply interaction during transition mutated the Boss, reward identity or phase event");
+            string message = Get<Text>(b.P.Hud, "message").text.ToLowerInvariant();
+            Expect(message.Contains("phase 2") && !message.Contains("e - rune"), "spent reserve left a stale action or erased the phase notice");
+            b.P.Update(KeyCode.E); Expect(Near(b.P.Stats.Mana, 9f) && GuardianPhaseCues(b) == 1,
+                "same phase display replayed a spent reserve or transition cue");
+        });
+        test("phase and context share the declared edge column without stale feedback or help overlap", () =>
+        {
+            foreach (float width in new[] { 620f, 960f, 1280f })
+            {
+                var b = ThresholdFixture(true);
+                ((RectTransform)Get<Transform>(b.P.Hud, "root")).rect = new Rect(0, 0, width, 540);
+                b.P.Update(); Text label = Get<Text>(b.P.Hud, "message"); string message = label.text.ToLowerInvariant();
+                Rect hint = RecordedLabelRect(label, new Vector2(width, 540f));
+                Rect combat = RecordedLabelRect(Get<Text>(b.P.Hud, "skills"), new Vector2(width, 540f));
+                Expect(message.StartsWith("phase 2") && message.Contains("rune") && message.Split('\n').Length == 2
+                    && !message.Contains("awakened") && Get<Text>(b.P.Hud, "help").text == "",
+                    "phase notice lost priority, retained a stale awakening paragraph or doubled its edge slot");
+                Expect(!RectanglesOverlap(hint, combat) && hint.x >= 0f && hint.x + hint.width <= width && hint.y + hint.height <= 81f
+                    && label.fontSize == (width < 810f ? 11 : 14), "declared phase label moved outside its bounded edge column");
+            }
+        });
+        test("cached opening markers appear only for guardian recovery and leave physical bounds unchanged", () =>
+        {
+            var b = new BossFixture(); b.Awaken(); b.F.Refresh(); ExpectRecoveryMarks(b, false);
+            b.BeginWarning(); b.F.Refresh(); ExpectRecoveryMarks(b, false);
+            b.EnterActive(); b.F.Refresh(); ExpectRecoveryMarks(b, false);
+            b.F.Run.Advance(b.Boss.ActiveDuration + .01f); b.F.Refresh(); ExpectRecoveryMarks(b, true);
+            BoxCollider2D collider = Get<BoxCollider2D>(b.Props, "collider");
+            Sprite pixel = Get<Sprite>(Get<ClearingVisuals>(b.F.Runtime, "visuals"), "pixel");
+            SpriteRenderer[] marks = Get<SpriteRenderer[]>(b.Props, "recoveryMarks");
+            int objects = GameObject.CreatedCount, textures = Texture2D.CreatedCount, sprites = Sprite.CreatedCount;
+            Expect(marks.Length == 3 && collider.size == new Vector2(1.2f, .6f)
+                && !Get<Transform>(b.Props, "warning").gameObject.activeSelf, "opening marker changed contact bounds or retained an expired hazard");
+            foreach (SpriteRenderer mark in marks)
+            {
+                Expect(object.ReferenceEquals(mark.sprite, pixel), "opening marker duplicated shared art ownership");
+                NoSupplyColliders(mark.transform);
+                foreach (float dimension in new[] { mark.transform.localScale.x, mark.transform.localScale.y,
+                    mark.transform.localPosition.x, mark.transform.localPosition.y })
+                    Expect(Math.Abs(dimension * 30f - Math.Round(dimension * 30f)) < .001f, "opening marker authored subpixel geometry");
+            }
+            for (int frame = 0; frame < 30; frame++) b.F.Refresh();
+            Expect(GameObject.CreatedCount == objects && Texture2D.CreatedCount == textures && Sprite.CreatedCount == sprites,
+                "opening refresh replaced cached sprites or hierarchy");
+            b.F.Run.Advance(b.Boss.RecoveryDuration + .01f); b.F.Refresh(); ExpectRecoveryMarks(b, false);
+            b.F.Run.NotifyPlayerDeath(); b.F.Refresh(); ExpectRecoveryMarks(b, false);
+        });
+        test("captured phase halo is independent cached nonblocking pixel geometry that freezes and expires on simulation time", () =>
+        {
+            var b = ThresholdFixture(); Transform halo = Get<Transform>(b.Props, "phaseHalo");
+            SpriteRenderer[] pieces = Get<SpriteRenderer[]>(b.Props, "phaseHaloPieces");
+            Expect(halo.gameObject.activeSelf && halo.parent == b.F.Runtime.transform && pieces.Length == 4,
+                "accepted phase event lacks its independent bounded visual cache");
+            NoSupplyColliders(halo); Vector3 captured = halo.position;
+            Sprite pixel = Get<Sprite>(Get<ClearingVisuals>(b.F.Runtime, "visuals"), "pixel");
+            foreach (SpriteRenderer piece in pieces) Expect(object.ReferenceEquals(piece.sprite, pixel), "phase halo duplicated the shared Point raster");
+            b.Props.Body.position += Vector2.right * 2f; b.F.Refresh();
+            Expect(Near(halo.position, captured), "phase halo followed the actor instead of retaining its accepted transition origin");
+            Vector3 offset = pieces[0].transform.localPosition; float alpha = pieces[0].color.a; double time = b.F.Run.Time;
+            int objects = GameObject.CreatedCount, textures = Texture2D.CreatedCount, sprites = Sprite.CreatedCount;
+            Invoke(b.F.Runtime, "SetPaused", true); Time.unscaledTime += 100f;
+            for (int frame = 0; frame < 20; frame++) { b.P.Update(); b.F.Tick(); }
+            Expect(b.F.Run.Time == time && halo.gameObject.activeSelf && Near(halo.position, captured)
+                && Near(pieces[0].transform.localPosition, offset) && Near(pieces[0].color.a, alpha), "pause moved or faded the phase halo");
+            Invoke(b.F.Runtime, "SetPaused", false); b.F.Run.Advance(.25f); b.F.Refresh();
+            Expect(halo.gameObject.activeSelf && pieces[0].color.a < alpha, "simulation progress did not advance the phase halo");
+            foreach (SpriteRenderer piece in pieces)
+                foreach (float dimension in new[] { piece.transform.localScale.x, piece.transform.localScale.y,
+                    piece.transform.localPosition.x, piece.transform.localPosition.y })
+                    Expect(Math.Abs(dimension * 30f - Math.Round(dimension * 30f)) < .001f, "phase halo expansion introduced subpixel geometry");
+            b.F.Run.Advance(.26f); b.F.Refresh();
+            Expect(!halo.gameObject.activeSelf && GameObject.CreatedCount == objects && Texture2D.CreatedCount == textures
+                && Sprite.CreatedCount == sprites, "elapsed phase halo remained visible or refresh allocated replacement art");
+        });
+        test("disable clears phase transients without losing earned health or replaying the accepted threshold", () =>
+        {
+            var b = ThresholdFixture(true); b.P.Stats.Mana = 3f; b.P.Update(KeyCode.E);
+            float hp = b.Boss.Health; double time = b.F.Run.Time; string id = b.P.RewardId;
+            Invoke(b.F.Runtime, "OnDisable");
+            Expect(!Get<Transform>(b.Props, "phaseHalo").gameObject.activeSelf, "disable left the phase halo alive");
+            ExpectRecoveryMarks(b, false);
+            b.F.Refresh(); b.P.Update();
+            Expect(Near(b.Boss.Health, hp) && b.F.Run.Time == time && b.P.RewardId == id && b.Supplies.IsClaimed(1)
+                && GuardianPhaseCues(b) == 1 && !Get<Text>(b.P.Hud, "message").text.ToLowerInvariant().Contains("phase 2"),
+                "disable erased saved attempt progress or resurrected the transient notice");
+            b.F.Run.Advance(.46f); b.StrikePosition(); b.P.Update(KeyCode.J); b.F.Tick(); b.P.Update();
+            Expect(Near(b.Boss.Health, 36f) && GuardianPhaseCues(b) == 1
+                && !Get<Transform>(b.Props, "phaseHalo").gameObject.activeSelf,
+                "re-enabled phase-two damage replayed the old threshold event");
+        });
+        test("actual death and R clear phase feedback then rearm exactly one transition for a new attempt", () =>
+        {
+            var b = ThresholdFixture(); string id = b.P.RewardId;
+            b.P.Stats.Health = 0f; b.P.Update();
+            Expect(b.F.Run.IsDead && Get<Text>(b.P.Hud, "message").text == ""
+                && !Get<Transform>(b.Props, "phaseHalo").gameObject.activeSelf, "defeat retained playable phase feedback");
+            ExpectRecoveryMarks(b, false); b.P.Update(KeyCode.R); b.P.Update();
+            Expect(!b.Boss.IsAwake && Near(b.Boss.Health, 108f) && b.P.RewardId != id
+                && Get<string>(b.F.Runtime, "bossPhaseNotice") == "" && !Get<Transform>(b.Props, "phaseHalo").gameObject.activeSelf,
+                "R retained damaged guardian phase state or old transition presentation");
+            CrossGuardianThreshold(b);
+            Expect(Near(b.Boss.Health, 54f) && GuardianPhaseCues(b) == 2
+                && Get<Transform>(b.Props, "phaseHalo").gameObject.activeSelf && b.P.Store.Writes == 0,
+                "genuine new attempt failed to rearm one threshold event or banked before victory");
+        });
+        test("guardian kill and actual beacon clear phase feedback without changing the thirty-coin reward", () =>
+        {
+            var b = ThresholdFixture();
+            // The accepted threshold J is still an active action. Let its real
+            // cooldown expire before admitting setup damage for the killing hit.
+            b.F.Run.Advance(ClearingRun.LightCooldown);
+            b.DomainHit(PlayerAttackKind.Burst); b.DomainHit(PlayerAttackKind.Light);
+            b.StrikePosition(); b.P.Update(KeyCode.J); b.F.Tick(); b.P.Update();
+            Expect(b.Boss.IsDead && b.F.Run.GateUnlocked && b.P.Store.Writes == 0 && GuardianPhaseCues(b) == 1
+                && !Get<Transform>(b.Props, "phaseHalo").gameObject.activeSelf
+                && !Get<Text>(b.P.Hud, "message").text.ToLowerInvariant().Contains("phase 2"),
+                "victory retained a live transition, replayed it on kill or banked before the beacon");
+            ExpectRecoveryMarks(b, false); b.Feet(ClearingVisuals.BeaconPosition); b.P.Update(KeyCode.E);
+            Expect(b.F.Run.IsComplete && b.P.Store.Writes == 1 && b.P.Progress.Data.BankCoins == 30
+                && b.P.Progress.Data.ClearedRuns == 1 && Get<Text>(b.P.Hud, "message").text == ""
+                && !Get<Transform>(b.Props, "phaseHalo").gameObject.activeSelf, "completed encounter lost existing banked growth or retained a live phase prompt");
+        });
+        test("phase audio reuses its cached clip and preserves mute volume and owned clip disposal", () =>
+        {
+            var sound = new ClearingAudio(new GameObject("Phase audio ownership fixture"));
+            var source = Get<AudioSource>(sound, "source"); AudioClip phase = Get<AudioClip>(sound, "bossPhase");
+            sound.ToggleMute(); sound.BossPhase(); sound.BossPhase();
+            Expect(sound.Muted && Near(source.volume, .18f) && source.OneShots.Count == 2
+                && object.ReferenceEquals(source.OneShots[0], phase) && object.ReferenceEquals(source.OneShots[1], phase),
+                "phase cue replaced its cached clip or changed user mute/mix state");
+            sound.Dispose(); sound.Dispose();
+            foreach (string name in new[] { "light", "burst", "hurt", "unlock", "impact", "defeat", "bossPhase" })
+                Expect(Get<AudioClip>(sound, name).Destroyed, "owned cue leaked at disposal: " + name);
         });
     }
 
@@ -2315,6 +2635,7 @@ public static class PresentationBehaviorChecks
         AddDamageNumberChecks(test);
         AddSupplyChecks(test);
         AddBossChecks(test);
+        AddBossPolishChecks(test);
         Console.WriteLine("RESULT " + passed + " passed, " + failed + " failed; actual project C# with recording boundaries, not native Unity.");
         return failed == 0 ? 0 : 1;
     }

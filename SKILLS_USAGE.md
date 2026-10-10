@@ -1,5 +1,30 @@
 # Skills usage
 
+## Iteration 10 — actual continuity, debugging, feedback and verification
+
+All eight local SKILL.md files were rediscovered and read completely; applicable
+handoff/resume/root-cause/verification references support this exact continuation.
+Reading guidance is distinct from connected services and native execution.
+
+| Skill | Actual use and evidence limits |
+| --- | --- |
+| session-handoff | Reconciled ninthba4cd1d, actual tenth branch and surviving fixture; used real scaffold, corrected archived predecessor, updated allfive root records. Identical working handoff validates100/100 withsixfile references; archived Markdown links checked. |
+| systematic-debugging | Actual105/3 reproduction traced Recovery wording/context priority/unscaled expiry, then108/0green. Independent108/1 revealed paused/dead strike instruction; focused109/0 and expanded123/0 verify correction. No human difficulty defect is invented. |
+| verification-before-completion | Fresh379project+sixdistribution=385checks;five static envelopes,26-source/86-real-reference compiler(Inputsub),LFSfsck/diffcheck and independent123presentation/19Boss/API review. Exact ac3aa87 and36567e8 CI each pass12 steps with artifacts11661429449/11661564119 verified; final exact-source CI/PR/archive evidence remains publication work. |
+| game-design | Preserved complete encounter/resources/30coinv1growth/allstats/timing; truthful dodge/strike/unavailable information and threshold notice coexist with supply action. Bounded perfect-contact model is recorded as simulation, not player balance. |
+| game-art | Three cached noncolor Recovery chevron parts/fourcaptured-anchor .5sphasehalo strokes reuse Point/shared15palette/1⁄30-unitgeometry. Ownership/reset/pause tests preserve33Bossbodypieces,footcollider and originalblondehero; no native visibility/pixel-perfect acceptance. |
+| game-audio | One cached original .24s520→130Hz phase cue triggers once after surviving threshold, preserves mute/.18volume/variation/reset and destroys seventhclip. Recording cue/lifecycle checks pass; no audition or mix acceptance. |
+| unity-mcp-orchestrator | Unity2022.3 lifecycle/ownership/time compatibility, actual API26/86 compile and evidence boundaries; official Time.unscaledTime explains paused expiry, PlayOneShot informs cached one-shot cue. No connected Editor/MCP/CLI/native execution or renewed license probe. |
+| imagegen | Read applicability/identity guidance. Existing code-native primitives fit this task; no bitmap generation/edit or image service call was applicable or invoked. |
+
+Unity Essentials bug-investigation/build-validation main guides with evidence,
+hypothesis/reproduction/baseline/safety/status and gameplay-state foundations were
+actually read and applied by implementation/review. Unity2d-pixel-perfect preserves
+Built-in/Point/current scales without Unity6package/camera migration. Plugin Skills
+readable does not imply connected Editor/CLI/MCP/native tests. Native import,
+EditMode/PlayMode,realinput/physics/Animator/render/audio/build/playerplaytests are
+unrun; difficulty/readability/feel remain **尚未进行 Unity 原生验收**.
+
 ## Iteration 9 reviewed publication and handoff evidence
 
 Session-handoff actual generated/filled chained scaffold validates100/100 with

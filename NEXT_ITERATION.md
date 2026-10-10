@@ -1,6 +1,37 @@
 # Current continuation / next iteration
 
-## Verify ninth receipt, then select the next coherent improvement
+## Current tenth continuation — finish publication, then next player value
+
+Read [the tenth handoff](docs/iterations/2026-10-09-iteration-010/handoff.md), then
+verify actual branch/HEAD/dirty/unpushed/PR/CI and external receipt. Ninthba4cd1d,
+firstac3aa87 and code-complete36567e8 are recovery paths. Scoped Guardian feedback
+is implemented and tested:385groups/API26/86/independent123presentation+19Boss,
+handoff100. Do not reimplement it or infer native acceptance from these checks.
+
+1. Code checkpoint36567e8 CI38031110628/job114152067191 passes all12 steps with
+   artifact11661564119. Inspect exact final source CI and uploaded artifacts; review and
+   normally merge the complete PR to master. Ordinary autonomous merge is already
+   authorized; native checks optional. Never force push or overwrite dirty work.
+2. Publish exact final source and CI; package complete Assets/Packages/ProjectSettings
+   and .meta with real LFS, excluding caches. Verify CRC, every member SHA-256,
+   source bytes and immutable HTTPS; publish receipt/finalhandoff/validation using
+   confirmed noreply identity. Preserve all22existing ZIP/checksum paths/history.
+3. If external tenth receipt is already complete on next resume, verify identities
+   and move forward. Source records cannot embed their own finalSHA/archivehash;
+   the immutable receipt resolves those exact identities after publication.
+
+Most useful optional native acceptance: full clearing/Boss encounter with real
+keyboard/controller/full/partial input; low-resource entry, locked warning/contact,
+phase threshold beside supplies, Recovery mark, pause/expiry, mute/cue, death/retry,
+beacon save and next-run upgrades. Record input/physics/animation/render/audio and
+human difficulty separately. No unchanged license/MCP probe should be repeated.
+If native tooling stays unavailable, choose one small exploration or NPC narrative
+objective tied to the clearing that closes an entry/action/result/reward loop.
+Preserve108HP/2damage/timings until evidence supports tuning. Full forest/archery/
+quests/classes/equipment/worldsave remain absent future work. Historical visual
+complaints are references, not new confirmed bugs.
+
+## Historical ninth continuation — superseded by current tenth task
 
 First compare actual master/branch/dirty/unpushed state with immutable ninth
 rpg-deliveries receipt and finalhandoff. ReviewedPR8 is merged at134e09d;
@@ -35,7 +66,7 @@ that complements this complete encounter; choose from actual current sources.
 Preserve threeguards ->altarE ->Guardian ->beacon30coin contract, v1ledger,
 original hero, supply charges, fixed contacts and all previously delivered work.
 
-## Current priority — resolve final eighth delivery, then new player value
+## Historical eighth continuation — delivery completed
 
 PR7 normally merged verified exploration supplies atba41be1; implementation
 30588a2 exactCI37996558184/all12steps/artifact11647800082 passed.322localchecks,

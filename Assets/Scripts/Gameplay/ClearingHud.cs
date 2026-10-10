@@ -65,7 +65,8 @@ namespace Rpg.Gameplay
         }
 
         internal void Refresh(PlayerStats stats, ClearingRun run, bool paused, bool muted, bool nearBeacon, string feedback,
-            ClearingProgress progress = null, string rewardId = "", string progressNotice = "", string supplyHint = "", string bossHint = "")
+            ClearingProgress progress = null, string rewardId = "", string progressNotice = "", string supplyHint = "", string bossHint = "",
+            string bossNotice = "")
         {
             // Keep two edge columns from intersecting on square/narrow viewports.
             float width = ((RectTransform)root).rect.width;
@@ -80,6 +81,7 @@ namespace Rpg.Gameplay
             help.rectTransform.sizeDelta = new Vector2(Mathf.Min(350f, column), 66f);
             help.fontSize = narrow ? 11 : 14;
             message.rectTransform.sizeDelta = help.rectTransform.sizeDelta;
+            message.fontSize = help.fontSize;
             bool showShop = progress != null && run.IsComplete && !paused;
             terminal.rectTransform.sizeDelta = new Vector2(Mathf.Max(1f, Mathf.Min(600f, width - 28f)),
                 Mathf.Min(showShop ? 350f : 160f, Mathf.Max(1f, height - 28f)));
@@ -96,8 +98,7 @@ namespace Rpg.Gameplay
             objective.text = run.IsComplete ? "CLEARING RESTORED" : run.GateUnlocked ? "Gate open: approach the north beacon" :
                 run.RequiresBoss && run.Boss.IsAwake ? string.Format("MOSS GUARDIAN  HP {0:0.#}/{1:0.#}\nPhase {2}: {3}",
                     run.Boss.Health, ClearingBossState.MaxHealth, run.Boss.Enraged ? 2 : 1,
-                    (run.Boss.AttackPhase == SentinelAttackPhase.Ready ? run.Boss.NextAttackKind : run.Boss.AttackKind) == SentinelAttackKind.Sigil ?
-                    "leave the marked ground" : "sidestep the locked lane") :
+                    paused ? "PAUSED" : run.IsDead ? "DEFEATED" : BossInstruction(run.Boss)) :
                 run.RequiresBoss && run.DefeatedCount == ClearingRun.SentinelCount ? "SENTINELS CLEARED - SEAL HOLDS\nAwaken the Guardian at the central altar" :
                 string.Format("RESTORE THE BEACON\nSentinels defeated: {0}/{1}", run.DefeatedCount, ClearingRun.SentinelCount);
             string light = run.LightCooldownRemaining > 0 ? run.LightCooldownRemaining.ToString("0.0") + "s" : "ready";
@@ -106,8 +107,13 @@ namespace Rpg.Gameplay
             if (run.PlayerAttackActive) light = burst = "striking";
             bool playable = !paused && !run.IsDead && !run.IsComplete;
             skills.text = playable ? "J / Space: light [" + light + "]\nK: burst 6 MP [" + burst + "]" : "";
-            message.text = !playable ? "" : nearBeacon && run.GateUnlocked ? "E - restore the beacon" :
-                !string.IsNullOrEmpty(bossHint) ? bossHint : !string.IsNullOrEmpty(supplyHint) ? supplyHint : feedback;
+            string interaction = nearBeacon && run.GateUnlocked ? "E - restore the beacon" :
+                !string.IsNullOrEmpty(bossHint) ? bossHint : supplyHint;
+            message.text = !playable ? "" : !string.IsNullOrEmpty(interaction) ? interaction : feedback;
+            // Phase changes have their own simulation-time lifetime. Keep the current
+            // interaction below the notice instead of letting proximity erase it.
+            if (playable && !string.IsNullOrEmpty(bossNotice))
+                message.text = bossNotice + (string.IsNullOrEmpty(interaction) ? "" : "\n" + interaction);
             help.text = !playable || !string.IsNullOrEmpty(message.text) ? "" : MovementGuide(narrow);
             terminal.text = paused ? "PAUSED\nEsc - resume" : run.IsDead ? "DEFEATED\nR - retry the clearing" :
                 run.IsComplete ? "BEACON RESTORED\n" + run.RewardCoins + " coins earned this run\nR - play again" : "";
@@ -127,6 +133,17 @@ namespace Rpg.Gameplay
                     (string.IsNullOrEmpty(progressNotice) ? "" : "\n" + progressNotice);
             }
             if (muted && !paused && !run.IsDead && !run.IsComplete) objective.text += "\nSound muted";
+        }
+
+        private static string BossInstruction(ClearingBossState boss)
+        {
+            if (boss.AttackPhase == SentinelAttackPhase.Recovery) return "RECOVERY - strike now";
+            SentinelAttackKind kind = boss.AttackPhase == SentinelAttackPhase.Ready ? boss.NextAttackKind : boss.AttackKind;
+            if (boss.AttackPhase == SentinelAttackPhase.Ready)
+                return kind == SentinelAttackKind.Sigil ? "preparing a ground rune" : "preparing a lance";
+            if (boss.AttackPhase == SentinelAttackPhase.Active)
+                return kind == SentinelAttackKind.Sigil ? "rune active - keep clear" : "lane active - keep clear";
+            return kind == SentinelAttackKind.Sigil ? "leave the marked ground" : "sidestep the locked lane";
         }
 
         private static string MovementGuide(bool narrow)

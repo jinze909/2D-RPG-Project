@@ -1,6 +1,28 @@
 # Known issues
 
-## Iteration 9 current delivered gameplay and evidence limits
+## Current evidence categories — verified iteration 10 gameplay
+
+This section is authoritative. Older “No Boss”, unmerged PR and pending ninth
+statements retain checkpoint history and do not describe current functionality.
+
+| Category | Actual status |
+| --- | --- |
+| Implemented and actual-code tested | Ninth complete Boss/growth/supply/damage loop; tenth state-aware objective, simulation-time supply-coexisting phase notice, cached recovery/phase shapes and once-per-attempt cue. Fresh 379 project + 6 distribution =385 checks, including123presentation/19Boss/17scene; five static envelopes pass. API26scripts/86realUnityrefs passes with Input System substitute. |
+| Validated in real Unity Editor | None reported this session. API-reference compilation is not Editor import/compile/tests or play. |
+| Confirmed and corrected | Original105/3 →108/0 resolves Recovery dodge wording, masked phase notice and paused expiry. Independent108/1 →109/0 corrects paused/dead Recovery instruction. Permanent expanded123/0 plus independent123/19/API checks pass. |
+| Confirmed but unfixed production defects | None found in the bounded reviewed tenth scope. This is not a claim that all native gameplay is bug-free. |
+| Experience awaiting native acceptance | **尚未进行 Unity 原生验收**: Boss difficulty/reaction demands, locked-warning/marker/halo readability, font/layout/pixel alignment, actual input/collision/Animator, sound output/mix and player build. Static/offline/simulated results establish none of these experiences. |
+| Absent future features | Full classes, inventory/equipment, full quest/story/NPC dialogue, world/mid-fight saves, complete forest and archery gameplay. These are not current confirmed bugs or fixed features. |
+| Publication still pending | Final source CI, reviewed normal PR/master merge, exact-source full Unity ZIP, CRC/member SHA-256/source-byte/LFS/immutable HTTPS and external final receipt. Ninth source/delivery remains complete. |
+
+The profile saves only bounded clearing coins/upgrades. Boss retains108HP/2damage,
+all original phase timings, no extra currency or awakening heal/refill. Recovery
+marker identifies an attack opportunity, not invulnerability against other hazards.
+Original walking slice/pivot limits need visual review. Historical sliding/leg/
+directional deformation/UI reports remain unverified experience references rather
+than newly confirmed defects; absent forest/archery/fullquests are not regressions.
+
+## Historical iteration 9 delivered gameplay and evidence limits
 
 PR8 normally merged at134e09d with matching reviewed implementationtree; exact
 CI38015650991 passed12steps/artifact11656011193. Boss loop is implemented,367checks
@@ -33,7 +55,7 @@ pivot limits and absent forest/archery/fullquests remain; no nonexistent visual
 regression or native fix is asserted. This current section supersedes older
 'No Boss' and historical foundation-only descriptions below.
 
-## Iteration 8 reviewed master integration — current
+## Historical iteration 8 reviewed master integration — superseded
 
 Execution access is restored; foundation 2c99ecf and exact green CI37995620781
 are verified. Runtime discovery/E/actual actor HP/MP restoration, cached prop
@@ -77,7 +99,7 @@ The forest/archery/full quest system is absent from this checkout; no nonexisten
 regression result is invented. Save profile v1 and mature combat/tactics/feedback
 must be preserved. The blocker is execution connectivity, not native Unity licensing.
 
-## Iteration 7 merged status — current
+## Historical iteration 7 merged status — superseded
 
 PR6 is normally merged into master 3d00f72 after independent review and exact
 successful CI. Damage feedback is implemented; older seventh foundation/integration
@@ -87,7 +109,7 @@ resume that publication before new development. Native display readability,
 close-actor overlap, animation/physics/input/audio/balance/build remain unrun.
 No full equipment/class/story/world-save system or camera shake/hitstop is claimed.
 
-## Iteration 7 integrated status — supersedes the foundation pending list
+## Historical iteration 7 integration checkpoint — superseded
 
 Actual light/burst/player HP loss readouts, fixed pools and interruption cleanup
 are implemented and covered by 296 passing offline/distribution groups and real
@@ -104,14 +126,14 @@ Independent review, implementation CI/merge and final ZIP/download/handoff
 publication remain outstanding until the iteration-007 delivery receipt confirms
 completion. Broader RPG systems and previous native evidence gaps are retained.
 
-## Iteration 7 foundation — current unfinished list
+## Historical iteration 7 foundation — completed later
 
 Pure damage readout helper exists; cachedworldlabels/actualcontact integration,
 newruntimechecks/review/CI/PR/mastermerge/ZIP/handoff remain pending. No hitstop/
 camerashake/newability/schema is claimed. Prior6source/ZIP fullydelivered. Native
 visualreadability/audio/input/physics/build remain unrun, optional for merge.
 
-## Iteration 6 merged status — current
+## Historical iteration 6 merged status — superseded
 
 PR5 is normally merged into master47c2289 after independently reviewed source
 and exact greenCI. Tactical roles/HUD/warnings are implemented; earlier sixth
@@ -121,7 +143,7 @@ Native import/physics/input/Animator/render/glyph/audio/difficulty/playerbuild
 remain unrun and optional. Retreat probe is a line query, not collider clearance.
 Profilev1 preserves its desktop/backup limits; broader RPG systems remain absent.
 
-## Iteration 6 integrated encounter — supersedes foundation pending list
+## Historical iteration 6 integration checkpoint — superseded
 
 Three distinct roles, runtime contacts/movement, cached warning/silhouette and
 edge hints are implemented. Offline behavior/API/resource checks supply evidence;
@@ -132,7 +154,7 @@ PR/merge, final exact-source CI, ZIP/download and final handoff publication rema
 outstanding until confirmed in iteration-006's independent delivery receipt.
 No profile migration, new equipment/class/story/world-save system is implemented.
 
-## Iteration 6 foundation — current unfinished list
+## Historical iteration 6 foundation — completed later
 
 Pure tactics/timing/footprints are implemented and checked; actual encounter
 wiring, cached role warning/silhouette, HUD counters, integration evidence and
@@ -142,7 +164,7 @@ The sixth iteration does not add classes/equipment/story or change profile v1.
 Native physics/Animator/glyph/audio/balance acceptance remains unrun, optional
 for normal quality-gated merges under the latest user instruction.
 
-## Current delivery policy and remaining work — 2026-10-09
+## Historical iteration 5 delivery policy and remaining work
 
 PR4 and PR1 are merged normally after review and verified candidate CI. Master
 now includes the clearing loop and persistent growth. The latest user explicitly
@@ -154,7 +176,7 @@ Only the bounded local profile exists: no classes/inventory/equipment/world-stat
 save/full story/Boss. Final source/ZIP/CI/download evidence is in the independent
 iteration-005 receipt; resume any incomplete delivery there before new features.
 
-## Current iteration 5 candidate status
+## Historical iteration 5 candidate status — delivered later
 
 Gameplay/input/result HUD/reward-cue/next-run integration is now implemented.
 219 project and 6 distribution checks plus real Unity API-reference compilation
@@ -176,7 +198,7 @@ are protected rather than silently reset; backup recovery can roll back the last
 transaction and must be clearly announced. Native save-path/lifecycle/input/HUD
 and balance acceptance remain pending with the existing license limitation.
 
-## Confirmed current gaps
+## Historical prototype/early-round gaps — superseded where implemented
 
 - PR #3 and PR #2 are merged into the isolated iteration-2 candidate. PR #1 is
   now merged (cb2d6fc) after PR #4; historical fourth-round source/CI/ZIP identities are in the independent

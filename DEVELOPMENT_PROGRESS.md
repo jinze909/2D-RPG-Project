@@ -1,5 +1,55 @@
 # Development progress
 
+## Iteration 10 — verified evidence-based Guardian feedback
+
+2026-10-09 PDT. Continued completed ninth `ba4cd1d` on the ordinary isolated branch
+`rpg/iteration-010-guardian-polish`. Quota resume retained only the regression
+fixture; no lost production work was fabricated or overwritten. Actual red replay
+105 pass / 3 fail reproduced Recovery dodge wording, supply-masked half-health
+notice and paused wall-time expiry. First correction is checkpoint `ac3aa87`:
+108/0 presentation, API26/86 and exact CI38030799993/job11415114885212/12 steps,
+nonexpired artifact11661429449. Independent review then reproduced paused/dead
+Recovery still offering “strike now” (108/1); focused correction is independently
+green at109/0 and permanently covered in the expanded fixture.
+
+Implemented state-aware Ready/warning/active/Recovery instructions, retaining
+Boss HP/phase labels while unavailable states say PAUSED/DEFEATED. An independent
+four-second simulation-time phase notice shares the edge label with the supply
+action; pause freezes lifetime, active time expires it, and disable/terminal/
+retry clears stale feedback. Three cached noncolor recovery-chevron pieces identify
+an opening; four cached strokes form a captured-position .5-second phase halo.
+One cached .24-second falling phase cue triggers once for a surviving half-health
+crossing, respects mute and uses the existing disposal path. Genuine retry rearms
+transition feedback; interruption retains earned health/paid costs/spent supplies.
+
+Preserved 108 HP/2 damage/all phase timings and immutable admitted snapshots, J/K
+input/damage/MP/cooldowns, player-first contacts, supplies, fixed damage slots,
+30-coin beacon save/v1 upgrades and original hero/Scene/Animator/package contracts.
+Controlled actual-domain replay shows ideal light/mixed clears of2.30s/1.58s under
+stationary perfect-contact assumptions. It is informational simulation, not human
+balance evidence; no armor or numeric tuning is shipped. See archived bounded review.
+
+Fresh full actual-working-tree verification: 379 project + 6 distribution =385
+passing groups; movement14/resources40/input-animation9/combat36/progression51/
+tactics38/Boss19/readout9/supply13/scene17/presentation123/art10. Presentation
+retains105and adds18; allfive static envelopes also pass: Unityversion,56metaGUIDs/
+145serializedreferences,twobuildscenes,sixmaterializedLFS,eightSkills/65files.
+26production scripts compile against86realUnity2022.3engine/Editor/uGUIrefs,
+Input System reviewed substitute. LFSfsck/diffcheck pass. Independent reviewer
+reran123presentation/19Boss/API26/86 and found no remaining blocker within scope.
+Generated/finalized chained handoff validates100/100 withsixexistingreferences.
+Code-complete checkpoint `36567e8` saves the inactive fix and expanded regressions.
+Code checkpoint `36567e8` exact CI38031110628/job114152067191 passed all 12 steps; nonexpired artifact11661564119 is present.
+Reports explicitly record tested working tree based onac3aa87; final immutable CI
+must bind publication source. PR/master/finalCI/fullZIP/HTTPS/receipt verification
+remain publication work, not assumed complete from local tests.
+
+Native import/EditMode/PlayMode/input/physics/Animator/render/layout/audio/build
+and actual player difficulty/feel are unrun: **尚未进行 Unity 原生验收**. No unchanged
+license/Editor/MCP probe was repeated. Historical forest/archery/fullquest reports
+are references to absent future functionality, not fixed bugs. Earlier sections
+below are historical checkpoint records and cannot override this current status.
+
 ## Iteration 9 — reviewed ordinary master merge
 
 PR8 normally merged implementationb4046999e1ec766f9550bbbc667b8e554e9b9228 at
