@@ -98,7 +98,7 @@ namespace Rpg.Gameplay
             objective.text = run.IsComplete ? "CLEARING RESTORED" : run.GateUnlocked ? "Gate open: approach the north beacon" :
                 run.RequiresBoss && run.Boss.IsAwake ? string.Format("MOSS GUARDIAN  HP {0:0.#}/{1:0.#}\nPhase {2}: {3}",
                     run.Boss.Health, ClearingBossState.MaxHealth, run.Boss.Enraged ? 2 : 1,
-                    BossInstruction(run.Boss)) :
+                    paused ? "PAUSED" : run.IsDead ? "DEFEATED" : BossInstruction(run.Boss)) :
                 run.RequiresBoss && run.DefeatedCount == ClearingRun.SentinelCount ? "SENTINELS CLEARED - SEAL HOLDS\nAwaken the Guardian at the central altar" :
                 string.Format("RESTORE THE BEACON\nSentinels defeated: {0}/{1}", run.DefeatedCount, ClearingRun.SentinelCount);
             string light = run.LightCooldownRemaining > 0 ? run.LightCooldownRemaining.ToString("0.0") + "s" : "ready";
