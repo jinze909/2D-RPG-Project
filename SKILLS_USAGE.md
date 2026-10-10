@@ -1,5 +1,15 @@
 # Skills usage
 
+## Iteration 9 reviewed publication and handoff evidence
+
+Session-handoff actual generated/filled chained scaffold validates100/100 with
+six existing references; all five root records and archived handoff updated.
+Verification-before-completion independently confirms expected PR8 head/base,
+12successful exactCI38015650991steps/artifact11656011193, ordinarymerge134e09d
+parents/tree equality and no original hero/scene/package/schema changes. Final
+sourceCI/ZIP/memberSHA/sourcebytes/LFS/immutable HTTPS evidence resolves in the
+external receipt after source publication; no native or imagegen call inferred.
+
 ## Iteration 9 — actual integrated encounter and validation
 
 All eight licensed local SKILL.md bundles were rediscovered and applicable full

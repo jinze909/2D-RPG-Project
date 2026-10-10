@@ -1,7 +1,7 @@
 # Moss Guardian — ninth-round encounter contract
 
-Runtime/presentation integration and independent review are complete; GitHub/ZIP
-publication follows the verified implementation checkpoint. Actual clearing opts into requiredBoss;
+Runtime/presentation integration and independent review are complete; PR8 normally
+merged at134e09d after exact implementationCI38015650991passed12steps. Actual clearing opts into requiredBoss;
 default ClearingRun supports existing isolated three-sentinel callers.
 
 ## Complete encounter
@@ -43,8 +43,9 @@ geometry/timing/gate/interrupts.26production scripts compile against86real2022.3
 engine/Editor/uGUI references with Input System substituted. An independent reviewer
 reran Boss19/presentation105/scene17 and found no blocking defect. Recorded cached
 production geometry was visually inspected offline, not in native Game View.
-Exact implementation/master CI and full sourceZIP must precede completion;
-recording boundaries do not prove native gameplay.
+Final exactsource/masterCI/fullZIP/download identities resolve in the external
+iteration-009-delivery receipt after source publication; recording boundaries
+do not prove native gameplay.
 Native physics,deviceinput,render/Animator,glyphs,audio,balance/build are optional
 and unrun. Official2022.3 [MovePosition](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Rigidbody2D.MovePosition.html)
 and [Linecast](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Physics2D.Linecast.html)

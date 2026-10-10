@@ -1,6 +1,19 @@
 # RPG development instructions
 
-## Iteration 9 integrated Moss Guardian — publication in progress
+## Iteration 9 reviewed master integration
+
+PR8 normally merged reviewed/testedb4046999e1ec766f9550bbbc667b8e554e9b9228 at
+134e09dc75fef799aa0f3ed4e7dabe1470c86364. ExactCI38015650991/job114105188884 passed
+all12steps,artifact11656011193 exists; merge parents/tree match expected history.
+367checks/26-source86-real-referenceAPIcompile/Inputsub/independentreview and
+100/100handoff are recorded. Boss entry/combat/feedback/gate/reward loop is complete.
+Final source/CI/archive/download identities resolve in the external ninth receipt
+on rpg-deliveries after source publication. Inspect that actual receipt before
+new development; if complete, do not repeat ninth implementation or packaging.
+Native tests/play/physics/device/render/audio/balance/build remain optional/unrun.
+All prior gameplay, original hero and v1ledger/recovery history remain preserved.
+
+## Historical iteration 9 integration checkpoint — superseded
 
 Eighth delivery is complete at source84177cd / receipt879693b. Ninth foundation
 f8cebaa is safely pushed; exact CI38015115905 passed all12steps. Live Runtime now

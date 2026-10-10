@@ -23,8 +23,11 @@ north seal opens -> E beacon -> saved30coins/upgrades -> R. All361project and
 6distribution groups pass,26production scripts compile against86real2022.3refs,
 Input System substituted. Independent pure/actual-method/scene review found no
 blocking production defect. Foundationf8cebaa CI38015115905 passed12steps and
-uploadedartifact11655694949. Implementation/master publication and ZIP/HTTPS
-receipt remain next at this checkpoint; no native Editor result is claimed.
+uploadedartifact11655694949. Implementationb4046999e1ec766f9550bbbc667b8e554e9b9228 exactCI38015650991passed
+all12steps/artifact11656011193; PR8 normally merged at134e09dc75fef799aa0f3ed4e7dabe1470c86364.
+Expected parents and exact merge tree were verified. Final source/CI/ZIP/HTTPS
+identities resolve in the external ninth receipt after source publication;
+no native Editor result is claimed.
 
 ## Architecture Overview
 
@@ -81,14 +84,14 @@ All player contacts precede retaliation, so a lethal Boss hit cannot retaliate.
 
 ## Immediate Next Steps
 
-Safely commit/push the independently reviewed integrated feature and docs; check
-exact implementation CI/artifact and PR diff, then normally merge with expected
-head SHA. Record actual merge/CI/source evidence, publish final source/handoff.
-Package that exact clean source with existing trusted tools, verify CRC/member
-SHA/sourcebytes/meta/LFS, safely push archive/checksum, download immutable HTTPS
-and compare again. Publish/re-download delivery.json/finalhandoff/validation and
-confirm final Git/PR states. If receipt exists already, verify it before doing any
-new work; do not repeat this implementation or eighth-round deliveries.
+Verify actual latest Git/PR/CI and the external ninth delivery receipt first.
+The Boss feature and ordinaryPR8merge are complete; do not reimplement or retest
+unchanged work unnecessarily. Final source publication, complete UnityZIP CRC/
+memberSHA/sourcebytes/LFS/immutableHTTPS and delivery.json/finalhandoff/validation
+must be verified there. If missing, finish that delivery before new development;
+if complete, preserve all historical archives and select next player value.
+Optional native full-encounter acceptance is useful when licensed tooling is
+available; otherwise a small distinct exploration/narrative objective can follow.
 
 ## Assumptions Made
 

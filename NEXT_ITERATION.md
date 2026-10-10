@@ -1,6 +1,23 @@
 # Current continuation / next iteration
 
-## Current ninth-round continuation — publish verified integration
+## Verify ninth receipt, then select the next coherent improvement
+
+First compare actual master/branch/dirty/unpushed state with immutable ninth
+rpg-deliveries receipt and finalhandoff. ReviewedPR8 is merged at134e09d;
+implementationb404699 exactCI38015650991/all12steps/artifact11656011193,
+367checks/API26/86Inputsub/independentreview/handoff100 are confirmed. Resolve
+final sourceCI/archiveCRC/memberSHA/sourcebytes/LFS/HTTPS and receipt there.
+If already complete, do not repeat ninth Boss code or packaging. Preserve all18
+older archive/checksum paths plus ninth archives and every previous receipt.
+
+Most useful next acceptance is an optional licensed full encounter playthrough:
+real collisions/aim/input, locked warning readability, phase difficulty, HUD and
+audio. When unavailable, do not repeat license probes. Choose actual-code player
+value, for example a small exploration objective or NPC narrative supporting the
+Guardian, without rewriting mature growth/tactics/feedback/reserves. Preserve
+threeguards ->altarE ->Guardian ->beacon30coin, v1ledger and original blonde hero.
+
+## Historical ninth-round implementation publication checklist
 
 First inspect actual branch/HEAD/dirty/unpushed/PR state and immutable ninth
 receipt. Boss integration and367checks/26-sourceAPIcompile are complete; do not

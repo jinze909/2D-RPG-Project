@@ -52,7 +52,11 @@ J/空格攻击，K 法力爆发；击败三守卫后 E 唤醒中央祭坛 Boss�
 及 26 份生产脚本 Unity API 引用编译通过（Input System 替身）；原生验收未执行。
 详见 [Boss 遭遇合同](docs/game/BOSS_ENCOUNTER.md) 和
 [第九轮接力文档](docs/iterations/2026-10-09-iteration-009/handoff.md)。
-提交、PR、最终 CI 和 ZIP 交付核验待本轮发布收尾，不能从离线结果推断试玩通过。
+[PR #8](https://github.com/jinze909/2D-RPG-Project/pull/8) 已普通合并为 `134e09d`，
+实现提交 `b404699` 的 CI 全部 12 步成功；接力校验 100/100。
+最终源码、CI、完整 ZIP 和下载回验以独立
+[第九轮交付回执](https://raw.githubusercontent.com/jinze909/2D-RPG-Project/rpg-deliveries/iteration-009-delivery.json)
+为准，不能从离线结果推断试玩通过。
 注册源已改为 `packages.unity.com`，未升级任何锁定包版本。云端缺少有效 Unity
 许可证，尚未完成原生导入、真实碰撞、Animator 视觉或游戏试玩；离线检查不代替它们。
 

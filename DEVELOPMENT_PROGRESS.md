@@ -1,5 +1,19 @@
 # Development progress
 
+## Iteration 9 — reviewed ordinary master merge
+
+PR8 normally merged implementationb4046999e1ec766f9550bbbc667b8e554e9b9228 at
+134e09dc75fef799aa0f3ed4e7dabe1470c86364; both parents and exact tree equality
+verified locally after fetch. ImplementationCI38015650991/job114105188884 passed
+all12steps and uploadedartifact11656011193. Merged-masterCI38015734325/job114105439039
+also passed12steps/artifact11656266134. Fresh367local checks/API26/86Inputsub,
+independent19/105/17 review and100/100handoff pass. Original scenes/hero/controller/
+packages/v1save and all baseline/source/archive recovery paths retained.
+Final sourceCI and full UnityZIP CRC/everymemberSHA/every sourcebyte/LFS/immutable
+HTTPS evidence is published externally in iteration-009-delivery.json plus final-
+handoff/validation on rpg-deliveries after this source handoff commit. Read that
+receipt for final publication status; native import/play/audio/build remains unrun.
+
 ## Iteration 9 — integrated and independently reviewed Boss encounter
 
 2026-10-09 PDT. Verified clean remote84177cd and completed eighth receipt879693b,

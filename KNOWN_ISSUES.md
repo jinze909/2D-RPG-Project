@@ -1,6 +1,20 @@
 # Known issues
 
-## Iteration 9 integrated encounter — current limits
+## Iteration 9 current delivered gameplay and evidence limits
+
+PR8 normally merged at134e09d with matching reviewed implementationtree; exact
+CI38015650991 passed12steps/artifact11656011193. Boss loop is implemented,367checks
+and26-source/86-referencecompile pass (Input System substitute). No blocking
+production defect found. Inspect external ninth receipt for final sourceCI/ZIP/
+download verification; missing delivery evidence must be completed before newwork.
+Native input/physics/colliders/Animator/pixelalignment/fontlayout/audio/balance/
+playerbuild are optional/unrun. Candidate108HP/2damage is not play-balanced yet.
+Profilev1 remains30coins/run; no mid-fight/worldstate save or extra Bosscurrency.
+Classes/equipment/NPC/story remain absent; preserved hero gait-frame/pivot limits
+remain. Forest/archery/fullquests are absent. No code-only check claims native
+historical visual defects fixed. Earlier 'No Boss' statements are historical.
+
+## Historical iteration 9 integration checkpoint — superseded
 
 Boss Runtime/altar/contact/HP/phase/cached-art/fifth-loss-slot/HUD/cue/reward
 bridge is complete;367offline/distribution checks and26-source realAPI-reference
