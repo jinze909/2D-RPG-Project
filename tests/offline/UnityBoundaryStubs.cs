@@ -83,7 +83,7 @@ namespace UnityEngine
         }
         public static void ClearPressed() { pressed.Clear(); }
     }
-    public enum KeyCode { P, J, K, E, R, M, Space, Escape, Alpha1, Alpha2, Keypad1, Keypad2 }
+    public enum KeyCode { P, J, K, E, F, R, M, Space, Escape, Alpha1, Alpha2, Keypad1, Keypad2 }
     public static class Application
     {
         public static string persistentDataPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "rpg-recording-boundary");

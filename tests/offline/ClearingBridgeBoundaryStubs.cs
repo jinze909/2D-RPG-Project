@@ -130,14 +130,27 @@ namespace UnityEngine
     public class Sprite : Object
     {
         public static int CreatedCount;
-        public static Sprite Create(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit) { CreatedCount++; return new Sprite(); }
-        public static Sprite Create(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit, uint extrude, SpriteMeshType meshType) { CreatedCount++; return new Sprite(); }
+        // Record authoring API arguments only. This does not create a native
+        // texture, mesh or pixel-grid transform, or establish rendered quality.
+        public Texture2D RecordedTexture;
+        public Rect RecordedRect;
+        public Vector2 RecordedPivot;
+        public float RecordedPixelsPerUnit;
+        public static Sprite Create(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit)
+        {
+            CreatedCount++;
+            return new Sprite { RecordedTexture = texture, RecordedRect = rect,
+                RecordedPivot = pivot, RecordedPixelsPerUnit = pixelsPerUnit };
+        }
+        public static Sprite Create(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit, uint extrude, SpriteMeshType meshType)
+        { return Create(texture, rect, pivot, pixelsPerUnit); }
     }
     public enum SpriteMeshType { Tight, FullRect }
     public class SpriteRenderer : Behaviour
     {
         public Sprite sprite;
         public Color color;
+        public bool flipX;
         public string sortingLayerName;
         public int sortingOrder;
     }
@@ -198,6 +211,7 @@ namespace UnityEngine
         public static float Clamp01(float value) { return Math.Max(0f, Math.Min(1f, value)); }
         public static float Lerp(float a, float b, float t) { return a + (b - a) * Clamp01(t); }
         public static int RoundToInt(float value) { return (int)Math.Round(value); }
+        public static int CeilToInt(float value) { return (int)Math.Ceiling(value); }
     }
     public class AudioClip : Object
     {

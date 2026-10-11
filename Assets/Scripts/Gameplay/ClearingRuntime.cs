@@ -19,6 +19,8 @@ namespace Rpg.Gameplay
         private ClearingRun run;
         private ClearingProgress progress;
         private string rewardId;
+        private bool clearingRewardBanked;
+        private ThornwoodRuntime forest;
         private float baseMaxHealth;
         private float baseMaxMana;
         private string progressNotice;
@@ -145,6 +147,8 @@ namespace Rpg.Gameplay
             damageNumbers = new ClearingDamageNumbers(transform);
             InitializeProgress(CreateProgress());
             ResetRun();
+            forest = new ThornwoodRuntime(transform, player, sceneCamera, visuals, sound, progress,
+                baseMaxHealth, baseMaxMana);
         }
 
         private sealed class UnavailableProgressStore : IClearingProgressStore
@@ -195,6 +199,16 @@ namespace Rpg.Gameplay
         private void Update()
         {
             if (run == null) return;
+            if (forest != null && forest.Active)
+            {
+                forest.Update();
+                if (!forest.Active)
+                {
+                    hud.SetVisible(true);
+                    nextHudAt = 0f;
+                }
+                return;
+            }
             SynchronizeDeath();
             if (Input.GetKeyDown(KeyCode.M)) sound.ToggleMute();
             // Snapshot terminal admission so R cannot also attack/interact this frame.
@@ -207,6 +221,7 @@ namespace Rpg.Gameplay
                     else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2)) BuyUpgrade(ClearingUpgrade.Focus);
                 }
                 if (Input.GetKeyDown(KeyCode.R)) ResetRun();
+                else if (Input.GetKeyDown(KeyCode.F)) TryEnterThornwood();
             }
             else
             {
@@ -244,14 +259,37 @@ namespace Rpg.Gameplay
                     }
                 }
             }
+            // Enter transfers the shared actor immediately. The clearing must
+            // not repaint it from this completed attempt's old immunity state.
+            if (forest != null && forest.Active) return;
             RefreshViews();
             // Resource strings and layout rebuilds do not need to run every rendered frame.
             if (Time.unscaledTime >= nextHudAt)
             {
                 nextHudAt = Time.unscaledTime + .05f;
+                hud.SetCompletionContext(ClearingRewardBanked, forest != null);
                 hud.Refresh(player.Stats, run, paused, sound.Muted, NearBeacon,
                     Time.unscaledTime < feedbackUntil ? feedback : "", progress, rewardId, progressNotice,
                     SupplyHint(), BossHint(), BossPhaseNotice());
+            }
+        }
+
+        private bool ClearingRewardBanked
+        {
+            get { return clearingRewardBanked || (progress != null && progress.IsCompletionBanked(rewardId)); }
+        }
+
+        private void TryEnterThornwood()
+        {
+            if (forest == null || paused || !run.IsComplete || !NearBeacon || !ClearingRewardBanked) return;
+            // v1 stores the most recent reward ID. Keep this living attempt's
+            // saved receipt before another region advances that ledger.
+            clearingRewardBanked = true;
+            if (forest.Enter())
+            {
+                hud.SetVisible(false);
+                strike.gameObject.SetActive(false);
+                strikeId = 0;
             }
         }
 
@@ -407,7 +445,14 @@ namespace Rpg.Gameplay
         private ProgressActionResult BankCompletion()
         {
             if (paused || run.IsDead || !run.IsComplete) return ProgressActionResult.RunIncomplete;
+            if (ClearingRewardBanked)
+            {
+                clearingRewardBanked = true;
+                return ProgressActionResult.AlreadyBanked;
+            }
             ProgressActionResult result = progress == null ? ProgressActionResult.Unavailable : progress.BankCompletion(run, rewardId);
+            if (result == ProgressActionResult.Saved || result == ProgressActionResult.AlreadyBanked)
+                clearingRewardBanked = true;
             if (result == ProgressActionResult.Saved)
             {
                 progressNotice = "30 coins banked. Upgrades apply next run.";
@@ -426,7 +471,7 @@ namespace Rpg.Gameplay
         private void BuyUpgrade(ClearingUpgrade upgrade)
         {
             if (paused || run.IsDead || !run.IsComplete) return;
-            if (progress == null || !progress.IsCompletionBanked(rewardId))
+            if (progress == null || !ClearingRewardBanked)
             {
                 progressNotice = progress == null || !progress.CanWrite ?
                     "Save unavailable; existing files protected. Reward unbanked." :
@@ -501,6 +546,7 @@ namespace Rpg.Gameplay
         private void FixedUpdate()
         {
             if (run == null) return;
+            if (forest != null && forest.Active) { forest.FixedUpdate(); return; }
             SynchronizeDeath();
             if (paused || run.IsDead || run.IsComplete) return;
             run.Advance(Time.fixedDeltaTime);
@@ -814,6 +860,7 @@ namespace Rpg.Gameplay
         private void LateUpdate()
         {
             if (run == null) return;
+            if (forest != null && forest.Active) { forest.LateUpdate(); return; }
             // Fit the centered hero's full height above its feet at the north boundary.
             sceneCamera.orthographicSize = Mathf.Max(6f, 7.75f / Mathf.Max(sceneCamera.aspect, .1f));
             sceneCamera.transform.position = new Vector3(0f, .8f, -10f);
@@ -872,17 +919,21 @@ namespace Rpg.Gameplay
 
         private void ResetRun()
         {
+            bool lostForestReward = forest != null && forest.HasUnbankedReward;
+            if (forest != null) forest.ResetExpedition();
+            if (hud != null) hud.SetVisible(true);
             if (damageNumbers != null) damageNumbers.Clear();
             if (supplyVisuals != null) supplyVisuals.Clear();
             supplies.Reset();
             for (int index = 0; index < supplyNotices.Length; index++) supplyNotices[index] = "";
-            bool lostReward = run.IsComplete && progress != null && !progress.IsCompletionBanked(rewardId);
+            bool lostReward = run.IsComplete && progress != null && !ClearingRewardBanked;
             if (paused) SetPaused(false);
             run.ResetRun();
             bossWasEnraged = false;
             ClearBossPhaseNotice();
             if (bossVisuals != null) bossVisuals.Reset();
             rewardId = Guid.NewGuid().ToString("N");
+            clearingRewardBanked = false;
             if (progress != null)
             {
                 // Recompute from authoring bases, never from previously boosted maxima.
@@ -920,7 +971,8 @@ namespace Rpg.Gameplay
                 enemy.WarningCrossB.gameObject.SetActive(false);
                 enemy.Warning.gameObject.SetActive(false);
             }
-            Feedback(lostReward ? "Previous run coins were not saved. Defeat the three sentinels." :
+            Feedback(lostForestReward ? "Previous forest reward was not saved. New clearing started." :
+                lostReward ? "Previous run coins were not saved. Defeat the three sentinels." :
                 "Defeat the sentinels. Sidestep spear lanes; leave rune marks.", 7f);
         }
 
@@ -952,12 +1004,14 @@ namespace Rpg.Gameplay
                     enemy.ImpactWasKill = false;
                 }
                 StopActors();
-                movement.SetControlEnabled(!run.IsDead && !run.IsComplete);
+                if (forest != null && forest.Active) forest.Suspend();
+                else movement.SetControlEnabled(!run.IsDead && !run.IsComplete);
             }
         }
 
         private void OnDestroy()
         {
+            if (forest != null) forest.Dispose();
             if (damageNumbers != null) damageNumbers.Dispose();
             if (supplyVisuals != null) supplyVisuals.Dispose();
             if (bossVisuals != null) bossVisuals.Dispose();
