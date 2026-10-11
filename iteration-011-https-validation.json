@@ -1,0 +1,70 @@
+{
+  "https_download": [
+    {
+      "url": "https://raw.githubusercontent.com/jinze909/2D-RPG-Project/1a375b5903942fe456af3408063f941831582b6f/2D-RPG-Project-iteration-011-bc608f8.zip",
+      "http_status": 200,
+      "bytes": 806577,
+      "sha256": "e030c7eb66a5413be648913393ad1fb99bcd44faca5614f4142df78e3b46e1ee",
+      "matches_published_local_bytes": true
+    },
+    {
+      "url": "https://raw.githubusercontent.com/jinze909/2D-RPG-Project/1a375b5903942fe456af3408063f941831582b6f/2D-RPG-Project-iteration-011-bc608f8.zip.sha256",
+      "http_status": 200,
+      "bytes": 107,
+      "sha256": "b658ed396623b8e1c154cb69664f6ee8a519c7854a3f954972a98b2747c4d560",
+      "matches_published_local_bytes": true
+    }
+  ],
+  "https_redownload_verification": {
+    "verified": true,
+    "commit": "bc608f8569257f16c15cd20dc58b19b15b4b5c68",
+    "unity": "2022.3.53f1",
+    "zip": "/tmp/rpg-iteration-011/https-download/2D-RPG-Project-iteration-011-bc608f8.zip",
+    "zip_bytes": 806577,
+    "zip_sha256": "e030c7eb66a5413be648913393ad1fb99bcd44faca5614f4142df78e3b46e1ee",
+    "source_file_count": 387,
+    "zip_member_count": 388,
+    "asset_meta_count": 60,
+    "compared_source_bytes": 2193481,
+    "file_manifest_sha256": "d668b2cbe5b00f78ee78f14617e4bc85e972b3f50c31952f5657d4deaba9e751",
+    "crc": "passed",
+    "exact_file_set": "passed",
+    "source_bytes_and_member_sha256": "passed",
+    "commit_bytes_or_lfs_oid": "passed",
+    "lfs_objects_verified": 6,
+    "lfs_pointers": "none",
+    "cache_or_credential_members": "none",
+    "native_unity_validation": false,
+    "actual_player_playtest": false,
+    "previous_archive_blobs_preserved_count": 24,
+    "previous_archive_blobs_preserved": {
+      "2D-RPG-Project-a81a6ce3617abdabc44706415d7059882c9928ec.zip": "8acd75e34d6c911ff1c1e7440ea778d8544b5de8",
+      "2D-RPG-Project-a81a6ce3617abdabc44706415d7059882c9928ec.zip.sha256": "c7eb29d30c456ae8b3cb208fe4472d614d6a19bf",
+      "2D-RPG-Project-iteration-002-090507d.zip": "47abc035597faeab03449e463aaba91db0166755",
+      "2D-RPG-Project-iteration-002-090507d.zip.sha256": "31d3a31e61075c57d2b6acf71317326047bb40de",
+      "2D-RPG-Project-iteration-002-de06143.zip": "470e1467b642072f05bb5db82e6e5200bd97dd46",
+      "2D-RPG-Project-iteration-002-de06143.zip.sha256": "717c42e30dbb1b097a67c0670e9f8eb2603903bb",
+      "2D-RPG-Project-iteration-003-1bedd32.zip": "1323f99c0dbdf26c4aaada7cb88d1d02a150ccde",
+      "2D-RPG-Project-iteration-003-1bedd32.zip.sha256": "bf8566318d7f6ca9bcbc4e4bccc37b33b7c807ff",
+      "2D-RPG-Project-iteration-004-fe8b1f7.zip": "7ac0b4fe88a57548f0cf87300cf013d4e96fea3a",
+      "2D-RPG-Project-iteration-004-fe8b1f7.zip.sha256": "305d1343624a5d1c2ce8dc14672b4b074e40d5c0",
+      "2D-RPG-Project-iteration-005-d8c7048.zip": "64b8a7d76feaac57902b40add4bc8746ce5b500b",
+      "2D-RPG-Project-iteration-005-d8c7048.zip.sha256": "871ceb5f20f62b459eeb7a6fad569fdd72b17adf",
+      "2D-RPG-Project-iteration-006-b8d55f0.zip": "241eedc797a7cfdeb4111851ffba2d0541355903",
+      "2D-RPG-Project-iteration-006-b8d55f0.zip.sha256": "3262c6f7c72f2317a153c4333ff30f3c69d3db85",
+      "2D-RPG-Project-iteration-007-3f3fbd4.zip": "8b896edd338305bbd61d10082cc7bdb5aecd2321",
+      "2D-RPG-Project-iteration-007-3f3fbd4.zip.sha256": "01a48706b425a11e3169a01e4264a3ee90647bcf",
+      "2D-RPG-Project-iteration-008-84177cd.zip": "a1875c57e1c317d3ba983a7b61e342426323081a",
+      "2D-RPG-Project-iteration-008-84177cd.zip.sha256": "da363a3e20721daff3a304917b459846a870bb74",
+      "2D-RPG-Project-iteration-009-9104cbb.zip": "caeac248eb3f5bce9640a540e2c837d1575cc865",
+      "2D-RPG-Project-iteration-009-9104cbb.zip.sha256": "eddbe413ec5cf3061c6782194e19359ad4a1d98d",
+      "2D-RPG-Project-iteration-009-ba4cd1d.zip": "a40e242e560c97def1722195cb402424bb37b131",
+      "2D-RPG-Project-iteration-009-ba4cd1d.zip.sha256": "27adb842f0c551835951e8a0ee4cfb57dfb1f7e4",
+      "2D-RPG-Project-iteration-010-9e1ea4c.zip": "401dbc4f5becfadb1c9c787679388705b8dbdecc",
+      "2D-RPG-Project-iteration-010-9e1ea4c.zip.sha256": "e95f7882d78694fad39b3e2799fdee2285b54e70"
+    },
+    "preservation_ref": "1a375b5903942fe456af3408063f941831582b6f"
+  },
+  "delivery_binary_commit": "1a375b5903942fe456af3408063f941831582b6f",
+  "native_unity_validation": false
+}
