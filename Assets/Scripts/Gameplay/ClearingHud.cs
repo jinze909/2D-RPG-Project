@@ -14,6 +14,15 @@ namespace Rpg.Gameplay
         private readonly Text help;
         private readonly Text message;
         private readonly Text terminal;
+        private bool completionBankedOverride;
+        private bool forestTrailAvailable;
+
+        internal void SetVisible(bool visible) { root.gameObject.SetActive(visible); }
+        internal void SetCompletionContext(bool banked, bool trailAvailable)
+        {
+            completionBankedOverride = banked;
+            forestTrailAvailable = trailAvailable;
+        }
 
         internal ClearingHud(Transform parent)
         {
@@ -123,7 +132,7 @@ namespace Rpg.Gameplay
                 // canvases a large result shares the corners, so hide duplicates.
                 resources.text = "";
                 objective.text = "";
-                bool banked = progress.IsCompletionBanked(rewardId);
+                bool banked = completionBankedOverride || progress.IsCompletionBanked(rewardId);
                 terminal.text = "BEACON RESTORED\n" + run.RewardCoins + " run coins | Bank " + progress.Data.BankCoins + " coins\n" +
                     (banked ? "Run reward banked\n" : "Reward NOT SAVED. E - retry saving\n") +
                     UpgradeLine(progress, ClearingUpgrade.Vitality, banked ? "1 Vitality" : "Vitality (bank first)", "+2 HP") + "\n" +
@@ -131,8 +140,39 @@ namespace Rpg.Gameplay
                     "Bonuses apply next run. R - play again" +
                     (banked ? "" : "\nR loses this unbanked run reward") +
                     (string.IsNullOrEmpty(progressNotice) ? "" : "\n" + progressNotice);
+                if (forestTrailAvailable)
+                    terminal.text += banked ? "\nF - enter Thornwood trail" : "\nThornwood locked - save the beacon reward first";
             }
             if (muted && !paused && !run.IsDead && !run.IsComplete) objective.text += "\nSound muted";
+        }
+
+        internal void RefreshThornwood(PlayerStats stats, ThornwoodRun expedition, bool paused, bool muted,
+            string feedback, ClearingProgress progress, string rewardId, string progressNotice,
+            string interactionHint, bool completionBanked = false)
+        {
+            // Reuse the existing edge layout, but do not borrow the clearing's
+            // full-screen shop: returning is always a physical trail interaction.
+            Refresh(stats, expedition.Combat, paused, muted, false, feedback);
+            resources.text = string.Format("HP {0:0.#}/{1:0.#}    MP {2:0.#}/{3:0.#}",
+                stats.Health, stats.MaxHealth, stats.Mana, stats.MaxMana) +
+                (progress == null ? "" : "\nBank " + progress.Data.BankCoins + " coins");
+            bool dead = expedition.Combat.IsDead;
+            bool complete = expedition.Combat.IsComplete;
+            objective.text = "THORNWOOD\nSeeds " + expedition.SeedsCollected + "/3 | Stalkers " +
+                expedition.Combat.DefeatedCount + "/3";
+            if (complete) objective.text += completionBanked ? "\nCache reward saved" : "\nCache reward NOT SAVED";
+            else if (expedition.CacheReady) objective.text += "\nE at the north cache";
+            else objective.text += "\nExplore all three glades";
+            bool playable = !paused && !dead;
+            if (playable && complete) skills.text = "Cache complete - return via the south trail\nR - new expedition" +
+                (completionBanked ? "" : " (loses unbanked reward)");
+            message.text = !playable ? "" : !string.IsNullOrEmpty(interactionHint) ? interactionHint : feedback;
+            if (playable && complete && !string.IsNullOrEmpty(progressNotice) && string.IsNullOrEmpty(interactionHint))
+                message.text = progressNotice;
+            help.text = playable && string.IsNullOrEmpty(message.text) ?
+                "WASD / arrows: move   E: interact\nSouth trail: return any time\nStalker: sidestep its locked pounce\nEsc: pause   M: mute" : "";
+            terminal.text = paused ? "PAUSED\nEsc - resume" : dead ? "DEFEATED IN THORNWOOD\nR - retry the expedition" : "";
+            if (muted) objective.text += "\nSound muted";
         }
 
         private static string BossInstruction(ClearingBossState boss)

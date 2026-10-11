@@ -155,9 +155,13 @@ def validate(root: Path) -> dict:
           'actual pure C# loss formatting, glyphs and feedback lifetime; no Unity engine'))
     check('exploration_supply_rules', lambda: behavior('run_supply_checks.py',
           'actual pure C# discovery, once-per-run charges and capped resource admission; no Unity engine'))
+    check('thornwood_expedition_rules', lambda: behavior('run_thornwood_checks.py',
+          'actual pure C# forest combat, collection/cache admission, v1 reward ledger and conservative shared-layout paths; no Unity engine'))
     check('clearing_scene_contracts', lambda: contracts('run_scene_checks.py'))
     check('clearing_presentation_behavior', lambda: behavior('run_presentation_checks.py',
           'actual C# with recording component/audio boundaries; no native physics, UI layout or audible output'))
+    check('thornwood_runtime_integration', lambda: behavior('run_thornwood_integration_checks.py',
+          'actual production C# entry/combat/collection/cache/reentry/reward/lifecycle methods with recording Unity boundaries; no native physics, input, rendering or audio'))
     check('clearing_pixel_art', lambda: behavior('run_art_checks.py',
           'actual managed C# pixel arrays and original asset hashes; no native rendering'))
     try:

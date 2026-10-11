@@ -1,6 +1,45 @@
 # Current continuation / next iteration
 
-## First verify tenth receipt, then choose the next coherent improvement
+## Resume eleventh Thornwood delivery before selecting more content
+
+Read [eleventh handoff](docs/iterations/2026-10-10-iteration-011/handoff.md),
+[checkpoint](docs/iterations/2026-10-10-iteration-011/checkpoint.md) and
+[Thornwood contract](docs/game/THORNWOOD.md). Fetch actual master/development/
+rpg-deliveries refs and inspect HEAD, dirty/unpushed work, open PR, exact CI and
+current external receipt before deciding anything is incomplete. The recovered
+source is actual surviving eleventh work from9e1ea4c, not a new unrelated iteration.
+Do not redo completed tenth polish or invent missing unsaved edits.
+
+1. Preserve the completed tested forest runtime and saved checkpoints092d310/
+   65bc4da. Rerun behavior only after changes/newfailures or unresolved evidence;
+   do not repeat an already-green stage merely to create another iteration. Fresh445project+6distribution=451groups, domain31/integration35, five static
+   envelopes and API30/86Inputsub pass; integration65bc4da is saved/pushed. ImplementationCI38112224587 succeeds, independent review has no bounded blocker
+   and draftPR10 exists. Final exact-headCI/mastermerge/publication remain separate.
+2. Verify exact reviewed-head CI and normally merge a complete reviewed PR when
+   quality evidence is sufficient. Native checks are optional; never force push
+   or overwrite user changes. Preserve v1, original hero and Guardian stats/timing.
+3. Bind final source with exact master CI, package Assets/Packages/ProjectSettings/
+   .meta and materialized LFS using the trusted packager, verify CRC/every-member
+   SHA-256/source bytes/immutable HTTPS, and publish external receipt/final-handoff
+   on rpg-deliveries using confirmed noreply identity. If already complete on a
+   later resume, verify it and move forward rather than repeat development.
+
+Most useful optional native follow-up: complete clearing/beacon -> F -> forest,
+walk every seed/cache/exit path, sidestep fixed pounce, observe pose/HP numbers/HUD,
+pause and disable mid-warning, die/R, leave early/reenter, fail save/retry and
+alternate both completion rewards while purchasing upgrades. Record difficulty,
+readability/input/physics/animation/audio separately from code evidence. Do not
+repeat unchanged license/Editor/MCP probes. Current experience is
+**尚未进行 Unity 原生验收**.
+
+After complete delivery, choose one player-value follow-up from actual sources:
+a small NPC/dialogue objective connecting the two regions or a bounded equipment
+loop could add identity and exploration purpose. Avoid simultaneously starting
+classes/fullquests/archery/fullworldsaving. Preserve the two-live-attempt saved
+latches and honest attempt-local persistence. Do not tune Boss HP/damage/speed
+without real defect or gameplay evidence; no such evidence is established here.
+
+## Historical tenth continuation — delivery completed
 
 Read [the tenth handoff](docs/iterations/2026-10-09-iteration-010/handoff.md) and
 [publication evidence](docs/iterations/2026-10-09-iteration-010/publication.md).

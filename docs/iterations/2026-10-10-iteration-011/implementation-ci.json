@@ -1,0 +1,12 @@
+{
+  "source_sha": "65bc4daea7bab5e2b4d3ef8dceafc923ea95e995",
+  "run": 38112224587,
+  "job": 114389975346,
+  "conclusion": "success",
+  "successful_steps": 12,
+  "total_steps": 12,
+  "artifact": 11691912590,
+  "artifact_expired": false,
+  "url": "https://github.com/jinze909/2D-RPG-Project/actions/runs/38112224587",
+  "native_unity_validation": false
+}

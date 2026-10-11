@@ -2,14 +2,17 @@
 
 Unity **2022.3.53f1 国际版**的像素 RPG。当前 `master` 中的
 `Assets/Scenes/CombatClearing.unity` 实现三个战术守卫、祭坛 Boss、战斗、封锁与解锁、紧凑 HUD、
-胜败重试与持久成长。原玩家原型 `Assets/Scenes/SampleScene.unity` 仍然保留。
+胜败重试与持久成长，并加入第一个荆棘森林探索区。原玩家原型 `Assets/Scenes/SampleScene.unity` 仍然保留。
 工程尚未通过原生试玩，也尚未实现完整世界与剧情。
 项目按实际完成的闭环持续扩展，保留原有金发主角。
 
 在 Unity Hub 安装指定版本，克隆后运行 `git lfs pull` 取得真实人物图片，再用
 Unity 打开工程及 CombatClearing。WASD/方向键、模拟左摇杆或 D-Pad 移动；
 J/空格攻击，K 法力爆发；击败三守卫后 E 唤醒中央祭坛 Boss，击败后 E 激活
-北侧信标；附近 E 使用补给。胜败后 R 重试，Esc 暂停，M 静音。
+北侧信标；附近 E 使用补给。信标奖励保存后，在信标处按 F 进入荆棘森林。
+森林中按 E 收集三处种子，击败三只荆棘追猎者后按 E 打开北侧宝箱，保存
+30 金币；南侧箭头处按 E 可提前返回。重进保留同次探索进度、血蓝与消耗，
+不会重复领奖；初次进入或森林内 R 才开始新探索。胜败后 R 重试，Esc 暂停，M 静音。
 手柄已改为直接向量绑定，但尚未执行真实设备测试。P 仅保留在 SampleScene 的
 伤害调试中；新关卡关闭该输入。玩法合同与原生验收见
 [Combat Clearing](docs/game/COMBAT_CLEARING.md)。
@@ -70,6 +73,19 @@ Unity API 引用编译通过（Input System 替身）；独立代码审查未发
 完整 ZIP、哈希和下载回验以发布后的独立
 [第十轮交付回执](https://raw.githubusercontent.com/jinze909/2D-RPG-Project/rpg-deliveries/iteration-010-delivery.json)
 为准；这份源码记录不预先宣称 ZIP 上传完成。
+第十一轮续接保留了实际幸存的未提交代码，完成第一片 Thornwood：清场保存→
+信标 F→三处种子/追猎者→奖励宝箱→南侧返回。新敌人会追近，再锁定扑击
+方向并给出固定预警；缓存像素行走/蓄力/扑击/受击姿态、生命条与实际扣血数字
+复用现有判定、消耗、冷却和音效。深色林地、荆棘树、种子/宝箱/返回箭头
+与 clearing 共用像素尺度和配色，原金发主角与 Boss 数值保持不变。离开重进保留
+同次探索，暂停冻结，停用清理旧攻击，死亡 R 可重试；失败存档可 E 重试。
+两个活动分别保存本次已领奖状态，修正旧存档只记最近奖励 ID 时往返可能重复
+领取的接入风险。v1 格式不变，30 金币探索完成也计入 ClearedRuns；退出游戏
+不会保存未完成森林。独立执行的 31 项纯逻辑与 35 项实际代码接入检查、共 451 项工程/打包检查通过；
+30 份生产脚本通过真实 Unity API 引用编译（Input System 替身）。
+最终完整回归、CI、PR 与 ZIP 以验证后的接力/外部交付回执为准，当前不预先
+宣称发布完成。详见 [森林玩法合同](docs/game/THORNWOOD.md) 和
+[第十一轮接力](docs/iterations/2026-10-10-iteration-011/handoff.md)。
 难度、视觉可读性、动画与音效体验 **尚未进行 Unity 原生验收**；模拟不等于试玩。
 注册源已改为 `packages.unity.com`，未升级任何锁定包版本。云端缺少有效 Unity
 许可证，尚未完成原生导入、真实碰撞、Animator 视觉或游戏试玩；离线检查不代替它们。
