@@ -1,22 +1,28 @@
 # Known issues
 
-## Current evidence categories — iteration 11 Thornwood candidate
+## Current evidence categories — iteration 11 merged Thornwood
+
+Merged-master CI38112486133/job114390753412 also passes all12steps; nonexpired
+artifact11692570531 exists. Final exact-source/archive/download identity remains externally verified
+after the final source record is published.
 
 This section supersedes historical forest-absent and pending tenth statements.
-The eleventh source survived quota interruption and is being completed from
-verified tenth master9e1ea4c on rpg/iteration-011-thornwood. Check the current
+Actual PR10 normally merged reviewed0157831 at7437531 after exact12-step
+CI38112428394/artifact11692182597 and independent bounded review. Fetched merge
+parents/tree equality and clean fast-forward are verified. The eleventh source
+survived quota interruption and continues verified tenth master9e1ea4c. Check the current
 [chained handoff](docs/iterations/2026-10-10-iteration-011/handoff.md) and actual
 Git/CI/external receipt before deciding any delivery remains unfinished.
 
 | Category | Actual status |
 | --- | --- |
-| Implemented and actual-code tested | First Thornwood region: saved-beacon F entry, three E seeds, three pursuing/locked-pounce Briar Stalkers, objective-gated north cache/30coin save, unconditional alive/unpaused south E return, same-attempt reentry and forest R retry. Fresh445project+6distribution=451groups pass, including31pure forest and35actual-method integration; five static envelopes and API30/86Inputsub pass. Integration65bc4da is checkpointed; implementationCI38112224587 passes12steps/artifact11691912590 and independent review found no bounded blocker; finalCI/PR10merge/publication remain to verify. |
+| Implemented and actual-code tested | First Thornwood region: saved-beacon F entry, three E seeds, three pursuing/locked-pounce Briar Stalkers, objective-gated north cache/30coin save, unconditional alive/unpaused south E return, same-attempt reentry and forest R retry. Fresh445project+6distribution=451groups pass, including31pure forest and35actual-method integration; five static envelopes and API30/86Inputsub pass. Integration65bc4da is checkpointed; exact reviewed0157831 CI38112428394 passes12steps/artifact11692182597, independent review found no bounded blocker and PR10 normally merged7437531 with verified parents/tree. |
 | Validated in real Unity Editor | None reported this session. Real API-reference compilation and recording-boundary execution are not Editor import/compile/tests or play. |
 | Confirmed and corrected integration risk | v1 LastRewardId alone admits clearing A -> forest B -> A replay. Each live runtime now retains its own accepted-bank latch across travel/disable, clears only on true new attempts, and shares one store. Actual alternating-reentry E/purchase regression stays60coins until another genuine completion. |
-| Confirmed but unfixed production defects | No additional confirmed defect is currently recorded in the bounded implemented scope. Independent review found no remaining bounded blocker and implementationCI38112224587 succeeds; final reviewed-headCI/merge/publication must still be verified; absence of a recorded finding does not prove all native gameplay bug-free. |
+| Confirmed but unfixed production defects | No additional confirmed defect is currently recorded in the bounded implemented scope. Independent bounded review and exact reviewed-headCI found no remaining blocker; absence of a recorded finding does not prove all native gameplay bug-free. |
 | Experience awaiting native acceptance | **尚未进行 Unity 原生验收**: forest actual collision/corner access, fixed-step movement, enemy/seed/cache/exit visibility, HUD/font fitting, pixel/depth/camera framing, gait and pounce readability, device input, sound output/mix and forest/Guardian difficulty. Offline logic/path/raster checks do not establish these experiences. |
 | Absent future features | Full archery, classes, inventory/equipment, NPC dialogue, broad quests/story, larger world and mid-expedition/world saves. The first Thornwood pocket is now implemented; it is not a full world/quest system. These future features are not current confirmed bugs. |
-| Delivery still to verify | Implementation65bc4da/CI38112224587 succeeds and draftPR10exists; final reviewed-documentation CI/master merge, full Unity ZIP/CRC/every-member SHA-256/source-byte/LFS/immutable HTTPS and external iteration011 receipt. Source records do not preclaim future uploads or their own finalSHA. |
+| Delivery still to verify | Normal PR10merge7437531/reviewed0157831CI38112428394 are verified. Final exact-source CI, full Unity ZIP/CRC/every-member SHA-256/source-byte/LFS/immutable HTTPS and external iteration011 receipt. Source records do not preclaim future uploads or their own finalSHA. |
 
 Forest seeds/enemies/resources and attempt IDs persist only in the live session
 when leaving/reentering; quitting/reloading does not restore an unfinished forest.

@@ -1,4 +1,4 @@
-# Handoff: Iteration 11 recovered Thornwood exploration loop
+# Handoff: Iteration 11 reviewed Thornwood loop merged to master
 
 ## Session Metadata
 
@@ -6,7 +6,9 @@
 rpg/iteration-011-thornwood. Actual tenth baseline
 9e1ea4c057712517f80abfb7da95082468b425b5, foundation
 092d3105b0af018df362a9ef807deebf7b24fd06 and integration checkpoint65bc4da are
-preserved recovery paths. Generated with the real session-handoff scaffold; this
+preserved recovery paths. Reviewed-head0157831 normally merged7437531; local
+development checkout fast-forwarded cleanly to actual master. Generated with the
+real session-handoff scaffold; this
 persistent copy corrects its archived chain lookup. Final source/CI/archive identity
 resolves externally after publication, not through a self-referencing source file.
 
@@ -30,9 +32,13 @@ Fresh445project+6distribution=451groups/API30/86Inputsub/five static envelopes p
 Foundation092d310 exact CI38112081247/job114389549913 passed12/12 and uploaded
 nonexpired artifact11692141973. Tested integration is checkpoint65bc4da; exact CI38112224587/job114389975346 passes12/12, nonexpired
 artifact11691912590 exists. Independent
-review found no remaining bounded blocker. Actual draft PR10 targets master; root
-will update reviewed head and normally merge only after exact documentation-head
-CI. Final source/masterCI/fullZIP/HTTPS receipt publication remain to verify. Native
+review found no remaining bounded blocker. Reviewed0157831130127b7bdbfcac2f19c2d4c376a8fd51
+exactCI38112428394/job114390585501 passes12/12 with artifact11692182597. Normal PR10
+merge7437531832eabca5b720cd78b7823e09e2fddc96 is fetched/verified: parents are completed
+tenth9e1ea4c plus reviewed0157831, and merge tree equals reviewed source. Clean
+local fast-forward preserves all history. Merged-masterCI38112486133/job114390753412
+also passes12steps with nonexpired artifact11692570531. Final exact-sourceCI/fullZIP/HTTPS receipt
+publication resolve externally after this record; no future upload is assumed. Native
 Editor/player experience remains unrun; no success is inferred for future uploads.
 
 ## Codebase Understanding
@@ -81,7 +87,8 @@ South return must use actual beacon(0,3.35), because completed clearing locks mo
 - Retained same-attempt progress/resources on reentry and safe death/pause/disable/retry.
 - Corrected cross-activity replay risk and entry-frame stale clearing refresh.
 - Added meaningful actual-C# pure/integration regressions and full validator wiring.
-- Fresh451groups/API30/86/five static envelopes pass; foundation is safely pushed/CIgreen.
+- Fresh451groups/API30/86/five static envelopes pass; foundation/integration are safely pushed/CIgreen.
+- Exact reviewed-headCI38112428394 passes12steps; PR10 normally merged7437531 with verified parents/tree and clean fast-forward.
 - Maintained five root records, README/forest contract and this generated chained handoff.
 
 ## Files Modified
@@ -106,11 +113,12 @@ redesign. Preserve108HP Guardian values; no difficulty evidence supports retunin
 
 ## Immediate Next Steps
 
-1. Inspect actual HEAD/dirty/unpushed/openPR/exactCI and external eleventh receipt.
-   Integration65bc4da is tested/pushed; do not recreate surviving source or repeat tenth.
-2. If still pending, finish exact reviewed-head CI, normalPR10 merge
-   and exact master CI. Update actual commit/run/artifact identities only from results.
-3. Package exact final source with complete Unity dirs/meta/realLFS, verify CRC/all
+1. Inspect actual HEAD/dirty/unpushed/PR/exactCI and external eleventh receipt.
+   Reviewed PR10merge7437531 and source checks are complete; do not recreate surviving
+   source or repeat tenth/code/PR merge merely because an older pending list exists.
+2. Resolve final exact-sourceCI/archive/download identities from the independently
+   published receipt. If any publication is actually missing, finish that step first.
+3. If still pending, package exact final source with complete Unity dirs/meta/realLFS, verify CRC/all
    memberSHA/sourcebytes/immutableHTTPS, publish external receipt/final-handoff/
    validation using verified noreply. If already complete, verify rather than redo.
 
@@ -119,7 +127,7 @@ redesign. Preserve108HP Guardian values; no difficulty evidence supports retunin
 No known execution blocker at this stage. Remaining publication is work, not an
 assumed failure. No connected/licensed Editor is available; native acceptance is
 optional and unrun. Independent source review found no remaining bounded blocker; record and fix any
-new confirmed defect found before merge with meaningful regression evidence.
+new confirmed defect with meaningful regression evidence.
 
 ## Deferred Items
 
@@ -171,7 +179,9 @@ Old123presentation/19Boss and hero hashes remain. Corrected entry-frame red34/1
 becomes35/0; removing clearing bank latch yields mutant31/3 vs original34/0.
 Graph2934sampledsafe nodes is conservative geometry, not real physics. Managed
 raster preview is exact production pixels, not Game View/imagegen. Implementation exactCI38112224587 passes12/12/artifact11691912590; independent source review found no
-remaining bounded blocker. Final hostedCI/archive source bytes/receipt still resolve
+remaining bounded blocker. Exact reviewed-headCI38112428394 passes12steps with
+artifact11692182597, and normal PR10merge7437531 parents/tree are verified. Final
+exact-sourceCI/archive source bytes/receipt still resolve
 after publication. Generated/finalized working handoff validates100/100 with9existing
 project-file references; its persistent archived copy is byte-identical. The unchanged
 validator assumes .claude/handoffs depth for project-root file lookup, so reports
@@ -191,7 +201,8 @@ Original active agents share source; root alone commits/pushes/reviews/merges.
 
 ## Related Resources
 
-[Forest contract](../../game/THORNWOOD.md), [checkpoint](checkpoint.md),
+[Forest contract](../../game/THORNWOOD.md), [publication evidence](publication.md),
+[checkpoint](checkpoint.md),
 [integration checkpoint](integration-checkpoint.md),
 [project report](project-validation.json), [API report](api-compilation.json),
 [distribution report](distribution-validation.log), the five current root records,

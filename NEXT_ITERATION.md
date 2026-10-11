@@ -1,28 +1,33 @@
 # Current continuation / next iteration
 
-## Resume eleventh Thornwood delivery before selecting more content
+## Verify the completed eleventh source and external delivery before new content
+
+Merged-master CI38112486133/job114390753412 also passes all12steps; nonexpired
+artifact11692570531 exists. Final exact-source/archive/download identity remains externally verified
+after the final source record is published.
 
 Read [eleventh handoff](docs/iterations/2026-10-10-iteration-011/handoff.md),
-[checkpoint](docs/iterations/2026-10-10-iteration-011/checkpoint.md) and
+[publication evidence](docs/iterations/2026-10-10-iteration-011/publication.md) and
 [Thornwood contract](docs/game/THORNWOOD.md). Fetch actual master/development/
-rpg-deliveries refs and inspect HEAD, dirty/unpushed work, open PR, exact CI and
-current external receipt before deciding anything is incomplete. The recovered
-source is actual surviving eleventh work from9e1ea4c, not a new unrelated iteration.
-Do not redo completed tenth polish or invent missing unsaved edits.
+rpg-deliveries refs and inspect HEAD, dirty/unpushed work, PR/CI and the actual
+external receipt. PR10 normally merged reviewed0157831 at7437531; exact reviewed
+CI38112428394/job114390585501 passes12/12 with nonexpired artifact11692182597.
+Both merge parents and equality to reviewed source tree are verified. Fresh451
+checks/API30/86Inputsub/five static envelopes/independent review are complete.
+Foundation092d310 and integration65bc4da remain recovery paths. Do not recreate
+surviving source, redo tenth polish or repeat the completed eleventh PR merge.
 
-1. Preserve the completed tested forest runtime and saved checkpoints092d310/
-   65bc4da. Rerun behavior only after changes/newfailures or unresolved evidence;
-   do not repeat an already-green stage merely to create another iteration. Fresh445project+6distribution=451groups, domain31/integration35, five static
-   envelopes and API30/86Inputsub pass; integration65bc4da is saved/pushed. ImplementationCI38112224587 succeeds, independent review has no bounded blocker
-   and draftPR10 exists. Final exact-headCI/mastermerge/publication remain separate.
-2. Verify exact reviewed-head CI and normally merge a complete reviewed PR when
-   quality evidence is sufficient. Native checks are optional; never force push
-   or overwrite user changes. Preserve v1, original hero and Guardian stats/timing.
-3. Bind final source with exact master CI, package Assets/Packages/ProjectSettings/
-   .meta and materialized LFS using the trusted packager, verify CRC/every-member
-   SHA-256/source bytes/immutable HTTPS, and publish external receipt/final-handoff
-   on rpg-deliveries using confirmed noreply identity. If already complete on a
-   later resume, verify it and move forward rather than repeat development.
+1. Resolve exact final source CI, complete Unity ZIP/CRC/every-member SHA-256/source
+   bytes/materialized LFS/immutable HTTPS and receipt/final-handoff/validation in
+   iteration-011-delivery.json on rpg-deliveries. This source record precedes its
+   own final SHA/archive; the independently published identities are authoritative.
+2. If any delivery is genuinely missing, finish that publication first using the
+   trusted packager and confirmed noreply identity. Retain all prior source/delivery
+   history; never force push or overwrite user work. If already complete, verify
+   it and move forward, rather than repeat code/tests/packaging without a new cause.
+3. Preserve saved attempt latches, same-attempt reentry/resources, v1 profile and
+   Guardian108HP/timing. Rerun behavior after changes/new failures or unresolved
+   evidence, not simply to manufacture another iteration or completion marker.
 
 Most useful optional native follow-up: complete clearing/beacon -> F -> forest,
 walk every seed/cache/exit path, sidestep fixed pounce, observe pose/HP numbers/HUD,

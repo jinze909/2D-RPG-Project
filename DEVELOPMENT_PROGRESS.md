@@ -1,16 +1,31 @@
 # Development progress
 
-## Iteration 11 — recovered Thornwood exploration implementation
+## Iteration 11 — reviewed Thornwood loop merged to master
 
-2026-10-10 PDT. The actual recovered checkout continues on the ordinary branch
-`rpg/iteration-011-thornwood` from completed tenth master
-`9e1ea4c057712517f80abfb7da95082468b425b5`. Git and source inspection confirmed the
-previously interrupted HUD/runtime edits and additional Thornwood source/test
-files survived. They were preserved and completed; the tenth Boss polish and
-already-published delivery were not restarted. Foundation092d310 is safely pushed; integration65bc4da now preserves the verified
-actual runtime stage. FoundationCI38112081247 passes all12steps with artifact11692141973.
+Merged-master CI38112486133/job114390753412 also passes all12steps; nonexpired
+artifact11692570531 exists. Final exact-source/archive/download identity remains externally verified
+after the final source record is published.
+
+2026-10-10 PDT. Continued actual interrupted source from completed tenth baseline
+9e1ea4c; surviving source was verified and retained, not reconstructed from chat.
+Foundation092d310 and integrated65bc4da are safely pushed. FoundationCI38112081247
+passes12steps/artifact11692141973; implementationCI38112224587 passes12steps/
+artifact11691912590. [PR #10](https://github.com/jinze909/2D-RPG-Project/pull/10) normally merged reviewed
+head `0157831130127b7bdbfcac2f19c2d4c376a8fd51` at
+`7437531832eabca5b720cd78b7823e09e2fddc96`. Exact reviewed-head
+CI38112428394/job114390585501 passes all12steps; nonexpired artifact11692182597
+exists. Actual fetched merge parents are completed tenth9e1ea4c plus reviewed
+0157831, and merge-tree equality to reviewed source is verified. The local ordinary
+development checkout fast-forwarded cleanly to that actual master merge. No force
+push, extra worktree or history loss. Final exact-source/master CI and full Unity
+ZIP/CRC/every-member SHA-256/source bytes/LFS/immutable HTTPS resolve in the external
+iteration-011-delivery.json and final-handoff/validation after publication. This
+source record does not preclaim future uploads or its own final commit identity.
+
 Foundation state is captured in
-[eleventh checkpoint](docs/iterations/2026-10-10-iteration-011/checkpoint.md).
+[eleventh checkpoint](docs/iterations/2026-10-10-iteration-011/checkpoint.md);
+[publication evidence](docs/iterations/2026-10-10-iteration-011/publication.md)
+records verified review/merge identities. Old pending PR lists are historical.
 
 Implemented one complete first-region loop: bank the current clearing beacon ->
 F at beacon -> explore a bounded dark-root forest -> E collect three unique thorn
@@ -59,10 +74,11 @@ with recording boundaries and executes real ClearingRuntime.Start/Update/Fixed/
 Late paths, entry/resources/contacts/rewards/pause/disable/retry/cache/bounds/art
 ownership. Complete regression/API/static evidence is archived; independent review found no
 remaining bounded blocker. Implementation CI38112224587/job114389975346 passes all12steps with nonexpired
-artifact11691912590; actual draftPR10 exists.
-Final reviewed-head/masterCI/normalmerge/sourceZIP/publication identities will be
-bound by root's actual reports and external delivery receipt. The source handoff cannot embed
-its own finalSHA/archive identity. Normal merge/finalZIP are not yet claimed.
+artifact11691912590. Reviewed documentation-head0157831 exactCI38112428394 passes
+12steps/artifact11692182597 and normalPR10merge7437531 is verified. Final exact-source
+CI/fullZIP/HTTPS/receipt identities resolve externally after this source record.
+The source handoff cannot embed its own finalSHA/archive identity; no future ZIP
+publication is assumed.
 
 Preserved Guardian108HP/2damage/timing, mature clearing/tactics/supplies/numbers,
 v1 coins/upgrades, original blonde hero/assets/controller and Unity2022.3.53f1.

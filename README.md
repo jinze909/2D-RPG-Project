@@ -83,8 +83,12 @@ Unity API 引用编译通过（Input System 替身）；独立代码审查未发
 领取的接入风险。v1 格式不变，30 金币探索完成也计入 ClearedRuns；退出游戏
 不会保存未完成森林。独立执行的 31 项纯逻辑与 35 项实际代码接入检查、共 451 项工程/打包检查通过；
 30 份生产脚本通过真实 Unity API 引用编译（Input System 替身）。
-最终完整回归、CI、PR 与 ZIP 以验证后的接力/外部交付回执为准，当前不预先
-宣称发布完成。详见 [森林玩法合同](docs/game/THORNWOOD.md) 和
+[PR #10](https://github.com/jinze909/2D-RPG-Project/pull/10) 已普通合并为 `7437531`；
+审查提交 `0157831` 的 CI `38112428394` 全部 12 步成功，父提交与合并代码树
+一致性已核实；合并后 master CI `38112486133` 也全部 12 步成功。最终源码 CI、
+完整 ZIP/哈希/下载回验以实际发布后的独立
+[第十一轮交付回执](https://raw.githubusercontent.com/jinze909/2D-RPG-Project/rpg-deliveries/iteration-011-delivery.json)
+为准；当前源码文档不预先宣称 ZIP 上传完成。详见 [森林玩法合同](docs/game/THORNWOOD.md) 和
 [第十一轮接力](docs/iterations/2026-10-10-iteration-011/handoff.md)。
 难度、视觉可读性、动画与音效体验 **尚未进行 Unity 原生验收**；模拟不等于试玩。
 注册源已改为 `packages.unity.com`，未升级任何锁定包版本。云端缺少有效 Unity

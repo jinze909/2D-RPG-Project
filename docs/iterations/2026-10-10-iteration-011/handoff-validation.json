@@ -13,6 +13,7 @@
   "markdown_links_verified": [
     "../2026-10-09-iteration-010/handoff.md",
     "../../game/THORNWOOD.md",
+    "publication.md",
     "checkpoint.md",
     "integration-checkpoint.md",
     "project-validation.json",
@@ -20,7 +21,7 @@
     "distribution-validation.log",
     "../../game/CLEARING_PROGRESSION.md"
   ],
-  "archived_content_sha256": "c383c25d5df23fec048ba8db6ff02da39772611658bdd47c4f93fad76aaf6972",
+  "archived_content_sha256": "eec6a86a148e975a4266eef55829755390c24b6c0e8ff3abb9736bf272ea86a7",
   "identical_working_copy": true,
   "working_copy_cli_score": 100,
   "project_reference_base": ".",

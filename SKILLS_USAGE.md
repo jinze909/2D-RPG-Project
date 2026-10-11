@@ -2,6 +2,10 @@
 
 ## Iteration 11 — recovered forest loop and compatible cross-activity rewards
 
+Merged-master CI38112486133/job114390753412 also passes all12steps; nonexpired
+artifact11692570531 exists. Final exact-source/archive/download identity remains externally verified
+after the final source record is published.
+
 All eight local .agents/skills/*/SKILL.md locators were rediscovered. Applicable
 handoff/resume, debug/evidence, game-design/art/audio and Unity compatibility
 instructions support actual code and documentation; a readable Skill is not a
@@ -11,12 +15,24 @@ connected service. Existing licensed bundles and provenance remain unchanged.
 | --- | --- |
 | session-handoff | Verified actual surviving source/Git against completed tenth9e1ea4c and delivery, preserved interruption work, generated the real continuation scaffold, corrects its archived predecessor link, maintains five root records/checkpoint/forest contract and persistent eleventh handoff. Generated/finalized working handoff validates100/100 with9actual project references; persistent copy has identical bytes and records validator path semantics. |
 | systematic-debugging | Actual production-C# Aclearing -> Bforest -> A reproduction exposed v1 LastRewardId's two-live-attempt replay risk. Per-runtime accepted-bank latches preserve once-only transactions across leave/reentry/disable. Actual alternating E/reentry/purchase tests verify the correction; no native forest-wall or human balance bug is invented. |
-| verification-before-completion | Fresh445project+6distribution=451groups, including31pure-domain/layout and35recording-boundary actual-source integration, pass. Five static envelopes and30-source/86-real-referenceAPIcompile pass(Inputsub). Full regression/API/static evidence and independent bounded review are complete; exact implementationCI38112224587 succeeds and PR10exists. Final reviewed-head/masterCI/ZIP/download identities require actual publication; partial tests are not native acceptance. |
+| verification-before-completion | Fresh445project+6distribution=451groups, including31pure-domain/layout and35recording-boundary actual-source integration, pass. Five static envelopes and30-source/86-real-referenceAPIcompile pass(Inputsub). Full regression/API/static evidence and independent bounded review are complete; exact reviewed-head0157831CI38112428394 passes12steps/artifact11692182597. Normal PR10merge7437531 parents/tree equality and clean fast-forward are verified. Final exact-sourceCI/ZIP/download identities resolve externally after publication; partial tests are not native acceptance. |
 | game-design | One bounded entry/explore/fight/three-seed/cache/save/return loop, voluntary early return retaining effort, reused growth and no goal/save-gated exit. First/new attempts refill once; travel retains resources and costs. Existing Guardian108HP/timing and v1 arithmetic preserved; no unsupported balance retuning. |
 | game-art | ThornwoodVisuals authors original cached Point/PPU30 dark floor/trees, distinct seed leaves/root cache/return arrow and46x36 fixed-anchor hound ready/walk/windup/pounce/hurt poses. Locked warning shares actual saved contact geometry; independent kill stroke outlives body. Shared15palette/original blonde hero are preserved. No native rendering/animation acceptance claimed. |
 | game-audio | Existing accepted attack/hit/kill/hurt/reward cues, once-per-attack deduplication, mute and interruption reset are reused. Accepted seed/cache actions reuse Reward; rejected actions do not invent success. No new audio asset, ambience, music, audition or mix acceptance is claimed. |
 | unity-mcp-orchestrator | Unity2022.3 fixed-update/input ownership, actor-stat authority, cached resources/disposal, same-scene region/camera and layered LOS/bounds guidance. Retained real engine/uGUI references permit compile; Input System stays an explicit substitute. No connected/licensed Editor/MCP/CLI or repeated unchanged license probe is claimed. |
 | imagegen | Applicability/identity workflow reviewed. Existing managed raster pipeline is appropriate to these original sprites; no built-in image generation/edit, paid CLI/API or external image service was called. |
+
+Verification-before-completion also records safely pushed092d310/65bc4da recovery
+history, actual ordinary PR10 integration and exact reviewed-head12-step CI with
+artifact. Session-handoff preserves both merge parents/tree evidence, finalizes the
+byte-identical working/archive handoff and validates100 with explicit project-root
+file lookup plus real relative Markdown target checks. External final source/ZIP
+receipt is checked separately; native execution is never inferred from publication.
+
+Final evidence review also actually read Unity Essentials unity-bug-investigation
+main/mandatory foundations and gameplay-state/save-persistence references, applying
+them to retained red/green evidence and the identified reward/entry ownership causes.
+This was source/evidence review, not native reproduction or new unrelated work.
 
 Unity Essentials feature-implementation/build-validation and required evidence/
 baseline/lifecycle/safety/status foundations informed integration and review.

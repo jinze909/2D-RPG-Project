@@ -1,20 +1,30 @@
 # RPG development instructions
 
-## Current iteration 11 Thornwood continuation
+## Current iteration 11 reviewed Thornwood master integration
 
-Continue `rpg/iteration-011-thornwood` from verified completed tenth source
-`9e1ea4c057712517f80abfb7da95082468b425b5`. Quota recovery inspected actual surviving
-HUD/runtime and new forest files; no lost edit was fabricated. Read
-`docs/game/THORNWOOD.md` and the chained eleventh handoff before changing this loop.
-Current pure domain/layout checks pass31 groups; current actual-source integration
-checks pass35 groups. Foundation092d310 is safely pushed and exact
-CI38112081247/job114389549913 passes12/12 with artifact11692141973. Integration
-checkpoint65bc4da preserves the tested forest bridge. Fresh451project/distributiongroups/API30/86Inputsub/five static envelopes and
-independent review now pass; Implementation CI38112224587/job114389975346 passes all12steps and
-nonexpired artifact11691912590 exists. ActualdraftPR10
-exists. Final reviewed-documentation CI/ordinary PR merge and exact-source ZIP
-publication must be verified separately; the checkpoint
-record retains their honest pending state until actual evidence supersedes it.
+Merged-master CI38112486133/job114390753412 also passes all12steps; nonexpired
+artifact11692570531 exists. Final exact-source/archive/download identity remains externally verified
+after the final source record is published.
+
+[PR #10](https://github.com/jinze909/2D-RPG-Project/pull/10) normally merged reviewed
+head `0157831130127b7bdbfcac2f19c2d4c376a8fd51` at
+`7437531832eabca5b720cd78b7823e09e2fddc96`. Exact reviewed-head
+CI38112428394/job114390585501 passes all12steps; nonexpired artifact11692182597
+exists. Actual fetched merge parents are completed tenth9e1ea4c plus reviewed
+0157831, and merge-tree equality to reviewed source is verified. The local ordinary
+development checkout fast-forwarded cleanly to that actual master merge. No force
+push, extra worktree or history loss. Final exact-source/master CI and full Unity
+ZIP/CRC/every-member SHA-256/source bytes/LFS/immutable HTTPS resolve in the external
+iteration-011-delivery.json and final-handoff/validation after publication. This
+source record does not preclaim future uploads or its own final commit identity.
+
+Thornwood continues completed tenth9e1ea4c on rpg/iteration-011-thornwood. Actual
+surviving interrupted source was preserved. Foundation092d310 and integration
+65bc4da remain safely pushed recovery paths. Fresh451project/distributiongroups,
+API30/86Inputsub/five static envelopes and independent review pass. Read
+`docs/game/THORNWOOD.md` and the chained eleventh handoff. Verify the actual
+external receipt before continuing: if delivery is complete, do not repeat code,
+PR or packaging; if missing, finish that exact publication stage first.
 
 The first forest is a runtime-built pocket within CombatClearing: complete and
 bank the current clearing beacon, then F at that beacon enters. Three once-only
