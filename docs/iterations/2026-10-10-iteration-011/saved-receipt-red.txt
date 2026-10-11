@@ -1,0 +1,37 @@
+Compiling 30 actual project C# files for recording-boundary Thornwood integration checks
+/tmp/rpg-thornwood-receipt-mutant-hk41xstu/Assets/Scripts/Gameplay/ClearingRuntime.cs(22,22): warning CS0414: The field 'ClearingRuntime.clearingRewardBanked' is assigned but its value is never used
+PASS clearing F cannot enter before objective completion or saving
+PASS clearing F rejects far waystone and paused completion without changing resources
+PASS forest first admission fills same actor once and reentry preserves HP MP seeds and identity
+PASS forest starts at entry and restores clearing beacon camera and terminal controls
+PASS actual seed E needs range and clear line and never deposits an early reward
+PASS north cache requires all seeds and defeated stalkers before actual E can bank
+PASS Light actual runtime contact removes eighteen HP once and keeps MP cost zero
+PASS Burst spends six MP once applies thirty and overkill feedback reports only remaining HP
+PASS forest low MP paused and out of range attacks cannot invent damage or spend
+PASS actual forest LOS boundary rejects player hits through roots
+PASS stalker pounce captures a fixed warning and locks movement through windup
+PASS stalker AI approaches only a clear valid target and obeys layout swept movement
+PASS recorded pounce border and phase fill stay wholly inside the immutable contact footprint
+PASS actual pounce contact applies clamped actor HP delta and shares invulnerability
+PASS player-first finishing hits suppress same tick lethal stalker retaliation
+PASS paused runtime freezes simulation warning cooldown numbers and feedback despite wall time
+PASS component disable cancels stale attacks and preserves resources seeds cooldown and attempt
+PASS disable from pause restores time scale without resetting expedition
+PASS death retry resets only forest attempt without replacing actor or altering saved clearing
+PASS forest exit is open before objectives and death has an actionable retry then exit
+PASS failed cache save remains unbanked until actual E retries same identity once
+FAIL A clearing then B forest reward stays sixty through alternating E reentry and purchases: returning to older A identity replayed thirty coins
+FAIL forest completed movement stays enabled and repeated reentry never restocks or banks: actual F at forest waystone did not enter
+PASS failed cache R explicitly loses only unsaved forest reward and creates a fresh attempt
+PASS new forest retry applies stored upgrades once without stacking or template mutation
+FAIL completed forest R starts a new legitimate cache while older clearing stays banked: a later legitimate forest completion erased the original clearing acceptance latch
+PASS clearing R discards unfinished forest and next verified clearing opens a fresh expedition
+PASS leaving failed cache then clearing R discloses loss without mutating protected ledger
+PASS simultaneous active stalker contacts share the actor immunity across enemy iteration
+PASS completed forest permits exit movement but neither new attacks nor escaping the bounds
+PASS actual runtime rejects bounds bypass and restores last accepted full-foot position
+PASS forest actual boundary and obstacle colliders consume the shared layout exactly
+PASS forest cached pixel poses warnings and owned objects allocate only at construction
+PASS forest disposal destroys owned assets once and retains clearing borrowed square
+RESULT 31 passed, 3 failed; actual project C# with recording boundaries, not native Unity.

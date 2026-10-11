@@ -1,0 +1,28 @@
+{
+  "filepath": "docs/iterations/2026-10-10-iteration-011/handoff.md",
+  "score": 100,
+  "rating": "Excellent - Ready for handoff",
+  "todos_clear": true,
+  "remaining_todos": [],
+  "required_complete": true,
+  "missing_required": [],
+  "missing_recommended": [],
+  "secrets_found": [],
+  "files_verified": 9,
+  "files_missing": [],
+  "markdown_links_verified": [
+    "../2026-10-09-iteration-010/handoff.md",
+    "../../game/THORNWOOD.md",
+    "checkpoint.md",
+    "integration-checkpoint.md",
+    "project-validation.json",
+    "api-compilation.json",
+    "distribution-validation.log",
+    "../../game/CLEARING_PROGRESSION.md"
+  ],
+  "archived_content_sha256": "c383c25d5df23fec048ba8db6ff02da39772611658bdd47c4f93fad76aaf6972",
+  "identical_working_copy": true,
+  "working_copy_cli_score": 100,
+  "project_reference_base": ".",
+  "validation_note": "Uses unchanged bundled validator functions with explicit real project root for archived file references. CLI itself assumes .claude/handoffs depth. Also checks each archived relative Markdown target. Identical generated working copy separately validates100 via original CLI."
+}

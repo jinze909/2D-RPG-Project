@@ -1,5 +1,79 @@
 # Development progress
 
+## Iteration 11 — recovered Thornwood exploration implementation
+
+2026-10-10 PDT. The actual recovered checkout continues on the ordinary branch
+`rpg/iteration-011-thornwood` from completed tenth master
+`9e1ea4c057712517f80abfb7da95082468b425b5`. Git and source inspection confirmed the
+previously interrupted HUD/runtime edits and additional Thornwood source/test
+files survived. They were preserved and completed; the tenth Boss polish and
+already-published delivery were not restarted. Foundation092d310 is safely pushed; integration65bc4da now preserves the verified
+actual runtime stage. FoundationCI38112081247 passes all12steps with artifact11692141973.
+Foundation state is captured in
+[eleventh checkpoint](docs/iterations/2026-10-10-iteration-011/checkpoint.md).
+
+Implemented one complete first-region loop: bank the current clearing beacon ->
+F at beacon -> explore a bounded dark-root forest -> E collect three unique thorn
+seeds and defeat three Briar Stalkers -> E open north cache -> save30coins ->
+E return at the southern sign -> buy existing upgrades/start another attempt.
+The cache requires both objectives; seeds and enemy kills never bank early.
+The south exit is not goal/save gated. Leaving/reentering retains the live attempt,
+seeds, enemies, health/mana, cooldowns/immunity and reward identity; transient
+contacts are canceled. First entry/genuine forest R fills actor-owned resources
+and applies saved bonuses from captured bases once. Forest death R retries only
+that expedition; completed movement stays enabled so return remains reachable.
+Clearing R explicitly discards an unsaved completed forest reward when applicable.
+
+Briar Stalkers pursue a clear nearby target, then lock a directional pounce lane
+and hold through warning/active/recovery. The .8/.16/1.0-second Lance authority,
+2HP contact/shared immunity, J18/K30, six-MP burst/cooldowns and actual-loss numbers
+reuse tested combat code. Cached original46x36 pixel poses cover ready/walk/crouch/
+pounce/hurt; independent hit/death strokes and death collider removal preserve
+feedback after body hiding. Shared accepted attack/hit/kill/hurt/reward audio and
+mute/cleanup remain, with no new clip or sound audition. Quiet dark floor, thorn
+trunks, three identifiable seed pods, root cache and south arrow use established
+15-color Point/PPU30 art. All forest colliders/LOS/bounds come from one layout;
+swept safe-foot checks reject large-step trunk/wall bypass. Two existing scenes
+remain unchanged; this forest is a same-scene runtime pocket, not a new Scene file.
+
+Actual production-C# reproduction identified a new cross-activity integration
+risk: v1 stores only LastRewardId, so Aclearing30 -> Bforest60 -> A could become90.
+Separate runtime-owned banked latches retain accepted transactions across travel,
+while the same ClearingProgress store preserves save-before-mutate/future-file/
+stale-writer protections. Actual alternating E/reentry/purchase regression stays
+at60 before a genuine new completion. No schema migration or historical reward
+ledger is claimed. ClearedRuns includes each completed30coin expedition; seeds,
+combat/world positions and unfinished expeditions are not persistent save data.
+
+Fresh final working-tree evidence:445project+6distribution=451groups, including
+31pure domain/layout and35actual-method integration groups, passes with zero failures.
+Five static envelopes pass:5PNG/60metaGUIDs/145references/2scenes/6LFS/8Skills65files.
+30production scripts compile against86realUnity2022.3engine/Editor/uGUI references,
+Input System explicitly substituted. Foundation092d310 exactCI38112081247 passes
+12/12 with artifact11692141973; tested integration checkpoint65bc4da is safely
+committed/pushed. Archived project report base092d310 describes the working tree
+later committed65bc4da, not immutable final hosted CI.
+Conservative swept-path sampling connects2934 radius-safe nodes and objectives;
+it is not native collision evidence. Integration compiles30 production C# sources
+with recording boundaries and executes real ClearingRuntime.Start/Update/Fixed/
+Late paths, entry/resources/contacts/rewards/pause/disable/retry/cache/bounds/art
+ownership. Complete regression/API/static evidence is archived; independent review found no
+remaining bounded blocker. Implementation CI38112224587/job114389975346 passes all12steps with nonexpired
+artifact11691912590; actual draftPR10 exists.
+Final reviewed-head/masterCI/normalmerge/sourceZIP/publication identities will be
+bound by root's actual reports and external delivery receipt. The source handoff cannot embed
+its own finalSHA/archive identity. Normal merge/finalZIP are not yet claimed.
+
+Preserved Guardian108HP/2damage/timing, mature clearing/tactics/supplies/numbers,
+v1 coins/upgrades, original blonde hero/assets/controller and Unity2022.3.53f1.
+Native import/EditMode/PlayMode/input/physics/Animator/render/layout/audio/build,
+actual difficulty/readability/feel and real player playtests remain unrun:
+**尚未进行 Unity 原生验收**. No unchanged license/Editor/MCP probe was repeated.
+Full archery/NPC/quest-story/equipment/classes/world saves remain future content.
+Root also reproduced stale clearing view refresh on the successfulF frame (34/1);
+entry ownership guard passes35/0. Removing only the clearing saved latch in an
+isolated copy gives31/3 vs the corrected34/0, preserving meaningful red/green evidence.
+
 ## Iteration 10 — reviewed Guardian feedback merged to master
 
 2026-10-09 PDT. PR9 normally merged reviewed7481f5b at a61fada after exact12-step

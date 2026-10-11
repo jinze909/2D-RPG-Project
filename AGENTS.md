@@ -1,5 +1,47 @@
 # RPG development instructions
 
+## Current iteration 11 Thornwood continuation
+
+Continue `rpg/iteration-011-thornwood` from verified completed tenth source
+`9e1ea4c057712517f80abfb7da95082468b425b5`. Quota recovery inspected actual surviving
+HUD/runtime and new forest files; no lost edit was fabricated. Read
+`docs/game/THORNWOOD.md` and the chained eleventh handoff before changing this loop.
+Current pure domain/layout checks pass31 groups; current actual-source integration
+checks pass35 groups. Foundation092d310 is safely pushed and exact
+CI38112081247/job114389549913 passes12/12 with artifact11692141973. Integration
+checkpoint65bc4da preserves the tested forest bridge. Fresh451project/distributiongroups/API30/86Inputsub/five static envelopes and
+independent review now pass; Implementation CI38112224587/job114389975346 passes all12steps and
+nonexpired artifact11691912590 exists. ActualdraftPR10
+exists. Final reviewed-documentation CI/ordinary PR merge and exact-source ZIP
+publication must be verified separately; the checkpoint
+record retains their honest pending state until actual evidence supersedes it.
+
+The first forest is a runtime-built pocket within CombatClearing: complete and
+bank the current clearing beacon, then F at that beacon enters. Three once-only
+seed pods and three pursuing Briar Stalkers unlock a north cache. E opens it and
+saves the existing30coins; E at the south trail returns anytime while alive and
+unpaused. Reentry retains the same attempt, health/mana, seeds/kills, costs and
+reward identity. First entry or genuine forest R creates a fresh full-resource
+attempt; clearing R discards the old expedition. Mid-expedition world persistence
+is absent. Keep original hero, scenes, Animator, packages and Boss108HP/2damage/
+timings unchanged. Native experience is **尚未进行 Unity 原生验收**.
+
+The v1 ledger remembers only LastRewardId. Two live completed activities therefore
+need separate accepted-bank latches: clearing A -> forest B -> A must stay60coins,
+not reaward A. Both runtime owners retain their latch on leave/reentry/disable,
+clear only on a genuine new attempt, and share the same save-before-mutate store.
+The existing v1 ClearedRuns count now includes completed30coin forest expeditions;
+coins/ranks/schema arithmetic stays compatible. Never implement arbitrary unsaved
+bonus coins, spend unbanked rewards or restart an attempt merely by traveling.
+
+Current categories supersede historical forest-absent records below. Full archery,
+classes/equipment, NPC dialogue, broad quest/story and world saves remain future
+work. Do not claim a new forest proves old nonexistent systems were fixed. Keep
+static geometry/API/recording-boundary evidence distinct from native physics,
+rendering, animation, input/audio acceptance and player playtests. No unchanged
+license/Editor/MCP probe is needed. Verify exact remote receipt on resume; never
+force push, overwrite dirty user work or create an unauthorized worktree.
+
 ## Iteration 10 reviewed ordinary master integration
 
 [PR #9](https://github.com/jinze909/2D-RPG-Project/pull/9) normally merged reviewed
@@ -31,8 +73,9 @@ by this source record. Native Editor tests/play and real player playtests are un
   optimal-hit estimates are not a player difficulty measurement.
 - Historical animation/UI/forest/archery/quest reports are experience references,
   not confirmed current defects. Inspect actual source/Scene/Prefab/Animator/assets
-  before listing a defect. Full forest, archery and full quests are absent here;
-  never claim their bugs fixed. Preserve regressions for already-fixed code.
+  before listing a defect. Full archery and full quests are absent here; the first Thornwood region is
+  implemented in iteration11. Never claim absent systems or unverified native
+  experiences fixed. Preserve regressions for already-fixed code.
 - Do not repeat license/Editor/MCP probes when the known environment is unchanged.
   Plugin availability, Skill readability, CLI availability, Editor connectivity,
   native validation and player acceptance are distinct facts.
@@ -221,6 +264,8 @@ python3 tools/run_progression_checks.py --project-root .
 python3 tools/run_enemy_checks.py --project-root .
 python3 tools/run_presentation_checks.py --project-root .
 python3 tools/run_art_checks.py --project-root .
+python3 tools/run_thornwood_checks.py --project-root .
+python3 tools/run_thornwood_integration_checks.py --project-root .
 python3 tools/validate_project.py --root . --output /tmp/rpg-project-report.json
 python3 -m unittest discover -s tests -p 'test_distribution.py'
 ```

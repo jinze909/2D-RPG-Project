@@ -1,6 +1,38 @@
 # Known issues
 
-## Current evidence categories — iteration 10 merged gameplay
+## Current evidence categories — iteration 11 Thornwood candidate
+
+This section supersedes historical forest-absent and pending tenth statements.
+The eleventh source survived quota interruption and is being completed from
+verified tenth master9e1ea4c on rpg/iteration-011-thornwood. Check the current
+[chained handoff](docs/iterations/2026-10-10-iteration-011/handoff.md) and actual
+Git/CI/external receipt before deciding any delivery remains unfinished.
+
+| Category | Actual status |
+| --- | --- |
+| Implemented and actual-code tested | First Thornwood region: saved-beacon F entry, three E seeds, three pursuing/locked-pounce Briar Stalkers, objective-gated north cache/30coin save, unconditional alive/unpaused south E return, same-attempt reentry and forest R retry. Fresh445project+6distribution=451groups pass, including31pure forest and35actual-method integration; five static envelopes and API30/86Inputsub pass. Integration65bc4da is checkpointed; implementationCI38112224587 passes12steps/artifact11691912590 and independent review found no bounded blocker; finalCI/PR10merge/publication remain to verify. |
+| Validated in real Unity Editor | None reported this session. Real API-reference compilation and recording-boundary execution are not Editor import/compile/tests or play. |
+| Confirmed and corrected integration risk | v1 LastRewardId alone admits clearing A -> forest B -> A replay. Each live runtime now retains its own accepted-bank latch across travel/disable, clears only on true new attempts, and shares one store. Actual alternating-reentry E/purchase regression stays60coins until another genuine completion. |
+| Confirmed but unfixed production defects | No additional confirmed defect is currently recorded in the bounded implemented scope. Independent review found no remaining bounded blocker and implementationCI38112224587 succeeds; final reviewed-headCI/merge/publication must still be verified; absence of a recorded finding does not prove all native gameplay bug-free. |
+| Experience awaiting native acceptance | **尚未进行 Unity 原生验收**: forest actual collision/corner access, fixed-step movement, enemy/seed/cache/exit visibility, HUD/font fitting, pixel/depth/camera framing, gait and pounce readability, device input, sound output/mix and forest/Guardian difficulty. Offline logic/path/raster checks do not establish these experiences. |
+| Absent future features | Full archery, classes, inventory/equipment, NPC dialogue, broad quests/story, larger world and mid-expedition/world saves. The first Thornwood pocket is now implemented; it is not a full world/quest system. These future features are not current confirmed bugs. |
+| Delivery still to verify | Implementation65bc4da/CI38112224587 succeeds and draftPR10exists; final reviewed-documentation CI/master merge, full Unity ZIP/CRC/every-member SHA-256/source-byte/LFS/immutable HTTPS and external iteration011 receipt. Source records do not preclaim future uploads or their own finalSHA. |
+
+Forest seeds/enemies/resources and attempt IDs persist only in the live session
+when leaving/reentering; quitting/reloading does not restore an unfinished forest.
+The existing bounded v1 profile persists coins/ranks and counts every completed
+30coin activity as ClearedRuns. First entry and genuine R refill/apply saved
+upgrades; travel does not refill/restock. Failure to save a completed cache retains
+that attempt for E retry; R/new clearing explicitly discards its unbanked reward.
+The same-room forest has six root obstacles and a sealed rectangular perimeter;
+conservative swept-foot guards supplement native colliders. Graph/path checks are
+not a physics playthrough and do not prove visual clarity or game feel.
+
+Guardian108HP/2damage/all timings, original hero and mature clearing are preserved.
+Historical sliding/leg/directional-shape/UI feedback remains native-unverified
+experience reference. Full archery/fullquest defects cannot be claimed repaired.
+
+## Historical iteration 10 merged gameplay evidence
 
 This section is authoritative. Older “No Boss”, unmerged PR and pending ninth
 statements retain checkpoint history and do not describe current functionality.
